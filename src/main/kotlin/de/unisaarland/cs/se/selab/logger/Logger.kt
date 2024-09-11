@@ -7,6 +7,7 @@ import java.io.PrintWriter
 
 object Logger {
     private lateinit var writer: PrintWriter
+
     // Path to the file
     private var filePath: String = "stdout"
 
@@ -17,7 +18,7 @@ object Logger {
      * Sets the output for the logger. Either to a provided file path or stdout.
      */
     fun setOutput(writer: PrintWriter) {
-        // still need to make all methods use this.writer !!s
+        // still need to make all methods use this.writer !!
         this.writer = writer
     }
 
@@ -62,7 +63,7 @@ object Logger {
         }
     }
 
-    fun simulationEnd(){
+    fun simulationEnd() {
         if (filePath == "stdout") {
             val writer = PrintWriter()
             writer.write("Simulation Info: Simulation ended.")
@@ -170,11 +171,15 @@ object Logger {
     fun cooperate(corpId: Int, otherCorpId: Int, shipId: Int, otherShipId: Int) {
         if (filePath == "stdout") {
             val writer = PrintWriter()
-            writer.write("Cooperation: Corporation $corpId cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId.")
+            writer.write(
+                "Cooperation: Corporation $corpId cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId."
+            )
             writer.flush()
         } else {
             val writer = PrintWriter(File(filePath))
-            writer.write("Cooperation: Corporation $corpId cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId.")
+            writer.write(
+                "Cooperation: Corporation $corpId cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId."
+            )
             writer.flush()
         }
     }
@@ -245,11 +250,15 @@ object Logger {
     fun currentDriftGarbage(garbageType: String, garbageId: Int, amt: Int, startTileId: Int, endTileId: Int) {
         if (filePath == "stdout") {
             val writer = PrintWriter()
-            writer.write("32 Current Drift: $garbageType $garbageId with amount $amt drifted from tile $startTileId to tile $endTileId.")
+            writer.write(
+                "32 Current Drift: $garbageType $garbageId with amount $amt drifted from tile $startTileId to tile $endTileId."
+            )
             writer.flush()
         } else {
             val writer = PrintWriter(File(filePath))
-            writer.write("32 Current Drift: $garbageType $garbageId with amount $amt drifted from tile $startTileId to tile $endTileId.")
+            writer.write(
+                "32 Current Drift: $garbageType $garbageId with amount $amt drifted from tile $startTileId to tile $endTileId."
+            )
             writer.flush()
         }
     }
@@ -290,11 +299,15 @@ object Logger {
     fun attachTracker(corpId: Int, garbageId: Int, shipId: Int) {
         if (filePath == "stdout") {
             val writer = PrintWriter()
-            writer.write("Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId.")
+            writer.write(
+                "Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId."
+            )
             writer.flush()
         } else {
             val writer = PrintWriter(File(filePath))
-            writer.write("Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId.")
+            writer.write(
+                "Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId."
+            )
             writer.flush()
         }
     }
@@ -386,6 +399,4 @@ object Logger {
     fun simulationStatsUncollected(amt: Int) {
         // Implementation here
     }
-
-
 }

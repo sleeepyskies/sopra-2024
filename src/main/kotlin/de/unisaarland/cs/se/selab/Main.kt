@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab
 
-import de.unisaarland.cs.se.selab.parsing.SimulationParser
 import de.unisaarland.cs.se.selab.logger.Logger
+import de.unisaarland.cs.se.selab.parsing.SimulationParser
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.required
@@ -41,6 +41,3 @@ fun main(args: Array<String>) {
     // run -- add sim.run or whatever
     TODO()
 }
-
-
-
