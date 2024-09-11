@@ -1,4 +1,4 @@
-package de.unisaarland.cs.se.selab.logger
+package de.unisaarland.cs.se.selab
 
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.TaskType
@@ -375,51 +375,51 @@ object Logger {
      * Provides statistics about the total plastic collected.
      */
     fun simulationStatsTotalPlastic() {
-        val sortedByLowestShipIdMap : TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
         val writer = if (filePath == "stdout") {
             PrintWriter(System.out)
         } else {
             PrintWriter(File(filePath))
         }
-        for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
-            val plasticAmount = garbageInfo.first
-            writer.write("Simulation Statistics: Total amount of plastic collected: $plasticAmount.")
-            writer.flush()
+        var plasticAmount = 0
+        for ((_, garbageInfo) in corporationCollectedGarbage) {
+            plasticAmount += garbageInfo.first
         }
+        writer.write("Simulation Statistics: Total amount of plastic collected: $plasticAmount.")
+        writer.flush()
     }
 
     /**
      * Provides statistics about the total oil collected.
      */
     fun simulationStatsTotalOil() {
-        val sortedByLowestShipIdMap : TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
         val writer = if (filePath == "stdout") {
             PrintWriter(System.out)
         } else {
             PrintWriter(File(filePath))
         }
-        for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
-            val oilAmount = garbageInfo.second
-            writer.write("Simulation Statistics: Total amount of oil collected: $oilAmount.")
-            writer.flush()
+        var oilAmount = 0
+        for ((_, garbageInfo) in corporationCollectedGarbage) {
+            oilAmount += garbageInfo.second
         }
+        writer.write("Simulation Statistics: Total amount of oil collected: $oilAmount.")
+        writer.flush()
     }
 
     /**
      * Provides statistics about the total chemical collected.
      */
     fun simulationStatsTotalChemical() {
-        val sortedByLowestShipIdMap : TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
         val writer = if (filePath == "stdout") {
             PrintWriter(System.out)
         } else {
             PrintWriter(File(filePath))
         }
-        for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
-            val chemicalAmount = garbageInfo.first
-            writer.write("Simulation Statistics: Total amount of chemicals collected: $chemicalAmount.")
-            writer.flush()
+        var chemicalAmount = 0
+        for ((_, garbageInfo) in corporationCollectedGarbage) {
+            chemicalAmount += garbageInfo.third
         }
+        writer.write("Simulation Statistics: Total amount of chemicals collected: $chemicalAmount.")
+        writer.flush()
     }
 
     /**
@@ -433,5 +433,9 @@ object Logger {
         }
         writer.write("Simulation Statistics: Total amount of garbage still in the ocean: $amt.")
         writer.flush()
+    }
+
+    fun setOutput(it: PrintWriter) {
+        TODO()
     }
 }
