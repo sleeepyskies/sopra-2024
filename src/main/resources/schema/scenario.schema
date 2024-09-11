@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "additionalProperties": false,
+    "properties": {
+        "events": {
+            "type": "array",
+            "items": {
+                "$ref": "event.schema#/$defs/event"
+            },
+            "minItems": 0
+        },
+        "garbage": {
+            "type": "array",
+            "items": {
+                "$ref": "garbage.schema#/$defs/garbage"
+            },
+            "minItems": 0
+        },
+        "tasks": {
+            "type": "array",
+            "items": {
+                "$ref": "task.schema#/$defs/task"
+            },
+            "minItems": 0
+        },
+        "rewards": {
+            "type": "array",
+            "items": {
+                "$ref": "reward.schema#/$defs/reward"
+            },
+            "minItems": 0
+        }
+    },
+    "required": [
+        "events", "garbage", "tasks", "rewards"
+    ],
+    "title": "Scenario",
+    "type": "object"
+}

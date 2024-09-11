@@ -1,0 +1,123 @@
+{
+  "$defs": {
+    "event": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "type": {
+          "enum": [
+            "STORM",
+            "RESTRICTION",
+            "OIL_SPILL",
+            "PIRATE_ATTACK"
+          ]
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "duration": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "location": {
+          "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "radius": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "speed": {
+          "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "direction": {
+          "type": "integer",
+          "enum": [0, 60, 120, 180, 240, 300]
+        },
+        "shipID": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "type": {
+              "const": "STORM"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "tick",
+            "location",
+            "radius",
+            "speed",
+            "direction"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "RESTRICTION"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "tick",
+            "location",
+            "radius",
+            "duration"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "OIL_SPILL"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "tick",
+            "location",
+            "radius",
+            "amount"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "PIRATE_ATTACK"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "tick",
+            "shipID"
+          ]
+        },
+      ],
+      "type": "object"
+    }
+  }
+}

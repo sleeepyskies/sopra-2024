@@ -1,0 +1,138 @@
+{
+    "$defs": {
+        "tile": {
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                },
+                "coordinates": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "x": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        },
+                        "y": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        }
+                    },
+                    "required": [
+                        "x",
+                        "y"
+                    ],
+                    "type": "object"
+                },
+                "category": {
+                    "enum": [
+                        "LAND",
+                        "SHORE",
+                        "SHALLOW_OCEAN",
+                        "DEEP_OCEAN"
+                    ]
+                },
+                "harbor": {
+                    "type": "boolean"
+                },
+                "current": {
+                    "type": "boolean"
+                },
+                "direction": {
+                    "type": "integer",
+                    "enum": [0, 60, 120, 180, 240, 300]
+                },
+                "speed": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 30
+                },
+                "intensity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10
+                }
+            },
+           "anyOf": [
+           {
+             "properties": {
+               "category": {
+                 "const": "LAND"
+               }
+             },
+             "required": [
+               "id",
+               "category",
+               "coordinates",
+             ]
+           },
+           {
+            "properties": {
+              "category": {
+                "const": "SHALLOW_OCEAN"
+              },
+            },
+            "required": [
+              "id",
+              "category",
+              "coordinates",
+            ]
+          },
+            {
+            "properties": {
+                "category": {
+                    "const": "DEEP_OCEAN"
+                },
+                "current": {
+                    "const": true
+                }
+            },
+            "required": [
+                "id",
+                "category",
+                "coordinates",
+                "current",
+                "speed",
+                "direction",
+                "intensity"
+            ]
+        },
+        {
+            "properties": {
+                "category": {
+                    "const": "DEEP_OCEAN"
+                },
+                "current": {
+                    "const": false
+                }
+            },
+            "required": [
+                "id",
+                "category",
+                "coordinates",
+                "current"
+            ]
+        },
+           {
+             "properties": {
+               "category": {
+                 "const": "SHORE"
+               }
+             },
+             "required": [
+               "id",
+               "category",
+               "coordinates",
+               "harbor",
+             ]
+           },
+
+           ],
+           "type": "object"
+        }
+    }
+}

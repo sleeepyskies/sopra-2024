@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "additionalProperties": false,
+    "properties": {
+        "tiles": {
+            "type": "array",
+            "items": {
+                "$ref": "tile.schema#/$defs/tile"
+            },
+            "minItems": 1
+        }
+
+    },
+    "required": [
+        "tiles"
+    ],
+    "title": "Map",
+    "type": "object"
+}

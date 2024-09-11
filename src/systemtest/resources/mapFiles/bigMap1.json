@@ -1,0 +1,4997 @@
+{
+  "tiles": [
+    {
+      "id": 0,
+      "coordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 1,
+      "coordinates": {
+        "x": 1,
+        "y": 0
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 2,
+      "coordinates": {
+        "x": 2,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 3,
+      "coordinates": {
+        "x": 3,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 4,
+      "coordinates": {
+        "x": 4,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 5,
+      "coordinates": {
+        "x": 5,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 6,
+      "coordinates": {
+        "x": 6,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 7,
+      "coordinates": {
+        "x": 7,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 8,
+      "coordinates": {
+        "x": 8,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 9,
+      "coordinates": {
+        "x": 9,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 10,
+      "coordinates": {
+        "x": 10,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 11,
+      "coordinates": {
+        "x": 11,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 12,
+      "coordinates": {
+        "x": 12,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 13,
+      "coordinates": {
+        "x": 13,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 14,
+      "coordinates": {
+        "x": 14,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 15,
+      "coordinates": {
+        "x": 15,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 16,
+      "coordinates": {
+        "x": 16,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 21,
+      "coordinates": {
+        "x": 21,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 22,
+      "coordinates": {
+        "x": 22,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 23,
+      "coordinates": {
+        "x": 23,
+        "y": 0
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 24,
+      "coordinates": {
+        "x": 24,
+        "y": 0
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 25,
+      "coordinates": {
+        "x": 0,
+        "y": 1
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 26,
+      "coordinates": {
+        "x": 1,
+        "y": 1
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 27,
+      "coordinates": {
+        "x": 2,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 28,
+      "coordinates": {
+        "x": 3,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 29,
+      "coordinates": {
+        "x": 4,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 30,
+      "coordinates": {
+        "x": 5,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 31,
+      "coordinates": {
+        "x": 6,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 32,
+      "coordinates": {
+        "x": 7,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 33,
+      "coordinates": {
+        "x": 8,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 34,
+      "coordinates": {
+        "x": 9,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 35,
+      "coordinates": {
+        "x": 10,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 36,
+      "coordinates": {
+        "x": 11,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 37,
+      "coordinates": {
+        "x": 12,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 38,
+      "coordinates": {
+        "x": 13,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 39,
+      "coordinates": {
+        "x": 14,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 40,
+      "coordinates": {
+        "x": 15,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 41,
+      "coordinates": {
+        "x": 16,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 42,
+      "coordinates": {
+        "x": 17,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 46,
+      "coordinates": {
+        "x": 21,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 47,
+      "coordinates": {
+        "x": 22,
+        "y": 1
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 48,
+      "coordinates": {
+        "x": 23,
+        "y": 1
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 49,
+      "coordinates": {
+        "x": 24,
+        "y": 1
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 50,
+      "coordinates": {
+        "x": 0,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 51,
+      "coordinates": {
+        "x": 1,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 52,
+      "coordinates": {
+        "x": 2,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 53,
+      "coordinates": {
+        "x": 3,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 54,
+      "coordinates": {
+        "x": 4,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 55,
+      "coordinates": {
+        "x": 5,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 56,
+      "coordinates": {
+        "x": 6,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 57,
+      "coordinates": {
+        "x": 7,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 58,
+      "coordinates": {
+        "x": 8,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 59,
+      "coordinates": {
+        "x": 9,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 60,
+      "coordinates": {
+        "x": 10,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 61,
+      "coordinates": {
+        "x": 11,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 62,
+      "coordinates": {
+        "x": 12,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 63,
+      "coordinates": {
+        "x": 13,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 64,
+      "coordinates": {
+        "x": 14,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 65,
+      "coordinates": {
+        "x": 15,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 66,
+      "coordinates": {
+        "x": 16,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 67,
+      "coordinates": {
+        "x": 17,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 68,
+      "coordinates": {
+        "x": 18,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 70,
+      "coordinates": {
+        "x": 20,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 71,
+      "coordinates": {
+        "x": 21,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 72,
+      "coordinates": {
+        "x": 22,
+        "y": 2
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 73,
+      "coordinates": {
+        "x": 23,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 74,
+      "coordinates": {
+        "x": 24,
+        "y": 2
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 75,
+      "coordinates": {
+        "x": 0,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 76,
+      "coordinates": {
+        "x": 1,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 77,
+      "coordinates": {
+        "x": 2,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 78,
+      "coordinates": {
+        "x": 3,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 79,
+      "coordinates": {
+        "x": 4,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 80,
+      "coordinates": {
+        "x": 5,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 81,
+      "coordinates": {
+        "x": 6,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 82,
+      "coordinates": {
+        "x": 7,
+        "y": 3
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 83,
+      "coordinates": {
+        "x": 8,
+        "y": 3
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 84,
+      "coordinates": {
+        "x": 9,
+        "y": 3
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 85,
+      "coordinates": {
+        "x": 10,
+        "y": 3
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 86,
+      "coordinates": {
+        "x": 11,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 87,
+      "coordinates": {
+        "x": 12,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 88,
+      "coordinates": {
+        "x": 13,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 89,
+      "coordinates": {
+        "x": 14,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 90,
+      "coordinates": {
+        "x": 15,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 91,
+      "coordinates": {
+        "x": 16,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 92,
+      "coordinates": {
+        "x": 17,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 93,
+      "coordinates": {
+        "x": 18,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 95,
+      "coordinates": {
+        "x": 20,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 96,
+      "coordinates": {
+        "x": 21,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 97,
+      "coordinates": {
+        "x": 22,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 98,
+      "coordinates": {
+        "x": 23,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 99,
+      "coordinates": {
+        "x": 24,
+        "y": 3
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 100,
+      "coordinates": {
+        "x": 0,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 101,
+      "coordinates": {
+        "x": 1,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 102,
+      "coordinates": {
+        "x": 2,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 103,
+      "coordinates": {
+        "x": 3,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 104,
+      "coordinates": {
+        "x": 4,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 105,
+      "coordinates": {
+        "x": 5,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 106,
+      "coordinates": {
+        "x": 6,
+        "y": 4
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 107,
+      "coordinates": {
+        "x": 7,
+        "y": 4
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 108,
+      "coordinates": {
+        "x": 8,
+        "y": 4
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 109,
+      "coordinates": {
+        "x": 9,
+        "y": 4
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 110,
+      "coordinates": {
+        "x": 10,
+        "y": 4
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 111,
+      "coordinates": {
+        "x": 11,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 112,
+      "coordinates": {
+        "x": 12,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 113,
+      "coordinates": {
+        "x": 13,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 114,
+      "coordinates": {
+        "x": 14,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 115,
+      "coordinates": {
+        "x": 15,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 116,
+      "coordinates": {
+        "x": 16,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 119,
+      "coordinates": {
+        "x": 19,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 120,
+      "coordinates": {
+        "x": 20,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 121,
+      "coordinates": {
+        "x": 21,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 122,
+      "coordinates": {
+        "x": 22,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 123,
+      "coordinates": {
+        "x": 23,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 124,
+      "coordinates": {
+        "x": 24,
+        "y": 4
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 125,
+      "coordinates": {
+        "x": 0,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 126,
+      "coordinates": {
+        "x": 1,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 127,
+      "coordinates": {
+        "x": 2,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 128,
+      "coordinates": {
+        "x": 3,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 129,
+      "coordinates": {
+        "x": 4,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 130,
+      "coordinates": {
+        "x": 5,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 131,
+      "coordinates": {
+        "x": 6,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 132,
+      "coordinates": {
+        "x": 7,
+        "y": 5
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 133,
+      "coordinates": {
+        "x": 8,
+        "y": 5
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 134,
+      "coordinates": {
+        "x": 9,
+        "y": 5
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 135,
+      "coordinates": {
+        "x": 10,
+        "y": 5
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 136,
+      "coordinates": {
+        "x": 11,
+        "y": 5
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 137,
+      "coordinates": {
+        "x": 12,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 138,
+      "coordinates": {
+        "x": 13,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 139,
+      "coordinates": {
+        "x": 14,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 140,
+      "coordinates": {
+        "x": 15,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 141,
+      "coordinates": {
+        "x": 16,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 143,
+      "coordinates": {
+        "x": 18,
+        "y": 5
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 144,
+      "coordinates": {
+        "x": 19,
+        "y": 5
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 145,
+      "coordinates": {
+        "x": 20,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 10,
+      "intensity": 2
+    },
+    {
+      "id": 146,
+      "coordinates": {
+        "x": 21,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 10,
+      "intensity": 2
+    },
+    {
+      "id": 147,
+      "coordinates": {
+        "x": 22,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 10,
+      "intensity": 2
+    },
+    {
+      "id": 148,
+      "coordinates": {
+        "x": 23,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 10,
+      "intensity": 2
+    },
+    {
+      "id": 149,
+      "coordinates": {
+        "x": 24,
+        "y": 5
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 10,
+      "intensity": 2
+    },
+    {
+      "id": 150,
+      "coordinates": {
+        "x": 0,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 151,
+      "coordinates": {
+        "x": 1,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 152,
+      "coordinates": {
+        "x": 2,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 153,
+      "coordinates": {
+        "x": 3,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 154,
+      "coordinates": {
+        "x": 4,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 155,
+      "coordinates": {
+        "x": 5,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 156,
+      "coordinates": {
+        "x": 6,
+        "y": 6
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 157,
+      "coordinates": {
+        "x": 7,
+        "y": 6
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 158,
+      "coordinates": {
+        "x": 8,
+        "y": 6
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 159,
+      "coordinates": {
+        "x": 9,
+        "y": 6
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 160,
+      "coordinates": {
+        "x": 10,
+        "y": 6
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 161,
+      "coordinates": {
+        "x": 11,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 162,
+      "coordinates": {
+        "x": 12,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 163,
+      "coordinates": {
+        "x": 13,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 164,
+      "coordinates": {
+        "x": 14,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 165,
+      "coordinates": {
+        "x": 15,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 167,
+      "coordinates": {
+        "x": 17,
+        "y": 6
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 168,
+      "coordinates": {
+        "x": 18,
+        "y": 6
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 169,
+      "coordinates": {
+        "x": 19,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 170,
+      "coordinates": {
+        "x": 20,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 171,
+      "coordinates": {
+        "x": 21,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 172,
+      "coordinates": {
+        "x": 22,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 173,
+      "coordinates": {
+        "x": 23,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 174,
+      "coordinates": {
+        "x": 24,
+        "y": 6
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 175,
+      "coordinates": {
+        "x": 0,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 176,
+      "coordinates": {
+        "x": 1,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 177,
+      "coordinates": {
+        "x": 2,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 178,
+      "coordinates": {
+        "x": 3,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 181,
+      "coordinates": {
+        "x": 6,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 182,
+      "coordinates": {
+        "x": 7,
+        "y": 7
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 183,
+      "coordinates": {
+        "x": 8,
+        "y": 7
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 184,
+      "coordinates": {
+        "x": 9,
+        "y": 7
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 185,
+      "coordinates": {
+        "x": 10,
+        "y": 7
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 186,
+      "coordinates": {
+        "x": 11,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 187,
+      "coordinates": {
+        "x": 12,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 188,
+      "coordinates": {
+        "x": 13,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 189,
+      "coordinates": {
+        "x": 14,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 190,
+      "coordinates": {
+        "x": 15,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 193,
+      "coordinates": {
+        "x": 18,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 194,
+      "coordinates": {
+        "x": 19,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 195,
+      "coordinates": {
+        "x": 20,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 196,
+      "coordinates": {
+        "x": 21,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 197,
+      "coordinates": {
+        "x": 22,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 198,
+      "coordinates": {
+        "x": 23,
+        "y": 7
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 200,
+      "coordinates": {
+        "x": 0,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 201,
+      "coordinates": {
+        "x": 1,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 202,
+      "coordinates": {
+        "x": 2,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 203,
+      "coordinates": {
+        "x": 3,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 204,
+      "coordinates": {
+        "x": 4,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 300,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 207,
+      "coordinates": {
+        "x": 7,
+        "y": 8
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 208,
+      "coordinates": {
+        "x": 8,
+        "y": 8
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 209,
+      "coordinates": {
+        "x": 9,
+        "y": 8
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 210,
+      "coordinates": {
+        "x": 10,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 211,
+      "coordinates": {
+        "x": 11,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 212,
+      "coordinates": {
+        "x": 12,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 213,
+      "coordinates": {
+        "x": 13,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 216,
+      "coordinates": {
+        "x": 16,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 217,
+      "coordinates": {
+        "x": 17,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 218,
+      "coordinates": {
+        "x": 18,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 219,
+      "coordinates": {
+        "x": 19,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 220,
+      "coordinates": {
+        "x": 20,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 221,
+      "coordinates": {
+        "x": 21,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 222,
+      "coordinates": {
+        "x": 22,
+        "y": 8
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 225,
+      "coordinates": {
+        "x": 0,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 226,
+      "coordinates": {
+        "x": 1,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 227,
+      "coordinates": {
+        "x": 2,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 228,
+      "coordinates": {
+        "x": 3,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 229,
+      "coordinates": {
+        "x": 4,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 230,
+      "coordinates": {
+        "x": 5,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 300,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 231,
+      "coordinates": {
+        "x": 6,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 300,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 233,
+      "coordinates": {
+        "x": 8,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 234,
+      "coordinates": {
+        "x": 9,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 235,
+      "coordinates": {
+        "x": 10,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 236,
+      "coordinates": {
+        "x": 11,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 237,
+      "coordinates": {
+        "x": 12,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 238,
+      "coordinates": {
+        "x": 13,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 239,
+      "coordinates": {
+        "x": 14,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 241,
+      "coordinates": {
+        "x": 16,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 242,
+      "coordinates": {
+        "x": 17,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 243,
+      "coordinates": {
+        "x": 18,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 244,
+      "coordinates": {
+        "x": 19,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 245,
+      "coordinates": {
+        "x": 20,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 246,
+      "coordinates": {
+        "x": 21,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 247,
+      "coordinates": {
+        "x": 22,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 248,
+      "coordinates": {
+        "x": 23,
+        "y": 9
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 250,
+      "coordinates": {
+        "x": 0,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 251,
+      "coordinates": {
+        "x": 1,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 252,
+      "coordinates": {
+        "x": 2,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 253,
+      "coordinates": {
+        "x": 3,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 254,
+      "coordinates": {
+        "x": 4,
+        "y": 10
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 255,
+      "coordinates": {
+        "x": 5,
+        "y": 10
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 256,
+      "coordinates": {
+        "x": 6,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 300,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 259,
+      "coordinates": {
+        "x": 9,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 260,
+      "coordinates": {
+        "x": 10,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 261,
+      "coordinates": {
+        "x": 11,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 262,
+      "coordinates": {
+        "x": 12,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 263,
+      "coordinates": {
+        "x": 13,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 265,
+      "coordinates": {
+        "x": 15,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 266,
+      "coordinates": {
+        "x": 16,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 267,
+      "coordinates": {
+        "x": 17,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 268,
+      "coordinates": {
+        "x": 18,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 269,
+      "coordinates": {
+        "x": 19,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 270,
+      "coordinates": {
+        "x": 20,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 271,
+      "coordinates": {
+        "x": 21,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 272,
+      "coordinates": {
+        "x": 22,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 273,
+      "coordinates": {
+        "x": 23,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 274,
+      "coordinates": {
+        "x": 24,
+        "y": 10
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 275,
+      "coordinates": {
+        "x": 0,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 276,
+      "coordinates": {
+        "x": 1,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 277,
+      "coordinates": {
+        "x": 2,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 278,
+      "coordinates": {
+        "x": 3,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 279,
+      "coordinates": {
+        "x": 4,
+        "y": 11
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 280,
+      "coordinates": {
+        "x": 5,
+        "y": 11
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 281,
+      "coordinates": {
+        "x": 6,
+        "y": 11
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 282,
+      "coordinates": {
+        "x": 7,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 283,
+      "coordinates": {
+        "x": 8,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 284,
+      "coordinates": {
+        "x": 9,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 285,
+      "coordinates": {
+        "x": 10,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 286,
+      "coordinates": {
+        "x": 11,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 287,
+      "coordinates": {
+        "x": 12,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 288,
+      "coordinates": {
+        "x": 13,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 289,
+      "coordinates": {
+        "x": 14,
+        "y": 11
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 291,
+      "coordinates": {
+        "x": 16,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 292,
+      "coordinates": {
+        "x": 17,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 293,
+      "coordinates": {
+        "x": 18,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 294,
+      "coordinates": {
+        "x": 19,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 295,
+      "coordinates": {
+        "x": 20,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 296,
+      "coordinates": {
+        "x": 21,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 297,
+      "coordinates": {
+        "x": 22,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 298,
+      "coordinates": {
+        "x": 23,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 299,
+      "coordinates": {
+        "x": 24,
+        "y": 11
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 300,
+      "coordinates": {
+        "x": 0,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 301,
+      "coordinates": {
+        "x": 1,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 302,
+      "coordinates": {
+        "x": 2,
+        "y": 12
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 303,
+      "coordinates": {
+        "x": 3,
+        "y": 12
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 304,
+      "coordinates": {
+        "x": 4,
+        "y": 12
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 305,
+      "coordinates": {
+        "x": 5,
+        "y": 12
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 306,
+      "coordinates": {
+        "x": 6,
+        "y": 12
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 307,
+      "coordinates": {
+        "x": 7,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 308,
+      "coordinates": {
+        "x": 8,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 309,
+      "coordinates": {
+        "x": 9,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 310,
+      "coordinates": {
+        "x": 10,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 311,
+      "coordinates": {
+        "x": 11,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 312,
+      "coordinates": {
+        "x": 12,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 313,
+      "coordinates": {
+        "x": 13,
+        "y": 12
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 314,
+      "coordinates": {
+        "x": 14,
+        "y": 12
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 316,
+      "coordinates": {
+        "x": 16,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 317,
+      "coordinates": {
+        "x": 17,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 318,
+      "coordinates": {
+        "x": 18,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 319,
+      "coordinates": {
+        "x": 19,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 320,
+      "coordinates": {
+        "x": 20,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 321,
+      "coordinates": {
+        "x": 21,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 322,
+      "coordinates": {
+        "x": 22,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 323,
+      "coordinates": {
+        "x": 23,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 324,
+      "coordinates": {
+        "x": 24,
+        "y": 12
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 325,
+      "coordinates": {
+        "x": 0,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 326,
+      "coordinates": {
+        "x": 1,
+        "y": 13
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 327,
+      "coordinates": {
+        "x": 2,
+        "y": 13
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 328,
+      "coordinates": {
+        "x": 3,
+        "y": 13
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 329,
+      "coordinates": {
+        "x": 4,
+        "y": 13
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 330,
+      "coordinates": {
+        "x": 5,
+        "y": 13
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 331,
+      "coordinates": {
+        "x": 6,
+        "y": 13
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 332,
+      "coordinates": {
+        "x": 7,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 333,
+      "coordinates": {
+        "x": 8,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 334,
+      "coordinates": {
+        "x": 9,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 335,
+      "coordinates": {
+        "x": 10,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 336,
+      "coordinates": {
+        "x": 11,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 337,
+      "coordinates": {
+        "x": 12,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 338,
+      "coordinates": {
+        "x": 13,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 339,
+      "coordinates": {
+        "x": 14,
+        "y": 13
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 341,
+      "coordinates": {
+        "x": 16,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 342,
+      "coordinates": {
+        "x": 17,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 343,
+      "coordinates": {
+        "x": 18,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 344,
+      "coordinates": {
+        "x": 19,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 345,
+      "coordinates": {
+        "x": 20,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 346,
+      "coordinates": {
+        "x": 21,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 347,
+      "coordinates": {
+        "x": 22,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 348,
+      "coordinates": {
+        "x": 23,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 349,
+      "coordinates": {
+        "x": 24,
+        "y": 13
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 350,
+      "coordinates": {
+        "x": 0,
+        "y": 14
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 351,
+      "coordinates": {
+        "x": 1,
+        "y": 14
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 352,
+      "coordinates": {
+        "x": 2,
+        "y": 14
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 353,
+      "coordinates": {
+        "x": 3,
+        "y": 14
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 354,
+      "coordinates": {
+        "x": 4,
+        "y": 14
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 355,
+      "coordinates": {
+        "x": 5,
+        "y": 14
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 356,
+      "coordinates": {
+        "x": 6,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 357,
+      "coordinates": {
+        "x": 7,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 358,
+      "coordinates": {
+        "x": 8,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 359,
+      "coordinates": {
+        "x": 9,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 360,
+      "coordinates": {
+        "x": 10,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 361,
+      "coordinates": {
+        "x": 11,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 362,
+      "coordinates": {
+        "x": 12,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 365,
+      "coordinates": {
+        "x": 15,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 366,
+      "coordinates": {
+        "x": 16,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 367,
+      "coordinates": {
+        "x": 17,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 368,
+      "coordinates": {
+        "x": 18,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 369,
+      "coordinates": {
+        "x": 19,
+        "y": 14
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 370,
+      "coordinates": {
+        "x": 20,
+        "y": 14
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 371,
+      "coordinates": {
+        "x": 21,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 372,
+      "coordinates": {
+        "x": 22,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 373,
+      "coordinates": {
+        "x": 23,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 374,
+      "coordinates": {
+        "x": 24,
+        "y": 14
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 375,
+      "coordinates": {
+        "x": 0,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 376,
+      "coordinates": {
+        "x": 1,
+        "y": 15
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 377,
+      "coordinates": {
+        "x": 2,
+        "y": 15
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 378,
+      "coordinates": {
+        "x": 3,
+        "y": 15
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 379,
+      "coordinates": {
+        "x": 4,
+        "y": 15
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 380,
+      "coordinates": {
+        "x": 5,
+        "y": 15
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 381,
+      "coordinates": {
+        "x": 6,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 382,
+      "coordinates": {
+        "x": 7,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 383,
+      "coordinates": {
+        "x": 8,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 384,
+      "coordinates": {
+        "x": 9,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 385,
+      "coordinates": {
+        "x": 10,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 386,
+      "coordinates": {
+        "x": 11,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 387,
+      "coordinates": {
+        "x": 12,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 389,
+      "coordinates": {
+        "x": 14,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 390,
+      "coordinates": {
+        "x": 15,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 391,
+      "coordinates": {
+        "x": 16,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 392,
+      "coordinates": {
+        "x": 17,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 393,
+      "coordinates": {
+        "x": 18,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 394,
+      "coordinates": {
+        "x": 19,
+        "y": 15
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 395,
+      "coordinates": {
+        "x": 20,
+        "y": 15
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 396,
+      "coordinates": {
+        "x": 21,
+        "y": 15
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 397,
+      "coordinates": {
+        "x": 22,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 398,
+      "coordinates": {
+        "x": 23,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 399,
+      "coordinates": {
+        "x": 24,
+        "y": 15
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 400,
+      "coordinates": {
+        "x": 0,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 401,
+      "coordinates": {
+        "x": 1,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 402,
+      "coordinates": {
+        "x": 2,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 403,
+      "coordinates": {
+        "x": 3,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 404,
+      "coordinates": {
+        "x": 4,
+        "y": 16
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 405,
+      "coordinates": {
+        "x": 5,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 406,
+      "coordinates": {
+        "x": 6,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 407,
+      "coordinates": {
+        "x": 7,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 408,
+      "coordinates": {
+        "x": 8,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 409,
+      "coordinates": {
+        "x": 9,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 410,
+      "coordinates": {
+        "x": 10,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 413,
+      "coordinates": {
+        "x": 13,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 414,
+      "coordinates": {
+        "x": 14,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 415,
+      "coordinates": {
+        "x": 15,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 416,
+      "coordinates": {
+        "x": 16,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 417,
+      "coordinates": {
+        "x": 17,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 418,
+      "coordinates": {
+        "x": 18,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 419,
+      "coordinates": {
+        "x": 19,
+        "y": 16
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 420,
+      "coordinates": {
+        "x": 20,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 421,
+      "coordinates": {
+        "x": 21,
+        "y": 16
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 422,
+      "coordinates": {
+        "x": 22,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 423,
+      "coordinates": {
+        "x": 23,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 424,
+      "coordinates": {
+        "x": 24,
+        "y": 16
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 425,
+      "coordinates": {
+        "x": 0,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 426,
+      "coordinates": {
+        "x": 1,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 427,
+      "coordinates": {
+        "x": 2,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 428,
+      "coordinates": {
+        "x": 3,
+        "y": 17
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 429,
+      "coordinates": {
+        "x": 4,
+        "y": 17
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 430,
+      "coordinates": {
+        "x": 5,
+        "y": 17
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 431,
+      "coordinates": {
+        "x": 6,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 432,
+      "coordinates": {
+        "x": 7,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 433,
+      "coordinates": {
+        "x": 8,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 434,
+      "coordinates": {
+        "x": 9,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 435,
+      "coordinates": {
+        "x": 10,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 437,
+      "coordinates": {
+        "x": 12,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 438,
+      "coordinates": {
+        "x": 13,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 439,
+      "coordinates": {
+        "x": 14,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 440,
+      "coordinates": {
+        "x": 15,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 441,
+      "coordinates": {
+        "x": 16,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 442,
+      "coordinates": {
+        "x": 17,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 443,
+      "coordinates": {
+        "x": 18,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 444,
+      "coordinates": {
+        "x": 19,
+        "y": 17
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 445,
+      "coordinates": {
+        "x": 20,
+        "y": 17
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 446,
+      "coordinates": {
+        "x": 21,
+        "y": 17
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 447,
+      "coordinates": {
+        "x": 22,
+        "y": 17
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 448,
+      "coordinates": {
+        "x": 23,
+        "y": 17
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 449,
+      "coordinates": {
+        "x": 24,
+        "y": 17
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 450,
+      "coordinates": {
+        "x": 0,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 451,
+      "coordinates": {
+        "x": 1,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 452,
+      "coordinates": {
+        "x": 2,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 453,
+      "coordinates": {
+        "x": 3,
+        "y": 18
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 454,
+      "coordinates": {
+        "x": 4,
+        "y": 18
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 455,
+      "coordinates": {
+        "x": 5,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 456,
+      "coordinates": {
+        "x": 6,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 457,
+      "coordinates": {
+        "x": 7,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 458,
+      "coordinates": {
+        "x": 8,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 459,
+      "coordinates": {
+        "x": 9,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 460,
+      "coordinates": {
+        "x": 10,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 462,
+      "coordinates": {
+        "x": 12,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 463,
+      "coordinates": {
+        "x": 13,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 464,
+      "coordinates": {
+        "x": 14,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 465,
+      "coordinates": {
+        "x": 15,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 466,
+      "coordinates": {
+        "x": 16,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 467,
+      "coordinates": {
+        "x": 17,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 180,
+      "speed": 30,
+      "intensity": 2
+    },
+    {
+      "id": 468,
+      "coordinates": {
+        "x": 18,
+        "y": 18
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 469,
+      "coordinates": {
+        "x": 19,
+        "y": 18
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 470,
+      "coordinates": {
+        "x": 20,
+        "y": 18
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 471,
+      "coordinates": {
+        "x": 21,
+        "y": 18
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 472,
+      "coordinates": {
+        "x": 22,
+        "y": 18
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 473,
+      "coordinates": {
+        "x": 23,
+        "y": 18
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 474,
+      "coordinates": {
+        "x": 24,
+        "y": 18
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 475,
+      "coordinates": {
+        "x": 0,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 476,
+      "coordinates": {
+        "x": 1,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 477,
+      "coordinates": {
+        "x": 2,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 478,
+      "coordinates": {
+        "x": 3,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 479,
+      "coordinates": {
+        "x": 4,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 480,
+      "coordinates": {
+        "x": 5,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 481,
+      "coordinates": {
+        "x": 6,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 482,
+      "coordinates": {
+        "x": 7,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 483,
+      "coordinates": {
+        "x": 8,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 484,
+      "coordinates": {
+        "x": 9,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 485,
+      "coordinates": {
+        "x": 10,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 487,
+      "coordinates": {
+        "x": 12,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 488,
+      "coordinates": {
+        "x": 13,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 489,
+      "coordinates": {
+        "x": 14,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 490,
+      "coordinates": {
+        "x": 15,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 491,
+      "coordinates": {
+        "x": 16,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 492,
+      "coordinates": {
+        "x": 17,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 493,
+      "coordinates": {
+        "x": 18,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 494,
+      "coordinates": {
+        "x": 19,
+        "y": 19
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 495,
+      "coordinates": {
+        "x": 20,
+        "y": 19
+      },
+      "category": "SHORE",
+      "shore": false
+    },
+    {
+      "id": 496,
+      "coordinates": {
+        "x": 21,
+        "y": 19
+      },
+      "category": "LAND"
+    },
+    {
+      "id": 497,
+      "coordinates": {
+        "x": 22,
+        "y": 19
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 498,
+      "coordinates": {
+        "x": 23,
+        "y": 19
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 499,
+      "coordinates": {
+        "x": 24,
+        "y": 19
+      },
+      "category": "DEEP_OCEAN",
+      "current": false
+    },
+    {
+      "id": 500,
+      "coordinates": {
+        "x": 0,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 501,
+      "coordinates": {
+        "x": 1,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 502,
+      "coordinates": {
+        "x": 2,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 503,
+      "coordinates": {
+        "x": 3,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 504,
+      "coordinates": {
+        "x": 4,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 505,
+      "coordinates": {
+        "x": 5,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 506,
+      "coordinates": {
+        "x": 6,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 507,
+      "coordinates": {
+        "x": 7,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 508,
+      "coordinates": {
+        "x": 8,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 509,
+      "coordinates": {
+        "x": 9,
+        "y": 20
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 511,
+      "coordinates": {
+        "x": 11,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 512,
+      "coordinates": {
+        "x": 12,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 513,
+      "coordinates": {
+        "x": 13,
+        "y": 20
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 514,
+      "coordinates": {
+        "x": 14,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 515,
+      "coordinates": {
+        "x": 15,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 516,
+      "coordinates": {
+        "x": 16,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 517,
+      "coordinates": {
+        "x": 17,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 518,
+      "coordinates": {
+        "x": 18,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 519,
+      "coordinates": {
+        "x": 19,
+        "y": 20
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 520,
+      "coordinates": {
+        "x": 20,
+        "y": 20
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 521,
+      "coordinates": {
+        "x": 21,
+        "y": 20
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 522,
+      "coordinates": {
+        "x": 22,
+        "y": 20
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 523,
+      "coordinates": {
+        "x": 23,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 524,
+      "coordinates": {
+        "x": 24,
+        "y": 20
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 525,
+      "coordinates": {
+        "x": 0,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 526,
+      "coordinates": {
+        "x": 1,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 527,
+      "coordinates": {
+        "x": 2,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 528,
+      "coordinates": {
+        "x": 3,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 529,
+      "coordinates": {
+        "x": 4,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 530,
+      "coordinates": {
+        "x": 5,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 531,
+      "coordinates": {
+        "x": 6,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 532,
+      "coordinates": {
+        "x": 7,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 533,
+      "coordinates": {
+        "x": 8,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 534,
+      "coordinates": {
+        "x": 9,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 535,
+      "coordinates": {
+        "x": 10,
+        "y": 21
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 537,
+      "coordinates": {
+        "x": 12,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 538,
+      "coordinates": {
+        "x": 13,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 539,
+      "coordinates": {
+        "x": 14,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 540,
+      "coordinates": {
+        "x": 15,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 541,
+      "coordinates": {
+        "x": 16,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 542,
+      "coordinates": {
+        "x": 17,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 543,
+      "coordinates": {
+        "x": 18,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 544,
+      "coordinates": {
+        "x": 19,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 545,
+      "coordinates": {
+        "x": 20,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 546,
+      "coordinates": {
+        "x": 21,
+        "y": 21
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 547,
+      "coordinates": {
+        "x": 22,
+        "y": 21
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 548,
+      "coordinates": {
+        "x": 23,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 549,
+      "coordinates": {
+        "x": 24,
+        "y": 21
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 550,
+      "coordinates": {
+        "x": 0,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 551,
+      "coordinates": {
+        "x": 1,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 552,
+      "coordinates": {
+        "x": 2,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 553,
+      "coordinates": {
+        "x": 3,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 554,
+      "coordinates": {
+        "x": 4,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 555,
+      "coordinates": {
+        "x": 5,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 556,
+      "coordinates": {
+        "x": 6,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 557,
+      "coordinates": {
+        "x": 7,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 558,
+      "coordinates": {
+        "x": 8,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 559,
+      "coordinates": {
+        "x": 9,
+        "y": 22
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 560,
+      "coordinates": {
+        "x": 10,
+        "y": 22
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 562,
+      "coordinates": {
+        "x": 12,
+        "y": 22
+      },
+      "category": "SHORE",
+      "harbor": false
+    },
+    {
+      "id": 563,
+      "coordinates": {
+        "x": 13,
+        "y": 22
+      },
+      "category": "SHORE",
+      "harbor": true
+    },
+    {
+      "id": 564,
+      "coordinates": {
+        "x": 14,
+        "y": 22
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 565,
+      "coordinates": {
+        "x": 15,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 566,
+      "coordinates": {
+        "x": 16,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 567,
+      "coordinates": {
+        "x": 17,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 568,
+      "coordinates": {
+        "x": 18,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 569,
+      "coordinates": {
+        "x": 19,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 120,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 570,
+      "coordinates": {
+        "x": 20,
+        "y": 22
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 571,
+      "coordinates": {
+        "x": 21,
+        "y": 22
+      },
+      "category": "SHALLOW_OCEAN"
+    },
+    {
+      "id": 572,
+      "coordinates": {
+        "x": 22,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 573,
+      "coordinates": {
+        "x": 23,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    },
+    {
+      "id": 574,
+      "coordinates": {
+        "x": 24,
+        "y": 22
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 60,
+      "speed": 20,
+      "intensity": 2
+    }
+  ]
+}

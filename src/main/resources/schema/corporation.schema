@@ -1,0 +1,58 @@
+{
+  "$defs": {
+    "corporation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "name": {
+            "type": "string",
+        },
+        "ships": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        },
+        "homeHarbors": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        },
+        "garbageTypes": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "PLASTIC",
+                    "OIL",
+                    "CHEMICALS"
+                ]
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "ships",
+        "homeHarbors",
+        "garbageTypes"
+      ],
+      "type": "object"
+    }
+  }
+}

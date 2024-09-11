@@ -1,0 +1,132 @@
+{
+  "$defs": {
+    "ship": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "name": {
+            "type": "string",
+        },
+        "type": {
+            "enum": [
+                "SCOUTING",
+                "COORDINATING",
+                "COLLECTING"
+            ]
+        },
+        "corporation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "location": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "maxVelocity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "acceleration": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "fuelCapacity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "fuelConsumption": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "visibilityRange": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "garbageType": {
+            "enum": [
+                "PLASTIC",
+                "OIL",
+                "CHEMICALS"
+            ]
+        },
+        "capacity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "type": {
+              "const": "SCOUTING"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "type",
+            "corporation",
+            "location",
+            "maxVelocity",
+            "acceleration",
+            "fuelCapacity",
+            "fuelConsumption",
+            "visibilityRange"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "COORDINATING"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "type",
+            "corporation",
+            "location",
+            "maxVelocity",
+            "acceleration",
+            "fuelCapacity",
+            "fuelConsumption",
+            "visibilityRange"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "COLLECTING"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "type",
+            "corporation",
+            "location",
+            "maxVelocity",
+            "acceleration",
+            "fuelCapacity",
+            "fuelConsumption",
+            "garbageType",
+            "capacity"
+          ]
+        },
+      ],
+      "type": "object"
+    }
+  }
+}

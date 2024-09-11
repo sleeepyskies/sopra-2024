@@ -1,0 +1,27 @@
+{
+      "$schema": "https://json-schema.org/draft-07/schema",
+      "additionalProperties": false,
+      "properties": {
+        "corporations": {
+          "type": "array",
+          "items": {
+            "$ref": "corporation.schema#/$defs/corporation"
+          },
+          "minItems": 1
+        },
+        "ships": {
+          "type": "array",
+          "items": {
+            "$ref": "ships.schema#/$defs/ship"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "corporations",
+        "ships",
+      ],
+      "title": "Corporations",
+      "type": "object"
+}

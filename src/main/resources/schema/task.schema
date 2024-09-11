@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "task": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "type": {
+          "enum": [
+            "COLLECT",
+            "EXPLORE",
+            "FIND",
+            "COOPERATE"
+          ]
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "shipID": {
+          "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        },
+        "targetTile": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "rewardID": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "rewardShipID": {
+          "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+        }
+      },
+        "required": [
+            "id",
+            "type",
+            "tick",
+            "shipID",
+            "targetTile",
+            "rewardID",
+            "rewardShipID"
+        ]
+    }
+  }
+}
