@@ -6,11 +6,20 @@ import java.io.File
 import java.io.PrintWriter
 
 object Logger {
+    private lateinit var writer: PrintWriter
     // Path to the file
     private var filePath: String = "stdout"
 
     // Map to store collected garbage by corporations
     private val corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>> = mutableMapOf()
+
+    /**
+     * Sets the output for the logger. Either to a provided file path or stdout.
+     */
+    fun setOutput(writer: PrintWriter) {
+        // still need to make all methods use this.writer !!s
+        this.writer = writer
+    }
 
     /**
      * Initializes the simulation with the given file name.
