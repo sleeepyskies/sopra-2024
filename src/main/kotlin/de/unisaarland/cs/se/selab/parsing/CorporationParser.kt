@@ -32,8 +32,8 @@ class CorporationParser(
         private const val ID = "id"
         private const val NAME = "name"
     }
-    private val corporations = mutableListOf<Corporation>()
-    private val ships = mutableListOf<Ship>()
+    val corporations = mutableListOf<Corporation>()
+    val ships = mutableListOf<Ship>()
     private var validator = initCorporationsSchemaValidator()
     private val corporationsSchema: String = "corporations.schema"
     private val corporationSchema = "corporation.schema"

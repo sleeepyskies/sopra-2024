@@ -50,10 +50,10 @@ class ScenarioParser(
     private val taskSchema = "task.schema"
 
     // data
-    private val events: MutableMap<Int, Event> = mutableMapOf() // tick to event map
-    private val garbage: MutableList<Garbage> = mutableListOf()
-    private val rewards: MutableList<Reward> = mutableListOf()
-    private val tasks: MutableMap<Int, Task> = mutableMapOf()
+    val events: MutableMap<Int, Event> = mutableMapOf()
+    val garbage: MutableList<Garbage> = mutableListOf()
+    val rewards: MutableList<Reward> = mutableListOf()
+    val tasks: MutableMap<Int, Task> = mutableMapOf()
 
     // used for validation
     private val eventIDs = mutableListOf<Int>()
