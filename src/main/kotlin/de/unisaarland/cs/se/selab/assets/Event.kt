@@ -23,9 +23,9 @@ data class PirateAttackEvent(
 data class RestrictionEvent(
     override val id: Int,
     override val tick: Int,
-    private val location: Pair<Int, Int>,
-    private val radius: Int,
-    private val duration: Int
+    val location: Pair<Int, Int>,
+    val radius: Int,
+    var duration: Int
 ) : Event(id, tick)
 
 /**
@@ -34,9 +34,8 @@ data class RestrictionEvent(
 data class OilSpillEvent(
     override val id: Int,
     override val tick: Int,
-    private val location: Pair<Int, Int>,
-    private val radius: Int,
-    private val duration: Int
+    val location: Pair<Int, Int>,
+    val radius: Int
 ) : Event(id, tick)
 
 /**
@@ -45,8 +44,7 @@ data class OilSpillEvent(
 data class StormEvent(
     override val id: Int,
     override val tick: Int,
-    private val location: Pair<Int, Int>,
-    private val radius: Int,
-    private val duration: Int,
-    private val direction: Direction
+    val location: Pair<Int, Int>,
+    val radius: Int,
+    val direction: Direction
 ) : Event(id, tick)
