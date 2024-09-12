@@ -8,37 +8,38 @@ import de.unisaarland.cs.se.selab.assets.*
  * It is also responsible for notifying the simulation of the events that have occurred.
  */
 class EventManager(private val simulationData: SimulationData) {
-    private fun startEventPhase(){
+    private fun startEventPhase() {
         val activeEvents = simulationData.activeEvents
-        reduceDuration(activeEvents)
+        // Filter out non-ending restriction events
+        val nonEndingRestrictionEvents = activeEvents.filterNot { it is RestrictionEvent }
+        val endingEvents = reduceDuration(activeEvents)
 
 
     }
-    private fun reduceDuration(activeEvents: List<Event>){
+    private fun reduceDuration(activeEvents: List<Event>): List<Event> {
         val endingEvents = mutableListOf<Event>()
         if (activeEvents.isNotEmpty()) {
             val eventsWithDuration = activeEvents.filterIsInstance<RestrictionEvent>()
             for (event: RestrictionEvent in eventsWithDuration) {
                 event.duration -= 1
-                if(event.duration == 0){
+                if (event.duration == 0) {
                     endingEvents.add(event)
                 }
             }
-
+            return endingEvents
         }
-        checkEndingEvent(endingEvents)
     }
-    private fun checkEndingEvent(endingEvents: List<Event>){
+    private fun checkEndingEvent(endingEvents: List<Event>) {
         val restrictedEvents = endingEvents.filterIsInstance<RestrictionEvent>()
-        for (event in restrictedEvents){
+        for (event in restrictedEvents) {
             val location = event.location
             val radius = event.radius
-            val ships = simulationData.corporations.flatMap { it.ships }
-            for (ship in ships){
-                val shipLocation = ship.location
-                if (isWithinRadius(location, shipLocation, radius)){
-                    ship.restrictions.remove(event)
-                }
+            val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+            // initialize and update graph structure function.
+
+            for (coordinates in coordinatesList) {
+                val currentTile = simulationData.navigationManager.findTile(coordinates)
+                currentTile?.isRestricted = false
             }
         }
     }
