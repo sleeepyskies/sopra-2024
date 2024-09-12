@@ -9,6 +9,7 @@ import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.TaskType
+import de.unisaarland.cs.se.selab.assets.TileType
 import org.json.JSONObject
 import java.io.File
 
@@ -24,9 +25,6 @@ class ParserHelper {
         const val WEST = 180
         const val NORTH_WEST = 240
         const val NORTH_EAST = 300
-
-        // strings
-        const val TYPE = "type"
     }
 
     /**
@@ -95,6 +93,19 @@ class ParserHelper {
             "RADIO" -> RewardType.RADIO
             "CONTAINER" -> RewardType.CONTAINER
             "TRACKER" -> RewardType.TRACKING
+            else -> null
+        }
+    }
+
+    /**
+     * Converts a string into a TileType
+     */
+    fun makeTileType(categoryString: String): TileType? {
+        return when (categoryString) {
+            "LAND" -> TileType.LAND
+            "SHORE" -> TileType.SHORE
+            "SHALLOW_OCEAN" -> TileType.SHALLOW_OCEAN
+            "DEEP_OCEAN" -> TileType.DEEP_OCEAN
             else -> null
         }
     }
