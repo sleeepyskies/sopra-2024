@@ -1,25 +1,29 @@
 package de.unisaarland.cs.se.selab
-
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.TaskType
-import java.io.File
 import java.io.PrintWriter
 import java.util.TreeMap
 
+/**
+ * Logger object, used to log specific actions during the simulation
+ */
 object Logger {
     // Path to the file
-    private lateinit var outputBuffer : PrintWriter
+    private lateinit var outputBuffer: PrintWriter
 
     // Map to store collected garbage by corporations
     private val corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>> = mutableMapOf()
 
-
+    /**
+     * Set the output stream of the logger
+     */
     fun setOutput(outputStream: PrintWriter) {
         if (this::outputBuffer.isInitialized) {
             throw IllegalCallerException("Already initialized output buffer!")
         }
         outputBuffer = outputStream
     }
+
     /**
      * Logs the initialization of the simulation with the given file name.
      */
@@ -39,7 +43,6 @@ object Logger {
      */
     fun simulationStart() {
         outputBuffer.println("Simulation Info: Simulation started.")
-
     }
 
     /**
@@ -88,14 +91,19 @@ object Logger {
      * Logs the start of the cooperation phase for a corporation.
      */
     fun corporationActionCooperate(corpId: Int) {
-        outputBuffer.println("Corporation Action: Corporation $corpId is starting to cooperate with other corporations.")
+        outputBuffer.println(
+            "Corporation Action: Corporation $corpId is starting to cooperate with other corporations."
+        )
     }
 
     /**
      * Logs the cooperation between two corporations.
      */
     fun cooperate(corpId: Int, otherCorpId: Int, shipId: Int, otherShipId: Int) {
-        outputBuffer.println("Cooperation: Corporation $corpId cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId.")
+        outputBuffer.println(
+            "Cooperation: Corporation $corpId " +
+                "cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId."
+        )
     }
 
     /**
@@ -130,7 +138,10 @@ object Logger {
      * Logs the drift of a garbage from tile to tile.
      */
     fun currentDriftGarbage(garbageType: String, garbageId: Int, amt: Int, startTileId: Int, endTileId: Int) {
-        outputBuffer.println("32 Current Drift: $garbageType $garbageId with amount $amt drifted from tile $startTileId to tile $endTileId.")
+        outputBuffer.println(
+            "32 Current Drift: $garbageType $garbageId " +
+                "with amount $amt drifted from tile $startTileId to tile $endTileId."
+        )
     }
 
     /**
@@ -151,7 +162,9 @@ object Logger {
      * Logs the attachment of a tracker to a garbage.
      */
     fun attachTracker(corpId: Int, garbageId: Int, shipId: Int) {
-        outputBuffer.println("Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId.")
+        outputBuffer.println(
+            "Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId."
+        )
     }
 
     /**
@@ -179,7 +192,7 @@ object Logger {
      * Logs the amount of garbage collected for a corporation. (ALL DATA STORED LOCALLY HERE)
      */
     fun simulationStatsCollectedGarbage() {
-        val sortedByLowestShipIdMap : TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
+        val sortedByLowestShipIdMap: TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
         for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
             val sum = garbageInfo.first + garbageInfo.second + garbageInfo.third
             outputBuffer.println("Simulation Statistics: Corporation $corpId collected $sum of garbage.")

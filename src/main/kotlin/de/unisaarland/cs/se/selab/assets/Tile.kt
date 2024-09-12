@@ -1,21 +1,32 @@
 package de.unisaarland.cs.se.selab.assets
 
+/**
+ * The Tile class
+ */
 class Tile(
-    val id : Int,
-    val location : Pair<Int, Int>,
+    val id: Int,
+    val location: Pair<Int, Int>,
     val type: TileType,
-    val isHarbor : Boolean,
-    val current : Current,
-    val hasCurrent : Boolean,
-    val oilMaxCapacity : Int = 1000,
-    private val arrivingGarbage: MutableList<Garbage> = mutableListOf(),
-    private val currentGarbage : MutableList<Garbage> = mutableListOf(),
-    var isRestricted : Boolean = false,
-    private var currentOilAmount : Int = 0,
-    private var currentChemicalAmount : Int = 0,
-    private var currentPlasticAmount : Int = 0,
-    var neighbors : MutableMap<Direction,Pair<Int,Pair<Int,Int>>> = mutableMapOf(),
+    val isHarbor: Boolean,
+    val current: Current,
+    val hasCurrent: Boolean,
+    val oilMaxCapacity: Int = 1000,
 ) {
+    var isRestricted: Boolean = false
+    private val arrivingGarbage: MutableList<Garbage> = mutableListOf()
+    private val currentGarbage: MutableList<Garbage> = mutableListOf()
+    private var currentOilAmount: Int = 0
+    private var currentChemicalAmount: Int = 0
+    private var currentPlasticAmount: Int = 0
+    private var neighbors: MutableMap<Direction, Tile> = mutableMapOf()
+
+    /**
+     * @return the neighbors of a tile
+     */
+    fun getNeighbors(): List<Tile> {
+        return neighbors.values.toList()
+    }
+
     /**
      * Adds garbage to the tile(For when constructing the map,
      * not to be used for anything that happens within a
@@ -30,6 +41,7 @@ class Tile(
         }
         currentGarbage.add(garbage)
     }
+
     /**
      * Removes garbage from the tile (Should only be used for garbage that is on
      * the tile during the tick used, not in arrivingGarbage, as the arrivingGarbage isnt yet
@@ -52,6 +64,7 @@ class Tile(
     fun addArrivingGarbageToTile(garbage: Garbage) {
         arrivingGarbage.add(garbage)
     }
+
     /**
      * Moves all arriving Garbage to the tile (should be called after drifting has happened)
      */
@@ -72,7 +85,7 @@ class Tile(
      * we need to respect the currentAmounts,
      * so use the Tile functions)
      */
-    fun checkGarbageLeft() : Boolean {
+    fun checkGarbageLeft(): Boolean {
         return currentOilAmount > 0 || currentChemicalAmount > 0 || currentPlasticAmount > 0
     }
 }
