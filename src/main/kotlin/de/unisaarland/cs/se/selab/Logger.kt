@@ -13,6 +13,7 @@ object Logger {
 
     // Map to store collected garbage by corporations
     private val corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>> = mutableMapOf()
+    var corporationTotalUncollectedGarbage: Int = 0
 
     /**
      * Set the output stream of the logger
@@ -186,12 +187,17 @@ object Logger {
      */
     fun simulationInfoStatistics() {
         outputBuffer.println("Simulation Info: Simulation statistics are calculated.")
+        simulationStatsCollectedGarbage()
+        simulationStatsTotalPlastic()
+        simulationStatsTotalOil()
+        simulationStatsTotalChemical()
+        simulationStatsUncollected()
     }
 
     /**
      * Logs the amount of garbage collected for a corporation. (ALL DATA STORED LOCALLY HERE)
      */
-    fun simulationStatsCollectedGarbage() {
+    private fun simulationStatsCollectedGarbage() {
         val sortedByLowestShipIdMap: TreeMap<Int, Triple<Int, Int, Int>> = TreeMap(corporationCollectedGarbage)
         for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
             val sum = garbageInfo.first + garbageInfo.second + garbageInfo.third
@@ -202,7 +208,7 @@ object Logger {
     /**
      * Provides statistics about the total plastic collected.
      */
-    fun simulationStatsTotalPlastic() {
+    private fun simulationStatsTotalPlastic() {
         var plasticAmount = 0
         for ((_, garbageInfo) in corporationCollectedGarbage) {
             plasticAmount += garbageInfo.first
@@ -213,7 +219,7 @@ object Logger {
     /**
      * Provides statistics about the total oil collected.
      */
-    fun simulationStatsTotalOil() {
+    private fun simulationStatsTotalOil() {
         var oilAmount = 0
         for ((_, garbageInfo) in corporationCollectedGarbage) {
             oilAmount += garbageInfo.second
@@ -224,7 +230,7 @@ object Logger {
     /**
      * Provides statistics about the total chemical collected.
      */
-    fun simulationStatsTotalChemical() {
+    private fun simulationStatsTotalChemical() {
         var chemicalAmount = 0
         for ((_, garbageInfo) in corporationCollectedGarbage) {
             chemicalAmount += garbageInfo.third
@@ -235,7 +241,10 @@ object Logger {
     /**
      * Provides statistics about the uncollected garbage.
      */
-    fun simulationStatsUncollected(amt: Int) {
-        outputBuffer.println("Simulation Statistics: Total amount of garbage still in the ocean: $amt.")
+    private fun simulationStatsUncollected() {
+        outputBuffer.println(
+            "Simulation Statistics: " +
+                "Total amount of garbage still in the ocean: $corporationTotalUncollectedGarbage."
+        )
     }
 }

@@ -17,10 +17,10 @@ import de.unisaarland.cs.se.selab.navigation.NavigationManager
 data class SimulationData(
     val navigationManager: NavigationManager,
     var corporations: List<Corporation> = mutableListOf(),
-    var garbage: List<Garbage> = mutableListOf(),
-    var activeEvents: List<Event> = mutableListOf(),
-    var scheduledEvents: Map<Int, List<Event>> = emptyMap(),
-    var scheduledTasks: Map<Int, List<Task>> = emptyMap(),
-    var activeTasks: List<Task> = mutableListOf(),
-    var rewards: List<Reward> = mutableListOf(),
+    var garbage: MutableList<Garbage> = mutableListOf(),
+    var activeEvents: MutableList<Event> = mutableListOf(),
+    var scheduledEvents: MutableMap<Int, List<Event>> = mutableMapOf(),
+    var scheduledTasks: MutableMap<Int, List<Task>> = mutableMapOf(),
+    var activeTasks: MutableList<Task> = mutableListOf(),
+    var rewards: MutableList<Reward> = mutableListOf(),
 )
