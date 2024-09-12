@@ -1,11 +1,13 @@
 
 package de.unisaarland.cs.se.selab.parsing
+import com.github.erosb.jsonsKema.*
+import de.unisaarland.cs.se.selab.assets.Current
+import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Tile
+import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.json.JSONObject
 import java.io.File
-import com.github.erosb.jsonsKema.*
-import de.unisaarland.cs.se.selab.assets.TileType
 
 /**
  * Parses map data from a file.
@@ -18,13 +20,15 @@ class MapParser(
 ) {
     // map schema file path
     private val mapSchema = "map.schema"
+
     // tile schema file path
     private val tileSchema = "tile.schema"
+
     // create schema validator
     private var validator = initMapSchemaValidator()
+
     // Map data
-    private lateinit var map : Map<Pair<Int, Int>, Int>
-    private lateinit var navigationManager: NavigationManager
+    private val map: MutableMap<Pair<Int, Int>, Tile> = mutableMapOf()
 
     /**
      * Parses map data from a file.
@@ -57,11 +61,10 @@ class MapParser(
         return true
     }
 
-
     /**
-     * Parses a tile from a string
+     * Parses a tile from a string and adds it to the map data structure
      */
-    private fun parseTile(tileJSON: JSONObject): Tile {
+    private fun parseTile(tileJSON: JSONObject) {
         // validate tile according to schema file
         val tileValidator = makeTileSchemaValidator()
         val tileJSONValue = JsonParser(tileJSON.toString()).parse()
@@ -72,15 +75,22 @@ class MapParser(
         val coordinatesJSON = tileJSON.getJSONObject("coordinates")
         val coordX = coordinatesJSON.getInt("x")
         val coordY = coordinatesJSON.getInt("y")
-        val categoryString = tileJSON.getString("category")
+        val category = makeCategory(tileJSON.getString("category"))
         val harbor = tileJSON.getBoolean("harbor")
+        // for current
+        val current = tileJSON.getBoolean("current")
+        val direction = makeDirection(tileJSON.getInt("direction"))
+        val speed = tileJSON.getInt("speed")
+        val intensity = tileJSON.getInt("intensity")
 
-        val category = makeCategory(categoryString)
-
-        if (validateTileProperties(id, coordX, coordY, categoryString, harbor)) {
-            return Tile()
+        if (
+            validateTileProperties(id, coordX, coordY, category, harbor, current, direction, speed, intensity) &&
+            category != null &&
+            direction != null
+        ) {
+            val tileCurrent = Current(direction, intensity, speed)
+            this.map[Pair(coordX, coordY)] = Tile(id, Pair(coordX, coordY), category, harbor, tileCurrent, current)
         }
-
     }
 
     /**
@@ -88,8 +98,8 @@ class MapParser(
      *
      * @return True if valid, false otherwise
      */
-    private fun validateMapProperties() : Boolean {
-        TODO()
+    private fun validateMapProperties(): Boolean {
+        return true
     }
 
     /**
@@ -97,21 +107,31 @@ class MapParser(
      *
      * @return True if valid, false otherwise
      */
-    private fun validateTileProperties() : Boolean {
-        TODO()
+    private fun validateTileProperties(
+        id: Int,
+        coordX: Int,
+        coordY: Int,
+        categoryString: TileType?,
+        harbor: Boolean,
+        current: Boolean,
+        direction: Direction?,
+        speed: Int,
+        intensity: Int
+    ): Boolean {
+        return true
     }
 
     /**
      * Returns the parsed NavigationManager.
      */
-    public fun getNavManager() : NavigationManager {
+    public fun getNavManager(): NavigationManager {
         return NavigationManager(map)
     }
 
     /**
      * Returns a new schema validator using the tile schema
      */
-    private fun makeTileSchemaValidator() : Validator {
+    private fun makeTileSchemaValidator(): Validator {
         // read content of JSON schema
         val schemaContent = File(tileSchema).readText()
         // Parse JSON schema as string
@@ -125,7 +145,7 @@ class MapParser(
     /**
      * Sets up the map schema validator.
      */
-    private fun initMapSchemaValidator() : Validator {
+    private fun initMapSchemaValidator(): Validator {
         // read content of JSON schema
         val schemaContent = File(mapSchema).readText()
         // Parse JSON schema as string
@@ -136,9 +156,25 @@ class MapParser(
         return Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
     }
 
-    private fun makeCategory(categoryString : String) : TileType {
-        when (categoryString) {
+    private fun makeCategory(categoryString: String): TileType? {
+        return when (categoryString) {
+            "LAND" -> TileType.LAND
             "SHORE" -> TileType.SHORE
+            "SHALLOW_OCEAN" -> TileType.SHALLOW_OCEAN
+            "DEEP_OCEAN" -> TileType.DEEP_OCEAN
+            else -> { null }
+        }
+    }
+
+    private fun makeDirection(direction: Int): Direction? {
+        return when (direction) {
+            0 -> Direction.EAST
+            60 -> Direction.SOUTH_EAST
+            120 -> Direction.SOUTH_WEST
+            180 -> Direction.WEST
+            240 -> Direction.NORTH_WEST
+            300 -> Direction.NORTH_EAST
+            else -> { null }
         }
     }
 }
