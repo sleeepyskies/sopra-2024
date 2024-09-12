@@ -10,9 +10,13 @@ import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
+import java.io.IOException
 
 /**
  * A parser for scenarios, which includes parsing and validating various components
@@ -23,6 +27,7 @@ import java.io.File
  * @property garbage A list of garbage items to be parsed.
  * @property rewards A list of rewards to be parsed.
  * @property tasks A list of tasks to be parsed.
+ * @property idLocationMapping A mapping of tileID to tile coordinates.
  */
 class ScenarioParser(
     private val scenarioFilepath: String,
@@ -32,12 +37,14 @@ class ScenarioParser(
      * Companion object for holding any constants used in ScenarioParser
      */
     companion object {
-        // strings
         const val TYPE = "type"
         const val ID = "id"
         const val LOCATION = "location"
         const val RADIUS = "radius"
     }
+
+    // debug logger
+    private val log: Log = LogFactory.getLog("debugger")
 
     // parser helper
     private val helper = ParserHelper()
@@ -75,10 +82,19 @@ class ScenarioParser(
         var success = true
 
         // create scenario JSON object
-        val scenarioJSONObject = JSONObject(File(scenarioFilepath).readText())
+        val scenarioJSONObject = try {
+            JSONObject(File(scenarioFilepath).readText())
+        } catch (e: IOException) {
+            log.error("SCENARIO PARSER: The file could not be read.", e)
+            return false
+        } catch (e: JSONException) {
+            log.error("SCENARIO PARSER: The file is not a valid JSON.", e)
+            return false
+        }
 
         // validate scenario JSON against schema
         if (!helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
+            log.error("SCENARIO PARSER: The file does not match the schema.")
             return false
         }
 
@@ -115,6 +131,7 @@ class ScenarioParser(
 
             // validate event JSON against schema
             if (!helper.validateSchema(eventJSON, this.eventSchema)) {
+                log.error("SCENARIO PARSER: An event does not match the schema.")
                 return false
             }
 
@@ -123,13 +140,13 @@ class ScenarioParser(
 
             // check event is valid and created correctly
             if (event == null || !validateEventProperties(event)) {
+                log.error("SCENARIO PARSER: An event does not have a unique ID or could not be correctly instantiated.")
                 return false
             } else {
                 // event is valid, add to list
                 this.events[event.tick]?.add(event)
                 this.eventIDs.add(event.id)
             }
-
         }
         // success
         return true
@@ -147,6 +164,7 @@ class ScenarioParser(
 
             // validate garbage JSON against schema
             if (!helper.validateSchema(garbageJSON, this.garbageSchema)) {
+                log.error("SCENARIO PARSER: The garbage do not match the schema.")
                 return false
             }
 
@@ -155,6 +173,10 @@ class ScenarioParser(
 
             // check garbage is valid and created correctly
             if (garbage == null || !validateGarbageProperties(garbage)) {
+                log.error(
+                    "SCENARIO PARSER: A garbage does not have a unique ID" +
+                        " or could not be correctly instantiated."
+                )
                 return false
             }
 
@@ -167,11 +189,11 @@ class ScenarioParser(
             val locationXY = this.idLocationMapping[garbage.tileId]
 
             if (locationXY != null) {
-                val garbageList = this.tileXYtoGarbage[locationXY]
-                if (garbageList != null) {
-                    garbageList.add(garbage)
-                } else return false
+                // get garbage list or init list if it does not exist.
+                val garbageList = this.tileXYtoGarbage.getOrPut(locationXY) { mutableListOf() }
+                garbageList.add(garbage)
             } else {
+                log.error("SCENARIO PARSER: A garbage does not have a valid location.")
                 return false
             }
         }
@@ -191,6 +213,7 @@ class ScenarioParser(
 
             // validate task JSON against schema
             if (!helper.validateSchema(taskJSON, this.taskSchema)) {
+                log.error("SCENARIO PARSER: The tasks do not match the schema.")
                 return false
             }
 
@@ -199,6 +222,10 @@ class ScenarioParser(
 
             // check task is valid and created correctly
             if (task == null || !validateTaskProperties(task)) {
+                log.error(
+                    "SCENARIO PARSER: A task does not have a unique " +
+                        "ID or could not be correctly instantiated."
+                )
                 return false
             }
 
@@ -222,6 +249,7 @@ class ScenarioParser(
 
             // validate reward JSON against schema
             if (!helper.validateSchema(rewardJSON, this.rewardSchema)) {
+                log.error("SCENARIO PARSER: The rewards do not match the schema.")
                 return false
             }
 
@@ -230,6 +258,10 @@ class ScenarioParser(
 
             // check reward is valid and created correctly
             if (reward == null || !validateRewardProperties(reward)) {
+                log.error(
+                    "SCENARIO PARSER: A reward does not have a unique " +
+                        "ID or could not be correctly instantiated."
+                )
                 return false
             }
 
@@ -440,6 +472,7 @@ class ScenarioParser(
         // go over tasks, and check reward actually exists
         for (task in this.tasks.values.flatten()) {
             if (!this.rewardIDs.contains(task.rewardId)) {
+                log.error("SCENARIO PARSER: Error when cross validating tasks and rewards.")
                 return false
             }
         }
