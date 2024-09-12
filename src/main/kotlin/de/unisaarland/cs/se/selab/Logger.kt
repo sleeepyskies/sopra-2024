@@ -13,6 +13,7 @@ object Logger {
 
     // Map to store collected garbage by corporations
     private val corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>> = mutableMapOf()
+    var corporationTotalUncollectedGarbage: Int = 0
 
     /**
      * Set the output stream of the logger
@@ -235,7 +236,10 @@ object Logger {
     /**
      * Provides statistics about the uncollected garbage.
      */
-    fun simulationStatsUncollected(amt: Int) {
-        outputBuffer.println("Simulation Statistics: Total amount of garbage still in the ocean: $amt.")
+    fun simulationStatsUncollected() {
+        outputBuffer.println(
+            "Simulation Statistics: " +
+                "Total amount of garbage still in the ocean: $corporationTotalUncollectedGarbage."
+        )
     }
 }
