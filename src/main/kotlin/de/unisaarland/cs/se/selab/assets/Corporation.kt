@@ -1,15 +1,29 @@
 package de.unisaarland.cs.se.selab.assets
 
-class Corporation(
-    private val name: String,
-    private val id: Int,
-    private val harbors: List<Pair<Int, Int>>,
-    private val ships: List<Ship>,
-    private val collectableGarbageTypes: List<GarbageType>,
-    ) {
-    private val garbage: Map<Int, Pair<Int, Int>> = emptyMap()
-    private val visibleGarbage: Map<Int, Pair<Int, Int>> = emptyMap()
-    private val knownHarbors: List<Pair<Int, Int>> = emptyList()
-    private val knownShips: Map<Int, Pair<Int, Pair<Int, Int>>> = emptyMap()
-    private val lastCooperatedWith: Int = -1
+/**
+ * Represents a corporation in the simulation.
+ *
+ * @property name The name of the corporation.
+ * @property id The unique identifier of the corporation.
+ * @property harbors The list of harbors associated with the corporation.
+ * @property ships The list of ships owned by the corporation.
+ * @property collectableGarbageTypes The types of garbage that the corporation can collect.
+ * @property garbage The map of garbage collected by the corporation, keyed by garbage ID.
+ * @property visibleGarbage The map of visible garbage for the corporation, keyed by garbage ID.
+ * @property knownHarbors The list of harbors known to the corporation.
+ * @property knownShips The map of ships known to the corporation, keyed by ship ID.
+ * @property lastCooperatedWith The ID of the last corporation this corporation cooperated with.
+ */
+data class Corporation(
+    val name: String,
+    val id: Int,
+    val harbors: List<Pair<Int, Int>>,
+    val ships: MutableList<Ship>,
+    val collectableGarbageTypes: List<GarbageType>,
+) {
+    val garbage: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
+    val visibleGarbage: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
+    val knownHarbors: MutableList<Pair<Int, Int>> = mutableListOf()
+    val knownShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
+    val lastCooperatedWith: Int = -1
 }
