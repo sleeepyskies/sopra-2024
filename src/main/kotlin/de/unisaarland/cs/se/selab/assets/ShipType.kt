@@ -17,5 +17,5 @@ enum class ShipType {
     /**
      * A ship designed for cooperating with other ships.
      */
-    COOPERATING_SHIP
+    COORDINATING_SHIP
 }
