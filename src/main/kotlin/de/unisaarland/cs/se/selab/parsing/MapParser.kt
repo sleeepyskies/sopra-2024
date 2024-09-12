@@ -18,17 +18,18 @@ import java.io.File
 class MapParser(
     private val mapFilePath: String
 ) {
-    // map schema file path
+    // schemas
     private val mapSchema = "map.schema"
-
-    // tile schema file path
     private val tileSchema = "tile.schema"
 
-    // create schema validator
+    // validator
     private var validator = initMapSchemaValidator()
 
     // Map data
     private val map: MutableMap<Pair<Int, Int>, Tile> = mutableMapOf()
+
+    // Map of tile id to location used in corporation parser
+    val idLocationMapping: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
 
     /**
      * Parses map data from a file.
@@ -36,6 +37,7 @@ class MapParser(
      * @return True if the parsing was successful, false otherwise.
      */
     public fun parseMap(): Boolean {
+
         // parse input file
         val mapFileContent = File(mapFilePath).readText()
         val mapJSON = JsonParser(mapFileContent).parse()
@@ -89,7 +91,10 @@ class MapParser(
             direction != null
         ) {
             val tileCurrent = Current(direction, intensity, speed)
+            // add to map structure
             this.map[Pair(coordX, coordY)] = Tile(id, Pair(coordX, coordY), category, harbor, tileCurrent, current)
+            // add to id location mapping for corporation parser
+            this.idLocationMapping[id] = Pair(coordX, coordY)
         }
     }
 
@@ -107,7 +112,7 @@ class MapParser(
      *
      * @return True if valid, false otherwise
      */
-    private fun validateTileProperties(
+    private fun validateTileProperties (
         id: Int,
         coordX: Int,
         coordY: Int,
@@ -162,7 +167,7 @@ class MapParser(
             "SHORE" -> TileType.SHORE
             "SHALLOW_OCEAN" -> TileType.SHALLOW_OCEAN
             "DEEP_OCEAN" -> TileType.DEEP_OCEAN
-            else -> { null }
+            else -> null
         }
     }
 
@@ -174,7 +179,7 @@ class MapParser(
             180 -> Direction.WEST
             240 -> Direction.NORTH_WEST
             300 -> Direction.NORTH_EAST
-            else -> { null }
+            else -> null
         }
     }
 }
