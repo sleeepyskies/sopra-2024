@@ -3,6 +3,7 @@ package de.unisaarland.cs.se.selab.parsing
 import de.unisaarland.cs.se.selab.Simulator
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
+import de.unisaarland.cs.se.selab.logger.Logger
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import de.unisaarland.cs.se.selab.tasks.TaskManager
 import de.unisaarland.cs.se.selab.travelling.TravelManager
@@ -18,11 +19,13 @@ class SimulationParser(
     private val scenarioFile: String,
     private val maxTick: Int,
 ) {
-    val mapParser = MapParser()
+    // Parsers
+    val mapParser = MapParser(mapFile)
     val corporationParser = CorporationParser()
     val scenarioParser = ScenarioParser()
+    // Managers
     val travelManager = TravelManager()
-    val navigationManager = NavigationManager()
+    private lateinit var navigationManager: NavigationManager
     val eventManager = EventManager()
     val corporationManager = CorporationManager()
     val taskManager = TaskManager()
@@ -30,8 +33,20 @@ class SimulationParser(
     /**
      * Creates and returns an instantiated Simulator
      */
-    public fun createSimulator(): Simulator {
-        TODO()
+    public fun createSimulator(): Simulator? {
+        // parse and validate map
+        if (mapParser.parseMap()) {
+           // file valid
+            this.navigationManager = mapParser.getNavManager()
+        } else {
+            // file invalid
+            Logger.initInfoInvalid(mapFile)
+            return null
+        }
+
+
+        // return final simulator
+        return Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
     }
 
     /**
