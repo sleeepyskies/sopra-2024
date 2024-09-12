@@ -1,9 +1,16 @@
 package de.unisaarland.cs.se.selab.parsing
 
+import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.Simulator
+import de.unisaarland.cs.se.selab.assets.Corporation
+import de.unisaarland.cs.se.selab.assets.Event
+import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.Reward
+import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.Task
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
-import de.unisaarland.cs.se.selab.logger.Logger
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import de.unisaarland.cs.se.selab.tasks.TaskManager
 import de.unisaarland.cs.se.selab.travelling.TravelManager
@@ -19,24 +26,32 @@ class SimulationParser(
     private val scenarioFile: String,
     private val maxTick: Int,
 ) {
-    // Parsers
-    val mapParser = MapParser(mapFile)
-    val corporationParser = CorporationParser()
-    val scenarioParser = ScenarioParser()
+    // data
+    private lateinit var corporations : List<Corporation>
+    private lateinit var ships : List<Ship>
+    private lateinit var events: MutableMap<Int, Event>
+    private lateinit var garbage: MutableList<Garbage>
+    private lateinit var rewards: MutableList<Reward>
+    private lateinit var tasks: MutableMap<Int, Task>
+
     // Managers
-    val travelManager = TravelManager()
+    private lateinit var travelManager: TravelManager
+    private lateinit var eventManager: EventManager
+    private lateinit var corporationManager: CorporationManager
+    private lateinit var taskManager: TaskManager
     private lateinit var navigationManager: NavigationManager
-    val eventManager = EventManager()
-    val corporationManager = CorporationManager()
-    val taskManager = TaskManager()
 
     /**
      * Creates and returns an instantiated Simulator
      */
     public fun createSimulator(): Simulator? {
+        // init map parser
+        val mapParser = MapParser(mapFile)
+
         // parse and validate map
         if (mapParser.parseMap()) {
            // file valid
+            Logger.initInfo(mapFile)
             this.navigationManager = mapParser.getNavManager()
         } else {
             // file invalid
@@ -44,71 +59,119 @@ class SimulationParser(
             return null
         }
 
+        // get the idLocationMapping from MapParser
+        val idLocationMapping = mapParser.idLocationMapping
+
+        // init corporation parser and scenario parser
+        val corporationParser = CorporationParser(corporationFile, idLocationMapping)
+        val scenarioParser = ScenarioParser(scenarioFile, idLocationMapping)
+
+        // parse and validate corporations
+        if (corporationParser.parseAllCorporations()) {
+            // file valid
+            this.corporations = corporationParser.corporations
+            this.ships = corporationParser.ships
+        } else {
+            // file invalid
+            Logger.initInfoInvalid(corporationFile)
+            return null
+        }
+
+        // parse and validate scenario
+        if (scenarioParser.parseScenario()) {
+            // file valid
+            this.events = scenarioParser.events
+            this.garbage = scenarioParser.garbage
+            this.rewards = scenarioParser.rewards
+            this.tasks = scenarioParser.tasks
+        } else {
+            // file invalid
+            Logger.initInfoInvalid(scenarioFile)
+            return null
+        }
 
         // return final simulator
-        return Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
+        if (crossValidate()) {
+            placeGarbageOnTiles()
+            makeManagers()
+            return Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
+        } else {
+            return null
+        }
     }
 
     /**
-     * Creates and returns an instantiated TravelManager
+     * Places all garbage on their correct tile.
      */
-    public fun createTravelManager(): TravelManager {
+    private fun placeGarbageOnTiles() {
         TODO()
     }
 
     /**
-     * Creates and returns an instantiated EventManager
+     * Creates and sets all managers as well as the sim data.
      */
-    public fun createEventManager(): EventManager {
-        TODO()
-    }
+    private fun makeManagers() {
+        // make sim data
+        val simData = SimulationData()
 
-    /**
-     * Creates and returns an instantiated CorporationManager
-     */
-    public fun createCorporationManager(): CorporationManager {
-        TODO()
+
+        this.travelManager = TravelManager(simData)
+        this.eventManager = EventManager(simData)
+        this.corporationManager = CorporationManager(simData)
+        this.taskManager = TaskManager(simData)
     }
 
     /**
      * Checks that harbors only occur on shore tiles.
      */
-    public fun crossValidateHarborsOnShores(): Boolean {
+    private fun crossValidateHarborsOnShores(): Boolean {
         TODO()
     }
 
     /**
      * Checks that ships initial locations are only on valid tiles.
      */
-    public fun crossValidateShipsOnTiles(): Boolean {
+    private fun crossValidateShipsOnTiles(): Boolean {
         TODO()
     }
 
     /**
      * Checks that garbage only occurs on valid tiles.
      */
-    public fun crossValidateGarbageOnTiles(): Boolean {
+    private fun crossValidateGarbageOnTiles(): Boolean {
         TODO()
     }
 
     /**
      * Checks that events only occur on valid tiles.
      */
-    public fun crossValidateEventsOnTiles(): Boolean {
+    private fun crossValidateEventsOnTiles(): Boolean {
         TODO()
     }
 
     /**
      * Checks that all PirateShipAttack Events affect valid ships.
      */
-    public fun crossValidateEventsOnShips(): Boolean {
+    private fun crossValidateEventsOnShips(): Boolean {
         TODO()
     }
 
     /**
      * Checks that all tasks have been correctly assigned to ships.
      */
-    public fun crossValidateTasksForShips(): Boolean {
+    private fun crossValidateTasksForShips(): Boolean {
         TODO()
+    }
+
+    /**
+     * Calls all cross validation methods
+     */
+    private fun crossValidate() : Boolean {
+        return crossValidateHarborsOnShores() &&
+                crossValidateShipsOnTiles() &&
+                crossValidateGarbageOnTiles() &&
+                crossValidateEventsOnTiles() &&
+                crossValidateEventsOnShips() &&
+                crossValidateTasksForShips()
     }
 }
