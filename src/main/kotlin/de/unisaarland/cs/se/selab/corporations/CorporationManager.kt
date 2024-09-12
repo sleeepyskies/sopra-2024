@@ -204,4 +204,14 @@ class CorporationManager(private val simData: SimulationData) {
     fun getShipsOnTile(location: Pair<Int, Int>): List<Ship> {
         TODO()
     }
+
+    /**
+     * Finds a cooperator for a ship at a location.
+     *
+     * @param ship The ship for which to find a cooperator.
+     * @param location The location to find a cooperator at.
+     */
+    fun findCooperator(ship: Ship, location: Pair<Int, Int>) {
+        TODO()
+    }
 }
