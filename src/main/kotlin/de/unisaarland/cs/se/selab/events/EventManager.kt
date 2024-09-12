@@ -1,67 +1,45 @@
 package de.unisaarland.cs.se.selab.events
 
-import de.unisaarland.cs.se.selab.assets.OilSpillEvent
-import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
-import de.unisaarland.cs.se.selab.assets.RestrictionEvent
-import de.unisaarland.cs.se.selab.assets.SimulationData
-import de.unisaarland.cs.se.selab.assets.StormEvent
+import de.unisaarland.cs.se.selab.assets.*
 
 /**
- * Manages the events in the simulation.
- *
- * @property simData The simulation data used to manage events.
+ * The EventManager class is responsible for managing the events that occur in the simulation.
+ * It is responsible for creating, updating, and deleting events.
+ * It is also responsible for notifying the simulation of the events that have occurred.
  */
-class EventManager(private val simData: SimulationData) {
+class EventManager(private val simulationData: SimulationData) {
+    private fun startEventPhase(){
+        val activeEvents = simulationData.activeEvents
+        reduceDuration(activeEvents)
 
-    /**
-     * Starts the event phase in the simulation.
-     */
-    fun startEventPhase() {
-        TODO()
+
     }
+    private fun reduceDuration(activeEvents: List<Event>){
+        val endingEvents = mutableListOf<Event>()
+        if (activeEvents.isNotEmpty()) {
+            val eventsWithDuration = activeEvents.filterIsInstance<RestrictionEvent>()
+            for (event: RestrictionEvent in eventsWithDuration) {
+                event.duration -= 1
+                if(event.duration == 0){
+                    endingEvents.add(event)
+                }
+            }
 
-    /**
-     * Applies a restriction event to the simulation.
-     *
-     * @param restriction The restriction event to be applied.
-     */
-    fun applyRestriction(restriction: RestrictionEvent) {
-        TODO()
+        }
+        checkEndingEvent(endingEvents)
     }
-
-    /**
-     * Applies a pirate attack event to the simulation.
-     *
-     * @param attack The pirate attack event to be applied.
-     */
-    fun applyPirateAttack(attack: PirateAttackEvent) {
-        TODO()
-    }
-
-    /**
-     * Applies an oil spill event to the simulation.
-     *
-     * @param oilSpill The oil spill event to be applied.
-     */
-    fun applyOilSpillEvent(oilSpill: OilSpillEvent) {
-        TODO()
-    }
-
-    /**
-     * Applies a storm event to the simulation.
-     *
-     * @param storm The storm event to be applied.
-     */
-    fun applyStormEvent(storm: StormEvent) {
-        TODO()
-    }
-
-    /**
-     * Reverses a restriction event in the simulation.
-     *
-     * @param restriction The restriction event to be reversed.
-     */
-    fun reverseRestrictedEvent(restriction: RestrictionEvent) {
-        TODO()
+    private fun checkEndingEvent(endingEvents: List<Event>){
+        val restrictedEvents = endingEvents.filterIsInstance<RestrictionEvent>()
+        for (event in restrictedEvents){
+            val location = event.location
+            val radius = event.radius
+            val ships = simulationData.corporations.flatMap { it.ships }
+            for (ship in ships){
+                val shipLocation = ship.location
+                if (isWithinRadius(location, shipLocation, radius)){
+                    ship.restrictions.remove(event)
+                }
+            }
+        }
     }
 }
