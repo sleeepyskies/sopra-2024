@@ -50,16 +50,20 @@ class ScenarioParser(
     private val taskSchema = "task.schema"
 
     // data
-    val events: MutableMap<Int, Event> = mutableMapOf()
+    val events: MutableMap<Int, MutableList<Event>> = mutableMapOf()
     val garbage: MutableList<Garbage> = mutableListOf()
     val rewards: MutableList<Reward> = mutableListOf()
-    val tasks: MutableMap<Int, Task> = mutableMapOf()
+    val tasks: MutableMap<Int, MutableList<Task>> = mutableMapOf()
 
     // used for validation
     private val eventIDs = mutableListOf<Int>()
     private val garbageIDs = mutableListOf<Int>()
     private val taskIDs = mutableListOf<Int>()
     private val rewardIDs = mutableListOf<Int>()
+
+    // helper data for later parsing/validation
+    val tileXYtoGarbage = mutableMapOf<Pair<Int, Int>, MutableList<Garbage>>()
+    var highestGarbageID = 0
 
     /**
      * Parses the scenario file.
@@ -120,11 +124,12 @@ class ScenarioParser(
             // check event is valid and created correctly
             if (event == null || !validateEventProperties(event)) {
                 return false
+            } else {
+                // event is valid, add to list
+                this.events[event.tick]?.add(event)
+                this.eventIDs.add(event.id)
             }
 
-            // event is valid, add to list
-            this.events[event.tick] = event
-            this.eventIDs.add(event.id)
         }
         // success
         return true
@@ -156,6 +161,19 @@ class ScenarioParser(
             // event is garbage, add to list
             this.garbage.add(garbage)
             this.garbageIDs.add(garbage.id)
+            this.highestGarbageID = maxOf(highestGarbageID, garbage.id)
+
+            // get tile XY
+            val locationXY = this.idLocationMapping[garbage.tileId]
+
+            if (locationXY != null) {
+                val garbageList = this.tileXYtoGarbage[locationXY]
+                if (garbageList != null) {
+                    garbageList.add(garbage)
+                } else return false
+            } else {
+                return false
+            }
         }
         // success
         return true
@@ -185,7 +203,7 @@ class ScenarioParser(
             }
 
             // task is valid, add to list
-            this.tasks[task.tick] = task
+            this.tasks[task.tick]?.add(task) // never null since we check previously
             this.taskIDs.add(task.id)
         }
         // success
@@ -419,8 +437,8 @@ class ScenarioParser(
      */
     private fun crossValidateTasksForRewards(): Boolean {
         // Cross validate tasks for rewards
-        // go over tasks, and check reward actaully exists
-        for (task in this.tasks.values) {
+        // go over tasks, and check reward actually exists
+        for (task in this.tasks.values.flatten()) {
             if (!this.rewardIDs.contains(task.rewardId)) {
                 return false
             }
