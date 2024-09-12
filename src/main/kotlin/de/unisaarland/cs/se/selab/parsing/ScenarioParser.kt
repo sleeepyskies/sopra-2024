@@ -1,7 +1,5 @@
 package de.unisaarland.cs.se.selab.parsing
 
-import com.github.erosb.jsonsKema.*
-import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
@@ -12,7 +10,7 @@ import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
-import de.unisaarland.cs.se.selab.assets.TaskType
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
@@ -30,6 +28,20 @@ class ScenarioParser(
     private val scenarioFilepath: String,
     private val idLocationMapping: Map<Int, Pair<Int, Int>>
 ) {
+    /**
+     * Companion object for holding any constants used in ScenarioParser
+     */
+    companion object {
+        // strings
+        const val TYPE = "type"
+        const val ID = "id"
+        const val LOCATION = "location"
+        const val RADIUS = "radius"
+    }
+
+    // parser helper
+    private val helper = ParserHelper()
+
     // schemas
     private val scenarioSchema = "scenario.schema"
     private val eventSchema = "event.schema"
@@ -55,11 +67,14 @@ class ScenarioParser(
      * @return `true` if parsing is successful, `false` otherwise.
      */
     fun parseScenario(): Boolean {
+        // success variable
+        var success = true
+
         // create scenario JSON object
         val scenarioJSONObject = JSONObject(File(scenarioFilepath).readText())
 
         // validate scenario JSON against schema
-        if (!validateSchema(scenarioJSONObject, this.scenarioSchema)) {
+        if (!helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
             return false
         }
 
@@ -70,12 +85,32 @@ class ScenarioParser(
         val rewardsJSONArray = scenarioJSONObject.getJSONArray("rewards")
 
         // parse events
+        success = success && parseEvents(eventsJSONArray)
+
+        // parse garbage
+        success = success && parseGarbages(garbageJSONArray)
+
+        // parse tasks
+        success = success && parseTasks(tasksJSONArray)
+
+        // parse rewards
+        success = success && parseRewards(rewardsJSONArray)
+
+        return crossValidateTasksForRewards() && success
+    }
+
+    /**
+     * Iterates over a JSONArray and parses all events.
+     *
+     * @return true if parsing was a success, false otherwise
+     */
+    private fun parseEvents(eventsJSONArray: JSONArray): Boolean {
         for (index in 0 until eventsJSONArray.length()) {
             // get event JSON
             val eventJSON = eventsJSONArray.getJSONObject(index)
 
             // validate event JSON against schema
-            if (!validateSchema(eventJSON, this.eventSchema)) {
+            if (!helper.validateSchema(eventJSON, this.eventSchema)) {
                 return false
             }
 
@@ -91,14 +126,22 @@ class ScenarioParser(
             this.events[event.tick] = event
             this.eventIDs.add(event.id)
         }
+        // success
+        return true
+    }
 
-        // parse garbage
+    /**
+     * Iterates over a JSONArray and parses all garbage.
+     *
+     * @return true if parsing was a success, false otherwise
+     */
+    private fun parseGarbages(garbageJSONArray: JSONArray): Boolean {
         for (index in 0 until garbageJSONArray.length()) {
             // get garbage JSON
             val garbageJSON = garbageJSONArray.getJSONObject(index)
 
             // validate garbage JSON against schema
-            if (!validateSchema(garbageJSON, this.garbageSchema)) {
+            if (!helper.validateSchema(garbageJSON, this.garbageSchema)) {
                 return false
             }
 
@@ -114,14 +157,22 @@ class ScenarioParser(
             this.garbage.add(garbage)
             this.garbageIDs.add(garbage.id)
         }
+        // success
+        return true
+    }
 
-        // parse tasks
+    /**
+     * Iterates over a JSONArray and parses all tasks.
+     *
+     * @return true if parsing was a success, false otherwise
+     */
+    private fun parseTasks(tasksJSONArray: JSONArray): Boolean {
         for (index in 0 until tasksJSONArray.length()) {
             // get task JSON
             val taskJSON = tasksJSONArray.getJSONObject(index)
 
             // validate task JSON against schema
-            if (!validateSchema(taskJSON, this.taskSchema)) {
+            if (!helper.validateSchema(taskJSON, this.taskSchema)) {
                 return false
             }
 
@@ -137,14 +188,22 @@ class ScenarioParser(
             this.tasks[task.tick] = task
             this.taskIDs.add(task.id)
         }
+        // success
+        return true
+    }
 
-        // parse rewards
+    /**
+     * Iterates over a JSONArray and parses all rewards.
+     *
+     * @return true if parsing was a success, false otherwise
+     */
+    private fun parseRewards(rewardsJSONArray: JSONArray): Boolean {
         for (index in 0 until rewardsJSONArray.length()) {
             // get reward JSON
-            val rewardJSON = tasksJSONArray.getJSONObject(index)
+            val rewardJSON = rewardsJSONArray.getJSONObject(index)
 
             // validate reward JSON against schema
-            if (!validateSchema(rewardJSON, this.rewardSchema)) {
+            if (!helper.validateSchema(rewardJSON, this.rewardSchema)) {
                 return false
             }
 
@@ -160,8 +219,8 @@ class ScenarioParser(
             this.rewards.add(reward)
             this.rewardIDs.add(reward.id)
         }
-
-        return crossValidateTasksForRewards()
+        // success
+        return true
     }
 
     /**
@@ -169,22 +228,22 @@ class ScenarioParser(
      *
      * @return the event object if successfully created, false otherwise
      */
-    fun parseEvent(eventJSON: JSONObject): Event? {
+    private fun parseEvent(eventJSON: JSONObject): Event? {
         // parse based on event type
-        val type = eventJSON.getString("type")
+        val type = eventJSON.getString(TYPE)
+        val id = eventJSON.getInt(ID)
+        val tick = eventJSON.getInt("tick")
 
         return when (type) {
             "STORM" -> {
                 // get values
-                val id = eventJSON.getInt("id")
-                val tick = eventJSON.getInt("tick")
-                val location = eventJSON.getInt("location")
-                val radius = eventJSON.getInt("radius")
+                val location = eventJSON.getInt(LOCATION)
+                val radius = eventJSON.getInt(RADIUS)
                 val speed = eventJSON.getInt("speed")
                 val direction = eventJSON.getInt("direction")
 
                 val locationXY = idLocationMapping[location]
-                val dir = makeDirection(direction)
+                val dir = helper.makeDirection(direction)
 
                 return if (locationXY == null || dir == null) {
                     null
@@ -194,11 +253,9 @@ class ScenarioParser(
             }
             "RESTRICTION" -> {
                 // get values
-                val id = eventJSON.getInt("id")
-                val tick = eventJSON.getInt("tick")
                 val duration = eventJSON.getInt("duration")
-                val location = eventJSON.getInt("location")
-                val radius = eventJSON.getInt("radius")
+                val location = eventJSON.getInt(LOCATION)
+                val radius = eventJSON.getInt(RADIUS)
 
                 val locationXY = idLocationMapping[location]
 
@@ -210,10 +267,8 @@ class ScenarioParser(
             }
             "OIL_SPILL" -> {
                 // get values
-                val id = eventJSON.getInt("id")
-                val tick = eventJSON.getInt("tick")
-                val location = eventJSON.getInt("location")
-                val radius = eventJSON.getInt("radius")
+                val location = eventJSON.getInt(LOCATION)
+                val radius = eventJSON.getInt(RADIUS)
                 val amount = eventJSON.getInt("amount")
 
                 val locationXY = idLocationMapping[location]
@@ -226,8 +281,6 @@ class ScenarioParser(
             }
             "PIRATE_ATTACK" -> {
                 // get values
-                val id = eventJSON.getInt("id")
-                val tick = eventJSON.getInt("tick")
                 val shipID = eventJSON.getInt("shipID")
 
                 return PirateAttackEvent(id, tick, shipID)
@@ -243,11 +296,11 @@ class ScenarioParser(
      *
      * @return the object if successfully created, null otherwise
      */
-    fun parseGarbage(garbageJSON: JSONObject): Garbage? {
+    private fun parseGarbage(garbageJSON: JSONObject): Garbage? {
         // get values
-        val id = garbageJSON.getInt("id")
-        val type = makeGarbageType(garbageJSON.getString("type"))
-        val location = garbageJSON.getInt("location")
+        val id = garbageJSON.getInt(ID)
+        val type = helper.makeGarbageType(garbageJSON.getString(TYPE))
+        val location = garbageJSON.getInt(LOCATION)
         val locationXY = idLocationMapping[location]
         val amount = garbageJSON.getInt("amount")
 
@@ -264,10 +317,10 @@ class ScenarioParser(
      *
      * @return the object if successfully created, null otherwise
      */
-    fun parseTask(taskJSON: JSONObject): Task? {
+    private fun parseTask(taskJSON: JSONObject): Task? {
         // get attributes
-        val id = taskJSON.getInt("id")
-        val type = makeTaskType(taskJSON.getString("type"))
+        val id = taskJSON.getInt(ID)
+        val type = helper.makeTaskType(taskJSON.getString(TYPE))
         val tick = taskJSON.getInt("tick")
         val shipID = taskJSON.getInt("shipID")
         val targetTileID = taskJSON.getInt("targetTile")
@@ -288,11 +341,10 @@ class ScenarioParser(
      *
      * @return the object if successfully created, null otherwise
      */
-    fun parseReward(rewardJSON: JSONObject): Reward? {
+    private fun parseReward(rewardJSON: JSONObject): Reward? {
         // get attributes
-        val id = rewardJSON.getInt("id")
-        val type = makeRewardType(rewardJSON.getString("type"))
-
+        val id = rewardJSON.getInt(ID)
+        val type = helper.makeRewardType(rewardJSON.getString(TYPE))
 
         return when (type) {
             RewardType.TELESCOPE -> {
@@ -304,7 +356,7 @@ class ScenarioParser(
             }
             RewardType.CONTAINER -> {
                 val capacity = rewardJSON.getInt("capacity")
-                val garbageType = makeGarbageType(rewardJSON.getString("garbageType"))
+                val garbageType = helper.makeGarbageType(rewardJSON.getString("garbageType"))
                 if (garbageType == null) {
                     null
                 } else {
@@ -325,7 +377,7 @@ class ScenarioParser(
      *
      * @return `true` if validation is successful, `false` otherwise.
      */
-    fun validateEventProperties(event: Event): Boolean {
+    private fun validateEventProperties(event: Event): Boolean {
         // check ID is unique
         return !this.eventIDs.contains(event.id)
     }
@@ -335,7 +387,7 @@ class ScenarioParser(
      *
      * @return `true` if validation is successful, `false` otherwise.
      */
-    fun validateGarbageProperties(garbage: Garbage): Boolean {
+    private fun validateGarbageProperties(garbage: Garbage): Boolean {
         // check ID is unique
         return !this.garbageIDs.contains(garbage.id)
     }
@@ -345,7 +397,7 @@ class ScenarioParser(
      *
      * @return `true` if validation is successful, `false` otherwise.
      */
-    fun validateTaskProperties(task: Task): Boolean {
+    private fun validateTaskProperties(task: Task): Boolean {
         // check ID is unique
         return !this.taskIDs.contains(task.id)
     }
@@ -355,7 +407,7 @@ class ScenarioParser(
      *
      * @return `true` if validation is successful, `false` otherwise.
      */
-    fun validateRewardProperties(reward: Reward): Boolean {
+    private fun validateRewardProperties(reward: Reward): Boolean {
         // check ID is unique
         return !this.rewardIDs.contains(reward.id)
     }
@@ -365,7 +417,7 @@ class ScenarioParser(
      *
      * @return `true` if cross-validation is successful, `false` otherwise.
      */
-    fun crossValidateTasksForRewards(): Boolean {
+    private fun crossValidateTasksForRewards(): Boolean {
         // Cross validate tasks for rewards
         // go over tasks, and check reward actaully exists
         for (task in this.tasks.values) {
@@ -374,63 +426,5 @@ class ScenarioParser(
             }
         }
         return true
-    }
-
-    /**
-     * Validates the given JSONObject against the given schema filepath.
-     *
-     * @return true if object is valid, false otherwise
-     */
-    private fun validateSchema(itemJSON: JSONObject, schemaPath: String): Boolean {
-        // create validator from schema
-        val schemaContent = File(schemaPath).readText()
-        val schemaJSON = JsonParser(schemaContent).parse()
-        val schema = SchemaLoader(schemaJSON).load()
-        val validator = Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
-
-        // validate JSONObject
-        val itemJSONValue = JsonParser(itemJSON.toString()).parse()
-        return validator.validate(itemJSONValue) != null
-    }
-
-    private fun makeDirection(direction: Int): Direction? {
-        return when (direction) {
-            0 -> Direction.EAST
-            60 -> Direction.SOUTH_EAST
-            120 -> Direction.SOUTH_WEST
-            180 -> Direction.WEST
-            240 -> Direction.NORTH_WEST
-            300 -> Direction.NORTH_EAST
-            else -> null
-        }
-    }
-
-    private fun makeGarbageType(type: String): GarbageType? {
-        return when (type) {
-            "PLASTIC" -> GarbageType.PLASTIC
-            "OIL" -> GarbageType.OIL
-            "CHEMICALS" -> GarbageType.CHEMICALS
-            else -> null
-        }
-    }
-
-    private fun makeTaskType(type: String): TaskType? {
-        return when (type) {
-            "COLLECT" -> TaskType.COLLECT
-            "EXPLORE" -> TaskType.EXPLORE
-            "FIND" -> TaskType.FIND
-            "COOPERATE" -> TaskType.COORDINATE
-            else -> null
-        }
-    }
-
-    private fun makeRewardType(type: String): RewardType? {
-        return when (type) {
-            "TELESCOPE" -> RewardType.TELESCOPE
-            "RADIO" -> RewardType.RADIO
-            "CONTAINER" -> RewardType.CONTAINER
-            "TRACKER" -> RewardType.TRACKING
-            else -> null
-        }
     }
 }
