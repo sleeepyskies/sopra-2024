@@ -35,7 +35,8 @@ data class OilSpillEvent(
     override val id: Int,
     override val tick: Int,
     val location: Pair<Int, Int>,
-    val radius: Int
+    val radius: Int,
+    val amount: Int
 ) : Event(id, tick)
 
 /**
@@ -46,5 +47,6 @@ data class StormEvent(
     override val tick: Int,
     val location: Pair<Int, Int>,
     val radius: Int,
-    val direction: Direction
+    val direction: Direction,
+    val speed: Int
 ) : Event(id, tick)
