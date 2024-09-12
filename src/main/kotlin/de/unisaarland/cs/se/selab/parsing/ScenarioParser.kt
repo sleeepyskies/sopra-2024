@@ -95,7 +95,7 @@ class ScenarioParser(
         // validate scenario JSON against schema
         if (!helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
             log.error("SCENARIO PARSER: The file does not match the schema.")
-            return false
+            success = false
         }
 
         // get JSON arrays
@@ -284,6 +284,7 @@ class ScenarioParser(
         val id = eventJSON.getInt(ID)
         val tick = eventJSON.getInt("tick")
 
+        // handle different event types
         return when (type) {
             "STORM" -> {
                 // get values
