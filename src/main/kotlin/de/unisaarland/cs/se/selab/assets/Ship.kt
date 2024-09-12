@@ -9,7 +9,6 @@ package de.unisaarland.cs.se.selab.assets
  * @property capacityInfo A map containing the garbage type and its capacity information (current and maximum).
  * @property visibilityRange The visibility range of the ship.
  * @property location The current location of the ship as a pair of coordinates (x, y).
- * @property driftedLocation The drifted location of the ship as a pair of coordinates (x, y).
  * @property direction The current direction the ship is facing.
  * @property tileId The identifier of the tile the ship is currently on.
  * @property maxVelocity The maximum velocity the ship can achieve.
@@ -32,7 +31,6 @@ data class Ship(
     var capacityInfo: MutableMap<GarbageType, Pair<Int, Int>>,
     var visibilityRange: Int,
     var location: Pair<Int, Int>,
-    var driftedLocation: Pair<Int, Int>,
     var direction: Direction,
     var tileId: Int,
     val maxVelocity: Int,
@@ -63,25 +61,24 @@ data class Ship(
      * ensuring it does not exceed the maximum velocity.
      */
     fun updateVelocity() {
-        currentVelocity = (currentVelocity + acceleration).coerceAtMost(maxVelocity)
+        currentVelocity = if (acceleration == 0) {
+            0
+        } else {
+            (currentVelocity + acceleration).coerceAtMost(maxVelocity)
+        }
     }
 
     /**
      * Moves the ship to a new tile.
      *
      * @param tid The identifier of the new tile.
+     * @param tloc The new location as a pair of coordinates (x, y).
+     * @param amount The distance traveled to the new tile.
      */
-    fun move(tid: Int) {
+    fun move(tid: Int, tloc: Pair<Int, Int>, amount: Int) {
         tileId = tid
-    }
-
-    /**
-     * Sets the drifted location of the ship.
-     *
-     * @param driftedTileLocation The new drifted location as a pair of coordinates (x, y).
-     */
-    fun drift(driftedTileLocation: Pair<Int, Int>) {
-        driftedLocation = driftedTileLocation
+        location = tloc
+        currentFuel = (currentFuel - fuelConsumptionRate * amount).coerceAtLeast(0)
     }
 
     /**
@@ -117,5 +114,12 @@ data class Ship(
     fun collect(garbageType: GarbageType, amount: Int) {
         val (current, max) = capacityInfo[garbageType] ?: return
         capacityInfo[garbageType] = Pair((current + amount).coerceAtMost(max), max)
+        if (current + amount >= max) {
+            state = if (state == ShipState.NEED_REFUELING) {
+                ShipState.NEED_REFUELING_AND_UNLOADING
+            } else {
+                ShipState.NEED_UNLOADING
+            }
+        }
     }
 }
