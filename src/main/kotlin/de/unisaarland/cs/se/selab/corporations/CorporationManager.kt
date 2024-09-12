@@ -1,4 +1,207 @@
 package de.unisaarland.cs.se.selab.corporations
 
-class CorporationManager {
+import de.unisaarland.cs.se.selab.assets.Corporation
+import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.GarbageType
+import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.Tile
+
+/**
+ * Manages the corporations in the simulation.
+ *
+ * @property simData The simulation data used to manage corporations.
+ */
+class CorporationManager(private val simData: SimulationData) {
+
+    /**
+     * Starts the corporate phase in the simulation.
+     */
+    fun startCorporatePhase() {
+        TODO()
+    }
+
+    /**
+     * Moves ships during the corporate phase.
+     *
+     * @param corporation The corporation whose ships are being moved.
+     */
+    fun moveShipsPhase(corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Starts the garbage collection phase for a corporation.
+     *
+     * @param corporation The corporation starting the garbage collection phase.
+     */
+    fun startCollectGarbagePhase(corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Starts the cooperation phase for a corporation.
+     *
+     * @param corporation The corporation starting the cooperation phase.
+     */
+    fun startCooperationPhase(corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Starts the refuel and unload phase for a corporation.
+     *
+     * @param corporation The corporation starting the refuel and unload phase.
+     */
+    fun startRefuelUnloadPhase(corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Checks if there are enough ships for plastic removal on a tile.
+     *
+     * @param tile The tile to check.
+     * @param ships The list of ships to check.
+     * @return True if there are enough ships, false otherwise.
+     */
+    fun checkEnoughtShipsForPlasticRemoval(tile: Tile, ships: List<Ship>): Boolean {
+        TODO()
+    }
+
+    /**
+     * Retrieves information about a corporation.
+     *
+     * @param corporationId The ID of the corporation.
+     * @return A triple containing maps and a list with the corporation's information.
+     */
+    fun getInfo(
+        corporationId: Int
+    ): Triple<Map<Pair<Int, Int>, Pair<Int, Int>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>, List<Pair<Int, Int>>> {
+        TODO()
+    }
+
+    /**
+     * Moves a ship to a specified location.
+     *
+     * @param ship The ship to move.
+     * @param location The location to move the ship to.
+     */
+    fun shipMoveToLocation(ship: Ship, location: Pair<Int, Int>) {
+        TODO()
+    }
+
+    /**
+     * Determines the behavior of a ship for a corporation.
+     *
+     * @param ship The ship whose behavior is being determined.
+     * @param corporation The corporation to which the ship belongs.
+     */
+    fun determineBehavior(ship: Ship, corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Updates the information of a corporation.
+     *
+     * @param cId The ID of the corporation.
+     * @param info The new information to update.
+     * @return True if the update was successful, false otherwise.
+     */
+    fun updateInfo(
+        cId: Int,
+        info: Triple<
+            Map<Pair<Int, Int>, Pair<Int, Int>>,
+            Map<Int, Pair<Pair<Int, Int>, GarbageType>>,
+            List<Pair<Int, Int>>
+            >
+    ): Boolean {
+        TODO()
+    }
+
+    /**
+     * Scans all ships in the simulation.
+     *
+     * @param ships The list of ships to scan.
+     */
+    fun scanAll(ships: List<Ship>) {
+        TODO()
+    }
+
+    /**
+     * Flushes all garbage assignments.
+     *
+     * @param garbageList The list of garbage to flush assignments for.
+     */
+    fun flushAllGarbageAssignments(garbageList: List<Garbage>) {
+        TODO()
+    }
+
+    /**
+     * Applies trackers for a corporation.
+     *
+     * @param corporation The corporation to apply trackers for.
+     */
+    fun applyTrackersForCorporation(corporation: Corporation) {
+        TODO()
+    }
+
+    /**
+     * Checks if there is a restriction at a location.
+     *
+     * @param location The location to check.
+     * @return True if there is a restriction, false otherwise.
+     */
+    fun checkRestriction(location: Pair<Int, Int>): Boolean {
+        TODO()
+    }
+
+    /**
+     * Scans a location within a range.
+     *
+     * @param location The location to scan.
+     * @param range The range to scan within.
+     * @return A triple containing maps and a list with the scan results.
+     */
+    fun scan(location: Pair<Int, Int>, range: Int):
+        Triple<
+            Map<Pair<Int, Int>, Pair<Int, Int>>,
+            Map<Int, Pair<Pair<Int, Int>, GarbageType>>,
+            List<Pair<Int, Int>>
+            > {
+        TODO()
+    }
+
+    /**
+     * Assigns capacity to a list of garbage at a location.
+     *
+     * @param location The location of the garbage.
+     * @param tileId The ID of the tile where the garbage is located.
+     * @param capacities The capacities to assign to the garbage.
+     */
+    fun assignCapacityToGarbageList(
+        location: Pair<Int, Int>,
+        tileId: Int,
+        capacities: Map<GarbageType, Pair<Int, Int>>
+    ) {
+        TODO()
+    }
+
+    /**
+     * Collects garbage on a tile.
+     *
+     * @param location The location of the tile.
+     */
+    fun collectGarbageOnTile(location: Pair<Int, Int>) {
+        TODO()
+    }
+
+    /**
+     * Retrieves the ships on a tile.
+     *
+     * @param location The location of the tile.
+     * @return The list of ships on the tile.
+     */
+    fun getShipsOnTile(location: Pair<Int, Int>): List<Ship> {
+        TODO()
+    }
 }
