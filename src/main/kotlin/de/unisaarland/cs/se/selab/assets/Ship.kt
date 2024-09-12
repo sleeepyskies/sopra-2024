@@ -23,12 +23,13 @@ package de.unisaarland.cs.se.selab.assets
  * @property type The type of the ship.
  * @property hasRadio Indicates whether the ship is equipped with a radio.
  * @property hasTracker Indicates whether the ship is equipped with a tracker.
+ * @property travelingToHarbor Indicates whether the ship is traveling to the harbor.
  */
 data class Ship(
     val id: Int,
     val name: String,
     val corporation: Int,
-    var capacityInfo: Map<GarbageType, Pair<Int, Int>>,
+    var capacityInfo: MutableMap<GarbageType, Pair<Int, Int>>,
     var visibilityRange: Int,
     var location: Pair<Int, Int>,
     var driftedLocation: Pair<Int, Int>,
@@ -44,5 +45,77 @@ data class Ship(
     var state: ShipState = ShipState.DEFAULT,
     val type: ShipType,
     var hasRadio: Boolean = false,
-    var hasTracker: Boolean = false
-)
+    var hasTracker: Boolean = false,
+    var travelingToHarbor: Boolean = false
+) {
+    /**
+     * Checks if the ship needs refueling or unloading.
+     *
+     * @return True if the ship needs refueling or unloading, false otherwise.
+     */
+    fun checkRefuelUnload(): Boolean {
+        return state == ShipState.NEED_REFUELING || state == ShipState.NEED_UNLOADING ||
+            state == ShipState.NEED_REFUELING_AND_UNLOADING
+    }
+
+    /**
+     * Updates the current velocity of the ship by adding the acceleration,
+     * ensuring it does not exceed the maximum velocity.
+     */
+    fun updateVelocity() {
+        currentVelocity = (currentVelocity + acceleration).coerceAtMost(maxVelocity)
+    }
+
+    /**
+     * Moves the ship to a new tile.
+     *
+     * @param tid The identifier of the new tile.
+     */
+    fun move(tid: Int) {
+        tileId = tid
+    }
+
+    /**
+     * Sets the drifted location of the ship.
+     *
+     * @param driftedTileLocation The new drifted location as a pair of coordinates (x, y).
+     */
+    fun drift(driftedTileLocation: Pair<Int, Int>) {
+        driftedLocation = driftedTileLocation
+    }
+
+    /**
+     * Refuels the ship to its maximum fuel capacity.
+     */
+    fun refuel() {
+        currentFuel = maxFuelCapacity
+    }
+
+    /**
+     * Unloads the ship by setting the capacity information to pairs of (b, b).
+     */
+    fun unload() {
+        capacityInfo = capacityInfo.mapValues { (_, v) -> Pair(v.second, v.second) }.toMutableMap()
+    }
+
+    /**
+     * Checks the current capacity of a specific garbage type.
+     *
+     * @param garbageType The type of garbage to check.
+     * @return The current capacity of the specified garbage type.
+     */
+    fun checkCapacity(garbageType: GarbageType): Int {
+        return capacityInfo[garbageType]?.first ?: 0
+    }
+
+    /**
+     * Collects a specified amount of garbage, updating the capacity information.
+     *
+     * @param garbageType The type of garbage to collect.
+     * @param amount The amount of garbage to collect.
+     */
+    fun collect(garbageType: GarbageType, amount: Int) {
+        val (current, max) = capacityInfo[garbageType] ?: return
+        capacityInfo[garbageType] = Pair((current + amount).coerceAtMost(max), max)
+    }
+}
