@@ -1,9 +1,11 @@
 package de.unisaarland.cs.se.selab.corporations
 
+import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.ShipType
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Tile
 
@@ -14,11 +16,24 @@ import de.unisaarland.cs.se.selab.assets.Tile
  */
 class CorporationManager(private val simData: SimulationData) {
 
+    companion object {
+        /**
+         * The maximum number of ships a corporation can have.
+         */
+        private const val VELOCITY_DIVISOR = 10
+    }
+
     /**
      * Starts the corporate phase in the simulation.
      */
     fun startCorporatePhase() {
-        TODO()
+        simData.corporations.forEach {
+            scanAll(it.ships)
+            moveShipsPhase(it)
+            startCollectGarbagePhase(it)
+            startCooperationPhase(it)
+            startRefuelUnloadPhase(it)
+        }
     }
 
     /**
@@ -27,7 +42,24 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation whose ships are being moved.
      */
     fun moveShipsPhase(corporation: Corporation) {
-        TODO()
+        Logger.corporationActionMove(corporation.id)
+        corporation.ships.forEach {
+            val possibleLocationsToMove = determineBehavior(it, corporation)
+            if (possibleLocationsToMove.size != 1 || possibleLocationsToMove[0] != it.location) {
+                it.updateVelocity()
+                val tileInfoToMove = simData.navigationManager.shortestPathToLocations(
+                    it.location,
+                    possibleLocationsToMove,
+                    it.currentVelocity / VELOCITY_DIVISOR
+                )
+                Logger.shipMovement(it.id, it.tileId, tileInfoToMove.second)
+                shipMoveToLocation(it, tileInfoToMove.first)
+                updateInfo(corporation, scan(it.location, it.visibilityRange))
+            } else {
+                it.acceleration = 0
+                it.updateVelocity()
+            }
+        }
     }
 
     /**
@@ -36,7 +68,10 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the garbage collection phase.
      */
     fun startCollectGarbagePhase(corporation: Corporation) {
-        TODO()
+        Logger.corporationActionCollectGarbage(corporation.id)
+        corporation.ships.filter { it.type == ShipType.COLLECTING_SHIP }.forEach {
+            var tile = simData.navigationManager.findTile(it.location)
+        }
     }
 
     /**
@@ -86,8 +121,9 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship to move.
      * @param location The location to move the ship to.
      */
-    fun shipMoveToLocation(ship: Ship, location: Pair<Int, Int>) {
-        TODO()
+    fun shipMoveToLocation(ship: Ship, tileInfo: Pair<Pair<Int, Int>, Int>) {
+        ship.tileId = tileInfo.second
+        ship.location = tileInfo.first
     }
 
     /**
@@ -96,7 +132,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship whose behavior is being determined.
      * @param corporation The corporation to which the ship belongs.
      */
-    fun determineBehavior(ship: Ship, corporation: Corporation) {
+    fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
         TODO()
     }
 
@@ -108,7 +144,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @return True if the update was successful, false otherwise.
      */
     fun updateInfo(
-        cId: Int,
+        corporation: Corporation,
         info: Triple<
             Map<Pair<Int, Int>, Pair<Int, Int>>,
             Map<Int, Pair<Pair<Int, Int>, GarbageType>>,
