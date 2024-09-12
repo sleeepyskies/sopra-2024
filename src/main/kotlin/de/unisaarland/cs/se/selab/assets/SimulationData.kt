@@ -23,4 +23,5 @@ data class SimulationData(
     var scheduledTasks: MutableMap<Int, List<Task>> = mutableMapOf(),
     var activeTasks: MutableList<Task> = mutableListOf(),
     var rewards: MutableList<Reward> = mutableListOf(),
+    var currentHighestGarbageID: Int
 )

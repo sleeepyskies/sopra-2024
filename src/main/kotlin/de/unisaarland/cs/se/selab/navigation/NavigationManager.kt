@@ -4,7 +4,6 @@ import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import java.util.PriorityQueue
-import kotlin.math.abs
 
 /**
  * The NavigationManager class, this takes care of routing from location to location,

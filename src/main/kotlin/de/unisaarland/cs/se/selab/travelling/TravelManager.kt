@@ -15,7 +15,11 @@ class TravelManager(private val simData: SimulationData) {
      * Starts the garbage drifting phase in the simulation.
      */
     fun driftGarbagePhase() {
-        TODO()
+        val garbageOnMap = simData.garbage
+        for (garbage in garbageOnMap) {
+            val tile = simData.navigationManager.findTile(garbage.location)
+            if (tile == null) continue
+        }
     }
 
     /**
@@ -32,7 +36,7 @@ class TravelManager(private val simData: SimulationData) {
      * @param garbage The garbage to be drifted.
      */
     fun driftGarbage(location: Pair<Int, Int>, garbage: Garbage) {
-        TODO()
+        garbage.location = location
     }
 
     /**
@@ -42,7 +46,7 @@ class TravelManager(private val simData: SimulationData) {
      * @param ship The ship to be drifted.
      */
     fun driftShip(location: Pair<Int, Int>, ship: Ship) {
-        TODO()
+        ship.location = location
     }
 
     /**
@@ -71,14 +75,22 @@ class TravelManager(private val simData: SimulationData) {
      * @return The new garbage created from the split.
      */
     fun split(garbage: Garbage, amount: Int): Garbage {
-        TODO()
+        val newId = simData.currentHighestGarbageID + 1
+        simData.currentHighestGarbageID = newId
+        val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = listOf())
+        return newGarbage
     }
 
     /**
      * Moves all arriving garbage to a tile.
+     * IMPORTANT: This method should only be called after the garbages location AND tileId have been updated.
      */
     fun moveAllArrivingGarbageToTile() {
-        TODO()
+        val garbageOnMap = simData.garbage
+        for (garbage in garbageOnMap) {
+            val tile = simData.navigationManager.findTile(garbage.location)
+            tile?.addGarbageToTile(garbage)
+        }
     }
 
     /**
@@ -87,6 +99,6 @@ class TravelManager(private val simData: SimulationData) {
      * @return The list of remaining garbage in the ocean.
      */
     fun getRemainingGarbageInOcean(): List<Garbage> {
-        TODO()
+        return simData.garbage
     }
 }
