@@ -144,7 +144,7 @@ class ScenarioParser(
             val rewardJSON = tasksJSONArray.getJSONObject(index)
 
             // validate reward JSON against schema
-            if (!validateSchema(rewardJSON, this.taskSchema)) {
+            if (!validateSchema(rewardJSON, this.rewardSchema)) {
                 return false
             }
 
