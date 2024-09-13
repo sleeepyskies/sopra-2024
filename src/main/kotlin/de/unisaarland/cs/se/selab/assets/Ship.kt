@@ -61,11 +61,7 @@ data class Ship(
      * ensuring it does not exceed the maximum velocity.
      */
     fun updateVelocity() {
-        currentVelocity = if (acceleration == 0) {
-            0
-        } else {
-            (currentVelocity + acceleration).coerceAtMost(maxVelocity)
-        }
+        (currentVelocity + acceleration).coerceAtMost(maxVelocity)
     }
 
     /**
