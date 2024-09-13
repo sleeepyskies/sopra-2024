@@ -43,6 +43,7 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun moveShipsPhase(corporation: Corporation) {
         Logger.corporationActionMove(corporation.id)
+        var gbAssignedAmountList = mutableListOf<Garbage>()
         corporation.ships.forEach {
             val possibleLocationsToMove = determineBehavior(it, corporation)
             if (possibleLocationsToMove.size != 1 || possibleLocationsToMove[0] != it.location) {
@@ -52,7 +53,38 @@ class CorporationManager(private val simData: SimulationData) {
                     possibleLocationsToMove,
                     it.currentVelocity / VELOCITY_DIVISOR
                 )
-                Logger.shipMovement(it.id, it.tileId, tileInfoToMove.second)
+                var tile = simData.navigationManager.findTile(tileInfoToMove.first.first)!!
+                var pCap = it.capacityInfo.get(GarbageType.PLASTIC)?.first ?: 0
+                var oCap = it.capacityInfo.get(GarbageType.OIL)?.first ?: 0
+                var cCap = it.capacityInfo.get(GarbageType.CHEMICALS)?.first ?: 0
+                //assigning the capacities as long as they exist for garbage on tile from the lowest id
+                tile.getGarbageByLowestID().forEach { gb->
+                    when (gb.type) {
+                        GarbageType.PLASTIC -> {
+                            if (pCap > 0) {
+                                gb.assignedCapacity += pCap
+                                (pCap - gb.amount).coerceAtLeast(0)
+                                gbAssignedAmountList.add(gb)
+                            }
+                        }
+                        GarbageType.OIL -> {
+                            if (oCap > 0) {
+                                gb.assignedCapacity += oCap
+                                (oCap - gb.amount).coerceAtLeast(0)
+                                gbAssignedAmountList.add(gb)
+                            }
+                        }
+                        GarbageType.CHEMICALS -> {
+                            if (cCap > 0) {
+                                gb.assignedCapacity += pCap
+                                (cCap - gb.amount).coerceAtLeast(0)
+                                gbAssignedAmountList.add(gb)
+                            }
+                        }
+                        GarbageType.NONE -> {}
+                    }
+                }
+                Logger.shipMovement(it.id, it.tileId, tileInfoToMove.first.second)
                 shipMoveToLocation(it, tileInfoToMove.first)
                 updateInfo(corporation, scan(it.location, it.visibilityRange))
             } else {
@@ -77,7 +109,10 @@ class CorporationManager(private val simData: SimulationData) {
             gbList.forEach {
                 when (it.type) {
                     GarbageType.PLASTIC -> {
-
+                        if (checkEnoughtShipsForPlasticRemoval(tile, corporation.ships)) {
+                            assignCapacityToGarbageList(it.location, tile.id, it.capacityInfo)
+                            collectGarbageOnTile(it.location)
+                        }
                     }
                     GarbageType.OIL -> TODO()
                     GarbageType.CHEMICALS -> TODO()
