@@ -1,5 +1,6 @@
 package de.unisaarland.cs.se.selab.travelling
 
+import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Ship
@@ -27,9 +28,11 @@ class TravelManager(private val simData: SimulationData) {
         val garbageOnMap = simData.navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()
         val tilesToUpdate: MutableList<Tile> = mutableListOf()
         for ((tiled, listGarbage) in garbageOnMap) {
+            // Get tile in ascending order of tileID
             val tile = simData.navigationManager.findTile(tiled)
+            // Get garbage on tile in ascending order of garbageID
             val mutableListGarbage = listGarbage.toMutableList()
-            if (tile == null || tile.hasCurrent) continue
+            if (tile == null || !tile.hasCurrent) continue
             val driftCapacity = tile.current.intensity * INTENSITY_FACTOR
             val direction = tile.current.direction
             val speed = tile.current.speed
@@ -74,6 +77,8 @@ class TravelManager(private val simData: SimulationData) {
                     garbageToBeHandled = split(garbageToBeHandled, remainingDriftCapacity)
                     wasSplit = true
                 }
+                // Get tile to which we driftedGarbage, if null, we have to move to the next garbage pile,
+                // as there is no tile to drift to, but still use drift capacity needed to make the attempt
                 val tileToUpdate = driftGarbageAlongPath(
                     garbageToBeHandled,
                     oldGarbage,
@@ -151,23 +156,24 @@ class TravelManager(private val simData: SimulationData) {
      */
     fun shipDriftingPhase() {
         val shipsOnMap = getShipsByLowestTileIDThenLowestShipID()
-        for ((tiled, listShips) in shipsOnMap) {
-            val tile = simData.navigationManager.findTile(tiled)
+        for ((tile, listShips) in shipsOnMap) {
+            val startTile = simData.navigationManager.findTile(tile)
             val mutableListShips = listShips.toMutableList()
-            if (tile == null || tile.hasCurrent) continue
-            var driftCapacity = tile.current.intensity
-            val direction = tile.current.direction
-            val speed = tile.current.speed
+            if (startTile == null || startTile.hasCurrent) continue
+            var driftCapacity = startTile.current.intensity
+            val direction = startTile.current.direction
+            val speed = startTile.current.speed
             while (driftCapacity != 0 && mutableListShips.isNotEmpty()) {
                 val shipToBeHandled = mutableListShips.removeFirst()
                 val tilePath = simData.navigationManager.calculateDrift(
-                    tile.location,
+                    startTile.location,
                     direction,
                     speed
                 )
                 if (tilePath.isEmpty()) break
                 val tileToDriftTo = tilePath.first()
                 driftShip(tileToDriftTo.location, tileToDriftTo.id, shipToBeHandled)
+                Logger.currentShipDrift(shipToBeHandled.id, startTile.id, tileToDriftTo.id)
                 driftCapacity--
             }
         }
