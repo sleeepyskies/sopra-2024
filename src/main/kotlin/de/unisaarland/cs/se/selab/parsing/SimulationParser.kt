@@ -291,7 +291,39 @@ class SimulationParser(
      * Checks that all ships can reach at least one home harbor.
      */
     private fun crossValidateShipsCanReachHarbor(): Boolean {
-        TODO()
+        // iterate over all corporations
+        for (corporation in this.corporations) {
+            // get this corporation's ships
+            val ships = corporation.ships
+
+            // get this corporation's harbors
+            val harbors = corporation.harbors
+
+            // check that each ship can reach at least one harbor
+            for (ship in ships) {
+                if (!shipCanReachHarbor(ship.location, harbors)) {
+                    log.error("SIMULATION PARSER: The ship ${ship.id} cannot reach any home harbors.")
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    /**
+     * Takes a location, and checks whether any of the homeHarbors are reachable from this point.
+     */
+    private fun shipCanReachHarbor(location: Pair<Int, Int>, homeHarbors: List<Pair<Int, Int>>) : Boolean {
+        // check if location is a homeHarbor
+        if (homeHarbors.contains(location)) return true
+
+        // check if a home harbor is reachable
+        val res = this.navigationManager.shortestPathToLocations(location, homeHarbors, Int.MAX_VALUE - 1)
+
+        // unpack location from result
+        val result = res.first.first
+
+        return result != location
     }
 
     /**
