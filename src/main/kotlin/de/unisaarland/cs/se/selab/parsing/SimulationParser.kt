@@ -9,11 +9,14 @@ import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Task
+import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import de.unisaarland.cs.se.selab.tasks.TaskManager
 import de.unisaarland.cs.se.selab.travelling.TravelManager
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 
 /**
  * SimulationParser receives a map, corporation and scenario file as well as a max tick.
@@ -26,6 +29,9 @@ class SimulationParser(
     private val scenarioFile: String,
     private val maxTick: Int,
 ) {
+    // debug logger
+    private val log: Log = LogFactory.getLog("debugger")
+
     // data
     private lateinit var corporations: List<Corporation>
     private lateinit var ships: List<Ship>
@@ -144,10 +150,24 @@ class SimulationParser(
     }
 
     /**
-     * Checks that harbors only occur on shore tiles.
+     * Checks that harbors only occur on shore tiles, as well as non-null tiles.
      */
     private fun crossValidateHarborsOnShores(): Boolean {
-        TODO()
+        // get all harbor locations
+        val locations = this.corporations.flatMap { it.harbors }
+
+        // check each tile is a SHORE
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null
+            if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
+                log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
+                return false
+            }
+        }
+        return true
     }
 
     /**
