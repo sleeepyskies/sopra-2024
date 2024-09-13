@@ -228,7 +228,7 @@ class TravelManager(private val simData: SimulationData) {
      */
     fun split(garbage: Garbage, amount: Int): Garbage {
         val newId = simData.currentHighestGarbageID + 1
-        val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = listOf())
+        val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = mutableListOf())
         return newGarbage
     }
 
