@@ -41,9 +41,9 @@ data class Garbage(
      * @param intensity The intensity to check against.
      * @return True if the garbage should be split, false otherwise.
      */
-    fun checkSplit(intensity: Int): Boolean {
+    fun checkSplit(driftCapacity: Int): Boolean {
         return when (type) {
-            GarbageType.OIL -> amount > intensity * num
+            GarbageType.OIL, GarbageType.PLASTIC -> amount > driftCapacity
             else -> false
         }
     }

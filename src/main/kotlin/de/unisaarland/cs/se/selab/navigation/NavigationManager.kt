@@ -1,6 +1,7 @@
 package de.unisaarland.cs.se.selab.navigation
 
 import de.unisaarland.cs.se.selab.assets.Direction
+import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import java.util.PriorityQueue
@@ -44,13 +45,21 @@ class NavigationManager(
      * @return a list of possible neighbor locations
      */
     fun getHexNeighbors(x: Int, y: Int): List<Pair<Int, Int>> {
-        return listOf(
-            Pair(x + 1, y), // Right
-            Pair(x - 1, y), // Left
-            Pair(x, y + 1), // Bottom left
-            Pair(x, y - 1), // Top left
-            Pair(x + 1, y - 1), // Top right
-            Pair(x + 1, y + 1) // Bottom right
+        return if(y % 2 == 0){listOf(
+                    Pair(x + 1, y), // Right
+                    Pair(x - 1, y), // Left
+                    Pair(x, y + 1), // Bottom left
+                    Pair(x, y - 1), // Top left
+                    Pair(x + 1, y - 1), // Top right
+                    Pair(x + 1, y + 1))// Bottom right
+                }else{listOf(
+                    Pair(x + 1, y), // Right
+                    Pair(x - 1, y), // Left
+                    Pair(x - 1, y + 1), // Bottom left
+                    Pair(x - 1, y - 1), // Top left
+                    Pair(x, y - 1), // Top right
+                    Pair(x, y + 1))// Bottom right
+                }
         )
     }
 
@@ -291,6 +300,11 @@ class NavigationManager(
         return null
     }
 
+    /**
+     * Gets the location of a tile, by its tileid
+     * @param tileId : the tileId of the tile
+     * @return the location of the tile
+     */
     fun locationByTileId(tileId: Int): Pair<Int, Int>? {
         for ((_, tile) in tiles) {
             if (tile.id == tileId) return tile.location
@@ -336,14 +350,18 @@ class NavigationManager(
         location: Pair<Int, Int>,
         direction: Direction,
         speed: Int
-    ): Map<Int, Pair<Int, Int>> {
-        val pathMap : MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
+    ): List<Tile> {
+        val pathMap : MutableList<Tile> = mutableListOf()
         var newTile = location
+        val maxDistance = speed / DEFAULT_DISTANCE
         // Calculate the path of the drift by going in the direction of the drift
-        for (i in speed-1 downTo 0) {
+        for (i in 0..<maxDistance) {
             newTile = findTileInDirectionFrom(newTile, direction)
-            pathMap[i] = newTile
+            val tileObject = findTile(newTile) ?: break
+            if (tileObject.type == TileType.LAND) break
+            pathMap.add(tileObject)
         }
+        pathMap.reverse()
         return pathMap
     }
 
@@ -411,6 +429,12 @@ class NavigationManager(
         return tilesInRadius.toList()
     }
 
+    /**
+     * Get the ring of a given radius around a location
+     * @param location : the location to get the ring around
+     * @param radius : the radius of the ring
+     * @return the list of tiles in the ring
+     */
     fun getRingOfRadius(location: Pair<Int, Int>, radius: Int): List<Pair<Int, Int>> {
         // We remove the tiles in the radius-1 from the radius to get the ring
         var ring: MutableSet<Pair<Int, Int>> = mutableSetOf()
@@ -418,5 +442,15 @@ class NavigationManager(
         val tilesInRadiusMinusOne = getTilesInRadius(location, radius-1)
         ring = tilesInRadius.filter {it !in tilesInRadiusMinusOne }.toMutableSet()
         return ring.toList()
+    }
+
+    fun getGarbageFromAllTilesInCorrectOrderForDrifting(): List<Pair<Int,List<Garbage>>> {
+        val outputList: MutableList<Pair<Int,List<Garbage>>> = mutableListOf()
+        val tileList = tiles.values.toList().sortedBy { it.id }
+        for(tile in tileList){
+            if(!tile.checkGarbageLeft()) continue
+            outputList.add(Pair(tile.id,tile.getGarbageByLowestID()))
+        }
+        return outputList
     }
 }
