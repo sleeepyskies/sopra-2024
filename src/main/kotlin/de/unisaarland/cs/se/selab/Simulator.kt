@@ -28,6 +28,7 @@ class Simulator(
      */
     fun run() {
         while (currentTick < maxTicks) {
+            Logger.simTick(currentTick)
             corporationManager.startCorporatePhase()
             travelManager.driftGarbagePhase()
             travelManager.shipDriftingPhase()

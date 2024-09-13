@@ -61,11 +61,7 @@ data class Ship(
      * ensuring it does not exceed the maximum velocity.
      */
     fun updateVelocity() {
-        currentVelocity = if (acceleration == 0) {
-            0
-        } else {
-            (currentVelocity + acceleration).coerceAtMost(maxVelocity)
-        }
+        (currentVelocity + acceleration).coerceAtMost(maxVelocity)
     }
 
     /**
@@ -91,8 +87,14 @@ data class Ship(
     /**
      * Unloads the ship by setting the capacity information to pairs of (b, b).
      */
-    fun unload() {
+    fun unload(): Map<GarbageType, Int> {
+        var unloadedMap = mutableMapOf<GarbageType, Int>()
+        unloadedMap[GarbageType.PLASTIC] = 0
+        unloadedMap[GarbageType.OIL] = 0
+        unloadedMap[GarbageType.CHEMICALS] = 0
+        capacityInfo.forEach { (t, v) -> unloadedMap[t] = unloadedMap[t]!! + v.first }
         capacityInfo = capacityInfo.mapValues { (_, v) -> Pair(v.second, v.second) }.toMutableMap()
+        return unloadedMap
     }
 
     /**

@@ -21,9 +21,11 @@ data class Corporation(
     val ships: MutableList<Ship>,
     val collectableGarbageTypes: List<GarbageType>,
 ) {
-    val garbage: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
-    val visibleGarbage: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
+    val garbage: MutableMap<Int, Pair<Pair<Int, Int>, GarbageType>> = mutableMapOf()
+    val visibleGarbage: MutableMap<Int, Pair<Pair<Int, Int>, GarbageType>> = mutableMapOf()
     val knownHarbors: MutableList<Pair<Int, Int>> = mutableListOf()
-    val knownShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
-    val lastCooperatedWith: Int = -1
+
+    // shipId, corporationId, location
+    val visibleShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
+    var lastCooperatedWith: Int = -1
 }
