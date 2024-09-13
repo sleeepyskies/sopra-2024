@@ -30,6 +30,9 @@ class CorporationParser(
     private val fileName: String,
     private val idLocationMapping: Map<Int, Pair<Int, Int>>
 ) {
+    /**
+     * The maximum number of ships a corporation can have.
+     */
     companion object {
         private const val ID = "id"
         private const val NAME = "name"

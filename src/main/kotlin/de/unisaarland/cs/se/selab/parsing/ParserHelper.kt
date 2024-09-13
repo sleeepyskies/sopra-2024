@@ -17,6 +17,9 @@ import java.io.File
  * A Parser Helper class containing useful shared methods and constants
  */
 class ParserHelper {
+    /**
+     * The maximum number of ships a corporation can have.
+     */
     companion object {
         // numbers
         const val EAST = 0

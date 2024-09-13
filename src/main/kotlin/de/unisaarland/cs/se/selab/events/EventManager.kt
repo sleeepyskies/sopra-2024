@@ -192,7 +192,7 @@ class EventManager(private val simulationData: SimulationData) {
         val corporations = simulationData.corporations
         for (corporation in corporations) {
             for (garbage in updateToCorporations) {
-                corporation.garbage[garbage.id] = garbage.location
+                corporation.garbage[garbage.id] = Pair(garbage.location, garbage.type)
             }
         }
     }

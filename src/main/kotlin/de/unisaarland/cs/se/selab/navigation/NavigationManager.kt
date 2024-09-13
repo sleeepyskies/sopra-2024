@@ -14,6 +14,10 @@ class NavigationManager(
     var tiles: Map<Pair<Int, Int>, Tile>
 ) {
     lateinit var graph: MutableMap<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
+
+    /**
+     * The maximum number of ships a corporation can have.
+     */
     companion object {
         private const val DEFAULT_DISTANCE = 10
     }

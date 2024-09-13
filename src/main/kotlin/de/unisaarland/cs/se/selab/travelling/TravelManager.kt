@@ -13,6 +13,9 @@ import de.unisaarland.cs.se.selab.assets.Tile
  * @property simData The simulation data used to manage travel operations.
  */
 class TravelManager(private val simData: SimulationData) {
+    /**
+     * The maximum number of ships a corporation can have.
+     */
     companion object {
         private const val INTENSITY_FACTOR = 50
     }

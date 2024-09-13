@@ -20,9 +20,6 @@ data class Garbage(
     var assignedCapacity: Int = 0,
     var trackedBy: MutableList<Int> = mutableListOf()
 ) {
-    companion object {
-        private const val num = 50
-    }
 
     /**
      * Collects a specified amount of garbage and determines if it should be removed.

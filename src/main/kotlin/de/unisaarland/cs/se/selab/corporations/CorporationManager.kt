@@ -18,10 +18,10 @@ import kotlin.math.min
  */
 class CorporationManager(private val simData: SimulationData) {
 
+    /**
+     * The maximum number of ships a corporation can have.
+     */
     companion object {
-        /**
-         * The maximum number of ships a corporation can have.
-         */
         private const val VELOCITY_DIVISOR = 10
     }
 
@@ -65,7 +65,7 @@ class CorporationManager(private val simData: SimulationData) {
                     // and no other ship will be assigned to that location
                     gbAssignedAmountList.addAll(assignCapacityToGarbageList(tileInfoToMove.second, it.capacityInfo))
                     Logger.shipMovement(it.id, it.tileId, tileInfoToMove.first.second)
-                    shipMoveToLocation(it, tileInfoToMove.first.first)
+                    shipMoveToLocation(it, tileInfoToMove.first)
                     updateInfo(corporation, scan(it.location, it.visibilityRange))
                 } else {
                     it.currentVelocity = 0
