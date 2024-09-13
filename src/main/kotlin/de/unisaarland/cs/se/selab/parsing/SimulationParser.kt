@@ -174,7 +174,21 @@ class SimulationParser(
      * Checks that ships initial locations are only on valid tiles.
      */
     private fun crossValidateShipsOnTiles(): Boolean {
-        TODO()
+        // get all ship initial locations
+        val locations = this.ships.map { it.location }
+
+        // check each tile is a SHORE
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null
+            if (tile == null || tile.type == TileType.LAND) {
+                log.error("SIMULATION PARSER: A ship has an invalid initial tile.")
+                return false
+            }
+        }
+        return true
     }
 
     /**
