@@ -2,12 +2,15 @@ package de.unisaarland.cs.se.selab.events
 
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Event
+import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.OilSpillEvent
 import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
 import de.unisaarland.cs.se.selab.assets.RestrictionEvent
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Tile
+import de.unisaarland.cs.se.selab.assets.TileType
 
 /**
  * The EventManager class is responsible for managing the events that occur in the simulation.
@@ -85,21 +88,22 @@ class EventManager(private val simulationData: SimulationData) {
             val location = event.location
             val radius = event.radius
             val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+            val updateToCorporations: MutableList<Garbage> = mutableListOf()
+            val tilesToUpdate: MutableList<Tile> = mutableListOf()
             for (coordinates in coordinatesList) {
                 val currentTile = simulationData.navigationManager.findTile(coordinates)
-                if (currentTile?.currentOilAmount == null ||
-                    currentTile.currentOilAmount >= currentTile.oilMaxCapacity
+                if (currentTile == null ||
+                    currentTile.currentOilAmount >= currentTile.oilMaxCapacity || currentTile.type == TileType.LAND
                 ) {
                     continue
                 }
-                if (currentTile.currentOilAmount + event.amount > currentTile.oilMaxCapacity) {
-                    currentTile.currentOilAmount = currentTile.oilMaxCapacity
-                } else {
-                    currentTile.currentOilAmount += event.amount
-                }
+                processTile(currentTile, event, updateToCorporations, tilesToUpdate)
             }
+            updateCorporations(updateToCorporations)
+            updateTiles(tilesToUpdate)
         }
     }
+
     private fun applyRestriction(restrictedEvents: List<RestrictionEvent>) {
         for (event in restrictedEvents) {
             val location = event.location
@@ -146,6 +150,50 @@ class EventManager(private val simulationData: SimulationData) {
             simulationData.corporations.find { it.id == corporationIdOfShip }?.ships?.remove(ship)
             simulationData.ships.remove(ship)
             // Handling pirate attack: remove ship from corporation, remove from simulation data.
+        }
+    }
+    private fun processTile(
+        currentTile: Tile,
+        event: OilSpillEvent,
+        updateToCorporations: MutableList<Garbage>,
+        tilesToUpdate: MutableList<Tile>
+    ) {
+        if (currentTile.currentOilAmount + event.amount > currentTile.oilMaxCapacity) {
+            val newAmountGarbage = currentTile.oilMaxCapacity - currentTile.currentOilAmount
+            val newGarbage = createGarbage(newAmountGarbage, currentTile)
+            updateToCorporations.add(newGarbage)
+            currentTile.addArrivingGarbageToTile(newGarbage)
+        } else {
+            val newGarbage = createGarbage(event.amount, currentTile)
+            updateToCorporations.add(newGarbage)
+            currentTile.addArrivingGarbageToTile(newGarbage)
+        }
+        tilesToUpdate.add(currentTile)
+    }
+    private fun createGarbage(amount: Int, tile: Tile): Garbage {
+        val newGarbage = Garbage(
+            simulationData.currentHighestGarbageID + 1,
+            amount,
+            GarbageType.OIL,
+            tile.id,
+            tile.location
+        )
+        simulationData.currentHighestGarbageID = newGarbage.id
+        return newGarbage
+    }
+
+    private fun updateCorporations(updateToCorporations: List<Garbage>) {
+        val corporations = simulationData.corporations
+        for (corporation in corporations) {
+            for (garbage in updateToCorporations) {
+                corporation.garbage[garbage.id] = garbage.location
+            }
+        }
+    }
+
+    private fun updateTiles(tilesToUpdate: List<Tile>) {
+        for (tile in tilesToUpdate) {
+            tile.moveAllArrivingGarbageToTile()
         }
     }
 }
