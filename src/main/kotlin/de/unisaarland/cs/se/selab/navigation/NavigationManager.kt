@@ -1,12 +1,11 @@
 package de.unisaarland.cs.se.selab.navigation
 
-
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
+import org.apache.commons.logging.LogFactory
 import java.util.PriorityQueue
-
 
 /**
  * The NavigationManager class, this takes care of routing from location to location,
@@ -19,6 +18,7 @@ class NavigationManager(
     companion object {
         private const val DEFAULT_DISTANCE = 10
     }
+    private val logger = LogFactory.getLog("exception_info")
 
     /**
      * Initializes graph structure, goes through each neighbor of a tile by location and adds neighboring tileID's
@@ -74,7 +74,6 @@ class NavigationManager(
      * @param to : the tile to which we want to calculate the distance
      **/
     fun travelDistance(from: Tile, to: Tile): Int {
-        val locationFrom = from.location
         val tileIDTo = to.id
         val (distances, _) = dijkstra(graph, from.id)
         return distances[tileIDTo] ?: -1
@@ -87,12 +86,13 @@ class NavigationManager(
      * @param to : the set of locations to reach
      * @param travelAmount : the amount of travel available
      * @return the coordinates to land on and the distance to travel plus the tileId plus the distance to travel
+     * (Location,tileIDtoMoveTo,Distance,tileIDOfDestination(not taking into account how far we can move)
      **/
     fun shortestPathToLocations(
         from: Pair<Int, Int>,
         to: List<Pair<Int, Int>>,
         travelAmount: Int
-    ): Pair<Pair<Pair<Int, Int>, Int>, Int> {
+    ): Pair<Pair<Pair<Pair<Int, Int>, Int>, Int>, Int> {
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
@@ -100,11 +100,11 @@ class NavigationManager(
         // Filter the possible locations by the distances to the origin and return the lowest tileId
         // If there is no location to travel to, return current location
         val tileIDLocationToTravelTo = filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(to, distances)
-        if (tileIDLocationToTravelTo == -1) return Pair(Pair(from, tileIdOfLocation), 0)
+        if (tileIDLocationToTravelTo == -1) return Pair(Pair(Pair(from, tileIdOfLocation), 0), tileIdOfLocation)
 
         // Get the location of the tile to travel to
         val tileLocationToTravelTo = locationByTileId(tileIDLocationToTravelTo)
-            ?: return Pair(Pair(from, tileIdOfLocation), 0)
+            ?: return Pair(Pair(Pair(from, tileIdOfLocation), 0), tileIdOfLocation)
 
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
@@ -115,18 +115,21 @@ class NavigationManager(
         // If we can reach the destination tile, return the destination tile and the distance to travel
         if (goBackInPathByAmountOfTile <= 0) {
             return Pair(
-                Pair(tileLocationToTravelTo, tileIDLocationToTravelTo),
-                distances[tileIDLocationToTravelTo] ?: -1
+                Pair(
+                    Pair(tileLocationToTravelTo, tileIDLocationToTravelTo),
+                    distances[tileIDLocationToTravelTo] ?: -1
+                ),
+                tileIDLocationToTravelTo
             )
         }
 
         // Get the node to travel to, in case we cant travel the whole amount
         var node = tileIDLocationToTravelTo
         (0..<goBackInPathByAmountOfTile).forEach { _ ->
-            node = previousNodes[node] ?: return Pair(Pair(from, tileIdOfLocation), 0)
+            node = previousNodes[node] ?: return Pair(Pair(Pair(from, tileIdOfLocation), 0), tileIdOfLocation)
         }
-        val locationOfDestinationTile = locationByTileId(node) ?: return Pair(Pair(from, tileIdOfLocation), 0)
-        return Pair(Pair(locationOfDestinationTile, node), distances[node] ?: 0)
+        val locationOfDestinationTile = locationByTileId(node) ?: return Pair(Pair(Pair(from, tileIdOfLocation), 0), tileIdOfLocation)
+        return Pair(Pair(Pair(locationOfDestinationTile, node), distances[node] ?: 0), tileIDLocationToTravelTo)
     }
 
     /**
@@ -162,8 +165,8 @@ class NavigationManager(
             val tileIDLocationToTravelTo = possibleLocations.minBy { it }
             tileIDLocationToTravelTo
         } catch (e: NoSuchElementException) {
-
-             -1 // None of the locations can be reached
+            logger.debug("No possible location to travel to")
+            -1 // None of the locations can be reached
         }
     }
 
@@ -213,7 +216,12 @@ class NavigationManager(
                 val isLand = notTraversable.first
                 val isRestricted = notTraversable.second
                 val isNormalTile = !isLand && !isRestricted
-                if (isLand || (isRestricted && !outOfRestriction) || (isNormalTile && outOfRestriction)) continue
+                if (isLand ||
+                    (isRestricted && !outOfRestriction) ||
+                    (isNormalTile && outOfRestriction)
+                ) {
+                    continue
+                }
                 val newDistance = currentDistance + DEFAULT_DISTANCE
 
                 if (newDistance < distances.getValue(neighbor) ||
