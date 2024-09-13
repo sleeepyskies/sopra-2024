@@ -6,10 +6,13 @@ import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
+import de.unisaarland.cs.se.selab.assets.OilSpillEvent
 import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
+import de.unisaarland.cs.se.selab.assets.RestrictionEvent
 import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
@@ -36,6 +39,7 @@ class SimulationParser(
      */
     companion object {
         const val THOUSAND = 1000
+        const val EVENT_LAND = "SIMULATION PARSER: An event occurs on a land tile."
     }
 
     // debug logger
@@ -239,7 +243,36 @@ class SimulationParser(
      * Checks that events only occur on valid tiles.
      */
     private fun crossValidateEventsOnTiles(): Boolean {
-        TODO()
+        // get events
+        val restrictionEvents = this.events.flatMap { it.value }.filterIsInstance<RestrictionEvent>()
+        val oilSpillEvents = this.events.flatMap { it.value }.filterIsInstance<OilSpillEvent>()
+        val stormEvents = this.events.flatMap { it.value }.filterIsInstance<StormEvent>()
+
+        // check restriction events
+        for (event in restrictionEvents) {
+            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+                log.error(EVENT_LAND)
+                return false
+            }
+        }
+
+        // check oilSpillEvents
+        for (event in oilSpillEvents) {
+            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+                log.error(EVENT_LAND)
+                return false
+            }
+        }
+
+        // check stormEvents
+        for (event in stormEvents) {
+            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+                log.error(EVENT_LAND)
+                return false
+            }
+        }
+
+        return true
     }
 
     /**
@@ -313,7 +346,7 @@ class SimulationParser(
     /**
      * Takes a location, and checks whether any of the homeHarbors are reachable from this point.
      */
-    private fun shipCanReachHarbor(location: Pair<Int, Int>, homeHarbors: List<Pair<Int, Int>>) : Boolean {
+    private fun shipCanReachHarbor(location: Pair<Int, Int>, homeHarbors: List<Pair<Int, Int>>): Boolean {
         // check if location is a homeHarbor
         if (homeHarbors.contains(location)) return true
 
