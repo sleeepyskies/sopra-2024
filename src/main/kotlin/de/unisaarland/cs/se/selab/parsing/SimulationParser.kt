@@ -5,15 +5,20 @@ import de.unisaarland.cs.se.selab.Simulator
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.GarbageType
+import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
 import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Task
+import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import de.unisaarland.cs.se.selab.tasks.TaskManager
 import de.unisaarland.cs.se.selab.travelling.TravelManager
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 
 /**
  * SimulationParser receives a map, corporation and scenario file as well as a max tick.
@@ -26,6 +31,16 @@ class SimulationParser(
     private val scenarioFile: String,
     private val maxTick: Int,
 ) {
+    /**
+     * Companion object containing all constants used in SimulationParser
+     */
+    companion object {
+        const val THOUSAND = 1000
+    }
+
+    // debug logger
+    private val log: Log = LogFactory.getLog("debugger")
+
     // data
     private lateinit var corporations: List<Corporation>
     private lateinit var ships: List<Ship>
@@ -95,6 +110,9 @@ class SimulationParser(
         return if (crossValidate()) {
             placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
             makeManagers(scenarioParser.highestGarbageID)
+            // log
+            Logger.initInfo(this.corporationFile)
+            Logger.initInfo(this.scenarioFile)
             Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
         } else {
             null
@@ -124,6 +142,7 @@ class SimulationParser(
         val simData = SimulationData(
             navigationManager,
             corporations,
+            ships,
             garbage,
             mutableListOf(),
             events,
@@ -140,24 +159,80 @@ class SimulationParser(
     }
 
     /**
-     * Checks that harbors only occur on shore tiles.
+     * Checks that harbors only occur on shore tiles, as well as non-null tiles.
      */
     private fun crossValidateHarborsOnShores(): Boolean {
-        TODO()
+        // get all harbor locations
+        val locations = this.corporations.flatMap { it.harbors }
+
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null, is SHORE and is a harbor
+            if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
+                log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
+                return false
+            }
+        }
+        return true
     }
 
     /**
      * Checks that ships initial locations are only on valid tiles.
      */
     private fun crossValidateShipsOnTiles(): Boolean {
-        TODO()
+        // get all ship initial locations
+        val locations = this.ships.map { it.location }
+
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null and is not LAND
+            if (tile == null || tile.type == TileType.LAND) {
+                log.error("SIMULATION PARSER: A ship has an invalid initial tile.")
+                return false
+            }
+        }
+        return true
     }
 
     /**
-     * Checks that garbage only occurs on valid tiles.
+     * Checks that garbage only occurs on valid tiles and that no tile has more than 1000 OIL
      */
     private fun crossValidateGarbageOnTiles(): Boolean {
-        TODO()
+        // get all garbage initial locations
+        val locations = this.garbage.map { it.location }
+
+        // check all garbage is on a valid tile
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null and is not LAND
+            if (tile == null || tile.type == TileType.LAND) {
+                log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
+                return false
+            }
+        }
+
+        // make map of tileID to OIL amount
+        val tileOilMap = mutableMapOf<Int, Int>()
+        for (gb in this.garbage) {
+            if (gb.type == GarbageType.OIL) {
+                val currentAmount = tileOilMap.getOrDefault(gb.tileId, 0)
+                tileOilMap[gb.tileId] = currentAmount + gb.amount
+            }
+        }
+
+        // check no tile has more than 1000 OIL
+        if (tileOilMap.values.max() > THOUSAND) {
+            log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
+            return false
+        }
+
+        return true
     }
 
     /**
@@ -171,13 +246,34 @@ class SimulationParser(
      * Checks that all PirateShipAttack Events affect valid ships.
      */
     private fun crossValidateEventsOnShips(): Boolean {
-        TODO()
+        // get list of all events
+        val events = this.events.flatMap { it.value }
+
+        // get only pirate attack events
+        val pirateEvents = events.filterIsInstance<PirateAttackEvent>()
+
+        // check pirates only attack real ships
+        for (attack in pirateEvents) {
+            if (!this.ships.any { it.id == attack.shipID }) {
+                log.error("SIMULATION PARSER: A pirate attack event ${attack.id} has invalid shipID.")
+                return false
+            }
+        }
+
+        return true
     }
 
     /**
      * Checks that all tasks have been correctly assigned to ships.
      */
     private fun crossValidateTasksForShips(): Boolean {
+        TODO()
+    }
+
+    /**
+     * Checks that all ships can reach at least one home harbor.
+     */
+    private fun crossValidateShipsCanReachHarbor(): Boolean {
         TODO()
     }
 
@@ -190,6 +286,7 @@ class SimulationParser(
             crossValidateGarbageOnTiles() &&
             crossValidateEventsOnTiles() &&
             crossValidateEventsOnShips() &&
-            crossValidateTasksForShips()
+            crossValidateTasksForShips() &&
+            crossValidateShipsCanReachHarbor()
     }
 }
