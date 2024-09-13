@@ -353,6 +353,24 @@ class SimulationParser(
     }
 
     /**
+     * Checks that all tasks have an assigned ship and reward ship from the same corporation.
+     */
+    private fun crossValidateRewardAssignedIds(): Boolean {
+        // iterate over all tasks
+        for (task in this.tasks.flatMap { it.value }) {
+            // get ships
+            val rewardShip = this.ships.find { it.id == task.rewardShip }
+            val assignedShip = this.ships.find { it.id == task.assignedShipId }
+            if (rewardShip == null || assignedShip == null || rewardShip.id != assignedShip.id) {
+                log.error("SIMULATION PARSER: The task ${task.id} has an " +
+                        "assigned ship and a reward ship from different corporations.")
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
      * Takes a location, and checks whether any of the homeHarbors are reachable from this point.
      */
     private fun shipCanReachHarbor(location: Pair<Int, Int>, homeHarbors: List<Pair<Int, Int>>): Boolean {
@@ -378,6 +396,7 @@ class SimulationParser(
             crossValidateEventsOnTiles() &&
             crossValidateEventsOnShips() &&
             crossValidateTasksForShips() &&
-            crossValidateShipsCanReachHarbor()
+            crossValidateShipsCanReachHarbor() &&
+            crossValidateRewardAssignedIds()
     }
 }
