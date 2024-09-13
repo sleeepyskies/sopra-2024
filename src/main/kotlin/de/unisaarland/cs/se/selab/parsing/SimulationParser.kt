@@ -5,6 +5,7 @@ import de.unisaarland.cs.se.selab.Simulator
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
@@ -29,6 +30,13 @@ class SimulationParser(
     private val scenarioFile: String,
     private val maxTick: Int,
 ) {
+    /**
+     * Companion object containing all constants used in SimulationParser
+     */
+    companion object {
+        const val THOUSAND = 1000
+    }
+
     // debug logger
     private val log: Log = LogFactory.getLog("debugger")
 
@@ -156,12 +164,11 @@ class SimulationParser(
         // get all harbor locations
         val locations = this.corporations.flatMap { it.harbors }
 
-        // check each tile is a SHORE
         for (location in locations) {
             // get tile
             val tile = navigationManager.tiles[location]
 
-            // check tile non-null
+            // check tile non-null, is SHORE and is a harbor
             if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
                 log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
                 return false
@@ -177,12 +184,11 @@ class SimulationParser(
         // get all ship initial locations
         val locations = this.ships.map { it.location }
 
-        // check each tile is a SHORE
         for (location in locations) {
             // get tile
             val tile = navigationManager.tiles[location]
 
-            // check tile non-null
+            // check tile non-null and is not LAND
             if (tile == null || tile.type == TileType.LAND) {
                 log.error("SIMULATION PARSER: A ship has an invalid initial tile.")
                 return false
@@ -192,10 +198,40 @@ class SimulationParser(
     }
 
     /**
-     * Checks that garbage only occurs on valid tiles.
+     * Checks that garbage only occurs on valid tiles and that no tile has more than 1000 OIL
      */
     private fun crossValidateGarbageOnTiles(): Boolean {
-        TODO()
+        // get all garbage initial locations
+        val locations = this.garbage.map { it.location }
+
+        // check all garbage is on a valid tile
+        for (location in locations) {
+            // get tile
+            val tile = navigationManager.tiles[location]
+
+            // check tile non-null and is not LAND
+            if (tile == null || tile.type == TileType.LAND) {
+                log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
+                return false
+            }
+        }
+
+        // make map of tileID to OIL amount
+        val tileOilMap = mutableMapOf<Int, Int>()
+        for (gb in this.garbage) {
+            if (gb.type == GarbageType.OIL) {
+                val currentAmount = tileOilMap.getOrDefault(gb.tileId, 0)
+                tileOilMap[gb.tileId] = currentAmount + gb.amount
+            }
+        }
+
+        // check no tile has more than 1000 OIL
+        if (tileOilMap.values.max() > THOUSAND) {
+            log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
+            return false
+        }
+
+        return true
     }
 
     /**
