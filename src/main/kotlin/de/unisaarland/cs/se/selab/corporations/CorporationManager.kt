@@ -46,6 +46,7 @@ class CorporationManager(private val simData: SimulationData) {
     fun moveShipsPhase(corporation: Corporation) {
         Logger.corporationActionMove(corporation.id)
         val gbAssignedAmountList = mutableListOf<Garbage>()
+        scanAll(corporation.ships)
         corporation.ships.forEach {
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val possibleLocationsToMove = determineBehavior(it, corporation)
@@ -74,6 +75,7 @@ class CorporationManager(private val simData: SimulationData) {
             // after every ship of this corporation has moved
             // we set the assignments on the garbage that ships are assigned to  0
             flushAllGarbageAssignments(gbAssignedAmountList)
+            applyTrackersForCorporation(corporation)
         }
     }
 
@@ -112,7 +114,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the cooperation phase.
      */
     fun startCooperationPhase(corporation: Corporation) {
-        TODO()
+
     }
 
     /**
@@ -178,7 +180,17 @@ class CorporationManager(private val simData: SimulationData) {
     fun getInfo(
         corporationId: Int
     ): Triple<Map<Pair<Int, Int>, Pair<Int, Int>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>, List<Pair<Int, Int>>> {
-        TODO()
+        var corp = simData.corporations.get(corporationId)?: return Triple(mapOf(), mapOf(), listOf())
+        // location, shipid-corpid
+        var shipInfo = mutableMapOf<Pair<Int, Int>, Pair<Int, Int>>()
+        // garbageid, location-type
+        var garbageInfo = mutableMapOf<Int,Pair<Pair<Int,Int>,GarbageType>>()
+        var harborInfo = mutableListOf<Pair<Int,Int>>()
+        corp.ships.forEach{ shipInfo.put(it.location, Pair(it.id, corp.id)) }
+        corp.garbage.forEach { t, u -> garbageInfo.put(t, Pair(u, simData.garbage.get(t)?.type ?: GarbageType.NONE)) }
+        harborInfo.addAll(corp.harbors)
+        harborInfo.addAll(corp.knownHarbors)
+        return Triple(shipInfo, garbageInfo, harborInfo)
     }
 
     /**
@@ -225,8 +237,11 @@ class CorporationManager(private val simData: SimulationData) {
      *
      * @param ships The list of ships to scan.
      */
-    fun scanAll(ships: List<Ship>) {
-        TODO()
+    fun scanAll(ships: List<Ship>, corporation: Corporation) {
+        ships.forEach {
+            var scanInfo = scan(it.location,it.visibilityRange)
+            updateInfo(corporation, scanInfo)
+        }
     }
 
     /**
