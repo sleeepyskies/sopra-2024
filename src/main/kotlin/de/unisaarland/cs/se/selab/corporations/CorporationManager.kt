@@ -239,7 +239,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship whose behavior is being determined.
      * @param corporation The corporation to which the ship belongs.
      */
-    fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
+    fun determineBehavior(ship: Ship,corporation: Corporation): List<Pair<Int, Int>> {
         TODO()
     }
 
@@ -414,15 +414,5 @@ class CorporationManager(private val simData: SimulationData) {
             }
         }
         return resultList
-    }
-
-    /**
-     * Finds a cooperator for a ship at a location.
-     *
-     * @param ship The ship for which to find a cooperator.
-     * @param location The location to find a cooperator at.
-     */
-    fun findCooperator(ship: Ship, location: Pair<Int, Int>) {
-        TODO()
     }
 }
