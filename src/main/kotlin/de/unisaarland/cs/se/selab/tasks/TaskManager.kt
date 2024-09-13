@@ -116,11 +116,11 @@ class TaskManager(private val simData: SimulationData) {
      */
     private fun shouldBeAssignedTask(ship: Ship, task: Task): Boolean {
         return !(
-                ship.state == ShipState.NEED_REFUELING_AND_UNLOADING ||
+            ship.state == ShipState.NEED_REFUELING_AND_UNLOADING ||
                 ship.state == ShipState.NEED_REFUELING ||
                 !hasPathToTask(ship, task) ||
                 !canReachTaskAndHarbor(ship, task)
-                )
+            )
     }
 
     /**
