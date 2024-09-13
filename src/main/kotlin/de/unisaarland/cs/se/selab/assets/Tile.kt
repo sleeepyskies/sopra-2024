@@ -14,7 +14,7 @@ class Tile(
 ) {
     var isRestricted: Boolean = false
     private val arrivingGarbage: MutableList<Garbage> = mutableListOf()
-    private val currentGarbage: MutableList<Garbage> = mutableListOf()
+    val currentGarbage: MutableList<Garbage> = mutableListOf()
     private var currentOilAmount: Int = 0
     private var currentChemicalAmount: Int = 0
     private var currentPlasticAmount: Int = 0

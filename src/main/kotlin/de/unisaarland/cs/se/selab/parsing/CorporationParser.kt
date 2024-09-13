@@ -12,6 +12,8 @@ import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.ShipType
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -32,6 +34,7 @@ class CorporationParser(
         private const val ID = "id"
         private const val NAME = "name"
     }
+    private val log: Log = LogFactory.getLog("debugger")
     val corporations = mutableListOf<Corporation>()
     val ships = mutableListOf<Ship>()
     private var validator = initCorporationsSchemaValidator()
@@ -52,7 +55,7 @@ class CorporationParser(
         val corporationsFileContent = try {
             File(fileName).readText()
         } catch (e: IOException) {
-            println("Error reading file: ${e.message}")
+            log.error("CORPORATION PARSER: The file could not be read.", e)
             return false
         }
         val corporationsJson = JsonParser(corporationsFileContent).parse()

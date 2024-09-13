@@ -34,9 +34,6 @@ fun main(args: Array<String>) {
     // Create SimParser
     val simParser = SimulationParser(map, corporations, scenario, maxTick)
 
-    // Parse Files and create simulator
-    val sim = simParser.createSimulator()
-
-    // run -- add sim.run or whatever
-    TODO()
+    // Parse Files, create simulator and run
+    simParser.createSimulator()?.run()
 }

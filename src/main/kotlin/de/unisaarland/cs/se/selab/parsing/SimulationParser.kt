@@ -27,12 +27,12 @@ class SimulationParser(
     private val maxTick: Int,
 ) {
     // data
-    private lateinit var corporations : List<Corporation>
-    private lateinit var ships : List<Ship>
-    private lateinit var events: MutableMap<Int, Event>
+    private lateinit var corporations: List<Corporation>
+    private lateinit var ships: List<Ship>
+    private lateinit var events: MutableMap<Int, List<Event>>
     private lateinit var garbage: MutableList<Garbage>
     private lateinit var rewards: MutableList<Reward>
-    private lateinit var tasks: MutableMap<Int, Task>
+    private lateinit var tasks: MutableMap<Int, List<Task>>
 
     // Managers
     private lateinit var travelManager: TravelManager
@@ -44,13 +44,13 @@ class SimulationParser(
     /**
      * Creates and returns an instantiated Simulator
      */
-    public fun createSimulator(): Simulator? {
+    fun createSimulator(): Simulator? {
         // init map parser
         val mapParser = MapParser(mapFile)
 
         // parse and validate map
         if (mapParser.parseMap()) {
-           // file valid
+            // file valid
             Logger.initInfo(mapFile)
             this.navigationManager = mapParser.getNavManager()
         } else {
@@ -80,10 +80,11 @@ class SimulationParser(
         // parse and validate scenario
         if (scenarioParser.parseScenario()) {
             // file valid
-            this.events = scenarioParser.events
             this.garbage = scenarioParser.garbage
             this.rewards = scenarioParser.rewards
-            this.tasks = scenarioParser.tasks
+            // convert value from MutableList to List
+            this.events = scenarioParser.events.mapValues { entry -> entry.value.toList() }.toMutableMap()
+            this.tasks = scenarioParser.tasks.mapValues { entry -> entry.value.toList() }.toMutableMap()
         } else {
             // file invalid
             Logger.initInfoInvalid(scenarioFile)
@@ -91,29 +92,46 @@ class SimulationParser(
         }
 
         // return final simulator
-        if (crossValidate()) {
-            placeGarbageOnTiles()
-            makeManagers()
-            return Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
+        return if (crossValidate()) {
+            placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
+            makeManagers(scenarioParser.highestGarbageID)
+            Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
         } else {
-            return null
+            null
         }
     }
 
     /**
      * Places all garbage on their correct tile.
      */
-    private fun placeGarbageOnTiles() {
-        TODO()
+    private fun placeGarbageOnTiles(tileXYtoGarbage: Map<Pair<Int, Int>, List<Garbage>>) {
+        for ((loc, tile) in this.navigationManager.tiles) {
+            // get relevant garbage
+            val garbage = tileXYtoGarbage[loc]
+
+            // place on tile
+            if (garbage != null) {
+                tile.currentGarbage.addAll(garbage)
+            }
+        }
     }
 
     /**
      * Creates and sets all managers as well as the sim data.
      */
-    private fun makeManagers() {
+    private fun makeManagers(highestID: Int) {
         // make sim data
-        val simData = SimulationData()
-
+        val simData = SimulationData(
+            navigationManager,
+            corporations,
+            garbage,
+            mutableListOf(),
+            events,
+            tasks,
+            mutableListOf(),
+            rewards,
+            highestID
+        )
 
         this.travelManager = TravelManager(simData)
         this.eventManager = EventManager(simData)
@@ -166,12 +184,12 @@ class SimulationParser(
     /**
      * Calls all cross validation methods
      */
-    private fun crossValidate() : Boolean {
+    private fun crossValidate(): Boolean {
         return crossValidateHarborsOnShores() &&
-                crossValidateShipsOnTiles() &&
-                crossValidateGarbageOnTiles() &&
-                crossValidateEventsOnTiles() &&
-                crossValidateEventsOnShips() &&
-                crossValidateTasksForShips()
+            crossValidateShipsOnTiles() &&
+            crossValidateGarbageOnTiles() &&
+            crossValidateEventsOnTiles() &&
+            crossValidateEventsOnShips() &&
+            crossValidateTasksForShips()
     }
 }
