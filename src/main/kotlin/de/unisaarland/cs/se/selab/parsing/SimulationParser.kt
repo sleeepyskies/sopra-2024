@@ -186,6 +186,13 @@ class SimulationParser(
     }
 
     /**
+     * Checks that all ships can reach at least one home harbor.
+     */
+    private fun crossValidateShipsCanReachHarbor(): Boolean {
+        TODO()
+    }
+
+    /**
      * Calls all cross validation methods
      */
     private fun crossValidate(): Boolean {
@@ -194,6 +201,7 @@ class SimulationParser(
             crossValidateGarbageOnTiles() &&
             crossValidateEventsOnTiles() &&
             crossValidateEventsOnShips() &&
-            crossValidateTasksForShips()
+            crossValidateTasksForShips() &&
+            crossValidateShipsCanReachHarbor()
     }
 }
