@@ -1,5 +1,6 @@
 package de.unisaarland.cs.se.selab.events
 
+import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
@@ -18,7 +19,12 @@ import de.unisaarland.cs.se.selab.assets.TileType
  * It is also responsible for notifying the simulation of the events that have occurred.
  */
 class EventManager(private val simulationData: SimulationData) {
-    private fun startEventPhase() {
+    /**
+     * Starts the event phase of the simulation.
+     * This method is responsible for checking the active events and reducing their duration.
+     * It also checks for ending events and applies the effects of the events.
+     */
+    fun startEventPhase() {
         val activeEvents = simulationData.activeEvents
         // Filter out non-ending restriction events
         val nonEndingRestrictionEvents = activeEvents.filterNot { it is RestrictionEvent }
@@ -69,63 +75,65 @@ class EventManager(private val simulationData: SimulationData) {
     private fun checkScheduledEvents() {
         val scheduledEvents = simulationData.scheduledEvents
         val currentTick = simulationData.tick
-        val eventsOnCurrentTick = scheduledEvents[currentTick]
-        if (eventsOnCurrentTick != null) {
-            simulationData.activeEvents.addAll(eventsOnCurrentTick)
-            scheduledEvents.remove(currentTick)
-            val restrictedEvents = eventsOnCurrentTick.filterIsInstance<RestrictionEvent>()
-            applyRestriction(restrictedEvents)
-            val oilEvents = eventsOnCurrentTick.filterIsInstance<OilSpillEvent>()
-            applyOilSpillEvent(oilEvents)
-            val stormEvents = eventsOnCurrentTick.filterIsInstance<StormEvent>()
-            applyStormEvent(stormEvents)
-            val pirateEvents = eventsOnCurrentTick.filterIsInstance<PirateAttackEvent>()
-            applyPirateAttack(pirateEvents)
+        scheduledEvents[currentTick]?.sortedBy { it.id }?.forEach {
+            when (it) {
+                is OilSpillEvent -> {
+                    applyOilSpillEvent(it)
+                    Logger.event(it.id, it.type.toString())
+                }
+                is StormEvent -> {
+                    applyStormEvent(it)
+                    Logger.event(it.id, it.type.toString())
+                }
+                is PirateAttackEvent -> {
+                    applyPirateAttack(it)
+                    Logger.event(it.id, it.type.toString())
+                }
+                is RestrictionEvent -> {
+                    applyRestriction(it)
+                    Logger.event(it.id, it.type.toString())
+                }
+            }
         }
     }
-    private fun applyOilSpillEvent(oilSpillEvents: List<OilSpillEvent>) {
-        for (event in oilSpillEvents) {
-            val location = event.location
-            val radius = event.radius
-            val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
-            val updateToCorporations: MutableList<Garbage> = mutableListOf()
-            val tilesToUpdate: MutableList<Tile> = mutableListOf()
-            for (coordinates in coordinatesList) {
-                val currentTile = simulationData.navigationManager.findTile(coordinates)
-                if (currentTile == null ||
-                    currentTile.currentOilAmount >= currentTile.oilMaxCapacity || currentTile.type == TileType.LAND
-                ) {
-                    continue
-                }
-                processTile(currentTile, event, updateToCorporations, tilesToUpdate)
+    private fun applyOilSpillEvent(event: OilSpillEvent) {
+        val location = event.location
+        val radius = event.radius
+        val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+        val updateToCorporations: MutableList<Garbage> = mutableListOf()
+        val tilesToUpdate: MutableList<Tile> = mutableListOf()
+        for (coordinates in coordinatesList) {
+            val currentTile = simulationData.navigationManager.findTile(coordinates)
+            if (currentTile == null ||
+                currentTile.currentOilAmount >= currentTile.oilMaxCapacity || currentTile.type == TileType.LAND
+            ) {
+                continue
             }
-            updateCorporations(updateToCorporations)
-            updateTiles(tilesToUpdate)
+            processTile(currentTile, event, updateToCorporations, tilesToUpdate)
         }
+        updateCorporations(updateToCorporations)
+        updateTiles(tilesToUpdate)
     }
 
-    private fun applyRestriction(restrictedEvents: List<RestrictionEvent>) {
-        for (event in restrictedEvents) {
-            val location = event.location
-            val radius = event.radius
-            val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
-            // initialize and update graph structure function.
-            for (coordinates in coordinatesList) {
-                val currentTile = simulationData.navigationManager.findTile(coordinates)
-                currentTile?.isRestricted = true
-            }
+    private fun applyRestriction(event: RestrictionEvent) {
+        val location = event.location
+        val radius = event.radius
+        val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+        // initialize and update graph structure function.
+        for (coordinates in coordinatesList) {
+            val currentTile = simulationData.navigationManager.findTile(coordinates)
+            currentTile?.isRestricted = true
         }
         simulationData.navigationManager.initializeAndUpdateGraphStructure()
+        simulationData.activeEvents.add(event)
     }
-    private fun applyStormEvent(stormEvents: List<StormEvent>) {
-        for (event in stormEvents) {
-            val location = event.location
-            val radius = event.radius
-            val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
-            for (coordinates in coordinatesList) {
-                val tileAffectedByStorm = simulationData.navigationManager.findTile(coordinates) ?: continue
-                handleGarbageDrift(tileAffectedByStorm, coordinates, event.direction, event.speed)
-            }
+    private fun applyStormEvent(event: StormEvent) {
+        val location = event.location
+        val radius = event.radius
+        val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+        for (coordinates in coordinatesList) {
+            val tileAffectedByStorm = simulationData.navigationManager.findTile(coordinates) ?: continue
+            handleGarbageDrift(tileAffectedByStorm, coordinates, event.direction, event.speed)
         }
     }
     private fun handleGarbageDrift(tile: Tile, coordinates: Pair<Int, Int>, direction: Direction, speed: Int) {
@@ -141,16 +149,14 @@ class EventManager(private val simulationData: SimulationData) {
             }
         }
     }
-    private fun applyPirateAttack(pirateAttackEvents: List<PirateAttackEvent>) {
-        for (event in pirateAttackEvents) {
-            val shipID = event.shipID
-            val ship = simulationData.ships.find { it.id == shipID } ?: continue
-            val corporationIdOfShip = ship.corporation
-            // Searches for a Corporation, which owns the ship and removes the ship from the corporation.
-            simulationData.corporations.find { it.id == corporationIdOfShip }?.ships?.remove(ship)
-            simulationData.ships.remove(ship)
-            // Handling pirate attack: remove ship from corporation, remove from simulation data.
-        }
+    private fun applyPirateAttack(event: PirateAttackEvent) {
+        val shipID = event.shipID
+        val ship = simulationData.ships.find { it.id == shipID } ?: return
+        val corporationIdOfShip = ship.corporation
+        // Searches for a Corporation, which owns the ship and removes the ship from the corporation.
+        simulationData.corporations.find { it.id == corporationIdOfShip }?.ships?.remove(ship)
+        simulationData.ships.remove(ship)
+        // Handling pirate attack: remove ship from corporation, remove from simulation data.
     }
     private fun processTile(
         currentTile: Tile,
