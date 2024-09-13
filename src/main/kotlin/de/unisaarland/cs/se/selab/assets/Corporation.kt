@@ -27,5 +27,5 @@ data class Corporation(
 
     // shipId, corporationId, location
     val knownShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
-    val lastCooperatedWith: Int = -1
+    var lastCooperatedWith: Int = -1
 }

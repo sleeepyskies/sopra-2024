@@ -1,11 +1,11 @@
 package de.unisaarland.cs.se.selab.corporations
 
 import de.unisaarland.cs.se.selab.Logger
-import de.unisaarland.cs.se.selab.assets.*
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.ShipType
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Tile
@@ -88,22 +88,33 @@ class CorporationManager(private val simData: SimulationData) {
         Logger.corporationActionCollectGarbage(corporation.id)
         corporation.ships.filter {
             it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.isNotEmpty()
-        }.forEach {
-            var tile = simData.navigationManager.findTile(it.location) ?: return
-            var gbList = tile.getGarbageByLowestID()
-            gbList.forEach { gb ->
-                if (corporation.collectableGarbageTypes.contains(gb.type)) {
-                    when (gb.type) {
-                        GarbageType.PLASTIC -> {
-                            if (checkEnoughShipsForPlasticRemoval(tile, getShipsOnTile(tile.location))) {
-                                collectGarbageOnTile(gb, it)
-                            }
-                        }
-                        GarbageType.OIL -> { collectGarbageOnTile(gb, it) }
-                        GarbageType.CHEMICALS -> { collectGarbageOnTile(gb, it) }
-                        GarbageType.NONE -> {}
-                    }
+        }.forEach { ship ->
+            val tile = simData.navigationManager.findTile(ship.location) ?: return
+            processGarbageOnTile(tile, ship, corporation)
+        }
+    }
+
+    private fun processGarbageOnTile(tile: Tile, ship: Ship, corporation: Corporation) {
+        val gbList = tile.getGarbageByLowestID()
+        gbList.forEach { gb ->
+            if (corporation.collectableGarbageTypes.contains(gb.type)) {
+                handleGarbageType(gb, tile, ship)
+            }
+        }
+    }
+
+    private fun handleGarbageType(gb: Garbage, tile: Tile, ship: Ship) {
+        when (gb.type) {
+            GarbageType.PLASTIC -> {
+                if (checkEnoughShipsForPlasticRemoval(tile, getShipsOnTile(tile.location))) {
+                    collectGarbageOnTile(gb, ship)
                 }
+            }
+            GarbageType.OIL, GarbageType.CHEMICALS -> {
+                collectGarbageOnTile(gb, ship)
+            }
+            GarbageType.NONE -> {
+                // No action needed
             }
         }
     }
@@ -114,6 +125,17 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the cooperation phase.
      */
     fun startCooperationPhase(corporation: Corporation) {
+        Logger.corporationActionCooperate(corporation.id)
+        corporation.ships.filter { it.hasRadio || it.type == ShipType.COORDINATING_SHIP }.forEach {
+            getShipsOnTile(it.location).forEach { target ->
+                val targetsCorp = simData.corporations.get(target.corporation)
+                if (corporation.lastCooperatedWith != targetsCorp.id) {
+                    corporation.lastCooperatedWith = targetsCorp.id
+                    updateInfo(corporation, getInfo(targetsCorp.id))
+                    Logger.cooperate(corporation.id, targetsCorp.id, it.id, target.id)
+                }
+            }
+        }
     }
 
     /**
@@ -308,7 +330,11 @@ class CorporationManager(private val simData: SimulationData) {
             List<Pair<Int, Int>>
             >
     ): Boolean {
-        TODO()
+        // location, shipid-corpid is the order for the first map
+        info.first.forEach { (k, v) -> corporation.knownShips[v.first] = Pair(v.second, k) }
+        corporation.garbage.putAll(info.second)
+        corporation.knownHarbors.addAll(info.third)
+        return true
     }
 
     /**
@@ -404,31 +430,22 @@ class CorporationManager(private val simData: SimulationData) {
         // assigning the capacities as long as they exist for garbage on tile from the lowest id
         tile.getGarbageByLowestID().forEach { gb ->
             when (gb.type) {
-                GarbageType.PLASTIC -> {
-                    if (pCap > 0) {
-                        gb.assignedCapacity += if (pCap > gb.amount) gb.amount else pCap
-                        pCap = (pCap - gb.amount).coerceAtLeast(0)
-                        gbAssignedAmountList.add(gb)
-                    }
-                }
-                GarbageType.OIL -> {
-                    if (oCap > 0) {
-                        gb.assignedCapacity += if (oCap > gb.amount) gb.amount else oCap
-                        oCap = (oCap - gb.amount).coerceAtLeast(0)
-                        gbAssignedAmountList.add(gb)
-                    }
-                }
-                GarbageType.CHEMICALS -> {
-                    if (cCap > 0) {
-                        gb.assignedCapacity += if (cCap > gb.amount) gb.amount else cCap
-                        cCap = (cCap - gb.amount).coerceAtLeast(0)
-                        gbAssignedAmountList.add(gb)
-                    }
-                }
+                GarbageType.PLASTIC -> pCap = assignCapacity(gb, pCap, gbAssignedAmountList)
+                GarbageType.OIL -> oCap = assignCapacity(gb, oCap, gbAssignedAmountList)
+                GarbageType.CHEMICALS -> cCap = assignCapacity(gb, cCap, gbAssignedAmountList)
                 GarbageType.NONE -> {}
             }
         }
         return gbAssignedAmountList
+    }
+    private fun assignCapacity(garbage: Garbage, capacity: Int, gbAssignedAmountList: MutableList<Garbage>): Int {
+        if (capacity > 0) {
+            val assignedAmount = if (capacity > garbage.amount) garbage.amount else capacity
+            garbage.assignedCapacity += assignedAmount
+            gbAssignedAmountList.add(garbage)
+            return (capacity - assignedAmount).coerceAtLeast(0)
+        }
+        return capacity
     }
 
     /**
@@ -476,16 +493,13 @@ class CorporationManager(private val simData: SimulationData) {
      * @return The list of ships on the tile.
      */
     fun getShipsOnTile(location: Pair<Int, Int>): List<Ship> {
-        TODO()
-    }
-
-    /**
-     * Finds a cooperator for a ship at a location.
-     *
-     * @param ship The ship for which to find a cooperator.
-     * @param location The location to find a cooperator at.
-     */
-    fun findCooperator(ship: Ship, location: Pair<Int, Int>) {
-        TODO()
+        val resultList = mutableListOf<Ship>()
+        val shipsOfCorp = simData.corporations.flatMap { it.ships }
+        for (ship in shipsOfCorp) {
+            if (ship.location == location) {
+                resultList.add(ship)
+            }
+        }
+        return resultList
     }
 }
