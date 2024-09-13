@@ -178,6 +178,7 @@ class MapParser(
         for ((location, tile) in this.map) {
             val neighbors = getTilesNeighbors(location)
             if (!validateNeighbors(tile, neighbors)) {
+                log.error("MAP PARSER: Tile ${tile.id} does not have correct neighbor tile types.")
                 return false
             }
         }
