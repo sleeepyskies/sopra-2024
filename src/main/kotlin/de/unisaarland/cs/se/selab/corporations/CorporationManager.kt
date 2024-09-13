@@ -30,7 +30,7 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun startCorporatePhase() {
         simData.corporations.forEach {
-            scanAll(it.ships)
+            scanAll(it.ships, it)
             moveShipsPhase(it)
             startCollectGarbagePhase(it)
             startCooperationPhase(it)
@@ -46,7 +46,7 @@ class CorporationManager(private val simData: SimulationData) {
     fun moveShipsPhase(corporation: Corporation) {
         Logger.corporationActionMove(corporation.id)
         val gbAssignedAmountList = mutableListOf<Garbage>()
-        scanAll(corporation.ships)
+        scanAll(corporation.ships, corporation)
         corporation.ships.forEach {
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val possibleLocationsToMove = determineBehavior(it, corporation)
@@ -114,7 +114,6 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the cooperation phase.
      */
     fun startCooperationPhase(corporation: Corporation) {
-
     }
 
     /**
@@ -180,14 +179,22 @@ class CorporationManager(private val simData: SimulationData) {
     fun getInfo(
         corporationId: Int
     ): Triple<Map<Pair<Int, Int>, Pair<Int, Int>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>, List<Pair<Int, Int>>> {
-        var corp = simData.corporations.get(corporationId)?: return Triple(mapOf(), mapOf(), listOf())
+        var corp = simData.corporations.get(corporationId) ?: return Triple(mapOf(), mapOf(), listOf())
         // location, shipid-corpid
         var shipInfo = mutableMapOf<Pair<Int, Int>, Pair<Int, Int>>()
         // garbageid, location-type
-        var garbageInfo = mutableMapOf<Int,Pair<Pair<Int,Int>,GarbageType>>()
-        var harborInfo = mutableListOf<Pair<Int,Int>>()
-        corp.ships.forEach{ shipInfo.put(it.location, Pair(it.id, corp.id)) }
-        corp.garbage.forEach { t, u -> garbageInfo.put(t, Pair(u, simData.garbage.get(t)?.type ?: GarbageType.NONE)) }
+        var garbageInfo = mutableMapOf<Int, Pair<Pair<Int, Int>, GarbageType>>()
+        var harborInfo = mutableListOf<Pair<Int, Int>>()
+        corp.ships.forEach { shipInfo.put(it.location, Pair(it.id, corp.id)) }
+        corp.knownShips.forEach { t, (u, loc) ->
+            shipInfo.put(loc, Pair(t, u))
+        }
+        corp.garbage.forEach { t, (u, type) ->
+            garbageInfo.put(t, Pair(u, type))
+        }
+        corp.visibleGarbage.forEach { t, (u, type) ->
+            garbageInfo.put(t, Pair(u, type))
+        }
         harborInfo.addAll(corp.harbors)
         harborInfo.addAll(corp.knownHarbors)
         return Triple(shipInfo, garbageInfo, harborInfo)
@@ -239,7 +246,7 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun scanAll(ships: List<Ship>, corporation: Corporation) {
         ships.forEach {
-            var scanInfo = scan(it.location,it.visibilityRange)
+            var scanInfo = scan(it.location, it.visibilityRange)
             updateInfo(corporation, scanInfo)
         }
     }
@@ -250,7 +257,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @param garbageList The list of garbage to flush assignments for.
      */
     fun flushAllGarbageAssignments(garbageList: List<Garbage>) {
-        TODO()
+        garbageList.forEach { it.assignedCapacity = 0 }
     }
 
     /**
@@ -259,17 +266,21 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation to apply trackers for.
      */
     fun applyTrackersForCorporation(corporation: Corporation) {
-        TODO()
+        corporation.ships.filter { it.hasTracker }.forEach { ship ->
+            simData.garbage.filter {
+                it.location == ship.location
+            }.forEach { it.trackedBy.add(corporation.id) }
+        }
     }
 
     /**
      * Checks if there is a restriction at a location.
      *
      * @param location The location to check.
-     * @return True if there is a restriction, false otherwise.
+     * @return Returns is restricted, true if the tile doesn't exist.
      */
     fun checkRestriction(location: Pair<Int, Int>): Boolean {
-        TODO()
+        return simData.navigationManager.findTile(location)?.isRestricted ?: true
     }
 
     /**

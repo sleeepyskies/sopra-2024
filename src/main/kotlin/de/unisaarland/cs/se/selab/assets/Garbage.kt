@@ -18,7 +18,7 @@ data class Garbage(
     var tileId: Int,
     var location: Pair<Int, Int>,
     var assignedCapacity: Int = 0,
-    var trackedBy: List<Int> = listOf()
+    var trackedBy: MutableList<Int> = mutableListOf()
 ) {
     companion object {
         private const val num = 50
