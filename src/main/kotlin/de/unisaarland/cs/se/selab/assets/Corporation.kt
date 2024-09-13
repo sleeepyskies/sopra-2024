@@ -26,6 +26,6 @@ data class Corporation(
     val knownHarbors: MutableList<Pair<Int, Int>> = mutableListOf()
 
     // shipId, corporationId, location
-    val knownShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
+    val visibleShips: MutableMap<Int, Pair<Int, Pair<Int, Int>>> = mutableMapOf()
     var lastCooperatedWith: Int = -1
 }
