@@ -17,7 +17,6 @@ import java.io.IOException
  * Parses map data from a file.
  *
  * @property mapFilePath The file path to the provided map file.
- * @property navigationManager The navigation manager to use.
  */
 class MapParser(
     private val mapFilePath: String
@@ -77,7 +76,7 @@ class MapParser(
         // validate the map
         success = success && validateMapProperties()
 
-        return true
+        return success
     }
 
     /**
@@ -176,7 +175,62 @@ class MapParser(
      * @return True if valid, false otherwise
      */
     private fun validateMapProperties(): Boolean {
+        for ((location, tile) in this.map) {
+            val neighbors = getTilesNeighbors(location)
+            if (!validateNeighbors(tile, neighbors)) {
+                return false
+            }
+        }
         return true
+    }
+
+    /**
+     * Checks if the given tile type is valid against its neighbors tile types.
+     * @param tile The center tile
+     * @param neighbors The neighboring tiles
+     * @return true if this is a match, false otherwise
+     */
+    private fun validateNeighbors(tile: Tile, neighbors: List<Tile>): Boolean {
+        return when (tile.type) {
+            TileType.LAND -> neighbors.all {
+                it.type == TileType.LAND || it.type == TileType.SHORE
+            }
+            TileType.SHORE -> neighbors.all {
+                it.type == TileType.LAND || it.type == TileType.SHORE || it.type == TileType.SHALLOW_OCEAN
+            }
+            TileType.SHALLOW_OCEAN -> neighbors.all {
+                it.type == TileType.SHORE || it.type == TileType.SHALLOW_OCEAN || it.type == TileType.DEEP_OCEAN
+            }
+            TileType.DEEP_OCEAN -> neighbors.all { it.type == TileType.SHALLOW_OCEAN || it.type == TileType.DEEP_OCEAN }
+        }
+    }
+
+    /**
+     * Provides all direct neighbors of the given tile
+     * @param location The location of the tile
+     * @return a list of neighbors, may be empty if there are no neighbors
+     */
+    private fun getTilesNeighbors(location: Pair<Int, Int>): List<Tile> {
+        // return list
+        val neighbors = mutableListOf<Tile>()
+
+        // get cords
+        val (x, y) = location
+        val directions = listOf(
+            Pair(x, y - 1), // NorthWest
+            Pair(x, y - 1), // NorthEast
+            Pair(x + 1, y), // East
+            Pair(x + 1, y + 1), // SouthEast
+            Pair(x, y + 1), // SouthWest
+            Pair(x - 1, y) // West
+        )
+
+        // only add to neighbors if tile exists
+        for (direction in directions) {
+            this.map[direction]?.let { neighbors.add(it) }
+        }
+
+        return neighbors.toList()
     }
 
     /**
