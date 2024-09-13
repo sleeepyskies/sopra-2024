@@ -250,7 +250,10 @@ class SimulationParser(
 
         // check restriction events
         for (event in restrictionEvents) {
-            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+            if (
+                this.navigationManager.tiles[event.location] == null ||
+                this.navigationManager.tiles[event.location]!!.type == TileType.LAND
+            ) {
                 log.error(EVENT_LAND)
                 return false
             }
@@ -258,7 +261,10 @@ class SimulationParser(
 
         // check oilSpillEvents
         for (event in oilSpillEvents) {
-            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+            if (
+                this.navigationManager.tiles[event.location] == null ||
+                this.navigationManager.tiles[event.location]!!.type == TileType.LAND
+            ) {
                 log.error(EVENT_LAND)
                 return false
             }
@@ -266,7 +272,10 @@ class SimulationParser(
 
         // check stormEvents
         for (event in stormEvents) {
-            if (this.navigationManager.tiles[event.location]!!.type == TileType.LAND) {
+            if (
+                this.navigationManager.tiles[event.location] == null ||
+                this.navigationManager.tiles[event.location]!!.type == TileType.LAND
+            ) {
                 log.error(EVENT_LAND)
                 return false
             }
