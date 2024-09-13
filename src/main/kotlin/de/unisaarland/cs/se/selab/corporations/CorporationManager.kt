@@ -149,57 +149,66 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun startRefuelUnloadPhase(corporation: Corporation) {
         Logger.corporationActionRefuel(corporation.id)
-        // check if the ship is at a harbor
-        // if it is at a harbor then refuel and unload
-        // get the ships of the corporation
+        val shipsInHarbor = getShipsInHarbor(corporation)
+        for (ship in shipsInHarbor) {
+            handleRefuel(ship)
+            handleUnload(ship)
+            handleRefuelAndUnload(ship)
+        }
+    }
+
+    private fun getShipsInHarbor(corporation: Corporation): List<Ship> {
         val corporationShips = corporation.ships
-        // get the harbors of the corporation
         val corporationHarbors = corporation.harbors
-        // getting a list of ships that are in the harbor
-        val shipsInHarbor = corporationShips.filter { ship ->
+        return corporationShips.filter { ship ->
             corporationHarbors.any { harbor -> harbor == ship.location }
         }.sortedBy { it.id }
-        for (ship in shipsInHarbor) {
-            // refuel the ship
-            if (ship.state == ShipState.NEED_REFUELING) {
-                ship.refuel()
-                ship.state = ShipState.DEFAULT
-                Logger.refuel(ship.id, ship.tileId)
+    }
+
+    private fun handleRefuel(ship: Ship) {
+        if (ship.state == ShipState.NEED_REFUELING) {
+            ship.refuel()
+            ship.state = ShipState.DEFAULT
+            Logger.refuel(ship.id, ship.tileId)
+        }
+    }
+
+    private fun handleUnload(ship: Ship) {
+        if (ship.state == ShipState.NEED_UNLOADING) {
+            val unloadedMap = ship.unload()
+            if (unloadedMap[GarbageType.PLASTIC] != 0) {
+                Logger.unload(
+                    ship.id,
+                    unloadedMap[GarbageType.PLASTIC] ?: 0,
+                    GarbageType.PLASTIC.toString(),
+                    ship.tileId
+                )
             }
-            // unload the garbage
-            if (ship.state == ShipState.NEED_UNLOADING) {
-                val unloadedMap = ship.unload()
-                if (unloadedMap[GarbageType.PLASTIC] != 0) {
-                    Logger.unload(
-                        ship.id,
-                        unloadedMap[GarbageType.PLASTIC] ?: 0,
-                        GarbageType.PLASTIC.toString(),
-                        ship.tileId
-                    )
-                }
-                if (unloadedMap[GarbageType.OIL] != 0) {
-                    Logger.unload(
-                        ship.id,
-                        unloadedMap[GarbageType.OIL] ?: 0,
-                        GarbageType.OIL.toString(),
-                        ship.tileId
-                    )
-                }
-                if (unloadedMap[GarbageType.CHEMICALS] != 0) {
-                    Logger.unload(
-                        ship.id,
-                        unloadedMap[GarbageType.CHEMICALS] ?: 0,
-                        GarbageType.CHEMICALS.toString(),
-                        ship.tileId
-                    )
-                }
-                ship.state = ShipState.DEFAULT
+            if (unloadedMap[GarbageType.OIL] != 0) {
+                Logger.unload(
+                    ship.id,
+                    unloadedMap[GarbageType.OIL] ?: 0,
+                    GarbageType.OIL.toString(),
+                    ship.tileId
+                )
             }
-            if (ship.state == ShipState.NEED_REFUELING_AND_UNLOADING) {
-                ship.state = ShipState.NEED_UNLOADING
-                ship.refuel()
-                Logger.refuel(ship.id, ship.tileId)
+            if (unloadedMap[GarbageType.CHEMICALS] != 0) {
+                Logger.unload(
+                    ship.id,
+                    unloadedMap[GarbageType.CHEMICALS] ?: 0,
+                    GarbageType.CHEMICALS.toString(),
+                    ship.tileId
+                )
             }
+            ship.state = ShipState.DEFAULT
+        }
+    }
+
+    private fun handleRefuelAndUnload(ship: Ship) {
+        if (ship.state == ShipState.NEED_REFUELING_AND_UNLOADING) {
+            ship.state = ShipState.NEED_UNLOADING
+            ship.refuel()
+            Logger.refuel(ship.id, ship.tileId)
         }
     }
 
@@ -294,7 +303,7 @@ class CorporationManager(private val simData: SimulationData) {
         }
     }
 
-    fun checkShipOnHarborAndNeedsToRefuelOrUnload(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
+    private fun checkShipOnHarborAndNeedsToRefuelOrUnload(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
         val shipLocation = ship.location
         val shipIsOnHarbor = corporation.harbors.any { it == shipLocation }
         if (shipIsOnHarbor) {
@@ -320,52 +329,76 @@ class CorporationManager(private val simData: SimulationData) {
         val shipType = ship.type
         val shipLocation = ship.location
         val shipMaxTravelDistance = (ship.currentVelocity + ship.acceleration) / VELOCITY_DIVISOR
+
         if (checkRestriction(ship.location)) {
             return listOf(
                 simData.navigationManager.getDestinationOutOfRestriction(
                     ship.location,
-                    (ship.currentVelocity + ship.acceleration) / VELOCITY_DIVISOR
+                    shipMaxTravelDistance
                 )
             )
         }
 
         if (checkShipOnHarborAndNeedsToRefuelOrUnload(ship, corporation).isNotEmpty()) return listOf(shipLocation)
         checkNeedRefuelOrUnload(ship, corporation)
-        when (shipState) {
+
+        return when (shipState) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
-                return corporation.harbors
+                handleRefuelOrUnloadState(corporation)
             }
             ShipState.WAITING_FOR_PLASTIC -> {
-                return listOf(shipLocation)
+                handleWaitingForPlasticState(shipLocation)
             }
             ShipState.TASKED -> {
-                val task = simData.activeTasks.find { it.assignedShipId == ship.id } ?: return listOf(shipLocation)
-                val location = simData.navigationManager
-                    .locationByTileId(task.targetTileId) ?: return listOf(shipLocation)
-                return listOf(location)
+                handleTaskedState(ship)
             }
             ShipState.DEFAULT -> {
-                when (shipType) {
-                    ShipType.COLLECTING_SHIP -> {
-                        if (corporation.visibleGarbage.isNotEmpty()) {
-                            return corporation.visibleGarbage.map { it.value.first }.toList()
-                        }
-                        return listOf(shipLocation)
-                    }
-                    ShipType.COORDINATING_SHIP -> {
-                        if (corporation.visibleShips.isNotEmpty()) {
-                            return corporation.visibleShips.map { it.value.second }.toList()
-                        }
-                        return listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
-                    }
-                    ShipType.SCOUTING_SHIP -> {
-                        if (corporation.visibleGarbage.isNotEmpty()) {
-                            return corporation.visibleGarbage.map { it.value.first }.toList()
-                        }
-                        if (corporation.garbage.isNotEmpty()) return corporation.garbage.map { it.value.first }.toList()
-                        return listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
-                    }
+                handleDefaultState(shipType, shipLocation, shipMaxTravelDistance, corporation)
+            }
+        }
+    }
+
+    private fun handleRefuelOrUnloadState(corporation: Corporation): List<Pair<Int, Int>> {
+        return corporation.harbors
+    }
+
+    private fun handleWaitingForPlasticState(shipLocation: Pair<Int, Int>): List<Pair<Int, Int>> {
+        return listOf(shipLocation)
+    }
+
+    private fun handleTaskedState(ship: Ship): List<Pair<Int, Int>> {
+        val task = simData.activeTasks.find { it.assignedShipId == ship.id } ?: return listOf(ship.location)
+        val location = simData.navigationManager.locationByTileId(task.targetTileId) ?: return listOf(ship.location)
+        return listOf(location)
+    }
+
+    private fun handleDefaultState(
+        shipType: ShipType,
+        shipLocation: Pair<Int, Int>,
+        shipMaxTravelDistance: Int,
+        corporation: Corporation
+    ): List<Pair<Int, Int>> {
+        return when (shipType) {
+            ShipType.COLLECTING_SHIP -> {
+                if (corporation.visibleGarbage.isNotEmpty()) {
+                    return corporation.visibleGarbage.map { it.value.first }.toList()
                 }
+                listOf(shipLocation)
+            }
+            ShipType.COORDINATING_SHIP -> {
+                if (corporation.visibleShips.isNotEmpty()) {
+                    return corporation.visibleShips.map { it.value.second }.toList()
+                }
+                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
+            }
+            ShipType.SCOUTING_SHIP -> {
+                if (corporation.visibleGarbage.isNotEmpty()) {
+                    return corporation.visibleGarbage.map { it.value.first }.toList()
+                }
+                if (corporation.garbage.isNotEmpty()) {
+                    return corporation.garbage.map { it.value.first }.toList()
+                }
+                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
             }
         }
     }
