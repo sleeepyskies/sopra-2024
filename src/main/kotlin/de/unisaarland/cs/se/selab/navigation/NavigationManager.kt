@@ -6,6 +6,8 @@ import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import java.util.PriorityQueue
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 
 
 /**
@@ -19,6 +21,7 @@ class NavigationManager(
     companion object {
         private const val DEFAULT_DISTANCE = 10
     }
+    private val logger = LogFactory.getLog("exception_info")
 
     /**
      * Initializes graph structure, goes through each neighbor of a tile by location and adds neighboring tileID's
@@ -74,7 +77,6 @@ class NavigationManager(
      * @param to : the tile to which we want to calculate the distance
      **/
     fun travelDistance(from: Tile, to: Tile): Int {
-        val locationFrom = from.location
         val tileIDTo = to.id
         val (distances, _) = dijkstra(graph, from.id)
         return distances[tileIDTo] ?: -1
@@ -162,7 +164,7 @@ class NavigationManager(
             val tileIDLocationToTravelTo = possibleLocations.minBy { it }
             tileIDLocationToTravelTo
         } catch (e: NoSuchElementException) {
-
+            logger.debug("No possible location to travel to")
              -1 // None of the locations can be reached
         }
     }
@@ -213,7 +215,10 @@ class NavigationManager(
                 val isLand = notTraversable.first
                 val isRestricted = notTraversable.second
                 val isNormalTile = !isLand && !isRestricted
-                if (isLand || (isRestricted && !outOfRestriction) || (isNormalTile && outOfRestriction)) continue
+                if (isLand ||
+                    (isRestricted && !outOfRestriction) ||
+                    (isNormalTile && outOfRestriction)
+                    ) continue
                 val newDistance = currentDistance + DEFAULT_DISTANCE
 
                 if (newDistance < distances.getValue(neighbor) ||
