@@ -8,6 +8,7 @@ import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.ShipType
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Tile
+import kotlin.math.min
 
 /**
  * Manages the corporations in the simulation.
@@ -87,16 +88,18 @@ class CorporationManager(private val simData: SimulationData) {
         }.forEach {
             var tile = simData.navigationManager.findTile(it.location) ?: return
             var gbList = tile.getGarbageByLowestID()
-            gbList.forEach {
-                when (it.type) {
-                    GarbageType.PLASTIC -> {
-                        if (checkEnoughtShipsForPlasticRemoval(tile, getShipsOnTile(tile.location))) {
-
+            gbList.forEach { gb ->
+                if (corporation.collectableGarbageTypes.contains(gb.type)) {
+                    when (gb.type) {
+                        GarbageType.PLASTIC -> {
+                            if (checkEnoughShipsForPlasticRemoval(tile, getShipsOnTile(tile.location))) {
+                                collectGarbageOnTile(gb, it)
+                            }
                         }
+                        GarbageType.OIL -> { collectGarbageOnTile(gb, it) }
+                        GarbageType.CHEMICALS -> { collectGarbageOnTile(gb, it) }
+                        GarbageType.NONE -> {}
                     }
-                    GarbageType.OIL -> TODO()
-                    GarbageType.CHEMICALS -> TODO()
-                    GarbageType.NONE -> TODO()
                 }
             }
         }
@@ -127,8 +130,17 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ships The list of ships to check.
      * @return True if there are enough ships, false otherwise.
      */
-    fun checkEnoughtShipsForPlasticRemoval(tile: Tile, ships: List<Ship>): Boolean {
-        TODO()
+    fun checkEnoughShipsForPlasticRemoval(tile: Tile, ships: List<Ship>): Boolean {
+        return (
+            tile.getGarbageByLowestID().sumOf {
+                when (it.type) {
+                    GarbageType.PLASTIC -> it.amount
+                    else -> 0
+                }
+            }
+                <=
+                ships.sumOf { it.capacityInfo[GarbageType.PLASTIC]?.first ?: 0 }
+            )
     }
 
     /**
@@ -244,14 +256,14 @@ class CorporationManager(private val simData: SimulationData) {
     fun assignCapacityToGarbageList(
         tileId: Int,
         capacities: Map<GarbageType, Pair<Int, Int>>
-    ) : List<Garbage> {
+    ): List<Garbage> {
         val gbAssignedAmountList = mutableListOf<Garbage>()
         val tile = simData.navigationManager.findTile(tileId) ?: return gbAssignedAmountList
         var pCap = capacities[GarbageType.PLASTIC]?.first ?: 0
         var oCap = capacities[GarbageType.OIL]?.first ?: 0
         var cCap = capacities[GarbageType.CHEMICALS]?.first ?: 0
         // assigning the capacities as long as they exist for garbage on tile from the lowest id
-        tile.getGarbageByLowestID().forEach { gb->
+        tile.getGarbageByLowestID().forEach { gb ->
             when (gb.type) {
                 GarbageType.PLASTIC -> {
                     if (pCap > 0) {
@@ -286,6 +298,36 @@ class CorporationManager(private val simData: SimulationData) {
      * @param location The location of the tile.
      */
     fun collectGarbageOnTile(gb: Garbage, ship: Ship) {
+        when (gb.type) {
+            GarbageType.PLASTIC -> {
+                val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.PLASTIC]?.first ?: 0)
+                gb.amount -= collectionAmount
+                ship.capacityInfo[GarbageType.PLASTIC] = Pair(
+                    ship.capacityInfo[GarbageType.PLASTIC]?.first?.minus(collectionAmount) ?: 0,
+                    ship.capacityInfo[GarbageType.PLASTIC]?.second ?: 0
+                )
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+            }
+            GarbageType.OIL -> {
+                val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.OIL]?.first ?: 0)
+                gb.amount -= collectionAmount
+                ship.capacityInfo[GarbageType.OIL] = Pair(
+                    ship.capacityInfo[GarbageType.OIL]?.first?.minus(collectionAmount) ?: 0,
+                    ship.capacityInfo[GarbageType.OIL]?.second ?: 0
+                )
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+            }
+            GarbageType.CHEMICALS -> {
+                val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.CHEMICALS]?.first ?: 0)
+                gb.amount -= collectionAmount
+                ship.capacityInfo[GarbageType.CHEMICALS] = Pair(
+                    ship.capacityInfo[GarbageType.CHEMICALS]?.first?.minus(collectionAmount) ?: 0,
+                    ship.capacityInfo[GarbageType.CHEMICALS]?.second ?: 0
+                )
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+            }
+            GarbageType.NONE -> {}
+        }
     }
 
     /**
