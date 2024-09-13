@@ -95,6 +95,9 @@ class SimulationParser(
         return if (crossValidate()) {
             placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
             makeManagers(scenarioParser.highestGarbageID)
+            // log
+            Logger.initInfo(this.corporationFile)
+            Logger.initInfo(this.scenarioFile)
             Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
         } else {
             null
