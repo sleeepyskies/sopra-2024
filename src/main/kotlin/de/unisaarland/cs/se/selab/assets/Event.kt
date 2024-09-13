@@ -14,7 +14,7 @@ abstract class Event(
 data class PirateAttackEvent(
     override val id: Int,
     override val tick: Int,
-    private val shipID: Int
+    val shipID: Int
 ) : Event(id, tick)
 
 /**
