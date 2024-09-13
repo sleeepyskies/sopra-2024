@@ -142,7 +142,7 @@ class SimulationParser(
         val simData = SimulationData(
             navigationManager,
             corporations,
-            ships,
+            ships.toMutableList(),
             garbage,
             mutableListOf(),
             events,
@@ -264,10 +264,27 @@ class SimulationParser(
     }
 
     /**
-     * Checks that all tasks have been correctly assigned to ships.
+     * Checks that all tasks have been correctly assigned to assigned ships and reward ships.
      */
     private fun crossValidateTasksForShips(): Boolean {
-        TODO()
+        // get tasks
+        val tasks = this.tasks.flatMap { it.value }
+
+        for (task in tasks) {
+            // check assigned ship
+            if (!this.ships.any { it.id == task.assignedShipId }) {
+                log.error("SIMULATION PARSER: The task ${task.id} has an invalid assigned shipID.")
+                return false
+            }
+
+            // check reward ship
+            if (!this.ships.any { it.id == task.rewardId }) {
+                log.error("SIMULATION PARSER: The task ${task.id} has an invalid reward shipID.")
+                return false
+            }
+        }
+
+        return true
     }
 
     /**
