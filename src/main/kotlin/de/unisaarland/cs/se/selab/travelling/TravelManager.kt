@@ -159,7 +159,7 @@ class TravelManager(private val simData: SimulationData) {
         for ((tile, listShips) in shipsOnMap) {
             val startTile = simData.navigationManager.findTile(tile)
             val mutableListShips = listShips.toMutableList()
-            if (startTile == null || startTile.hasCurrent) continue
+            if (startTile == null || !startTile.hasCurrent) continue
             var driftCapacity = startTile.current.intensity
             val direction = startTile.current.direction
             val speed = startTile.current.speed
