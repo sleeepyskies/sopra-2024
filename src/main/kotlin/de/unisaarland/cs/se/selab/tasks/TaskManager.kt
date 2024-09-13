@@ -85,20 +85,10 @@ class TaskManager(private val simData: SimulationData) {
         ship.hasTracker = ship.hasTracker || reward.type == RewardType.TRACKING
         ship.hasRadio = ship.hasRadio || reward.type == RewardType.RADIO
 
-        when (reward.garbageType) {
-            GarbageType.PLASTIC -> {
-                val capacityInfo = ship.capacityInfo
-
-                if (capacityInfo[GarbageType.PLASTIC] != null) {
-                    // capacityInfo[GarbageType.PLASTIC] = capacityInfo[GarbageType.PLASTIC] + reward.capacity
-                }
-            }
-            GarbageType.OIL -> {
-            }
-            GarbageType.CHEMICALS -> {
-            }
-            GarbageType.NONE -> {
-            }
+        val capacityInfo = ship.capacityInfo
+        if (capacityInfo[GarbageType.PLASTIC] != null) {
+            val currentPair = capacityInfo[GarbageType.PLASTIC]!!
+            capacityInfo[GarbageType.PLASTIC] = currentPair.copy(second = currentPair.second + reward.capacity)
         }
 
         // log
