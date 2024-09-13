@@ -124,6 +124,7 @@ class SimulationParser(
         val simData = SimulationData(
             navigationManager,
             corporations,
+            ships,
             garbage,
             mutableListOf(),
             events,
