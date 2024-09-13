@@ -114,6 +114,17 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the cooperation phase.
      */
     fun startCooperationPhase(corporation: Corporation) {
+        Logger.corporationActionCooperate(corporation.id)
+        corporation.ships.filter { it.hasRadio || it.type == ShipType.COORDINATING_SHIP }.forEach {
+            getShipsOnTile(it.location).forEach { target ->
+                val targetsCorp = simData.corporations.get(target.corporation)
+                if (corporation.lastCooperatedWith != targetsCorp.id) {
+                    corporation.lastCooperatedWith = targetsCorp.id
+                    updateInfo(corporation, getInfo(targetsCorp.id))
+                    Logger.cooperate(corporation.id, targetsCorp.id, it.id, target.id)
+                }
+            }
+        }
     }
 
     /**
@@ -236,7 +247,11 @@ class CorporationManager(private val simData: SimulationData) {
             List<Pair<Int, Int>>
             >
     ): Boolean {
-        TODO()
+        // location, shipid-corpid is the order for the first map
+        info.first.forEach { (k, v) -> corporation.knownShips[v.first] = Pair(v.second, k) }
+        corporation.garbage.putAll(info.second)
+        corporation.knownHarbors.addAll(info.third)
+        return true
     }
 
     /**
