@@ -69,8 +69,21 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun startCollectGarbagePhase(corporation: Corporation) {
         Logger.corporationActionCollectGarbage(corporation.id)
-        corporation.ships.filter { it.type == ShipType.COLLECTING_SHIP }.forEach {
-            var tile = simData.navigationManager.findTile(it.location)
+        corporation.ships.filter {
+            it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.isNotEmpty()
+        }.forEach {
+            var tile = simData.navigationManager.findTile(it.location) ?: return
+            var gbList = tile.getGarbageByLowestID()
+            gbList.forEach {
+                when (it.type) {
+                    GarbageType.PLASTIC -> {
+
+                    }
+                    GarbageType.OIL -> TODO()
+                    GarbageType.CHEMICALS -> TODO()
+                    GarbageType.NONE -> TODO()
+                }
+            }
         }
     }
 
