@@ -17,7 +17,7 @@ import de.unisaarland.cs.se.selab.navigation.NavigationManager
 data class SimulationData(
     val navigationManager: NavigationManager,
     var corporations: List<Corporation> = mutableListOf(),
-    var ships: List<Ship> = mutableListOf(),
+    var ships: MutableList<Ship> = mutableListOf(),
     var garbage: MutableList<Garbage> = mutableListOf(),
     var activeEvents: MutableList<Event> = mutableListOf(),
     var scheduledEvents: MutableMap<Int, List<Event>> = mutableMapOf(),
