@@ -444,6 +444,16 @@ class NavigationManager(
         return ring.toList()
     }
 
+    /**
+     * Retrieves garbage from all tiles in the correct order for drifting.
+     *
+     * This function iterates through all tiles, checks if there is any garbage left on each tile,
+     * and collects the garbage in a list of pairs. Each pair contains the tile ID and a list of garbage
+     * items sorted by their IDs.
+     *
+     * @return A list of pairs where each pair consists of a tile ID and a list of garbage items.
+     *         The list is sorted by tile IDs in ascending order.
+     */
     fun getGarbageFromAllTilesInCorrectOrderForDrifting(): List<Pair<Int,List<Garbage>>> {
         val outputList: MutableList<Pair<Int,List<Garbage>>> = mutableListOf()
         val tileList = tiles.values.toList().sortedBy { it.id }
