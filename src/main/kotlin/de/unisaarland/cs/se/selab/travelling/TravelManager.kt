@@ -131,6 +131,13 @@ class TravelManager(private val simData: SimulationData) {
                 // add it to tiles that have to be updated because they now have arriving garbage
                 driftGarbage(candidateTile.location, candidateTile.id, garbage)
                 candidateTile.addArrivingGarbageToTile(garbage)
+                Logger.currentDriftGarbage(
+                    garbage.type.toString(),
+                    garbage.id,
+                    garbage.amount,
+                    tile.id,
+                    candidateTile.id
+                )
                 return candidateTile
             }
         }
