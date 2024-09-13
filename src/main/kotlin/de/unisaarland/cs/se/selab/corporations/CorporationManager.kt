@@ -1,6 +1,7 @@
 package de.unisaarland.cs.se.selab.corporations
 
 import de.unisaarland.cs.se.selab.Logger
+import de.unisaarland.cs.se.selab.assets.*
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
@@ -120,7 +121,32 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation starting the refuel and unload phase.
      */
     fun startRefuelUnloadPhase(corporation: Corporation) {
-        TODO()
+        // check if the ship is at a harbor
+        // if it is at a harbor then refuel and unload
+        // get the ships of the corporation
+        val corporationShips = corporation.ships
+        // get the harbors of the corporation
+        val corporationHarbors = corporation.harbors
+        // getting a list of ships that are in the harbor
+        val shipsInHarbor = corporationShips.filter { ship ->
+            corporationHarbors.any { harbor -> harbor == ship.location }
+        }.sortedBy { it.id }
+        for (ship in shipsInHarbor) {
+            // refuel the ship
+            if (ship.state == ShipState.NEED_REFUELING) {
+                ship.refuel()
+                ship.state = ShipState.DEFAULT
+            }
+            // unload the garbage
+            if (ship.state == ShipState.NEED_UNLOADING) {
+                ship.unload()
+                ship.state = ShipState.DEFAULT
+            }
+            if (ship.state == ShipState.NEED_REFUELING_AND_UNLOADING) {
+                ship.state = ShipState.NEED_UNLOADING
+                ship.refuel()
+            }
+        }
     }
 
     /**
