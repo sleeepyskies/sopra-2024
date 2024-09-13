@@ -6,6 +6,7 @@ import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Event
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.GarbageType
+import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
 import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
@@ -245,7 +246,21 @@ class SimulationParser(
      * Checks that all PirateShipAttack Events affect valid ships.
      */
     private fun crossValidateEventsOnShips(): Boolean {
-        TODO()
+        // get list of all events
+        val events = this.events.flatMap { it.value }
+
+        // get only pirate attack events
+        val pirateEvents = events.filterIsInstance<PirateAttackEvent>()
+
+        // check pirates only attack real ships
+        for (attack in pirateEvents) {
+            if (!this.ships.any { it.id == attack.shipID }) {
+                log.error("SIMULATION PARSER: A pirate attack event ${attack.id} has invalid shipID.")
+                return false
+            }
+        }
+
+        return true
     }
 
     /**
