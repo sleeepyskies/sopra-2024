@@ -1,8 +1,10 @@
 package de.unisaarland.cs.se.selab.travelling
 
+import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.Tile
 
 /**
  * Manages the travel-related operations in the simulation.
@@ -10,23 +12,176 @@ import de.unisaarland.cs.se.selab.assets.SimulationData
  * @property simData The simulation data used to manage travel operations.
  */
 class TravelManager(private val simData: SimulationData) {
+    companion object {
+        private const val INTENSITY_FACTOR = 50
+    }
 
     /**
      * Starts the garbage drifting phase in the simulation.
+     * First get all tiles and garbage in correct order
+     * then iterate over all tiles and move as much garbage on the tile as is possible
+     * if the garbage needs to be split, split it and move the split garbage to the next tile
+     * if we cant move the drifted garbage to the tile, the current still uses up its capacity
      */
     fun driftGarbagePhase() {
-        val garbageOnMap = simData.garbage
-        for (garbage in garbageOnMap) {
-            val tile = simData.navigationManager.findTile(garbage.location)
-            if (tile == null) continue
+        val garbageOnMap = simData.navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()
+        val tilesToUpdate: MutableList<Tile> = mutableListOf()
+        for ((tiled, listGarbage) in garbageOnMap) {
+            val tile = simData.navigationManager.findTile(tiled)
+            val mutableListGarbage = listGarbage.toMutableList()
+            if (tile == null || tile.hasCurrent) continue
+            val driftCapacity = tile.current.intensity * INTENSITY_FACTOR
+            val direction = tile.current.direction
+            val speed = tile.current.speed
+            handleGarbageDrift(tile, mutableListGarbage, direction, speed, tilesToUpdate, driftCapacity)
+        }
+        // update all tiles that have garbage arriving
+        updateTiles(tilesToUpdate)
+    }
+
+    /**
+     * Handles the drifting of garbage on a tile.
+     *
+     * @param tile The tile from which garbage is being drifted.
+     * @param mutableListGarbage The mutable list of garbage to be handled.
+     * @param direction The direction of the current.
+     * @param speed The speed of the current.
+     * @param tilesToUpdate The list of tiles to be updated.
+     * @param driftCapacity The capacity to drift garbage.
+     */
+    private fun handleGarbageDrift(
+        tile: Tile,
+        mutableListGarbage: MutableList<Garbage>,
+        direction: Direction,
+        speed: Int,
+        tilesToUpdate: MutableList<Tile>,
+        driftCapacity: Int
+    ) {
+        var remainingDriftCapacity = driftCapacity
+        while (remainingDriftCapacity != 0) {
+            var garbageToBeHandled = mutableListGarbage.removeFirst()
+            var wasSplit: Boolean = false
+            val oldGarbage = garbageToBeHandled
+            if (tile.checkGarbageLeft()) {
+                // Get tile path sorted furthest to nearest
+                val tilePath = simData.navigationManager.calculateDrift(
+                    tile.location,
+                    direction,
+                    speed
+                )
+                // Check if garbage is too large and has to be split
+                if (garbageToBeHandled.checkSplit(remainingDriftCapacity)) {
+                    garbageToBeHandled = split(garbageToBeHandled, remainingDriftCapacity)
+                    wasSplit = true
+                }
+                val tileToUpdate = driftGarbageAlongPath(
+                    garbageToBeHandled,
+                    oldGarbage,
+                    wasSplit,
+                    tilePath,
+                    tile,
+                    remainingDriftCapacity
+                )
+                if (tileToUpdate != null) tilesToUpdate.add(tileToUpdate)
+                // if was split, all capacity has been used
+                if (wasSplit) {
+                    remainingDriftCapacity = 0
+                } else {
+                    remainingDriftCapacity -= garbageToBeHandled.amount
+                }
+            } else {
+                break
+            }
+        }
+    }
+
+    /**
+     * Drifts garbage along a path.
+     * @param garbage the garbage to be drifted
+     * @param oldGarbage the old garbage that was split
+     * @param wasSplit if the garbage was split
+     * @param path the path to drift along
+     * @param tile the tile to drift from
+     * @param driftCapacity the capacity to drift
+     * @return the tile the garbage was drifted to
+     */
+    private fun driftGarbageAlongPath(
+        garbage: Garbage,
+        oldGarbage: Garbage,
+        wasSplit: Boolean,
+        path: List<Tile>,
+        tile: Tile,
+        driftCapacity: Int
+    ): Tile? {
+        // check if any of the tiles can fit the garbage and add it to the tile
+        for (candidateTile in path) {
+            if (candidateTile.canGarbageFitOnTile(garbage)) {
+                // Split logic,
+                if (wasSplit) {
+                    simData.currentHighestGarbageID = garbage.id
+                    tile.setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - driftCapacity)
+                } else {
+                    tile.removeGarbageFromTile(garbage)
+                }
+                // add it to tiles that have to be updated because they now have arriving garbage
+                driftGarbage(candidateTile.location, candidateTile.id, garbage)
+                candidateTile.addArrivingGarbageToTile(garbage)
+                return candidateTile
+            }
+        }
+        return null
+    }
+
+    /**
+     * called to update all tiles which garbage has drifted to
+     * @param tiles the tiles to be updated
+     */
+    private fun updateTiles(tiles: List<Tile>) {
+        for (tile in tiles) {
+            tile.moveAllArrivingGarbageToTile()
         }
     }
 
     /**
      * Starts the ship drifting phase in the simulation.
+     * First get all tiles and ships in correct order
+     * then iterate over all tiles and move as many ships on the tile as is possbible
+     * to the next tile in the direction of the current
+     * if there is no tile to drift to with the current, we can go to the next tile
      */
     fun shipDriftingPhase() {
-        TODO()
+        val shipsOnMap = getShipsByLowestTileIDThenLowestShipID()
+        for ((tiled, listShips) in shipsOnMap) {
+            val tile = simData.navigationManager.findTile(tiled)
+            val mutableListShips = listShips.toMutableList()
+            if (tile == null || tile.hasCurrent) continue
+            var driftCapacity = tile.current.intensity
+            val direction = tile.current.direction
+            val speed = tile.current.speed
+            while (driftCapacity != 0 && mutableListShips.isNotEmpty()) {
+                val shipToBeHandled = mutableListShips.removeFirst()
+                val tilePath = simData.navigationManager.calculateDrift(
+                    tile.location,
+                    direction,
+                    speed
+                )
+                if (tilePath.isEmpty()) break
+                val tileToDriftTo = tilePath.first()
+                driftShip(tileToDriftTo.location, tileToDriftTo.id, shipToBeHandled)
+                driftCapacity--
+            }
+        }
+    }
+
+    /**
+     * Retrieves ships from simData in order lowest tileID first then lowest shipID inside of the list of ships.
+     */
+    private fun getShipsByLowestTileIDThenLowestShipID(): List<Pair<Int, List<Ship>>> {
+        return simData.ships
+            .groupBy { it.tileId }
+            .mapValues { entry -> entry.value.sortedBy { it.id } }
+            .toList()
+            .sortedBy { it.first }
     }
 
     /**
@@ -35,8 +190,9 @@ class TravelManager(private val simData: SimulationData) {
      * @param location The new location of the garbage.
      * @param garbage The garbage to be drifted.
      */
-    fun driftGarbage(location: Pair<Int, Int>, garbage: Garbage) {
+    fun driftGarbage(location: Pair<Int, Int>, tileID: Int, garbage: Garbage) {
         garbage.location = location
+        garbage.tileId = tileID
     }
 
     /**
@@ -45,26 +201,9 @@ class TravelManager(private val simData: SimulationData) {
      * @param location The new location of the ship.
      * @param ship The ship to be drifted.
      */
-    fun driftShip(location: Pair<Int, Int>, ship: Ship) {
+    fun driftShip(location: Pair<Int, Int>, tileID: Int, ship: Ship) {
         ship.location = location
-    }
-
-    /**
-     * Checks if there is any tile with garbage left.
-     *
-     * @return True if there is a tile with garbage left, false otherwise.
-     */
-    fun tileWithGarbageLeft(): Boolean {
-        TODO()
-    }
-
-    /**
-     * Checks if there is any tile with an undrifted ship left.
-     *
-     * @return True if there is a tile with an undrifted ship left, false otherwise.
-     */
-    fun tileWithUndriftedShipLeft(): Boolean {
-        TODO()
+        ship.tileId = tileID
     }
 
     /**
@@ -76,7 +215,6 @@ class TravelManager(private val simData: SimulationData) {
      */
     fun split(garbage: Garbage, amount: Int): Garbage {
         val newId = simData.currentHighestGarbageID + 1
-        simData.currentHighestGarbageID = newId
         val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = listOf())
         return newGarbage
     }
