@@ -347,11 +347,11 @@ class CorporationManager(private val simData: SimulationData) {
                 }
 
                 else -> {
-                    listOf()
+                    emptyList()
                 }
             }
         } else {
-            listOf()
+            emptyList()
         }
     }
 
