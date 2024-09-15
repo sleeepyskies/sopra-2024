@@ -14,7 +14,7 @@ enum class EventType {
 /**
  * Abstract class for the events.
  */
-abstract class Event(
+open class Event(
     open val id: Int,
     open val tick: Int
 ) {
