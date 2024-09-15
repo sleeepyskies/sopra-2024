@@ -17,15 +17,7 @@ class Tile(
     val currentGarbage: MutableList<Garbage> = mutableListOf()
     var currentOilAmount: Int = 0
     private var currentChemicalAmount: Int = 0
-    var currentPlasticAmount: Int = 0
-    private var neighbors: MutableMap<Direction, Tile> = mutableMapOf()
-
-    /**
-     * @return the neighbors of a tile
-     */
-    fun getNeighbors(): List<Tile> {
-        return neighbors.values.toList()
-    }
+    private var currentPlasticAmount: Int = 0
 
     /**
      * Gets a garbageList of the tile in correct sorting order
@@ -42,11 +34,11 @@ class Tile(
      * @return true if the garbage can fit, false otherwise
      */
     fun canGarbageFitOnTile(garbage: Garbage): Boolean {
-        when (garbage.type) {
-            GarbageType.OIL -> return currentOilAmount + garbage.amount <= oilMaxCapacity
-            GarbageType.CHEMICALS -> return currentChemicalAmount + garbage.amount <= oilMaxCapacity
-            GarbageType.PLASTIC -> return currentPlasticAmount + garbage.amount <= oilMaxCapacity
-            GarbageType.NONE -> return false
+        return when (garbage.type) {
+            GarbageType.OIL -> currentOilAmount + garbage.amount <= oilMaxCapacity
+            GarbageType.CHEMICALS -> currentChemicalAmount + garbage.amount <= oilMaxCapacity
+            GarbageType.PLASTIC -> currentPlasticAmount + garbage.amount <= oilMaxCapacity
+            GarbageType.NONE -> false
         }
     }
 
@@ -68,7 +60,7 @@ class Tile(
 
     /**
      * Removes garbage from the tile (Should only be used for garbage that is on
-     * the tile during the tick used, not in arrivingGarbage, as the arrivingGarbage isnt yet
+     * the tile during the tick used, not in arrivingGarbage, as the arrivingGarbage isn't yet
      * counted to the total)
      * @param garbage the garbage to be removed
      */
@@ -116,7 +108,7 @@ class Tile(
     }
 
     /**
-     * Sets the amount for a specific garbage indexed by id
+     * Sets the amount for the specific garbage indexed by id
      * @param garbageID the id of the garbage
      * @param amount the amount to be set
      * @return the garbage with the new amount
