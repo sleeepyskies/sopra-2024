@@ -40,7 +40,7 @@ class CorporationParser(
     private val log: Log = LogFactory.getLog("debugger")
     val corporations = mutableListOf<Corporation>()
     val ships = mutableListOf<Ship>()
-    private var validator = initCorporationsSchemaValidator()
+    private val validator = initCorporationsSchemaValidator()
     private val corporationsSchema: String = "corporations.schema"
     private val corporationSchema = "corporation.schema"
     private val shipSchema = "ships.schema"
