@@ -13,7 +13,7 @@ import java.util.PriorityQueue
 class NavigationManager(
     var tiles: Map<Pair<Int, Int>, Tile>
 ) {
-    private lateinit var graph: MutableMap<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
+    private lateinit var graph: Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
 
     /**
      * The maximum number of ships a corporation can have.
@@ -27,6 +27,7 @@ class NavigationManager(
      * as well as whether the Tile is actually traversable
      */
     fun initializeAndUpdateGraphStructure() {
+        val mutableMap = graph.toMutableMap()
         for ((location, tile) in tiles) {
             val neighbors = getHexNeighbors(location.first, location.second)
             for ((x, y) in neighbors) {
@@ -37,9 +38,10 @@ class NavigationManager(
                     val isLand = neighborTile.type == TileType.LAND
                     newMutableList.add(Pair(neighborTile.id, Pair(isLand, isRestricted)))
                 }
-                graph[tile.id] = newMutableList.toList()
+                mutableMap[tile.id] = newMutableList.toList()
             }
         }
+        graph = mutableMap.toMap()
     }
 
     /**
@@ -113,7 +115,7 @@ class NavigationManager(
 
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
-        val pathLength = distances[tileIDLocationToTravelTo]!!.div(DEFAULT_DISTANCE)
+        val pathLength = distances[tileIDLocationToTravelTo] ?: 0.div(DEFAULT_DISTANCE)
         // Calculate the amount of tiles we need to go back in the path
         val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
         // Check if we can reach the destination tile with the given travelAmount
@@ -279,7 +281,7 @@ class NavigationManager(
         from: Pair<Int, Int>,
         travelAmount: Int
     ): Pair<Int, Int> {
-        var tilesInRadiusOfTravel: List<Pair<Int, Int>> = listOf()
+        var tilesInRadiusOfTravel: List<Pair<Int, Int>> = emptyList()
         var currentSearchRadius = travelAmount
         // we always get a ring around the current location and filter by the tiles that are not land and not restricted
         // if there are no such tiles, we shrink the radius and try again
@@ -294,7 +296,7 @@ class NavigationManager(
             currentSearchRadius -= 1
         }
         val minTileIdLocationToExplore = tilesInRadiusOfTravel.minByOrNull {
-            findTile(it)!!.id
+            findTile(it)?.id ?: Int.MAX_VALUE
         } ?: return from // again, we can use !! here because we already filtered by tiles that dont exist
         return minTileIdLocationToExplore
     }
@@ -332,7 +334,7 @@ class NavigationManager(
         // Compute how many tiles we have to go back in the path
         val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
         // Get the non-restricted tile with lowest tileID from the point of which we want to leave the restriction
-        val neighborWithLowestTileID = graph[minTileIdLocationToExplore.key]!!.minByOrNull { it.first } ?: return from
+        val neighborWithLowestTileID = graph[minTileIdLocationToExplore.key]?.minByOrNull { it.first } ?: return from
 
         val newParentStructure = previousNodes.toMutableMap()
         newParentStructure[neighborWithLowestTileID.first] = minTileIdLocationToExplore.key
@@ -406,7 +408,7 @@ class NavigationManager(
             filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(homeHarbors, distances)
         if (tileIDLocationToTravelTo == -1) return false
         // Check if the distance to the destination tile is greater than the maxDistance with current Fuel
-        val pathLength = distances[tileIDLocationToTravelTo]!!
+        val pathLength = distances[tileIDLocationToTravelTo] ?: 0
         return pathLength > maxDistance
     }
 
