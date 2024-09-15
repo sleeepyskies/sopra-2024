@@ -13,7 +13,7 @@ import java.util.PriorityQueue
 class NavigationManager(
     var tiles: Map<Pair<Int, Int>, Tile>
 ) {
-    lateinit var graph: MutableMap<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
+    private lateinit var graph: MutableMap<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
 
     /**
      * The maximum number of ships a corporation can have.

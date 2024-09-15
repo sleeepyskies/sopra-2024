@@ -48,10 +48,10 @@ class SimulationParser(
     // data
     private lateinit var corporations: List<Corporation>
     private lateinit var ships: List<Ship>
-    private lateinit var events: MutableMap<Int, List<Event>>
-    private lateinit var garbage: MutableList<Garbage>
-    private lateinit var rewards: MutableList<Reward>
-    private lateinit var tasks: MutableMap<Int, List<Task>>
+    private lateinit var events: Map<Int, List<Event>>
+    private lateinit var garbage: List<Garbage>
+    private lateinit var rewards: List<Reward>
+    private lateinit var tasks: Map<Int, List<Task>>
 
     // Managers
     private lateinit var travelManager: TravelManager
@@ -147,12 +147,12 @@ class SimulationParser(
             navigationManager,
             corporations,
             ships.toMutableList(),
-            garbage,
+            garbage.toMutableList(),
             mutableListOf(),
-            events,
-            tasks,
+            events.toMutableMap(),
+            tasks.toMutableMap(),
             mutableListOf(),
-            rewards,
+            rewards.toMutableList(),
             highestID
         )
 
