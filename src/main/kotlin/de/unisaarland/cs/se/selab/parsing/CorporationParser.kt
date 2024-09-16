@@ -72,15 +72,14 @@ class CorporationParser(
         val shipsJSON = corporationsJSONObject.getJSONArray("ships")
         val garbageCollectingShips = mutableListOf<Ship>()
         val shipsList = mutableListOf<Ship>()
-        val shipParse = !parseShips(shipsJSON, shipsList, garbageCollectingShips)
+        if (!parseShips(shipsJSON, shipsList, garbageCollectingShips)) return false
 
         // parse and validate all corporations
         for (index in 0 until corporationsJSON.length()) {
             val successfullyParsed = parseCorporation(
                 corporationsJSON.getJSONObject(index),
                 shipsList,
-                garbageCollectingShips,
-                shipParse
+                garbageCollectingShips
             )
             if (!successfullyParsed) {
                 return false
@@ -97,30 +96,24 @@ class CorporationParser(
     private fun parseCorporation(
         corporationJsonObject: JSONObject,
         shipsList: MutableList<Ship>,
-        collectingShips: MutableList<Ship>,
-        shipParse: Boolean
+        collectingShips: MutableList<Ship>
     ): Boolean {
         // validate corporation
-        println("Test123")
         if (!validateCorporation(corporationJsonObject)) return false
         // adding ids to check for duplicates
         val corporationId = corporationJsonObject.getInt(ID)
         corporationIds.add(corporationId)
         val corporationShips = corporationJsonObject.getJSONArray("ships")
+        val shipValidate = !validateShipsOfCorporation(corporationShips, shipsList, corporationId)
 
         val homeHarborsList = mutableListOf<Pair<Int, Int>>()
         val homeHarborParse = !parseHomeHarbors(corporationJsonObject.getJSONArray("homeHarbors"), homeHarborsList)
 
         val garbageList = mutableListOf<GarbageType>()
-        println(corporationJsonObject.getJSONArray("garbageTypes"))
         val garbageParse = !parseGarbageTypes(corporationJsonObject.getJSONArray("garbageTypes"), garbageList)
-        println("Test1234")
-        if (shipParse || homeHarborParse || garbageParse) return false
+        if (shipValidate || homeHarborParse || garbageParse) return false
 
-        println("Test12345")
-        println(garbageList)
-        if (!validateGarbageCollection(collectingShips, garbageList,corporationId)) return false
-        println("Test123456")
+        if (!validateGarbageCollection(collectingShips, garbageList, corporationId)) return false
         val corporation = Corporation(
             corporationJsonObject.optString(NAME, ""),
             corporationId,
@@ -238,6 +231,22 @@ class CorporationParser(
         // create and return validator
         return Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
     }
+    private fun validateShipsOfCorporation(
+        corporationShips: JSONArray,
+        shipsList: List<Ship>,
+        corporationID: Int
+    ): Boolean {
+        for (index in 0 until corporationShips.length()) {
+            val shipId = corporationShips.getInt(index)
+            if (shipsList.none { it.id == shipId } ||
+                shipsList.any { it.id == shipId && it.corporation != corporationID }
+            ) {
+                return false
+            }
+        }
+        return true
+    }
+
     private fun validateGarbageCollection(
         collectingShips: List<Ship>,
         garbageList: List<GarbageType>,
