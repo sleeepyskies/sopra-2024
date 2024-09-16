@@ -29,7 +29,7 @@ class TravelManager(private val simData: SimulationData) {
      */
     fun driftGarbagePhase() {
         val garbageOnMap = simData.navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()
-        val tilesToUpdate: MutableList<Tile> = mutableListOf()
+        val tilesToUpdate: MutableSet<Tile> = mutableSetOf()
         for ((tiled, listGarbage) in garbageOnMap) {
             // Get tile in ascending order of tileID
             val tile = simData.navigationManager.findTile(tiled)
@@ -60,11 +60,11 @@ class TravelManager(private val simData: SimulationData) {
         mutableListGarbage: MutableList<Garbage>,
         direction: Direction,
         speed: Int,
-        tilesToUpdate: MutableList<Tile>,
+        tilesToUpdate: MutableSet<Tile>,
         driftCapacity: Int
     ) {
         var remainingDriftCapacity = driftCapacity
-        while (remainingDriftCapacity != 0) {
+        while (remainingDriftCapacity != 0 && mutableListGarbage.isNotEmpty()) {
             var garbageToBeHandled = mutableListGarbage.removeFirst()
             var wasSplit: Boolean = false
             val oldGarbage = garbageToBeHandled
@@ -151,7 +151,7 @@ class TravelManager(private val simData: SimulationData) {
      * called to update all tiles which garbage has drifted to
      * @param tiles the tiles to be updated
      */
-    private fun updateTiles(tiles: List<Tile>) {
+    private fun updateTiles(tiles: Set<Tile>) {
         for (tile in tiles) {
             tile.moveAllArrivingGarbageToTile()
         }
@@ -233,18 +233,6 @@ class TravelManager(private val simData: SimulationData) {
         val newId = simData.currentHighestGarbageID + 1
         val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = mutableListOf())
         return newGarbage
-    }
-
-    /**
-     * Moves all arriving garbage to a tile.
-     * IMPORTANT: This method should only be called after the garbages location AND tileId have been updated.
-     */
-    fun moveAllArrivingGarbageToTile() {
-        val garbageOnMap = simData.garbage
-        for (garbage in garbageOnMap) {
-            val tile = simData.navigationManager.findTile(garbage.location)
-            tile?.addGarbageToTile(garbage)
-        }
     }
 
     /**
