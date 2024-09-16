@@ -28,7 +28,7 @@ class MapParser(
     private val helper = ParserHelper()
 
     // schemas
-    private val mapSchema = "C:\\Users\\Asus\\Desktop\\Saarland CS\\Saarland CS 2\\Saarland CS 2.2\\SOPRA\\group12\\src\\main\\resources\\schema\\map.schema"
+    private val mapSchema = "map.schema"
     private val tileSchema = "tile.schema"
 
     // Map data
