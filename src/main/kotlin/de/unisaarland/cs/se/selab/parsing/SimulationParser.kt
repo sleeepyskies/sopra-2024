@@ -72,8 +72,9 @@ class SimulationParser(
         // parse and validate map
         if (mapParser.parseMap()) {
             // file valid
-            Logger.initInfo(mapFile)
+            Logger.initInfo(this.mapFile)
             this.navigationManager = mapParser.getNavManager()
+            this.navigationManager.initializeAndUpdateGraphStructure()
         } else {
             // file invalid
             Logger.initInfoInvalid(mapFile)
@@ -86,7 +87,6 @@ class SimulationParser(
         // init corporation parser and scenario parser
         val corporationParser = CorporationParser(corporationFile, idLocationMapping)
         val scenarioParser = ScenarioParser(scenarioFile, idLocationMapping)
-
         // parse and validate corporations
         if (corporationParser.parseAllCorporations()) {
             // file valid
@@ -176,7 +176,12 @@ class SimulationParser(
             val tile = navigationManager.tiles[location]
 
             // check tile non-null, is SHORE and is a harbor
-            if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
+            println("Tile: $tile")
+            println("Tile type: ${tile?.type}")
+            println("Is harbor: ${tile?.isHarbor}")
+            println("Location: $location")
+            println("ID: ${tile?.id}")
+            if (tile == null || (tile.isHarbor && tile.type != TileType.SHORE)) {
                 log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
                 return false
             }
