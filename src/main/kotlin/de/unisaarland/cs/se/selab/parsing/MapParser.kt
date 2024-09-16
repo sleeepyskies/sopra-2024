@@ -62,7 +62,7 @@ class MapParser(
         }
 
         // validate map JSON against schema
-        if (!helper.validateSchema(mapJSONObject, this.mapSchema)) {
+        if (helper.validateSchema(mapJSONObject, this.mapSchema)) {
             log.error("MAP PARSER: The file does not match the schema.")
             success = false
         }
@@ -89,7 +89,7 @@ class MapParser(
             val tileJSON = tileJSONArray.getJSONObject(index)
 
             // validate garbage JSON against schema
-            if (!helper.validateSchema(tileJSON, this.tileSchema)) {
+            if (helper.validateSchema(tileJSON, this.tileSchema)) {
                 log.error("MAP PARSER: The tile do not match the schema.")
                 return false
             }
