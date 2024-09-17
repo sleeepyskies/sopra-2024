@@ -373,7 +373,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
         val shipType = ship.type
         val shipLocation = ship.location
-        val shipMaxTravelDistance = (ship.currentVelocity + ship.acceleration) / VELOCITY_DIVISOR
+        val shipMaxTravelDistance = ship.currentVelocity / VELOCITY_DIVISOR
 
         if (checkRestriction(ship.location)) {
             return listOf(
@@ -438,7 +438,11 @@ class CorporationManager(private val simData: SimulationData) {
         return when (shipType) {
             ShipType.COLLECTING_SHIP -> {
                 if (corporation.visibleGarbage.isNotEmpty()) {
-                    return corporation.visibleGarbage.map { it.value.first }.toList()
+                    var out = corporation.visibleGarbage
+                        .filter { corporation.collectableGarbageTypes.contains(it.value.second) }
+                        .map { it.value.first }.toList()
+                    if (out.isEmpty()) out = listOf(shipLocation)
+                    return out
                 }
                 listOf(shipLocation)
             }
@@ -470,13 +474,13 @@ class CorporationManager(private val simData: SimulationData) {
     private fun updateInfo(
         corporation: Corporation,
         info: Pair<
-            Map<Pair<Int, Int>, Pair<Int, Int>>,
+            Map<Int, Pair<Int, Pair<Int, Int>>>,
             Map<Int, Pair<Pair<Int, Int>, GarbageType>>,
             >
     ): Boolean {
         // location, shipId-corpId is the order for the first map
-        info.first.forEach { (k, v) -> corporation.visibleShips[v.first] = Pair(v.second, k) }
-        corporation.garbage.putAll(info.second)
+        corporation.visibleShips.putAll(info.first)
+        corporation.visibleGarbage.putAll(info.second)
         return true
     }
 
@@ -553,9 +557,9 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A triple containing maps and a list with the scan results.
      */
     private fun scan(location: Pair<Int, Int>, range: Int):
-        Pair<Map<Pair<Int, Int>, Pair<Int, Int>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>> {
+        Pair<Map<Int, Pair<Int, Pair<Int, Int>>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>> {
         val tilesInScanRange = simData.navigationManager.getTilesInRadius(location, range)
-        val shipInfo = mutableMapOf<Pair<Int, Int>, Pair<Int, Int>>()
+        val shipInfo = mutableMapOf<Int, Pair<Int, Pair<Int, Int>>>()
         val garbageInfo = mutableMapOf<Int, Pair<Pair<Int, Int>, GarbageType>>()
         for (tileLocation in tilesInScanRange) {
             val tile = simData.navigationManager.findTile(tileLocation) ?: continue
@@ -564,7 +568,7 @@ class CorporationManager(private val simData: SimulationData) {
             }
             val ships = getShipsOnTile(tileLocation)
             ships.forEach {
-                shipInfo[it.location] = Pair(it.id, it.corporation)
+                shipInfo[it.id] = Pair(it.corporation, it.location)
             }
         }
         return Pair(shipInfo, garbageInfo)

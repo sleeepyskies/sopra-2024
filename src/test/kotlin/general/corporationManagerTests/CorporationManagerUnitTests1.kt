@@ -157,8 +157,8 @@ class CorporationManagerUnitTests1 {
         if (scanResult != null) {
             val mapResult = scanResult.first as? Map<*, *>
             if (mapResult != null) {
-                assertEquals(Pair(1, 1), mapResult[Pair(0, 0)])
-                assertEquals(Pair(2, 2), mapResult[Pair(0, 1)])
+                assertEquals(Pair(1, Pair(0, 0)), mapResult[1])
+                assertEquals(Pair(2, Pair(0,1)), mapResult[2])
             }
             val garbageResult = scanResult.second as? Map<*, *>
             if (garbageResult != null) {
@@ -462,5 +462,145 @@ class CorporationManagerUnitTests1 {
         method.isAccessible = true
         val tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
         assertEquals(listOf(Pair(2, 1)), tilesToMoveTo)
+    }
+
+    @Test
+    fun test_defaultBehaviourOfCollectingShip() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 2, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val garbage = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0))
+        simDat.ships.addAll(listOf(ship))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+        simDat.garbage.add(garbage)
+        simDat.corporations[0].visibleGarbage[garbage.id] = Pair(Pair(1, 0), GarbageType.OIL)
+        tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(1, 0)), tilesToMoveTo)
+
+        tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[1])
+        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+        simDat.corporations[1].visibleGarbage[garbage.id] = Pair(Pair(1, 0), GarbageType.OIL)
+        tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[1])
+        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+    }
+
+    @Test
+    fun test_defaultBehaviourOfScoutingShip() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 20, 20, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val garbage = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0))
+        val garbage2 = Garbage(2, 50, GarbageType.PLASTIC, 2, Pair(2, 0))
+        simDat.ships.addAll(listOf(ship, ship2))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+        simDat.corporations[0].garbage[garbage.id] = Pair(garbage.location, garbage.type)
+        tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(1, 0)), tilesToMoveTo)
+        simDat.corporations[0].visibleGarbage[garbage2.id] = Pair(garbage2.location, garbage2.type)
+        tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[0])
+        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+    }
+
+    @Test
+    fun test_defaultBehaviourOfCooperatingShip() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 20, 20, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COORDINATING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 2, mutableMapOf(), 0, Pair(0, 1),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COORDINATING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.addAll(listOf(ship, ship2))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+        simDat.corporations[0].visibleShips[ship2.id] = Pair(ship2.id, ship2.location)
+        tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(0, 1)), tilesToMoveTo)
+    }
+
+    @Test
+    fun test_updateInfo() {
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0))
+        val garbage2 = Garbage(2, 50, GarbageType.PLASTIC, 2, Pair(2, 0))
+        val ship1 = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 2, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "updateInfo",
+            Corporation::class.java,
+            Pair::class.java
+        )
+        method.isAccessible = true
+        val garbageMap = mutableMapOf(
+            garbage1.id to Pair(garbage1.location, garbage1.type),
+            garbage2.id to Pair(garbage2.location, garbage2.type)
+        )
+        val shipMap = mutableMapOf(
+            ship1.id to Pair(ship1.corporation, ship1.location),
+            ship2.id to Pair(ship2.corporation, ship2.location)
+        )
+        val visibleShipMap = mutableMapOf(
+            ship1.id to Pair(ship1.corporation, ship1.location),
+            ship2.id to Pair(ship2.corporation, ship2.location)
+        )
+        println(shipMap)
+        method.invoke(cm, simDat.corporations[0], Pair(shipMap, garbageMap))
+        assertEquals(garbageMap, simDat.corporations[0].visibleGarbage)
+        assertEquals(visibleShipMap, simDat.corporations[0].visibleShips)
     }
 }
