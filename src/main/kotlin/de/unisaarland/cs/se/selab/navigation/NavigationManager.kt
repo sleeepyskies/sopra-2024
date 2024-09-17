@@ -309,14 +309,20 @@ class NavigationManager(
         var currentSearchRadius = travelAmount
         // we always get a ring around the current location and filter by the tiles that are not land and not restricted
         // if there are no such tiles, we shrink the radius and try again
+
+        // call dijkstra from current ship location
+        val (distances, _) = dijkstra(graph, tiles.getValue(from).id)
+
         while (tilesInRadiusOfTravel.isEmpty()) {
             if (currentSearchRadius == 0) {
                 return from
             }
-            tilesInRadiusOfTravel = getRingOfRadius(from, currentSearchRadius)
+            tilesInRadiusOfTravel = getTilesInRadius(from, currentSearchRadius)
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { findTile(it) != null }
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { findTile(it)?.isRestricted == false }
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { findTile(it)?.type != TileType.LAND }
+            tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { isReachableFrom(distances, it, travelAmount) }
+            tilesInRadiusOfTravel = filterByFurthestDistance(distances, tilesInRadiusOfTravel)
             currentSearchRadius -= 1
         }
         val minTileIdLocationToExplore = tilesInRadiusOfTravel.minByOrNull {
@@ -567,5 +573,28 @@ class NavigationManager(
             outputList.add(Pair(tile.id, tile.getGarbageByLowestID()))
         }
         return outputList
+    }
+
+    /**
+     * Checks if an explore point is reachable from the given location.
+     * An explore point is reachable if:
+     * 1. There exists a traversable path from the given location to the explore point.
+     * 2. The distance from the given location to the explore point is less than or equal to the travel amount.
+     *
+     * Serves as a helper function for getExplorePoint().
+     *
+     * @param distances A map of tile IDs to distances from the given location.
+     * @param explorePoint The explore point to check for.
+     * @param travelAmount The amount the ship can travel.
+     * @return true if the explore point is reachable, false otherwise.
+     */
+    private fun isReachableFrom(distances: Map<Int, Int>, explorePoint: Pair<Int, Int>, travelAmount: Int): Boolean {
+        val dist = distances[this.tiles[explorePoint]?.id] ?: Int.MAX_VALUE
+        return dist <= travelAmount * DEFAULT_DISTANCE
+    }
+
+    private fun filterByFurthestDistance(distances: Map<Int, Int>, explorePoints: List<Pair<Int, Int>>) : List<Pair<Int, Int>> {
+        val maxDistance = distances.values.maxOrNull() ?: 0
+        return explorePoints.filter { distances[this.tiles[it]?.id] == maxDistance }
     }
 }
