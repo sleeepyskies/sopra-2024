@@ -14,6 +14,7 @@ import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
+import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
@@ -40,6 +41,7 @@ class SimulationParser(
     companion object {
         const val THOUSAND = 1000
         const val EVENT_LAND = "SIMULATION PARSER: An event occurs on a land tile."
+        const val TASK_INVALID = "SIMULATION PARSER: A task has an invalid location."
     }
 
     // debug logger
@@ -383,6 +385,60 @@ class SimulationParser(
     }
 
     /**
+     * Checks that all tasks have the same ship corporation as the assigned ship and reward ship.
+     */
+    private fun crossValidateTasksSameShipCorporation(): Boolean {
+        for (task in this.tasks.flatMap { it.value }) {
+            val assignedShip = this.ships.find { it.id == task.assignedShipId }
+            val rewardShip = this.ships.find { it.id == task.rewardShip }
+            if (assignedShip?.corporation != rewardShip?.corporation) {
+                log.error(
+                    "SIMULATION PARSER: The task ${task.id} has an " +
+                        "assigned ship and a reward ship from different corporations."
+                )
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * Checks that each task has a valid location.
+     */
+    private fun crossValidateTaskLocation(): Boolean {
+        for (task in this.tasks.flatMap { it.value }) {
+            val tileDest = this.navigationManager.findTile(task.targetTileId)
+
+            if (tileDest == null) {
+                log.error("SIMULATION PARSER: The task ${task.id} has a null location.")
+                return false
+            }
+
+            when (task.type) {
+                TaskType.COLLECT -> {
+                    if (tileDest.currentGarbage.isEmpty()) {
+                        log.error(TASK_INVALID)
+                        return false
+                    }
+                }
+                TaskType.EXPLORE, TaskType.FIND -> {
+                    if (tileDest.type == TileType.LAND) {
+                        log.error(TASK_INVALID)
+                        return false
+                    }
+                }
+                TaskType.COORDINATE -> {
+                    if (!tileDest.isHarbor) {
+                        log.error(TASK_INVALID)
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    /**
      * Calls all cross validation methods
      */
     private fun crossValidate(): Boolean {
@@ -393,6 +449,8 @@ class SimulationParser(
             crossValidateEventsOnShips() &&
             crossValidateTasksForShips() &&
             crossValidateShipsCanReachHarbor() &&
+            crossValidateTasksSameShipCorporation() &&
+            crossValidateTaskLocation() &&
             crossValidateRewardAssignedIds()
     }
 }
