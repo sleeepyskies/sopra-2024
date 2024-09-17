@@ -13,7 +13,7 @@ import java.util.PriorityQueue
 class NavigationManager(
     var tiles: Map<Pair<Int, Int>, Tile>
 ) {
-    private lateinit var graph: Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
+    private var graph: Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>> = emptyMap()
 
     /**
      * The maximum number of ships a corporation can have.
@@ -30,16 +30,17 @@ class NavigationManager(
         val mutableMap = graph.toMutableMap()
         for ((location, tile) in tiles) {
             val neighbors = getHexNeighbors(location.first, location.second)
+            val newMutableList: MutableList<Pair<Int, Pair<Boolean, Boolean>>> = mutableListOf()
             for ((x, y) in neighbors) {
-                val newMutableList: MutableList<Pair<Int, Pair<Boolean, Boolean>>> = mutableListOf()
                 val neighborTile = findTile(Pair(x, y))
                 if (neighborTile != null) {
                     val isRestricted = neighborTile.isRestricted
                     val isLand = neighborTile.type == TileType.LAND
                     newMutableList.add(Pair(neighborTile.id, Pair(isLand, isRestricted)))
                 }
-                mutableMap[tile.id] = newMutableList.toList()
             }
+            // sort by ID to make testing easier
+            mutableMap[tile.id] = newMutableList.toList().sortedBy { it.first }
         }
         graph = mutableMap.toMap()
     }
@@ -115,7 +116,7 @@ class NavigationManager(
 
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
-        val pathLength = distances[tileIDLocationToTravelTo] ?: 0.div(DEFAULT_DISTANCE)
+        val pathLength = (distances[tileIDLocationToTravelTo] ?: 0).div(DEFAULT_DISTANCE)
         // Calculate the amount of tiles we need to go back in the path
         val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
         // Check if we can reach the destination tile with the given travelAmount
@@ -199,6 +200,9 @@ class NavigationManager(
         val previousNodes = mutableMapOf<Int, Int?>()
         val priorityQueue = PriorityQueue<Node>()
 
+        // get ID of specific location
+        val toSpecificLocationID = this.tiles[toSpecificLocation]?.id
+
         distances[source] = 0
         priorityQueue.add(Node(source, 0))
 
@@ -208,7 +212,7 @@ class NavigationManager(
 
             if (currentDistance > distances.getValue(currentNode.id)) continue
             // If we are looking for a specific location, break if we found it
-            if (toSpecificLocation != null && currentNode.id == toSpecificLocation.first) {
+            if (toSpecificLocation != null && currentNode.id == toSpecificLocationID) {
                 break
             }
 

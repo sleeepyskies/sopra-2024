@@ -93,7 +93,7 @@ class ScenarioParser(
         }
 
         // validate scenario JSON against schema
-        if (!helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
+        if (helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
             log.error("SCENARIO PARSER: The file does not match the schema.")
             success = false
         }
@@ -130,7 +130,7 @@ class ScenarioParser(
             val eventJSON = eventsJSONArray.getJSONObject(index)
 
             // validate event JSON against schema
-            if (!helper.validateSchema(eventJSON, this.eventSchema)) {
+            if (helper.validateSchema(eventJSON, this.eventSchema)) {
                 log.error("SCENARIO PARSER: An event does not match the schema.")
                 return false
             }
@@ -163,7 +163,7 @@ class ScenarioParser(
             val garbageJSON = garbageJSONArray.getJSONObject(index)
 
             // validate garbage JSON against schema
-            if (!helper.validateSchema(garbageJSON, this.garbageSchema)) {
+            if (helper.validateSchema(garbageJSON, this.garbageSchema)) {
                 log.error("SCENARIO PARSER: The garbage do not match the schema.")
                 return false
             }

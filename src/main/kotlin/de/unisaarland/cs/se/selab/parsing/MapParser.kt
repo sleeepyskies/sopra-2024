@@ -62,7 +62,7 @@ class MapParser(
         }
 
         // validate map JSON against schema
-        if (!helper.validateSchema(mapJSONObject, this.mapSchema)) {
+        if (helper.validateSchema(mapJSONObject, this.mapSchema)) {
             log.error("MAP PARSER: The file does not match the schema.")
             success = false
         }
@@ -89,7 +89,7 @@ class MapParser(
             val tileJSON = tileJSONArray.getJSONObject(index)
 
             // validate garbage JSON against schema
-            if (!helper.validateSchema(tileJSON, this.tileSchema)) {
+            if (helper.validateSchema(tileJSON, this.tileSchema)) {
                 log.error("MAP PARSER: The tile do not match the schema.")
                 return false
             }
@@ -217,14 +217,25 @@ class MapParser(
 
         // get cords
         val (x, y) = location
-        val directions = listOf(
-            Pair(x, y - 1), // NorthWest
-            Pair(x, y - 1), // NorthEast
-            Pair(x + 1, y), // East
-            Pair(x + 1, y + 1), // SouthEast
-            Pair(x, y + 1), // SouthWest
-            Pair(x - 1, y) // West
-        )
+        val directions = if (y % 2 == 0) {
+            listOf(
+                Pair(x + 1, y), // Right
+                Pair(x - 1, y), // Left
+                Pair(x, y + 1), // Bottom left
+                Pair(x, y - 1), // Top left
+                Pair(x + 1, y - 1), // Top right
+                Pair(x + 1, y + 1)
+            ) // Bottom right
+        } else {
+            listOf(
+                Pair(x + 1, y), // Right
+                Pair(x - 1, y), // Left
+                Pair(x - 1, y + 1), // Bottom left
+                Pair(x - 1, y - 1), // Top left
+                Pair(x, y - 1), // Top right
+                Pair(x, y + 1)
+            ) // Bottom right
+        }
 
         // only add to neighbors if tile exists
         for (direction in directions) {
