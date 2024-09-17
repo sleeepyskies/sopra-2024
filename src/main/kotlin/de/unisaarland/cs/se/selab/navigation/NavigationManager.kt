@@ -116,7 +116,7 @@ class NavigationManager(
 
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
-        val pathLength = distances[tileIDLocationToTravelTo] ?: 0.div(DEFAULT_DISTANCE)
+        val pathLength = (distances[tileIDLocationToTravelTo] ?: 0).div(DEFAULT_DISTANCE)
         // Calculate the amount of tiles we need to go back in the path
         val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
         // Check if we can reach the destination tile with the given travelAmount

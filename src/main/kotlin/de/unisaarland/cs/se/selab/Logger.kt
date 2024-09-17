@@ -23,8 +23,6 @@ object Logger {
             throw IllegalCallerException("Already initialized output buffer!")
         }
         outputBuffer = outputStream
-        outputBuffer.print("sflvnsldnvlsdnvw")
-        outputBuffer.write("sflvns1111111111111111111111ldnvlsdnvw")
     }
 
     /**
