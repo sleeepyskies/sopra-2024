@@ -322,7 +322,7 @@ class NavigationManager(
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { findTile(it)?.isRestricted == false }
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { findTile(it)?.type != TileType.LAND }
             tilesInRadiusOfTravel = tilesInRadiusOfTravel.filter { isReachableFrom(distances, it, travelAmount) }
-            tilesInRadiusOfTravel = filterByFurthestDistance(distances, tilesInRadiusOfTravel)
+            tilesInRadiusOfTravel = filterByFurthestDistance(distances, tilesInRadiusOfTravel, travelAmount)
             currentSearchRadius -= 1
         }
         val minTileIdLocationToExplore = tilesInRadiusOfTravel.minByOrNull {
@@ -480,8 +480,8 @@ class NavigationManager(
     private fun findTileInDirectionFrom(location: Pair<Int, Int>, direction: Direction): Pair<Int, Int> {
         var outLocation = Pair(-1, -1)
         when (direction) {
-            Direction.EAST -> return Pair(location.first + 1, location.second)
-            Direction.WEST -> return Pair(location.first - 1, location.second)
+            Direction.EAST -> outLocation = Pair(location.first + 1, location.second)
+            Direction.WEST -> outLocation = Pair(location.first - 1, location.second)
             Direction.NORTH_EAST ->
                 outLocation = if (location.second % 2 == 0) {
                     Pair(location.first + 1, location.second - 1)
@@ -507,6 +507,11 @@ class NavigationManager(
                     Pair(location.first, location.second + 1)
                 }
         }
+        // check if this tile even exists
+        if (findTile(outLocation) == null) {
+            return location
+        }
+
         return outLocation
     }
 
@@ -536,7 +541,7 @@ class NavigationManager(
             tilesInRadius.addAll(newTiles)
         }
 
-        return tilesInRadius.toList()
+        return tilesInRadius.toList().filter { findTile(it) != null }
     }
 
     /**
@@ -552,7 +557,7 @@ class NavigationManager(
         val tilesInRadius = getTilesInRadius(location, radius)
         val tilesInRadiusMinusOne = getTilesInRadius(location, radius - 1)
         ring = tilesInRadius.filter { it !in tilesInRadiusMinusOne }.toMutableSet()
-        return ring.toList()
+        return ring.toList().filter { findTile(it) != null }
     }
 
     /**
@@ -595,14 +600,20 @@ class NavigationManager(
 
     private fun filterByFurthestDistance(
         distances: Map<Int, Int>,
-        explorePoints: List<Pair<Int, Int>>
+        explorePoints: List<Pair<Int, Int>>,
+        travelAmount: Int
     ): List<Pair<Int, Int>> {
-        val maxDistance = distances.values.maxOrNull() ?: 0
+        // filter the distances by if we can even reach them
+        val newDistances = distances.filter { it.value <= travelAmount * DEFAULT_DISTANCE }
+
+        val maxDistance = newDistances.values.maxOrNull() ?: 0
         val returnList = mutableListOf<Pair<Int, Int>>()
         for (point in explorePoints) {
-            val tile = findTile(point) ?: continue
-
+            val tilePoint = findTile(point) ?: continue
+            if (newDistances[tilePoint.id] == maxDistance) {
+                returnList.add(point)
+            }
         }
-        return explorePoints.filter { distances[this.tiles[it]?.id] == maxDistance }
+        return returnList
     }
 }
