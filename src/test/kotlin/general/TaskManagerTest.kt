@@ -685,6 +685,37 @@ class TaskManagerTest {
         assertTrue(ship.state == ShipState.NEED_REFUELING_AND_UNLOADING)
         assertTrue(ship.currentTaskId == -1)
     }
+    @Test
+    fun `with refueling and unloading state but tıle does not exıst`() {
+        val ship = Ship(
+            1, "duxas", 1, mutableMapOf(GarbageType.OIL to Pair(100,100)), 10,
+            Pair(69, 420), direction = Direction.EAST,
+            34,
+            25, 0, 20, 100, 10, 20,
+            -1, state = ShipState.NEED_REFUELING_AND_UNLOADING, ShipType.COLLECTING_SHIP, false,
+            false,
+            false
+        )
+        val task = Task(
+            1,
+            TaskType.COLLECT,
+            1,
+            1,
+            16,
+            1,
+            1
+        )
+        val reward = Reward(1, RewardType.CONTAINER, 0, 100, GarbageType.PLASTIC)
+        sd.ships.add(ship)
+        sd.scheduledTasks[1] = listOf(task)
+        sd.tick = 1
+        sd.rewards.add(reward)
+
+        taskManager.startTasksPhase()
+        assertTrue(sd.activeTasks.isEmpty())
+        assertTrue(ship.state == ShipState.NEED_REFUELING_AND_UNLOADING)
+        assertTrue(ship.currentTaskId == -1)
+    }
 }
 
 
