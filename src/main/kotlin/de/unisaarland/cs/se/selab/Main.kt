@@ -13,9 +13,9 @@ import java.io.PrintWriter
 fun main(args: Array<String>) {
     val argsParser = ArgParser("Save the Ocean!")
     val map by argsParser.option(ArgType.String, "map").required()
-    val corporations by argsParser.option(ArgType.String, "assets").required()
+    val corporations by argsParser.option(ArgType.String, "corporations").required()
     val scenario by argsParser.option(ArgType.String, "scenario").required()
-    val maxTick by argsParser.option(ArgType.Int, "ticks").required()
+    val maxTick by argsParser.option(ArgType.Int, "max_ticks").required()
     val output by argsParser.option(ArgType.String, "out")
 
     argsParser.parse(args)
@@ -27,9 +27,8 @@ fun main(args: Array<String>) {
         // if output not null, call FileOutputStream(output)
         output?.let { FileOutputStream(it) }
     }
-
     // init logger with output
-    outputStream?.let { PrintWriter(it) }?.let { Logger.setOutput(it) }
+    outputStream?.let { PrintWriter(it, true) }?.let { Logger.setOutput(it) }
 
     // Create SimParser
     val simParser = SimulationParser(map, corporations, scenario, maxTick)
