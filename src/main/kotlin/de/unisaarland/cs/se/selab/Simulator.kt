@@ -36,6 +36,7 @@ class Simulator(
             taskManager.startTasksPhase()
             currentTick++
         }
+
         Logger.corporationTotalUncollectedGarbage = travelManager.getRemainingGarbageInOcean().map { it.amount }.sum()
         Logger.simulationEnd()
         Logger.simulationInfoStatistics()
