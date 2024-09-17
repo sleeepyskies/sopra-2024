@@ -1,4 +1,4 @@
 package general.corporationManagerTests
 
-class corporationManagerUnitTests {
+class corporationManagerUnitTests1 {
 }
