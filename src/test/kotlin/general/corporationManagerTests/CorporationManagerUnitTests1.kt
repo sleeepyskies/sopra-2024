@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.PrintWriter
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CorporationManagerUnitTests1 {
@@ -598,9 +599,109 @@ class CorporationManagerUnitTests1 {
             ship1.id to Pair(ship1.corporation, ship1.location),
             ship2.id to Pair(ship2.corporation, ship2.location)
         )
-        println(shipMap)
         method.invoke(cm, simDat.corporations[0], Pair(shipMap, garbageMap))
         assertEquals(garbageMap, simDat.corporations[0].visibleGarbage)
         assertEquals(visibleShipMap, simDat.corporations[0].visibleShips)
+    }
+
+    @Test
+    fun test_assignCapacity() {
+        val garbageAssignedAmountList: MutableList<Garbage> = mutableListOf()
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0))
+        val garbage2 = Garbage(2, 50, GarbageType.PLASTIC, 2, Pair(2, 0))
+
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "assignCapacity",
+            Garbage::class.java,
+            Int::class.java,
+            MutableList::class.java
+        )
+        method.isAccessible = true
+        val shipCapacityLeft = method.invoke(cm, garbage1, 60, garbageAssignedAmountList)
+        assertEquals(50, garbage1.assignedCapacity)
+        assertEquals(listOf(garbage1), garbageAssignedAmountList)
+        assertEquals(10, shipCapacityLeft)
+        val shipCapacityLeft2 = method.invoke(cm, garbage1, 50, garbageAssignedAmountList)
+        assertEquals(50, garbage1.assignedCapacity) //Assigned capacity should stay the same
+        assertEquals(listOf(garbage1,garbage1), garbageAssignedAmountList)
+        assertEquals(50, shipCapacityLeft2)
+        val shipCapacityLeft3 = method.invoke(cm, garbage2, 30, garbageAssignedAmountList)
+        assertEquals(30, garbage2.assignedCapacity) //Assigned capacity should be only 30
+        assertEquals(listOf(garbage1,garbage1,garbage2), garbageAssignedAmountList)
+        assertEquals(0, shipCapacityLeft3)
+    }
+
+    @Test
+    fun test_assignCapacityToGarbageList() {
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "assignCapacityToGarbageList",
+            Int::class.java,
+            Map::class.java
+        )
+        method.isAccessible = true
+        val garbage1 = Garbage(1, 500, GarbageType.OIL, 2, Pair(1, 0))
+        val garbage2 = Garbage(2, 1000, GarbageType.PLASTIC, 2, Pair(1, 0))
+        simDat.garbage.addAll(listOf(garbage1, garbage2))
+        t2.addGarbageToTile(garbage1)
+        t2.addGarbageToTile(garbage2)
+        val collectableGarbageShip1: Map<GarbageType, Pair<Int, Int>> = mapOf(
+            GarbageType.OIL to Pair(1000, 1000),
+            GarbageType.PLASTIC to Pair(50, 50)
+        )
+        val collectableGarbageShip2: Map<GarbageType, Pair<Int, Int>> = mapOf(
+            GarbageType.OIL to Pair(1000, 1000),
+            GarbageType.PLASTIC to Pair(1000, 1000)
+        )
+        val garbageToBeUpdated = method.invoke(cm, 2, collectableGarbageShip1) as List<*>
+        assertEquals(2, garbageToBeUpdated.size)
+        assertEquals(500, garbage1.assignedCapacity)
+        assertEquals(50, garbage2.assignedCapacity)
+        val garbageToBeUpdated2 = method.invoke(cm, 2, collectableGarbageShip2) as List<*>
+        assertEquals(2, garbageToBeUpdated2.size)
+        assertEquals(500, garbage1.assignedCapacity)
+        assertEquals(1000, garbage2.assignedCapacity)
+    }
+
+    @Test
+    fun test_applyTrackersForCorporation() {
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "applyTrackersForCorporation",
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val ship1 = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = true, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = true, travelingToHarbor = false
+        )
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 1, Pair(0, 0))
+        val garbage2 = Garbage(2, 50, GarbageType.OIL, 1, Pair(0, 0))
+
+        val corporation1 = Corporation("Test_corp1",
+            1, listOf(Pair(4, 0)),
+            mutableListOf(ship1),
+            listOf(GarbageType.OIL)
+        )
+
+        val corporation2 = Corporation("Test_corp2",
+            2, listOf(Pair(4, 0)),
+            mutableListOf(ship2),
+            listOf(GarbageType.OIL)
+        )
+        simDat.garbage.add(garbage1)
+        simDat.garbage.add(garbage2)
+        method.invoke(cm, corporation1)
+        method.invoke(cm, corporation2)
+        assertTrue(garbage1.trackedBy.contains(corporation1.id))
+        assertTrue(garbage1.trackedBy.contains(corporation2.id))
+        assertTrue(garbage2.trackedBy.contains(corporation1.id))
+        assertTrue(garbage2.trackedBy.contains(corporation2.id))
     }
 }

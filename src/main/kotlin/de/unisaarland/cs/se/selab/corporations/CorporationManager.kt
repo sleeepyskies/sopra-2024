@@ -125,6 +125,7 @@ class CorporationManager(private val simData: SimulationData) {
         }
         if (shouldRemove) {
             tile.currentGarbage.remove(gb)
+            simData.garbage.remove(gb)
         }
     }
 
@@ -602,7 +603,8 @@ class CorporationManager(private val simData: SimulationData) {
     }
     private fun assignCapacity(garbage: Garbage, capacity: Int, gbAssignedAmountList: MutableList<Garbage>): Int {
         if (capacity > 0) {
-            val assignedAmount = if (capacity > garbage.amount) garbage.amount else capacity
+            val capacityLeftToAssign = garbage.amount - garbage.assignedCapacity
+            val assignedAmount = if (capacity > capacityLeftToAssign) capacityLeftToAssign else capacity
             garbage.assignedCapacity += assignedAmount
             gbAssignedAmountList.add(garbage)
             return (capacity - assignedAmount).coerceAtLeast(0)
