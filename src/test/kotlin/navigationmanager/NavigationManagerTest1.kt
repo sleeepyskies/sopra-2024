@@ -742,11 +742,11 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(3, 2)
 
-        // call from that is not restricted, we can move out
-        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
-
         // restrict tile (4, 2)
         restrictTile(Pair(4, 2))
+
+        // call from that is not restricted, we can move out
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
 
         assertEquals(checkValue, result)
     }
@@ -756,12 +756,12 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(3, 3)
 
-        // 2 tiles restricted, we can move out
-        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 2)
-
         // restrict tile (4, 2), (3, 2)
         restrictTile(Pair(4, 2))
         restrictTile(Pair(3, 2))
+
+        // 2 tiles restricted, we can move out
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 2)
 
         assertEquals(checkValue, result)
     }
@@ -771,12 +771,12 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(3, 2)
 
-        // 2 tiles restricted, we cannot move out fully
-        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
-
         // restrict tile (4, 2), (3, 2)
         restrictTile(Pair(4, 2))
         restrictTile(Pair(3, 2))
+
+        // 2 tiles restricted, we cannot move out fully
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
 
         assertEquals(checkValue, result)
     }
@@ -797,15 +797,15 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(1, 0)
 
-        // on one single tile, enough travel to leave but no path due to LAND
-        val result = this.nm.getDestinationOutOfRestriction(Pair(1, 2), 2)
-
         // restrict tiles (0, 0), (1, 3), (0, 2), (1, 1), (2, 1)
         restrictTile(Pair(0, 0))
         restrictTile(Pair(1, 3))
         restrictTile(Pair(0, 2))
         restrictTile(Pair(1, 1))
         restrictTile(Pair(2, 1))
+
+        // on one single tile, enough travel to leave but no path due to LAND
+        val result = this.nm.getDestinationOutOfRestriction(Pair(1, 2), 2)
 
         assertEquals(checkValue, result)
     }
