@@ -17,6 +17,13 @@ import kotlin.math.floor
 class TaskManager(private val simData: SimulationData) {
 
     /**
+     * The maximum number of ships a corporation can have.
+     */
+    companion object {
+        private const val DEFAULT_DISTANCE = 10
+    }
+
+    /**
      * Starts the tasks phase in the simulation.
      */
     fun startTasksPhase() {
@@ -31,8 +38,8 @@ class TaskManager(private val simData: SimulationData) {
                 }
             }
         }
-
         // get active tasks, check if they have been completed
+        val fulfilled = mutableListOf<Task>()
         for (task in simData.activeTasks) {
             // get the assigned ship
             val assignedShip = simData.ships.find { it.id == task.assignedShipId }
@@ -44,17 +51,20 @@ class TaskManager(private val simData: SimulationData) {
 
                 // get reward, and reward ship
                 val reward = simData.rewards.find { it.id == task.rewardId }
+                simData.rewards.remove(reward)
                 val rewardShip = simData.ships.find { it.id == task.rewardShip }
 
                 // task is fulfilled, grant reward
                 if (reward != null && rewardShip != null) {
                     // grant the ship the reward
+                    fulfilled.add(task)
                     grantReward(rewardShip, reward, task)
                     // set the tasked ships state to default
                     assignedShip.state = ShipState.DEFAULT
                 }
             }
         }
+        simData.activeTasks.removeAll(fulfilled)
     }
 
     /**
@@ -87,9 +97,6 @@ class TaskManager(private val simData: SimulationData) {
      * @param reward The reward to be granted.
      */
     private fun grantReward(ship: Ship, reward: Reward, task: Task) {
-        // remove from active tasks
-        simData.activeTasks.remove(task)
-
         // update ship data
         ship.visibilityRange += reward.visibilityRange
         ship.hasTracker = ship.hasTracker || reward.type == RewardType.TRACKING
@@ -99,6 +106,8 @@ class TaskManager(private val simData: SimulationData) {
         val currentPair = capacityInfo[reward.garbageType]
         if (currentPair != null) {
             capacityInfo[reward.garbageType] = currentPair.copy(second = currentPair.second + reward.capacity)
+        } else {
+            capacityInfo[reward.garbageType] = Pair(reward.capacity, reward.capacity)
         }
 
         // log
@@ -115,6 +124,9 @@ class TaskManager(private val simData: SimulationData) {
      * @return true if the ship should be assigned the task, false otherwise
      */
     private fun shouldBeAssignedTask(ship: Ship, task: Task): Boolean {
+        if (ship.location == simData.navigationManager.findTile(task.targetTileId)?.location) {
+            return true
+        }
         return !(
             ship.state == ShipState.NEED_REFUELING_AND_UNLOADING ||
                 ship.state == ShipState.NEED_REFUELING ||
@@ -167,7 +179,7 @@ class TaskManager(private val simData: SimulationData) {
             ship.location,
             homeHarbors,
             Int.MAX_VALUE - 1
-        ).second
+        ).first.second
 
         // get tile instances
         val shipTile = this.simData.navigationManager.findTile(ship.tileId)
@@ -185,7 +197,7 @@ class TaskManager(private val simData: SimulationData) {
             val requiredFuel = (fromShipToTask + fromTaskToHarbor) * ship.fuelConsumptionRate
 
             // check if the ship this much fuel or more remaining
-            return ship.currentFuel >= requiredFuel
+            return ship.currentFuel >= requiredFuel / DEFAULT_DISTANCE
         } else {
             // if null, something has gone wrong :(((
             return false

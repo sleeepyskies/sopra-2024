@@ -113,6 +113,7 @@ class SimulationParser(
         }
 
         if (crossValidateCorporations()) {
+            Logger.setCorporationsInitialCollectedGarbage(corporations.map { it.id })
             Logger.initInfo(this.corporationFile)
         } else {
             Logger.initInfoInvalid(corporationFile)
