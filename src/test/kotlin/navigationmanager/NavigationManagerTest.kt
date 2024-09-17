@@ -7,6 +7,7 @@ import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.times
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,6 +15,7 @@ import kotlin.test.assertEquals
 /**
  * Class holding the tests for the NavigationManager class.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NavigationManagerTest {
     // navigation manager for testing
     private lateinit var nm: NavigationManager
