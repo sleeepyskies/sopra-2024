@@ -119,10 +119,11 @@ class CorporationManagerUnitTests1 {
             mutableListOf(),
             listOf(GarbageType.PLASTIC)
         )
+        val task1 = Task(1, TaskType.COLLECT, 1, 1, 8, 1, 2)
         this.simDat = SimulationData(
             nm, mutableListOf(corp1, corp2), mutableListOf(), mutableListOf(), mutableListOf(), mutableMapOf(),
             mutableMapOf(),
-            mutableListOf(), mutableListOf(), 0, 1
+            mutableListOf(task1), mutableListOf(), 0, 1
         )
         this.cm = CorporationManager(simDat)
     }
@@ -402,7 +403,6 @@ class CorporationManagerUnitTests1 {
         assertEquals(corporation1Harbors, locationsToGoTo1)
         assertEquals(corporation1Harbors, locationsToGoTo2)
         assertEquals(corporation2Harbors, locationsToGoTo3)
-
     }
 
     @Test
@@ -421,6 +421,46 @@ class CorporationManagerUnitTests1 {
             Corporation::class.java
         )
         method.isAccessible = true
+        val tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
     }
 
+    @Test
+    fun test_handleTaskedState() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, 1, ShipState.TASKED, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.addAll(listOf(ship))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "handleTaskedState",
+            Ship::class.java
+        )
+        method.isAccessible = true
+        val tilesToMoveTo = method.invoke(cm, ship)
+        assertEquals(listOf(Pair(2, 1)), tilesToMoveTo)
+    }
+
+    @Test
+    fun test_isTaskedAndDetermineBehaviour() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, 1, ShipState.TASKED, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.addAll(listOf(ship))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(listOf(Pair(2, 1)), tilesToMoveTo)
+    }
 }

@@ -402,7 +402,6 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.DEFAULT -> {
                 handleDefaultState(shipType, shipLocation, shipMaxTravelDistance, corporation)
             }
-
         }
     }
 
@@ -413,7 +412,10 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A list containing the target location of the task.
      */
     private fun handleTaskedState(ship: Ship): List<Pair<Int, Int>> {
-        val task = simData.activeTasks.find { it.assignedShipId == ship.id } ?: return listOf(ship.location)
+        val task = simData.activeTasks.find {
+            it.assignedShipId == ship.id &&
+                ship.currentTaskId == it.id
+        } ?: return listOf(ship.location)
         val location = simData.navigationManager.locationByTileId(task.targetTileId) ?: return listOf(ship.location)
         return listOf(location)
     }
