@@ -4,8 +4,6 @@ import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Current
 import de.unisaarland.cs.se.selab.assets.Direction
-import de.unisaarland.cs.se.selab.assets.Garbage
-import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.OilSpillEvent
 import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
 import de.unisaarland.cs.se.selab.assets.RestrictionEvent
@@ -18,7 +16,6 @@ import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.events.EventManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
-import kotlinx.serialization.internal.NamedValueDecoder
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
@@ -125,8 +122,6 @@ class EventManagerUnitTest {
     private lateinit var nm: NavigationManager
     private lateinit var sd: SimulationData
     private lateinit var em: EventManager
-    // mock tile for elvising this shit up
-    // private val mockTile = Tile(-1, Pair(-1, -1), TileType.LAND, false, Current(Direction.EAST, -1, -1), false, -1)
 
     /**
      * Sets up the map for the tests. Map is based on the map on page 36 in the specification.
@@ -162,21 +157,13 @@ class EventManagerUnitTest {
         assertFalse(sd.activeEvents.contains(pirate))
         assertTrue(sd.ships.isEmpty())
         assertTrue(sd.corporations[0].ships.isEmpty())
-        // val mockEvent = mock<Event> {
-        //     on { getStartingTick() } doReturn 1
-        //     on { start() } doReturn true
-        //     on { checkUpdate() } doReturn true
-        // }
-        // val upcoming = mutableListOf<Event>(mockEvent)
-        // val eManager = EventManager(upcoming)
-        // assertTrue(eManager.updatePhase(1))
     }
 
     /** updatePhase active list empty, one event upcoming return False*/
     @Test
     fun applyOilSpillEventTest() {
-        var oilspill1 = OilSpillEvent(0, 1, Pair(0, 0), 1, 500)
-        var oilspill2 = OilSpillEvent(16, 1, Pair(1, 3), 2, 500)
+        val oilspill1 = OilSpillEvent(0, 1, Pair(0, 0), 1, 500)
+        val oilspill2 = OilSpillEvent(16, 1, Pair(1, 3), 2, 500)
         sd.scheduledEvents[1] = mutableListOf(oilspill1, oilspill2)
         em.startEventPhase()
         assertTrue(t1.currentGarbage.isNotEmpty())
@@ -191,9 +178,9 @@ class EventManagerUnitTest {
      * run a tick so the event is assigned to the active list*/
     @Test
     fun applyStormEventTest() {
-        var oilspill1 = OilSpillEvent(0, 1, Pair(0, 0), 1, 500)
-        var oilspill2 = OilSpillEvent(16, 1, Pair(1, 3), 2, 500)
-        var storm = StormEvent(17, 1, Pair(1, 3), 2, Direction.NORTH_WEST, 20)
+        val oilspill1 = OilSpillEvent(0, 1, Pair(0, 0), 1, 500)
+        val oilspill2 = OilSpillEvent(16, 1, Pair(1, 3), 2, 500)
+        val storm = StormEvent(17, 1, Pair(1, 3), 2, Direction.NORTH_WEST, 20)
         sd.scheduledEvents[1] = mutableListOf(oilspill1, oilspill2, storm)
         em.startEventPhase()
         assertTrue(t6.currentOilAmount == 1000)
@@ -208,30 +195,18 @@ class EventManagerUnitTest {
         assertTrue(t19.currentOilAmount == 500)
         assertTrue(t21.currentOilAmount == 0)
         assertTrue(t23.currentOilAmount == 500)
-
-        // val mockEvent = mock<Event> {
-        //     on { checkEnding() } doReturn true
-        //     on { getStartingTick() } doReturn 1
-        //     on { start() } doReturn true
-        //     on { checkUpdate() } doReturn true
-        // }
-        // val upcoming = mutableListOf<Event>(mockEvent)
-        // val eManager = EventManager(upcoming)
-        // eManager.updatePhase(1)
-        // assertTrue(eManager.updatePhase(2))
     }
 
     /** updatePhase upcoming list empty, one event active reapply return true
      * run a tick so the event is assigned to the active list*/
     @Test
     fun applyRestrictionEventTest() {
-        val restrictionEvent = RestrictionEvent(1,1, Pair(1, 0), 1,1)
+        val restrictionEvent = RestrictionEvent(1, 1, Pair(1, 0), 2, 1)
         sd.scheduledEvents[1] = mutableListOf(restrictionEvent)
         em.startEventPhase()
 
         // Check if the restriction is applied correctly
         val restrictedTiles = nm.getTilesInRadius(Pair(1, 0), 2)
-        println(restrictedTiles)
         for (coordinates in restrictedTiles) {
             val tile = nm.findTile(coordinates)
             assertNotNull(tile)
@@ -257,6 +232,5 @@ class EventManagerUnitTest {
             assertNotNull(tile)
             assertFalse(tile!!.isRestricted)
         }
-
     }
 }
