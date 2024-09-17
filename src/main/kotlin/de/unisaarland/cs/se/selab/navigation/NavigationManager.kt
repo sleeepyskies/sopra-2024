@@ -593,8 +593,16 @@ class NavigationManager(
         return dist <= travelAmount * DEFAULT_DISTANCE
     }
 
-    private fun filterByFurthestDistance(distances: Map<Int, Int>, explorePoints: List<Pair<Int, Int>>) : List<Pair<Int, Int>> {
+    private fun filterByFurthestDistance(
+        distances: Map<Int, Int>,
+        explorePoints: List<Pair<Int, Int>>
+    ): List<Pair<Int, Int>> {
         val maxDistance = distances.values.maxOrNull() ?: 0
+        val returnList = mutableListOf<Pair<Int, Int>>()
+        for (point in explorePoints) {
+            val tile = findTile(point) ?: continue
+
+        }
         return explorePoints.filter { distances[this.tiles[it]?.id] == maxDistance }
     }
 }

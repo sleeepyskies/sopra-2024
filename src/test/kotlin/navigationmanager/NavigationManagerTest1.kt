@@ -6,7 +6,7 @@ import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,7 +28,7 @@ class NavigationManagerTest1 {
     /**
      * Sets up the map for the tests. Map is based on the map on page 36 in the specification.
      */
-    @BeforeEach
+    @BeforeAll
     fun setup() {
         // mock current for tiles with no current
         val current = Current(Direction.EAST, 0, 0)
