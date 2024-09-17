@@ -311,10 +311,10 @@ class CorporationManager(private val simData: SimulationData) {
         val shipLocation = ship.location
         val currentFuel = ship.currentFuel
         val fuelConsumption = ship.fuelConsumptionRate
-        val maxTravelDistance = currentFuel / fuelConsumption / VELOCITY_DIVISOR
+        val maxTravelDistanceTiles = currentFuel / fuelConsumption / VELOCITY_DIVISOR
         val shouldMoveToHarbor = simData.navigationManager.shouldMoveToHarbor(
             shipLocation,
-            maxTravelDistance,
+            maxTravelDistanceTiles,
             corporation.harbors
         )
         if (shouldMoveToHarbor) {
@@ -331,15 +331,13 @@ class CorporationManager(private val simData: SimulationData) {
                 }
             }
         }
-
         if (ship.capacityInfo.values.any { it.first <= 0 }) {
             ship.state = when (ship.state) {
                 ShipState.NEED_REFUELING -> {
                     ShipState.NEED_REFUELING_AND_UNLOADING
                 }
                 ShipState.TASKED -> {
-                    ship.currentTaskId = -1
-                    ShipState.NEED_UNLOADING
+                    ShipState.TASKED
                 }
                 else -> {
                     ShipState.NEED_UNLOADING
@@ -395,6 +393,9 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
                 corporation.harbors
             }
+            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
+                mutableListOf(shipLocation)
+            }
             ShipState.WAITING_FOR_PLASTIC -> {
                 listOf(shipLocation)
             }
@@ -405,9 +406,6 @@ class CorporationManager(private val simData: SimulationData) {
                 handleDefaultState(shipType, shipLocation, shipMaxTravelDistance, corporation)
             }
 
-            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
-                mutableListOf(shipLocation)
-            }
         }
     }
 
