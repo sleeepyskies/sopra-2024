@@ -481,7 +481,16 @@ class NavigationManager(
             if (tileObject.type == TileType.LAND) break
             pathMap.add(tileObject)
         }
+
         pathMap.reverse()
+        val currentTile = findTile(location)
+        if (currentTile != null) {
+            pathMap.add(currentTile)
+        }
+
+        for (a in pathMap) {
+            println(a.id)
+        }
         return pathMap
     }
 
