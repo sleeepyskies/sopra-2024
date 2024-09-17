@@ -155,7 +155,9 @@ class CorporationManager(private val simData: SimulationData) {
     private fun startRefuelUnloadPhase(corporation: Corporation) {
         Logger.corporationActionRefuel(corporation.id)
         val shipsInHarbor = getShipsInHarbor(corporation)
+        println(shipsInHarbor)
         for (ship in shipsInHarbor) {
+            println("Ship ${ship.id} is in harbor" + ship.state.toString())
             if (!handleRefuel(ship)) {
                 handleUnload(ship)
             }
@@ -171,6 +173,8 @@ class CorporationManager(private val simData: SimulationData) {
     private fun getShipsInHarbor(corporation: Corporation): List<Ship> {
         val corporationShips = corporation.ships
         val corporationHarbors = corporation.harbors
+        println("ships: " + corporationShips)
+        println("harbors: " + corporationHarbors)
         return corporationShips.filter { ship ->
             corporationHarbors.any { harbor -> harbor == ship.location }
         }.sortedBy { it.id }

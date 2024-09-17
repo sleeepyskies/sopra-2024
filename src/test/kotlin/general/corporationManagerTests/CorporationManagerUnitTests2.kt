@@ -1,5 +1,6 @@
 package general.corporationManagerTests
 
+import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Current
 import de.unisaarland.cs.se.selab.assets.Direction
@@ -12,13 +13,23 @@ import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import kotlin.test.assertTrue
+import java.io.PrintWriter
+import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CorporationManagerUnitTests2 {
+
+    companion object {
+        @JvmStatic
+        @BeforeAll
+        fun init() {
+            Logger.setOutput(PrintWriter(System.out, true))
+        }
+    }
 
     // mock current for tiles with no current
     val current = Current(Direction.EAST, 0, 0)
@@ -141,41 +152,152 @@ class CorporationManagerUnitTests2 {
         cm = CorporationManager(sd)
     }
 
-    @Test
-    fun refuelUnloadPhaseTest() {
+    // New helper function to create ships
+    private fun createShips(): List<Ship> {
         val shipNeedsToPee = Ship(
-            2, "Horatio_Nelson", 2, mutableMapOf(), 10, Pair(0, 0),
+            2, "Horatio_Nelson", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.REFUELING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipNeedsToDefecateWithContainer1 = Ship(
+            4, "Pierre-Charles_Villeneuve", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipNeedsToDefecateWithContainer2 = Ship(
+            7, "Pierre-Charles_Villeneuve", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipNeedsToDefecateWithContainer3 = Ship(
+            8, "Pierre-Charles_Villeneuve", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        return listOf(
+            shipNeedsToPee,
+            shipNeedsToDefecateWithContainer1,
+            shipNeedsToDefecateWithContainer2,
+            shipNeedsToDefecateWithContainer3
+        )
+    }
+
+    // Modify the existing helper function to use the new helper
+    private fun refuelUnloadPhaseTestHelper(): List<Ship> {
+        val ships = createShips()
+        val shipKaputt = Ship(
+            5, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.REFUELING_AND_UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipNeedRefuel = Ship(
+            9, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 0, -1, ShipState.NEED_REFUELING, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
-        val shipNeedsToDefecate = Ship(
-            2, "Pierre-Charles_Villeneuve", 2, mutableMapOf(), 10, Pair(0, 0),
+        val shipNeedUnload = Ship(
+            10, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
             Direction.EAST, 1, 10, 10, 10, 1000,
-            10, 1000, -1, ShipState.NEED_UNLOADING, ShipType.SCOUTING_SHIP,
+            10, 0, -1, ShipState.NEED_UNLOADING, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
-        val shipKaputt = Ship(
-            2, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 0),
+        val shipNeedRefuelUnload = Ship(
+            11, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 0, -1, ShipState.NEED_REFUELING_AND_UNLOADING, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
+        return ships + listOf(
+            shipKaputt,
+            shipNeedRefuel,
+            shipNeedUnload,
+            shipNeedRefuelUnload
+        )
+    }
+
+    // Use the refuelUnloadPhaseTestHelper function in the test function
+    @Test
+    fun refuelUnloadPhaseTest() {
+        val ships = refuelUnloadPhaseTestHelper()
+        val shipNeedsToPee = ships[0]
+        val shipNeedsToDefecateWithContainer1 = ships[1]
+        val shipNeedsToDefecateWithContainer2 = ships[2]
+        val shipNeedsToDefecateWithContainer3 = ships[3]
+        val shipKaputt = ships[4]
+        val shipNeedRefuel = ships[5]
+        val shipNeedUnload = ships[6]
+        val shipNeedRefuelUnload = ships[7]
+
+        shipNeedsToDefecateWithContainer1.capacityInfo[GarbageType.PLASTIC] = Pair(0, 1000)
+        shipNeedsToDefecateWithContainer2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
+        shipNeedsToDefecateWithContainer3.capacityInfo[GarbageType.CHEMICALS] = Pair(0, 1000)
         shipKaputt.capacityInfo.keys.forEach { key ->
             shipKaputt.capacityInfo[key] = Pair(0, shipKaputt.capacityInfo[key]?.second ?: 0)
         }
-        shipNeedsToDefecate.capacityInfo.keys.forEach { key ->
-            shipNeedsToDefecate.capacityInfo[key] = Pair(0, shipNeedsToDefecate.capacityInfo[key]?.second ?: 0)
+        shipNeedsToDefecateWithContainer1.capacityInfo.keys.forEach { key ->
+            shipNeedsToDefecateWithContainer1.capacityInfo[key] = Pair(
+                0, shipNeedsToDefecateWithContainer1.capacityInfo[key]?.second ?: 0
+            )
         }
-        corp2.ships.add(shipNeedsToDefecate)
         corp2.ships.add(shipNeedsToPee)
         corp2.ships.add(shipKaputt)
+        corp2.ships.add(shipNeedsToDefecateWithContainer1)
+        corp2.ships.add(shipNeedsToDefecateWithContainer2)
+        corp2.ships.add(shipNeedsToDefecateWithContainer3)
+        corp2.ships.add(shipNeedRefuel)
+        corp2.ships.add(shipNeedUnload)
+        corp2.ships.add(shipNeedRefuelUnload)
+
         val testFun = CorporationManager::class.java.getDeclaredMethod(
-            "refuelUnloadPhase",
+            "startRefuelUnloadPhase",
             Corporation::class.java
         )
         testFun.isAccessible = true
         testFun.invoke(cm, corp2)
-        assertTrue(shipNeedsToPee.state == ShipState.DEFAULT)
+        assertEquals(ShipState.DEFAULT, shipNeedsToPee.state)
+        assertEquals(shipNeedsToPee.currentFuel, shipNeedsToPee.maxFuelCapacity)
+        assertEquals(shipNeedsToDefecateWithContainer1.state, ShipState.DEFAULT)
+        assertEquals(
+            shipNeedsToDefecateWithContainer1.capacityInfo[GarbageType.PLASTIC]?.first ?: 0,
+            1000
+        )
+        assertEquals(
+            shipNeedsToDefecateWithContainer1.capacityInfo[GarbageType.PLASTIC]?.second ?: 0,
+            1000
+        )
+        assertEquals(ShipState.UNLOADING, shipKaputt.state)
+        assertEquals(shipKaputt.currentFuel, 1000)
+        assertEquals(ShipState.DEFAULT, shipNeedsToDefecateWithContainer2.state)
+        assertEquals(
+            shipNeedsToDefecateWithContainer2.capacityInfo[GarbageType.OIL]?.first ?: 0,
+            1000
+        )
+        assertEquals(
+            shipNeedsToDefecateWithContainer2.capacityInfo[GarbageType.OIL]?.second ?: 0,
+            1000
+        )
+        assertEquals(ShipState.DEFAULT, shipNeedsToDefecateWithContainer3.state)
+        assertEquals(
+            shipNeedsToDefecateWithContainer3.capacityInfo[GarbageType.CHEMICALS]?.first ?: 0,
+            1000
+        )
+        assertEquals(
+            shipNeedsToDefecateWithContainer3.capacityInfo[GarbageType.CHEMICALS]?.second ?: 0,
+            1000
+        )
+        assertEquals(ShipState.REFUELING, shipNeedRefuel.state)
+        assertEquals(ShipState.UNLOADING, shipNeedUnload.state)
+        assertEquals(ShipState.REFUELING_AND_UNLOADING, shipNeedRefuelUnload.state)
+    }
+
+    @Test
+    fun startCooperatingPhaseTest() {
+
     }
 }
