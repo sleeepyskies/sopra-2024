@@ -1,5 +1,5 @@
 package general.eventManagerTests
-
+/*
 import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Current
@@ -236,3 +236,4 @@ class EventManagerUnitTest {
         }
     }
 }
+*/

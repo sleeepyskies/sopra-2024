@@ -351,10 +351,9 @@ class CorporationManager(private val simData: SimulationData) {
         val shipIsOnHarbor = corporation.harbors.any { it == shipLocation }
         return if (shipIsOnHarbor) {
             when (ship.state) {
-                ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
+                ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
                     listOf(shipLocation)
                 }
-
                 else -> {
                     emptyList()
                 }
@@ -385,7 +384,6 @@ class CorporationManager(private val simData: SimulationData) {
                 )
             )
         }
-
         if (checkShipOnHarborAndNeedsToRefuelOrUnload(ship, corporation).isNotEmpty()) return listOf(shipLocation)
         checkNeedRefuelOrUnload(ship, corporation)
 
