@@ -473,7 +473,7 @@ class TravelManagerTest {
             Int::class.java
         )
         method.isAccessible = true
-        val result = method.invoke(travelManager, garbage, oldGarbage, false, path, tile, 50) as Tile?
+        val result = method.invoke(travelManager, garbage, oldGarbage, false, path, tile, 50) as? Tile
 
         // Verify results
         verify(tile).removeGarbageFromTile(garbage)
@@ -937,9 +937,11 @@ class TravelManagerTest {
         }
         val tilePath = listOf(candidateTile)
 
-        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()).thenReturn(listOf(Pair(1,listOf(garbage))))
+        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting())
+            .thenReturn(listOf(Pair(1, listOf(garbage))))
         `when`(navigationManager.findTile(1)).thenReturn(tile)
-        `when`(navigationManager.calculateDrift(tile.location, tileCurrent.direction, tileCurrent.speed)).thenReturn(tilePath)
+        `when`(navigationManager.calculateDrift(tile.location, tileCurrent.direction, tileCurrent.speed))
+            .thenReturn(tilePath)
         `when`(travelManager.split(garbage, 50)).thenReturn(splitGarbage)
 
         travelManager.driftGarbagePhase()

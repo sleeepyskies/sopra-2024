@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.PrintWriter
+import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CorporationManagerUnitTests1 {
@@ -102,23 +103,85 @@ class CorporationManagerUnitTests1 {
     )
 
     private lateinit var nm: NavigationManager
-    private lateinit var sd: SimulationData
     private lateinit var cm: CorporationManager
+    private lateinit var simDat: SimulationData
 
     @BeforeEach
     fun setup() {
         this.nm = NavigationManager(map)
         // init the graph
         this.nm.initializeAndUpdateGraphStructure()
-        sd = SimulationData(
-            nm, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableMapOf(),
+        val corp1 = Corporation("Test_corp", 1, listOf(Pair(4, 2)), mutableListOf(), listOf(GarbageType.OIL))
+        val corp2 = Corporation(
+            "Hammer Industries",
+            2,
+            listOf(Pair(4, 0)),
+            mutableListOf(),
+            listOf(GarbageType.PLASTIC)
+        )
+        this.simDat = SimulationData(
+            nm, mutableListOf(corp1, corp2), mutableListOf(), mutableListOf(), mutableListOf(), mutableMapOf(),
             mutableMapOf(),
             mutableListOf(), mutableListOf(), 0, 1
         )
-        this.cm = CorporationManager(sd)
+        this.cm = CorporationManager(simDat)
     }
 
     @Test
     fun testScan() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.add(ship)
+        simDat.corporations[0].ships.add(ship)
+        val ship2 = Ship(
+            2, "black_pearl", 2, mutableMapOf(), 2, Pair(0, 1),
+            Direction.EAST, 6, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.add(ship2)
+        simDat.corporations[1].ships.add(ship2)
+
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0))
+        t2.addGarbageToTile(garbage1)
+        simDat.garbage.add(garbage1)
+        this.cm = CorporationManager(simDat)
+        val method = CorporationManager::class.java.getDeclaredMethod("scan", Pair::class.java, Int::class.java)
+        method.isAccessible = true
+        val scanResult = method.invoke(cm, Pair(0, 0), ship.visibilityRange) as? Pair<*, *>
+        if (scanResult != null) {
+            val mapResult = scanResult.first as? Map<*, *>
+            if (mapResult != null) {
+                assertEquals(Pair(1, 1), mapResult[Pair(0, 0)])
+                assertEquals(Pair(2, 2), mapResult[Pair(0, 1)])
+            }
+            val garbageResult = scanResult.second as? Map<*, *>
+            if (garbageResult != null) {
+                assertEquals(garbageResult[1], Pair(Pair(1, 0), GarbageType.OIL))
+            }
+        }
+    }
+
+    @Test
+    fun test_shipMoveToLocation(){
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.add(ship)
+        simDat.corporations[0].ships.add(ship)
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "shipMoveToLocation",
+            Ship::class.java,
+            Pair::class.java)
+        method.isAccessible = true
+        method.invoke(cm, ship, Pair(1, 0))
+        assertEquals(Pair(1, 0), ship.location)
     }
 }
