@@ -136,7 +136,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun startCooperationPhase(corporation: Corporation) {
         Logger.corporationActionCooperate(corporation.id)
         corporation.ships.filter { it.hasRadio || it.type == ShipType.COORDINATING_SHIP }.forEach {
-            getShipsOnTile(it.location).forEach { target ->
+            getShipsOnTile(it.location).filter { ship -> ship.corporation != corporation.id }.forEach { target ->
                 val targetsCorp = simData.corporations[target.corporation]
                 if (corporation.lastCooperatedWith != targetsCorp.id) {
                     corporation.lastCooperatedWith = targetsCorp.id
