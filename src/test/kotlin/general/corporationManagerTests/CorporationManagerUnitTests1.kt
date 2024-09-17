@@ -397,5 +397,11 @@ class CorporationManagerUnitTests1 {
         val locationsToGoTo1 = method.invoke(cm, ship, simDat.corporations[0])
         val locationsToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
         val locationsToGoTo3 = method.invoke(cm, ship3, simDat.corporations[1])
+        val corporation1Harbors = simDat.corporations[0].harbors
+        val corporation2Harbors = simDat.corporations[1].harbors
+        assertEquals(corporation1Harbors, locationsToGoTo1)
+        assertEquals(corporation1Harbors, locationsToGoTo2)
+        assertEquals(corporation2Harbors, locationsToGoTo3)
+
     }
 }
