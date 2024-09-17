@@ -441,6 +441,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (corporation.visibleGarbage.isNotEmpty()) {
                     var out = corporation.visibleGarbage
                         .filter { corporation.collectableGarbageTypes.contains(it.value.second) }
+                        .filter { (k,_) -> getOnlyAssignableGarbagePredicate(k) }
                         .map { it.value.first }.toList()
                     if (out.isEmpty()) out = listOf(shipLocation)
                     return out
@@ -463,6 +464,14 @@ class CorporationManager(private val simData: SimulationData) {
                 listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
             }
         }
+    }
+
+    private fun getOnlyAssignableGarbagePredicate(garbageID: Int): Boolean{
+        val garbageObject = simData.garbage.find { it.id == garbageID }
+        val garbageAssignedCapacity = garbageObject?.assignedCapacity
+        val garbageAmount = garbageObject?.amount
+        val assignableCapacity = garbageAmount?.minus(garbageAssignedCapacity ?: 0)
+        return (assignableCapacity == null || assignableCapacity > 0)
     }
 
     /**

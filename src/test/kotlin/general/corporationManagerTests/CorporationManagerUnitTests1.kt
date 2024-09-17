@@ -704,4 +704,48 @@ class CorporationManagerUnitTests1 {
         assertTrue(garbage2.trackedBy.contains(corporation1.id))
         assertTrue(garbage2.trackedBy.contains(corporation2.id))
     }
+
+    @Test
+    fun test_handleDefaultStateCollectingShipGetOnlyAssignableGarbage() {
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0), assignedCapacity = 50)
+        val garbage2 = Garbage(2, 50, GarbageType.PLASTIC, 3, Pair(2, 0))
+        val ship1 = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val corporation = Corporation("Test_corp1",
+            1, listOf(Pair(4, 0)),
+            mutableListOf(ship1, ship2),
+            listOf(GarbageType.OIL)
+        )
+        simDat.garbage.addAll(listOf(garbage1, garbage2))
+        corporation.visibleGarbage[garbage1.id] = Pair(garbage1.location, garbage1.type)
+        corporation.visibleGarbage[garbage2.id] = Pair(garbage2.location, garbage2.type)
+
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "handleDefaultState",
+            ShipType::class.java,
+            Pair::class.java,
+            Int::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+       var output = method.invoke(cm, ship1.type,ship1.location,1,corporation) as List<*>
+        assertEquals(1, output.size)
+        assertEquals(listOf( Pair(0, 0)), output)
+        val garbage3 = Garbage(2, 50, GarbageType.OIL, 3, Pair(2, 0))
+        simDat.garbage.add(garbage3)
+        corporation.visibleGarbage[garbage3.id] = Pair(garbage3.location, garbage3.type)
+        output = method.invoke(cm, ship1.type,ship1.location,1,corporation) as List<*>
+        assertEquals(1, output.size)
+        assertEquals(listOf(Pair(2, 0)), output)
+    }
 }
