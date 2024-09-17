@@ -59,8 +59,8 @@ class NavigationManager(
                 Pair(x, y + 1), // Bottom left
                 Pair(x, y - 1), // Top left
                 Pair(x + 1, y - 1), // Top right
-                Pair(x + 1, y + 1)// Bottom right
-            ) .filter { it.first >= 0 && it.second >= 0 }
+                Pair(x + 1, y + 1) // Bottom right
+            ).filter { it.first >= 0 && it.second >= 0 }
         } else {
             listOf(
                 Pair(x + 1, y), // Right
@@ -69,7 +69,7 @@ class NavigationManager(
                 Pair(x - 1, y - 1), // Top left
                 Pair(x, y - 1), // Top right
                 Pair(x, y + 1)// Bottom right
-            ) .filter { it.first >= 0 && it.second >= 0 }
+            ).filter { it.first >= 0 && it.second >= 0 }
         }
     }
 
@@ -412,7 +412,7 @@ class NavigationManager(
             filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(homeHarbors, distances)
         if (tileIDLocationToTravelTo == -1) return false
         // Check if the distance to the destination tile is greater than the maxDistance with current Fuel
-        val pathLength = distances[tileIDLocationToTravelTo] ?: 0
+        val pathLength = (distances[tileIDLocationToTravelTo] ?: 0) / DEFAULT_DISTANCE
         return pathLength > maxDistance
     }
 
