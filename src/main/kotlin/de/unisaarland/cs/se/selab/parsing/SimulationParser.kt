@@ -72,8 +72,9 @@ class SimulationParser(
         // parse and validate map
         if (mapParser.parseMap()) {
             // file valid
-            Logger.initInfo(mapFile)
+            Logger.initInfo(this.mapFile)
             this.navigationManager = mapParser.getNavManager()
+            this.navigationManager.initializeAndUpdateGraphStructure()
         } else {
             // file invalid
             Logger.initInfoInvalid(mapFile)
@@ -86,7 +87,6 @@ class SimulationParser(
         // init corporation parser and scenario parser
         val corporationParser = CorporationParser(corporationFile, idLocationMapping)
         val scenarioParser = ScenarioParser(scenarioFile, idLocationMapping)
-
         // parse and validate corporations
         if (corporationParser.parseAllCorporations()) {
             // file valid
@@ -112,15 +112,23 @@ class SimulationParser(
             return null
         }
 
+        if (crossValidateCorporations()) {
+            Logger.setCorporationsInitialCollectedGarbage(corporations.map { it.id })
+            Logger.initInfo(this.corporationFile)
+        } else {
+            Logger.initInfoInvalid(corporationFile)
+            return null
+        }
+
         // return final simulator
-        return if (crossValidate()) {
+        return if (crossValidateScenario()) {
             placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
             makeManagers(scenarioParser.highestGarbageID)
             // log
-            Logger.initInfo(this.corporationFile)
             Logger.initInfo(this.scenarioFile)
             Simulator(maxTick, travelManager, corporationManager, eventManager, taskManager)
         } else {
+            Logger.initInfoInvalid(this.scenarioFile)
             null
         }
     }
@@ -167,7 +175,7 @@ class SimulationParser(
     /**
      * Checks that harbors only occur on shore tiles, as well as non-null tiles.
      */
-    private fun crossValidateHarborsOnShores(): Boolean {
+    private fun crossValidateCorporationHarborOnHarborTile(): Boolean {
         // get all harbor locations
         val locations = this.corporations.flatMap { it.harbors }
 
@@ -176,7 +184,7 @@ class SimulationParser(
             val tile = navigationManager.tiles[location]
 
             // check tile non-null, is SHORE and is a harbor
-            if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
+            if (tile == null || !(tile.isHarbor && tile.type == TileType.SHORE)) {
                 log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
                 return false
             }
@@ -441,14 +449,20 @@ class SimulationParser(
     /**
      * Calls all cross validation methods
      */
-    private fun crossValidate(): Boolean {
-        return crossValidateHarborsOnShores() &&
+    private fun crossValidateCorporations(): Boolean {
+        return crossValidateCorporationHarborOnHarborTile() &&
             crossValidateShipsOnTiles() &&
-            crossValidateGarbageOnTiles() &&
+            crossValidateShipsCanReachHarbor()
+    }
+
+    /**
+     * Calls all cross validation methods
+     */
+    private fun crossValidateScenario(): Boolean {
+        return crossValidateGarbageOnTiles() &&
             crossValidateEventsOnTiles() &&
             crossValidateEventsOnShips() &&
             crossValidateTasksForShips() &&
-            crossValidateShipsCanReachHarbor() &&
             crossValidateTasksSameShipCorporation() &&
             crossValidateTaskLocation() &&
             crossValidateRewardAssignedIds()

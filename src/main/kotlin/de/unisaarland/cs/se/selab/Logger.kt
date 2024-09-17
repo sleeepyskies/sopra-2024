@@ -12,7 +12,7 @@ object Logger {
     private lateinit var outputBuffer: PrintWriter
 
     // Map to store collected garbage by corporations
-    private val corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>> = mutableMapOf()
+    private lateinit var corporationCollectedGarbage: Map<Int, Triple<Int, Int, Int>>
     var corporationTotalUncollectedGarbage: Int = 0
 
     /**
@@ -23,8 +23,18 @@ object Logger {
             throw IllegalCallerException("Already initialized output buffer!")
         }
         outputBuffer = outputStream
-        outputBuffer.print("sflvnsldnvlsdnvw")
-        outputBuffer.write("sflvns1111111111111111111111ldnvlsdnvw")
+    }
+
+    /**
+     * Initializes the initial collected garbage
+     * for each corporation that is actually inside the simulation
+     */
+    fun setCorporationsInitialCollectedGarbage(corporations: List<Int>) {
+        val map = mutableMapOf<Int, Triple<Int, Int, Int>>()
+        for (corpId in corporations) {
+            map[corpId] = Triple(0, 0, 0)
+        }
+        corporationCollectedGarbage = map
     }
 
     /**

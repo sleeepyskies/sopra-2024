@@ -27,6 +27,7 @@ class Simulator(
      * Runs the simulation until the maximum number of ticks is reached.
      */
     fun run() {
+        Logger.simulationStart()
         while (currentTick < maxTicks) {
             Logger.simTick(currentTick)
             corporationManager.startCorporatePhase()
@@ -36,6 +37,7 @@ class Simulator(
             taskManager.startTasksPhase()
             currentTick++
         }
+
         Logger.corporationTotalUncollectedGarbage = travelManager.getRemainingGarbageInOcean().map { it.amount }.sum()
         Logger.simulationEnd()
         Logger.simulationInfoStatistics()

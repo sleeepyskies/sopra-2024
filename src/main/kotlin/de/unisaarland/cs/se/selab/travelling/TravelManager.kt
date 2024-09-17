@@ -29,16 +29,17 @@ class TravelManager(private val simData: SimulationData) {
      */
     fun driftGarbagePhase() {
         val garbageOnMap = simData.navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()
-        val tilesToUpdate: MutableList<Tile> = mutableListOf()
+        val tilesToUpdate: MutableSet<Tile> = mutableSetOf()
         for ((tiled, listGarbage) in garbageOnMap) {
             // Get tile in ascending order of tileID
             val tile = simData.navigationManager.findTile(tiled)
             // Get garbage on tile in ascending order of garbageID
             val mutableListGarbage = listGarbage.toMutableList()
             if (tile == null || !tile.hasCurrent) continue
-            val driftCapacity = tile.current.intensity * INTENSITY_FACTOR
-            val direction = tile.current.direction
-            val speed = tile.current.speed
+            val tileCurrent = tile.current
+            val driftCapacity = tileCurrent.intensity * INTENSITY_FACTOR
+            val direction = tileCurrent.direction
+            val speed = tileCurrent.speed
             handleGarbageDrift(tile, mutableListGarbage, direction, speed, tilesToUpdate, driftCapacity)
         }
         // update all tiles that have garbage arriving
@@ -60,46 +61,64 @@ class TravelManager(private val simData: SimulationData) {
         mutableListGarbage: MutableList<Garbage>,
         direction: Direction,
         speed: Int,
-        tilesToUpdate: MutableList<Tile>,
+        tilesToUpdate: MutableSet<Tile>,
         driftCapacity: Int
     ) {
         var remainingDriftCapacity = driftCapacity
-        while (remainingDriftCapacity != 0) {
-            var garbageToBeHandled = mutableListGarbage.removeFirst()
-            var wasSplit: Boolean = false
-            val oldGarbage = garbageToBeHandled
-            if (tile.checkGarbageLeft()) {
-                // Get tile path sorted furthest to nearest
-                val tilePath = simData.navigationManager.calculateDrift(
-                    tile.location,
-                    direction,
-                    speed
-                )
-                // Check if garbage is too large and has to be split
-                if (garbageToBeHandled.checkSplit(remainingDriftCapacity)) {
-                    garbageToBeHandled = split(garbageToBeHandled, remainingDriftCapacity)
-                    wasSplit = true
-                }
-                // Get tile to which we driftedGarbage, if null, we have to move to the next garbage pile,
-                // as there is no tile to drift to, but still use drift capacity needed to make the attempt
-                val tileToUpdate = driftGarbageAlongPath(
-                    garbageToBeHandled,
-                    oldGarbage,
-                    wasSplit,
-                    tilePath,
-                    tile,
-                    remainingDriftCapacity
-                )
-                if (tileToUpdate != null) tilesToUpdate.add(tileToUpdate)
-                // if was split, all capacity has been used
-                if (wasSplit) {
-                    remainingDriftCapacity = 0
-                } else {
-                    remainingDriftCapacity -= garbageToBeHandled.amount
-                }
-            } else {
-                break
+        while (remainingDriftCapacity != 0 && mutableListGarbage.isNotEmpty()) {
+            remainingDriftCapacity = helpHandleGarbageDrift(
+                tile,
+                mutableListGarbage,
+                direction,
+                speed,
+                tilesToUpdate,
+                remainingDriftCapacity
+            )
+        }
+    }
+
+    private fun helpHandleGarbageDrift(
+        tile: Tile,
+        mutableListGarbage: MutableList<Garbage>,
+        direction: Direction,
+        speed: Int,
+        tilesToUpdate: MutableSet<Tile>,
+        currentDriftCapacity: Int
+    ): Int {
+        var garbageToBeHandled = mutableListGarbage.removeFirst()
+        var wasSplit = false
+        val oldGarbage = garbageToBeHandled
+        if (tile.checkGarbageLeft()) {
+            // Get tile path sorted furthest to nearest
+            val tilePath = simData.navigationManager.calculateDrift(
+                tile.location,
+                direction,
+                speed
+            )
+            // Check if garbage is too large and has to be split
+            if (garbageToBeHandled.checkSplit(currentDriftCapacity)) {
+                garbageToBeHandled = split(garbageToBeHandled, currentDriftCapacity)
+                wasSplit = true
             }
+            // Get tile to which we driftedGarbage, if null, we have to move to the next garbage pile,
+            // as there is no tile to drift to, but still use drift capacity needed to make the attempt
+            val tileToUpdate = driftGarbageAlongPath(
+                garbageToBeHandled,
+                oldGarbage,
+                wasSplit,
+                tilePath,
+                tile,
+                currentDriftCapacity
+            )
+            if (tileToUpdate != null) tilesToUpdate.add(tileToUpdate)
+            // if was split, all capacity has been used
+            if (wasSplit) {
+                return 0
+            } else {
+                return currentDriftCapacity - garbageToBeHandled.amount
+            }
+        } else {
+            return 0
         }
     }
 
@@ -151,7 +170,7 @@ class TravelManager(private val simData: SimulationData) {
      * called to update all tiles which garbage has drifted to
      * @param tiles the tiles to be updated
      */
-    private fun updateTiles(tiles: List<Tile>) {
+    private fun updateTiles(tiles: Set<Tile>) {
         for (tile in tiles) {
             tile.moveAllArrivingGarbageToTile()
         }
@@ -170,9 +189,10 @@ class TravelManager(private val simData: SimulationData) {
             val startTile = simData.navigationManager.findTile(tile)
             val mutableListShips = listShips.toMutableList()
             if (startTile == null || !startTile.hasCurrent) continue
-            var driftCapacity = startTile.current.intensity
-            val direction = startTile.current.direction
-            val speed = startTile.current.speed
+            val tileCurrent = startTile.current
+            var driftCapacity = tileCurrent.intensity
+            val direction = tileCurrent.direction
+            val speed = tileCurrent.speed
             while (driftCapacity != 0 && mutableListShips.isNotEmpty()) {
                 val shipToBeHandled = mutableListShips.removeFirst()
                 val tilePath = simData.navigationManager.calculateDrift(
@@ -233,18 +253,6 @@ class TravelManager(private val simData: SimulationData) {
         val newId = simData.currentHighestGarbageID + 1
         val newGarbage = garbage.copy(id = newId, amount = amount, trackedBy = mutableListOf())
         return newGarbage
-    }
-
-    /**
-     * Moves all arriving garbage to a tile.
-     * IMPORTANT: This method should only be called after the garbages location AND tileId have been updated.
-     */
-    fun moveAllArrivingGarbageToTile() {
-        val garbageOnMap = simData.garbage
-        for (garbage in garbageOnMap) {
-            val tile = simData.navigationManager.findTile(garbage.location)
-            tile?.addGarbageToTile(garbage)
-        }
     }
 
     /**
