@@ -59,7 +59,7 @@ class CorporationManagerUnitTests1 {
     val t20 = Tile(20, Pair(4, 3), TileType.LAND, false, current, false, 1000)
 
     // row 4
-    val t21 = Tile(21, Pair(0, 4), TileType.SHORE, false, current, false, 1000)
+    val t21 = Tile(21, Pair(0, 4), TileType.SHORE, true, current, false, 1000)
     val t22 = Tile(22, Pair(1, 4), TileType.LAND, false, current, false, 1000)
     val t23 = Tile(23, Pair(2, 4), TileType.SHORE, false, current, false, 1000)
     val t24 = Tile(24, Pair(3, 4), TileType.LAND, false, current, false, 1000)
@@ -111,11 +111,11 @@ class CorporationManagerUnitTests1 {
         this.nm = NavigationManager(map)
         // init the graph
         this.nm.initializeAndUpdateGraphStructure()
-        val corp1 = Corporation("Test_corp", 1, listOf(Pair(4, 2)), mutableListOf(), listOf(GarbageType.OIL))
+        val corp1 = Corporation("Test_corp", 1, listOf(Pair(4, 0)), mutableListOf(), listOf(GarbageType.OIL))
         val corp2 = Corporation(
             "Hammer Industries",
             2,
-            listOf(Pair(4, 0)),
+            listOf(Pair(4, 2), Pair(0, 4)),
             mutableListOf(),
             listOf(GarbageType.PLASTIC)
         )
@@ -167,7 +167,7 @@ class CorporationManagerUnitTests1 {
     }
 
     @Test
-    fun test_shipMoveToLocation(){
+    fun test_shipMoveToLocation() {
         val ship = Ship(
             1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
@@ -179,9 +179,223 @@ class CorporationManagerUnitTests1 {
         val method = CorporationManager::class.java.getDeclaredMethod(
             "shipMoveToLocation",
             Ship::class.java,
-            Pair::class.java)
+            Pair::class.java
+        )
         method.isAccessible = true
-        method.invoke(cm, ship, Pair(1, 0))
+        method.invoke(cm, ship, Pair(Pair(1, 0), 2))
         assertEquals(Pair(1, 0), ship.location)
+    }
+
+    @Test
+    fun test_determineBehaviourOutOfRestriction() {
+        val shipState = ShipState.DEFAULT
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        map[Pair(0, 0)]?.isRestricted = true
+        simDat.ships.add(ship)
+        simDat.corporations[0].ships.add(ship)
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val locationToGoTo = method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(shipState, ship.state)
+        assertEquals(listOf(Pair(1, 0)), locationToGoTo)
+    }
+
+    @Test
+    fun test_checkNeedRefuelOrUnload() {
+        val shipState1 = ShipState.NEED_REFUELING
+        val shipState2 = ShipState.NEED_UNLOADING
+        val shipState3 = ShipState.NEED_REFUELING_AND_UNLOADING
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 2, Pair(0, 0),
+            Direction.EAST, 6, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship3 = Ship(
+            3, "gray_pearl", 2, mutableMapOf(), 3, Pair(0, 0),
+            Direction.EAST, 6, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        ship2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
+        ship3.capacityInfo[GarbageType.PLASTIC] = Pair(0, 1000)
+        simDat.ships.addAll(listOf(ship, ship2, ship3))
+        simDat.corporations[0].ships.addAll(listOf(ship, ship2))
+        simDat.corporations[1].ships.addAll(listOf(ship3))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "checkNeedRefuelOrUnload",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        method.invoke(cm, ship, simDat.corporations[0])
+        method.invoke(cm, ship2, simDat.corporations[1])
+        method.invoke(cm, ship3, simDat.corporations[1])
+        assertEquals(shipState1, ship.state)
+        assertEquals(shipState2, ship2.state)
+        assertEquals(shipState3, ship3.state)
+    }
+
+    @Test
+    fun test_determineBehaviourNeedsToGoBackToHarborToRefuel() {
+        val shipState1 = ShipState.DEFAULT
+        val shipState2 = ShipState.NEED_REFUELING
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "black_pearl_which_needs_refuel", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 300, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.addAll(listOf(ship, ship2))
+        simDat.corporations[0].ships.add(ship)
+        simDat.corporations[0].ships.add(ship2)
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val locationToGoTo1 = method.invoke(cm, ship, simDat.corporations[0])
+        val locationToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
+        assertEquals(shipState1, ship.state)
+        assertEquals(shipState2, ship2.state)
+        assertEquals(listOf(Pair(0, 0)), locationToGoTo1)
+        assertEquals(listOf(Pair(2, 0)), locationToGoTo2)
+    }
+
+    @Test
+    fun test_determineBehaviourNeedsToGoBackToHarborToUnload() {
+        val shipState1 = ShipState.DEFAULT
+        val shipState2 = ShipState.NEED_UNLOADING
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "black_pearl_which_needs_unload", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        ship2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
+        simDat.ships.addAll(listOf(ship, ship2))
+        simDat.corporations[0].ships.add(ship)
+        simDat.corporations[0].ships.add(ship2)
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val locationToGoTo1 = method.invoke(cm, ship, simDat.corporations[0])
+        val locationToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
+        assertEquals(shipState1, ship.state)
+        assertEquals(shipState2, ship2.state)
+        assertEquals(listOf(Pair(0, 0)), locationToGoTo1)
+        assertEquals(listOf(Pair(2, 0)), locationToGoTo2)
+    }
+
+    @Test
+    fun test_shipAtHarborAndNeedsToRefuelOrUnload() {
+        val shipState1 = ShipState.REFUELING
+        val shipState2 = ShipState.UNLOADING
+        val shipState3 = ShipState.REFUELING_AND_UNLOADING
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(4, 0),
+            Direction.EAST, 5, 10, 10, 10, 1000,
+            10, 0, -1, shipState1, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 2, Pair(4, 2),
+            Direction.EAST, 15, 10, 10, 10, 1000,
+            10, 1000, -1, shipState2, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        val ship3 = Ship(
+            3, "gray_pearl", 2, mutableMapOf(), 3, Pair(4, 2),
+            Direction.EAST, 15, 10, 10, 10, 1000,
+            10, 0, -1, shipState3, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        ship2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
+        ship3.capacityInfo[GarbageType.PLASTIC] = Pair(0, 1000)
+        simDat.ships.addAll(listOf(ship, ship2, ship3))
+        simDat.corporations[0].ships.addAll(listOf(ship, ship2))
+        simDat.corporations[1].ships.addAll(listOf(ship3))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "checkShipOnHarborAndNeedsToRefuelOrUnload",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        method.invoke(cm, ship, simDat.corporations[0])
+        method.invoke(cm, ship2, simDat.corporations[0])
+        method.invoke(cm, ship3, simDat.corporations[1])
+        assertEquals(shipState1, ship.state)
+        assertEquals(shipState2, ship2.state)
+        assertEquals(shipState3, ship3.state)
+    }
+
+    @Test
+    fun test_checkShipNeedsToRefuelOrUnloadShouldReturnHomeHarbors() {
+        val shipState1 = ShipState.NEED_REFUELING
+        val shipState2 = ShipState.NEED_UNLOADING
+        val shipState3 = ShipState.NEED_REFUELING_AND_UNLOADING
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(4, 0),
+            Direction.EAST, 5, 10, 10, 10, 1000,
+            10, 0, -1, shipState1, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 2, Pair(4, 2),
+            Direction.EAST, 15, 10, 10, 10, 1000,
+            10, 1000, -1, shipState2, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        val ship3 = Ship(
+            3, "gray_pearl", 2, mutableMapOf(), 3, Pair(4, 2),
+            Direction.EAST, 15, 10, 10, 10, 1000,
+            10, 0, -1, shipState3, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = true
+        )
+        ship2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
+        ship3.capacityInfo[GarbageType.PLASTIC] = Pair(0, 1000)
+        simDat.ships.addAll(listOf(ship, ship2, ship3))
+        simDat.corporations[0].ships.addAll(listOf(ship, ship2))
+        simDat.corporations[1].ships.addAll(listOf(ship3))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        val locationsToGoTo1 = method.invoke(cm, ship, simDat.corporations[0])
+        val locationsToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
+        val locationsToGoTo3 = method.invoke(cm, ship3, simDat.corporations[1])
     }
 }
