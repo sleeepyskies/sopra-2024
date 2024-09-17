@@ -298,6 +298,32 @@ class CorporationManagerUnitTests2 {
 
     @Test
     fun startCooperatingPhaseTest() {
+        val shipThatCooperates = Ship(
+            2, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.NEED_REFUELING_AND_UNLOADING, ShipType.COORDINATING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipWithRadio = Ship(
+            3, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.NEED_REFUELING_AND_UNLOADING, ShipType.COLLECTING_SHIP,
+            hasRadio = true, hasTracker = false, travelingToHarbor = false
+        )
+        val victimShip1 = Ship(
+            4, "Federico_Gravina", 1, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val victimShip2 = Ship(
+            4, "Federico_Gravina", 1, mutableMapOf(), 10, Pair(0, 4),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        corp2.ships.addAll(mutableListOf( shipThatCooperates, shipWithRadio))
+        corp1.ships.addAll(mutableListOf( victimShip2, victimShip1))
 
     }
 }
