@@ -131,23 +131,30 @@ class EventManager(private val simulationData: SimulationData) {
         val location = event.location
         val radius = event.radius
         val coordinatesList = simulationData.navigationManager.getTilesInRadius(location, radius)
+        val tilesToUpdate = mutableListOf<Tile>()
         for (coordinates in coordinatesList) {
             val tileAffectedByStorm = simulationData.navigationManager.findTile(coordinates) ?: continue
-            handleGarbageDrift(tileAffectedByStorm, coordinates, event.direction, event.speed)
+            tilesToUpdate.addAll(handleGarbageDrift(tileAffectedByStorm, coordinates, event.direction, event.speed))
         }
+        tilesToUpdate.forEach { it.moveAllArrivingGarbageToTile() }
     }
-    private fun handleGarbageDrift(tile: Tile, coordinates: Pair<Int, Int>, direction: Direction, speed: Int) {
+    private fun handleGarbageDrift(tile: Tile, coordinates: Pair<Int, Int>, direction: Direction, speed: Int):
+        List<Tile> {
         val garbageOfAffectedTile = tile.getGarbageByLowestID()
+        var tileToBeUpdate = mutableListOf<Tile>()
         val tilesToDriftGarbage = simulationData.navigationManager.calculateDrift(coordinates, direction, speed)
         for (garbage in garbageOfAffectedTile) {
             for (currentTile in tilesToDriftGarbage) {
                 if (currentTile.canGarbageFitOnTile(garbage)) {
-                    currentTile.addGarbageToTile(garbage)
+                    currentTile.addArrivingGarbageToTile(garbage)
                     garbage.location = currentTile.location
                     garbage.tileId = currentTile.id
+                    tile.removeGarbageFromTile(garbage)
+                    tileToBeUpdate.add(currentTile)
                 }
             }
         }
+        return tilesToDriftGarbage
     }
     private fun applyPirateAttack(event: PirateAttackEvent) {
         val shipID = event.shipID
