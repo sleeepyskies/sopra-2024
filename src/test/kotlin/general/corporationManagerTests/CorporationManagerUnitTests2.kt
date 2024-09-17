@@ -1,14 +1,24 @@
 package general.corporationManagerTests
 
+import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Current
 import de.unisaarland.cs.se.selab.assets.Direction
+import de.unisaarland.cs.se.selab.assets.GarbageType
+import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.ShipState
+import de.unisaarland.cs.se.selab.assets.ShipType
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
+import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import kotlin.test.assertTrue
 
-class corporationManagerUnitTests2 {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class CorporationManagerUnitTests2 {
 
     // mock current for tiles with no current
     val current = Current(Direction.EAST, 0, 0)
@@ -38,7 +48,7 @@ class corporationManagerUnitTests2 {
     val t12 = Tile(12, Pair(1, 2), TileType.SHORE, false, current, false, 1000)
     val t13 = Tile(13, Pair(2, 2), TileType.LAND, false, current, false, 1000)
     val t14 = Tile(14, Pair(3, 2), TileType.SHORE, false, current, false, 1000)
-    val t15 = Tile(15, Pair(4, 2), TileType.SHORE, true, current, false, 1000)
+    val t15 = Tile(15, Pair(4, 2), TileType.SHORE, false, current, false, 1000)
 
     // row 3
     val t16 = Tile(16, Pair(0, 3), TileType.SHALLOW_OCEAN, false, current, false, 1000)
@@ -48,7 +58,7 @@ class corporationManagerUnitTests2 {
     val t20 = Tile(20, Pair(4, 3), TileType.LAND, false, current, false, 1000)
 
     // row 4
-    val t21 = Tile(21, Pair(0, 4), TileType.SHORE, false, current, false, 1000)
+    val t21 = Tile(21, Pair(0, 4), TileType.SHORE, true, current, false, 1000)
     val t22 = Tile(22, Pair(1, 4), TileType.LAND, false, current, false, 1000)
     val t23 = Tile(23, Pair(2, 4), TileType.SHORE, false, current, false, 1000)
     val t24 = Tile(24, Pair(3, 4), TileType.LAND, false, current, false, 1000)
@@ -93,16 +103,79 @@ class corporationManagerUnitTests2 {
 
     private lateinit var nm: NavigationManager
     private lateinit var sd: SimulationData
+    private lateinit var cm: CorporationManager
+    private lateinit var corp1: Corporation
+    private lateinit var corp2: Corporation
+    private lateinit var ship: Ship
 
     @BeforeEach
     fun setup() {
         this.nm = NavigationManager(map)
         // init the graph
         this.nm.initializeAndUpdateGraphStructure()
+        ship = Ship(
+            1, "Black_Pearl", 1, mutableMapOf(), 10, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        corp1 = Corporation(
+            "Oscorp",
+            1,
+            mutableListOf(Pair(4, 0)),
+            mutableListOf(ship),
+            mutableListOf(GarbageType.PLASTIC, GarbageType.OIL)
+        )
+        corp2 = Corporation(
+            "Stark_Industries",
+            2,
+            mutableListOf(Pair(0, 4)),
+            mutableListOf(),
+            mutableListOf(GarbageType.PLASTIC, GarbageType.CHEMICALS)
+        )
         sd = SimulationData(
-            nm, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableMapOf(),
+            nm, mutableListOf(corp1, corp2), mutableListOf(ship), mutableListOf(), mutableListOf(), mutableMapOf(),
             mutableMapOf(),
             mutableListOf(), mutableListOf(), 0, 1
         )
+        cm = CorporationManager(sd)
+    }
+
+    @Test
+    fun refuelUnloadPhaseTest() {
+        val shipNeedsToPee = Ship(
+            2, "Horatio_Nelson", 2, mutableMapOf(), 10, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.NEED_REFUELING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipNeedsToDefecate = Ship(
+            2, "Pierre-Charles_Villeneuve", 2, mutableMapOf(), 10, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.NEED_UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val shipKaputt = Ship(
+            2, "Federico_Gravina", 2, mutableMapOf(), 10, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 0, -1, ShipState.NEED_REFUELING_AND_UNLOADING, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        shipKaputt.capacityInfo.keys.forEach { key ->
+            shipKaputt.capacityInfo[key] = Pair(0, shipKaputt.capacityInfo[key]?.second ?: 0)
+        }
+        shipNeedsToDefecate.capacityInfo.keys.forEach { key ->
+            shipNeedsToDefecate.capacityInfo[key] = Pair(0, shipNeedsToDefecate.capacityInfo[key]?.second ?: 0)
+        }
+        corp2.ships.add(shipNeedsToDefecate)
+        corp2.ships.add(shipNeedsToPee)
+        corp2.ships.add(shipKaputt)
+        val testFun = CorporationManager::class.java.getDeclaredMethod(
+            "refuelUnloadPhase",
+            Corporation::class.java
+        )
+        testFun.isAccessible = true
+        testFun.invoke(cm, corp2)
+        assertTrue(shipNeedsToPee.state == ShipState.DEFAULT)
     }
 }

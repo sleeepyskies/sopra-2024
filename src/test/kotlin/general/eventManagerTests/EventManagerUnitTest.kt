@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import java.io.PrintWriter
@@ -32,6 +33,7 @@ import kotlin.test.assertTrue
  * updatePhase active list empty, one event upcoming return false
  * updatePhase upcoming list empty, one event active end return true
  * updatePhase upcoming list empty, one event active reapply return true*/
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EventManagerUnitTest {
 
     companion object {

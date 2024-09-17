@@ -156,9 +156,9 @@ class CorporationManager(private val simData: SimulationData) {
         Logger.corporationActionRefuel(corporation.id)
         val shipsInHarbor = getShipsInHarbor(corporation)
         for (ship in shipsInHarbor) {
-            handleRefuel(ship)
-            handleUnload(ship)
-            handleRefuelAndUnload(ship)
+            if (!handleRefuel(ship)) {
+                handleUnload(ship)
+            }
         }
     }
 
@@ -181,11 +181,29 @@ class CorporationManager(private val simData: SimulationData) {
      *
      * @param ship The ship that needs to be refueled.
      */
-    private fun handleRefuel(ship: Ship) {
-        if (ship.state == ShipState.NEED_REFUELING) {
-            ship.refuel()
-            ship.state = ShipState.DEFAULT
-            Logger.refuel(ship.id, ship.tileId)
+    private fun handleRefuel(ship: Ship): Boolean {
+        when (ship.state) {
+            ShipState.NEED_REFUELING -> {
+                ship.state = ShipState.REFUELING
+                return true
+            }
+            ShipState.NEED_REFUELING_AND_UNLOADING -> {
+                ship.state = ShipState.REFUELING_AND_UNLOADING
+                return true
+            }
+            ShipState.REFUELING -> {
+                ship.refuel()
+                ship.state = ShipState.DEFAULT
+                Logger.refuel(ship.id, ship.tileId)
+                return true
+            }
+            ShipState.REFUELING_AND_UNLOADING -> {
+                ship.refuel()
+                ship.state = ShipState.UNLOADING
+                Logger.refuel(ship.id, ship.tileId)
+                return true
+            }
+            else -> { return false }
         }
     }
 
@@ -195,46 +213,39 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship that needs to be unloaded.
      */
     private fun handleUnload(ship: Ship) {
-        if (ship.state == ShipState.NEED_UNLOADING) {
-            val unloadedMap = ship.unload()
-            if (unloadedMap[GarbageType.PLASTIC] != 0) {
-                Logger.unload(
-                    ship.id,
-                    unloadedMap[GarbageType.PLASTIC] ?: 0,
-                    GarbageType.PLASTIC.toString(),
-                    ship.tileId
-                )
+        when (ship.state) {
+            ShipState.NEED_UNLOADING -> {
+                ship.state = ShipState.UNLOADING
             }
-            if (unloadedMap[GarbageType.OIL] != 0) {
-                Logger.unload(
-                    ship.id,
-                    unloadedMap[GarbageType.OIL] ?: 0,
-                    GarbageType.OIL.toString(),
-                    ship.tileId
-                )
+            ShipState.UNLOADING -> {
+                val unloadedMap = ship.unload()
+                if (unloadedMap[GarbageType.PLASTIC] != 0) {
+                    Logger.unload(
+                        ship.id,
+                        unloadedMap[GarbageType.PLASTIC] ?: 0,
+                        GarbageType.PLASTIC.toString(),
+                        ship.tileId
+                    )
+                }
+                if (unloadedMap[GarbageType.OIL] != 0) {
+                    Logger.unload(
+                        ship.id,
+                        unloadedMap[GarbageType.OIL] ?: 0,
+                        GarbageType.OIL.toString(),
+                        ship.tileId
+                    )
+                }
+                if (unloadedMap[GarbageType.CHEMICALS] != 0) {
+                    Logger.unload(
+                        ship.id,
+                        unloadedMap[GarbageType.CHEMICALS] ?: 0,
+                        GarbageType.CHEMICALS.toString(),
+                        ship.tileId
+                    )
+                }
+                ship.state = ShipState.DEFAULT
             }
-            if (unloadedMap[GarbageType.CHEMICALS] != 0) {
-                Logger.unload(
-                    ship.id,
-                    unloadedMap[GarbageType.CHEMICALS] ?: 0,
-                    GarbageType.CHEMICALS.toString(),
-                    ship.tileId
-                )
-            }
-            ship.state = ShipState.DEFAULT
-        }
-    }
-
-    /**
-     * Handles the refueling and unloading of a ship.
-     *
-     * @param ship The ship that needs to be refueled and unloaded.
-     */
-    private fun handleRefuelAndUnload(ship: Ship) {
-        if (ship.state == ShipState.NEED_REFUELING_AND_UNLOADING) {
-            ship.state = ShipState.NEED_UNLOADING
-            ship.refuel()
-            Logger.refuel(ship.id, ship.tileId)
+            else -> {}
         }
     }
 
@@ -382,10 +393,10 @@ class CorporationManager(private val simData: SimulationData) {
 
         return when (shipState) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
-                handleRefuelOrUnloadState(corporation)
+                corporation.harbors
             }
             ShipState.WAITING_FOR_PLASTIC -> {
-                handleWaitingForPlasticState(shipLocation)
+                listOf(shipLocation)
             }
             ShipState.TASKED -> {
                 handleTaskedState(ship)
@@ -393,27 +404,11 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.DEFAULT -> {
                 handleDefaultState(shipType, shipLocation, shipMaxTravelDistance, corporation)
             }
+
+            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
+                mutableListOf(shipLocation)
+            }
         }
-    }
-
-    /**
-     * Handles the behavior of a ship that needs to refuel or unload.
-     *
-     * @param corporation The corporation to which the ship belongs.
-     * @return A list of harbor locations.
-     */
-    private fun handleRefuelOrUnloadState(corporation: Corporation): List<Pair<Int, Int>> {
-        return corporation.harbors
-    }
-
-    /**
-     * Handles the behavior of a ship that is waiting for plastic.
-     *
-     * @param shipLocation The current location of the ship.
-     * @return A list containing the current location of the ship.
-     */
-    private fun handleWaitingForPlasticState(shipLocation: Pair<Int, Int>): List<Pair<Int, Int>> {
-        return listOf(shipLocation)
     }
 
     /**

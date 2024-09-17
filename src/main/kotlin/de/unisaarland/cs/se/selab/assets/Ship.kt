@@ -85,7 +85,8 @@ data class Ship(
     }
 
     /**
-     * Unloads the ship by setting the capacity information to pairs of (b, b).
+     * Unloads the ship by setting the capacity information to pairs of (b, b)
+     * and returns the unloaded amount for each type.
      */
     fun unload(): Map<GarbageType, Int> {
         val unloadedMap = mutableMapOf<GarbageType, Int>()

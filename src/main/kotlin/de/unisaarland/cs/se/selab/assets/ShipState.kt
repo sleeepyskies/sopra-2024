@@ -29,6 +29,10 @@ enum class ShipState {
      */
     TASKED,
 
+    REFUELING,
+    UNLOADING,
+    REFUELING_AND_UNLOADING,
+
     /**
      * The default state of the ship.
      */
