@@ -371,7 +371,6 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A list of possible locations for the ship to move to.
      */
     private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
-        val shipState = ship.state
         val shipType = ship.type
         val shipLocation = ship.location
         val shipMaxTravelDistance = (ship.currentVelocity + ship.acceleration) / VELOCITY_DIVISOR
@@ -387,7 +386,7 @@ class CorporationManager(private val simData: SimulationData) {
         if (checkShipOnHarborAndNeedsToRefuelOrUnload(ship, corporation).isNotEmpty()) return listOf(shipLocation)
         checkNeedRefuelOrUnload(ship, corporation)
 
-        return when (shipState) {
+        return when (ship.state) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
                 corporation.harbors
             }

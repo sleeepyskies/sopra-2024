@@ -281,7 +281,7 @@ class CorporationManagerUnitTests1 {
         assertEquals(shipState1, ship.state)
         assertEquals(shipState2, ship2.state)
         assertEquals(listOf(Pair(0, 0)), locationToGoTo1)
-        assertEquals(listOf(Pair(2, 0)), locationToGoTo2)
+        assertEquals(listOf(Pair(4, 0)), locationToGoTo2)
     }
 
     @Test
@@ -315,7 +315,7 @@ class CorporationManagerUnitTests1 {
         assertEquals(shipState1, ship.state)
         assertEquals(shipState2, ship2.state)
         assertEquals(listOf(Pair(0, 0)), locationToGoTo1)
-        assertEquals(listOf(Pair(2, 0)), locationToGoTo2)
+        assertEquals(listOf(Pair(4, 0)), locationToGoTo2)
     }
 
     @Test
@@ -404,4 +404,23 @@ class CorporationManagerUnitTests1 {
         assertEquals(corporation2Harbors, locationsToGoTo3)
 
     }
+
+    @Test
+    fun test_isWaitingForPlastic() {
+        val ship = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
+            Direction.EAST, 1, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.WAITING_FOR_PLASTIC, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        simDat.ships.addAll(listOf(ship))
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "determineBehavior",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+    }
+
 }
