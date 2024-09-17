@@ -346,42 +346,56 @@ class NavigationManager(
         val tileIDOfLocation = tiles.getValue(from).id
         var (distances, previousNodes) = dijkstra(graph, tileIDOfLocation, true)
         // Filter the found locations by the ones that are next to a non-restricted tile which is not land
-        val distancesFilteredByNotMaxValue = distances.filter { it.value < Int.MAX_VALUE }
+        val distancesFilteredByNotMaxValue = distances.filter {
+            it.value < Int.MAX_VALUE
+        }
         val distancesFilteredByTileNextToNonRestrictedTile = distancesFilteredByNotMaxValue.filter {
             val neighbors = graph[it.key] ?: return from
             neighbors.any { neighbor ->
                 !neighbor.second.first && !neighbor.second.second // not land and not restricted
             }
-        }
+        }.toList().sortedBy { (_, value) -> value }.toMap()
         // Check if there are no locations from which we could leave the restriction
         if (distancesFilteredByTileNextToNonRestrictedTile.isEmpty()) return from
         // Get the lowest tile id,
         // if there are multiple points with same distance that are next to a non-restricted tile
-        val minTileIdLocationToExplore = distancesFilteredByTileNextToNonRestrictedTile
-            .minByOrNull { it.key } ?: return from
-        // Get the path length to the destination tile
-        val pathLength = minTileIdLocationToExplore.value / DEFAULT_DISTANCE
-        // Compute how many tiles we have to go back in the path
-        val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
-        // Get the non-restricted tile with lowest tileID from the point of which we want to leave the restriction
-        val neighborWithLowestTileID = graph[minTileIdLocationToExplore.key]?.minByOrNull { it.first } ?: return from
+        println(distancesFilteredByTileNextToNonRestrictedTile)
+        for ((k, v) in distancesFilteredByTileNextToNonRestrictedTile) {
+            // Get the path length to the destination tile
+            val pathLength = v / DEFAULT_DISTANCE
+            // Compute how many tiles we have to go back in the path
+            println(pathLength)
+            println(travelAmount)
+            val goBackInPathByAmountOfTile = pathLength.minus(travelAmount) + 1
+            // Get the non-restricted tile with lowest tileID from the point of which we want to leave the restriction
+            val neighborWithLowestTileID = graph[k]
+                ?.filter {
+                    !it.second.first && !it.second.second // not land and not restricted
+                }
+                ?.minByOrNull { it.first } ?: return from
+            println(neighborWithLowestTileID.second.first)
+            println(neighborWithLowestTileID.second.second)
 
-        val newParentStructure = previousNodes.toMutableMap()
-        newParentStructure[neighborWithLowestTileID.first] = minTileIdLocationToExplore.key
-        previousNodes = newParentStructure.toMap()
-        val result: Pair<Int, Int>
-        if (goBackInPathByAmountOfTile <= 0) {
-            // If we can reach the destination tile, return the destination tile
-            result = locationByTileId(neighborWithLowestTileID.first) ?: from
-        } else {
-            // Get the node to travel to, in case we cant travel the whole amount
-            var node = neighborWithLowestTileID.first
-            repeat(goBackInPathByAmountOfTile) {
-                node = previousNodes[node] ?: node // WAS ?: return from
+            val newParentStructure = previousNodes.toMutableMap()
+            newParentStructure[neighborWithLowestTileID.first] = k
+            previousNodes = newParentStructure.toMap()
+            val result: Pair<Int, Int>
+            if (goBackInPathByAmountOfTile <= 0) {
+                // If we can reach the destination tile, return the destination tile
+                result = locationByTileId(neighborWithLowestTileID.first) ?: from
+            } else {
+                // Get the node to travel to, in case we cant travel the whole amount
+                var node = neighborWithLowestTileID.first
+                println(node)
+                repeat(goBackInPathByAmountOfTile) {
+                    node = previousNodes[node] ?: node // WAS ?: return from
+                }
+                println(node)
+                result = locationByTileId(node) ?: from
             }
-            result = locationByTileId(node) ?: from
+            return result
         }
-        return result
+        return from
     }
 
     /**
@@ -598,6 +612,13 @@ class NavigationManager(
         return dist <= travelAmount * DEFAULT_DISTANCE
     }
 
+    /**
+     * Filters the explore points by the furthest distance.
+     * @param distances A map of tile IDs to distances from the given location.
+     * @param explorePoints The list of explore points we want to filter.
+     * @param travelAmount The amount the ship can travel.
+     * @return A filtered list of explore points that are are as far away as possible.
+     */
     private fun filterByFurthestDistance(
         distances: Map<Int, Int>,
         explorePoints: List<Pair<Int, Int>>,
