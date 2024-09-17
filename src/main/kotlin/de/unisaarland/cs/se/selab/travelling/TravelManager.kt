@@ -36,9 +36,10 @@ class TravelManager(private val simData: SimulationData) {
             // Get garbage on tile in ascending order of garbageID
             val mutableListGarbage = listGarbage.toMutableList()
             if (tile == null || !tile.hasCurrent) continue
-            val driftCapacity = tile.current.intensity * INTENSITY_FACTOR
-            val direction = tile.current.direction
-            val speed = tile.current.speed
+            val tileCurrent = tile.current
+            val driftCapacity = tileCurrent.intensity * INTENSITY_FACTOR
+            val direction = tileCurrent.direction
+            val speed = tileCurrent.speed
             handleGarbageDrift(tile, mutableListGarbage, direction, speed, tilesToUpdate, driftCapacity)
         }
         // update all tiles that have garbage arriving
@@ -170,9 +171,10 @@ class TravelManager(private val simData: SimulationData) {
             val startTile = simData.navigationManager.findTile(tile)
             val mutableListShips = listShips.toMutableList()
             if (startTile == null || !startTile.hasCurrent) continue
-            var driftCapacity = startTile.current.intensity
-            val direction = startTile.current.direction
-            val speed = startTile.current.speed
+            val tileCurrent = startTile.current
+            var driftCapacity = tileCurrent.intensity
+            val direction = tileCurrent.direction
+            val speed = tileCurrent.speed
             while (driftCapacity != 0 && mutableListShips.isNotEmpty()) {
                 val shipToBeHandled = mutableListShips.removeFirst()
                 val tilePath = simData.navigationManager.calculateDrift(

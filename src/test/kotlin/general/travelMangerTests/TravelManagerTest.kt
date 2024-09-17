@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.*
 import java.io.PrintWriter
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TravelManagerTest {
     private lateinit var navigationManager: NavigationManager
     private lateinit var travelManager: TravelManager
@@ -151,6 +153,47 @@ class TravelManagerTest {
         travelManager.shipDriftingPhase()
 
         verify(navigationManager, never()).findTile(anyInt())
+    }
+
+    @Test
+    fun testShipDriftingPhase_InvalidStartTile() {
+        val ship = mock(Ship::class.java).apply { `when`(tileId).thenReturn(1) }
+
+        `when`(navigationManager.findTile(1)).thenReturn(null)
+        `when`(simDat.ships).thenReturn(mutableListOf(ship))
+
+        travelManager.shipDriftingPhase()
+
+        verify(navigationManager, times(1)).findTile(1)
+    }
+
+
+    @Test
+    fun testShipDriftingPhase_CurrentHasZeroIntensity() {
+        // Mock current with 0 intensity
+        val tileCurrent = mock(Current::class.java).apply {
+            `when`(intensity).thenReturn(0)
+        }
+
+        // Mock tile with the current
+        val tile = mock(Tile::class.java).apply {
+            `when`(current).thenReturn(tileCurrent)
+            `when`(hasCurrent).thenReturn(true)
+        }
+
+        // Mock ships
+        val ship = mock(Ship::class.java).apply { `when`(tileId).thenReturn(1) }
+
+        // Mock simData.ships to return a list with one ship
+        `when`(simDat.ships).thenReturn(mutableListOf(ship))
+        `when`(navigationManager.findTile(1)).thenReturn(tile)
+
+        // Call the method under test
+        travelManager.shipDriftingPhase()
+
+        // Verify no interactions with the navigationManager beyond findTile
+        verify(navigationManager).findTile(1)
+        verify(navigationManager, never()).calculateDrift(Pair(anyInt(), anyInt()), Direction.EAST, anyInt())
     }
 
     @Test
@@ -740,11 +783,172 @@ class TravelManagerTest {
     }
 
     @Test
+    fun testHandleGarbageDrift_EmptyGarbageList() {
+        // Mock tile
+        val tile = mock(Tile::class.java).apply {
+            `when`(location).thenReturn(Pair(1, 1))
+        }
+
+        // Create an empty list of garbage
+        val mutableListGarbage = mutableListOf<Garbage>()
+        val tilesToUpdate = mutableSetOf<Tile>()
+
+        // Call the method under test
+        val method = TravelManager::class.java.getDeclaredMethod(
+            "handleGarbageDrift",
+            Tile::class.java,
+            MutableList::class.java,
+            Direction::class.java,
+            Int::class.java,
+            MutableSet::class.java,
+            Int::class.java
+        )
+        method.isAccessible = true
+        method.invoke(travelManager,
+            tile,
+            mutableListGarbage,
+            Direction.EAST,
+            10,
+            tilesToUpdate,
+            50
+        )
+
+        // Verify no interactions with the tile or navigationManager
+        verify(tile, never()).checkGarbageLeft()
+        verify(navigationManager, never()).calculateDrift(tile.location, Direction.EAST, 10)
+        assertTrue(tilesToUpdate.isEmpty())
+    }
+
+    @Test
     fun testDriftGarbagePhase_NoTilesWithCurrents() {
         `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()).thenReturn(emptyList())
 
         travelManager.driftGarbagePhase()
 
         verify(navigationManager).getGarbageFromAllTilesInCorrectOrderForDrifting()
+    }
+
+    @Test
+    fun testDriftGarbagePhase_InvalidTile() {
+        val invalidTile = mock(Tile::class.java).apply {
+            `when`(id).thenReturn(3)
+            `when`(current).thenReturn(null)
+        }
+        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting())
+            .thenReturn(listOf(Pair(3, listOf())))
+        `when`(navigationManager.findTile(3)).thenReturn(null)
+
+        travelManager.driftGarbagePhase()
+
+        verify(navigationManager).getGarbageFromAllTilesInCorrectOrderForDrifting()
+        verify(invalidTile, never()).current
+    }
+
+    @Test
+    fun testDriftGarbagePhase_TileWithoutCurrent() {
+        val tile = mock(Tile::class.java).apply {
+            `when`(hasCurrent).thenReturn(false)
+        }
+        val garbage = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(1)
+        }
+        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting())
+            .thenReturn(listOf(Pair(1, listOf<Garbage>(garbage))))
+        `when`(navigationManager.findTile(1)).thenReturn(tile)
+
+        travelManager.driftGarbagePhase()
+
+        verify(navigationManager).getGarbageFromAllTilesInCorrectOrderForDrifting()
+        verify(navigationManager).findTile(1)
+        verify(tile, never()).current
+    }
+
+    @Test
+    fun testDriftGarbagePhase_TileWithCurrentAndGarbage() {
+        val garbage = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(1)
+            `when`(amount).thenReturn(50)
+        }
+        val garbage2 = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(2)
+            `when`(amount).thenReturn(150)
+        }
+        val garbage3 = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(3)
+            `when`(amount).thenReturn(100)
+        }
+        val tileCurrent = mock(Current::class.java).apply {
+            `when`(intensity).thenReturn(2)
+            `when`(direction).thenReturn(Direction.EAST)
+            `when`(speed).thenReturn(1)
+        }
+        val tile = mock(Tile::class.java).apply {
+            `when`(hasCurrent).thenReturn(true)
+            `when`(current).thenReturn(tileCurrent)
+        }
+        val tile2 = mock(Tile::class.java).apply {
+            `when`(hasCurrent).thenReturn(true)
+            `when`(current).thenReturn(tileCurrent)
+        }
+
+        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting())
+            .thenReturn(listOf(Pair(2, listOf(garbage2,garbage3)),Pair(1, listOf(garbage))))
+        `when`(navigationManager.findTile(1)).thenReturn(tile)
+        `when`(navigationManager.findTile(2)).thenReturn(tile2)
+
+        travelManager.driftGarbagePhase()
+
+        verify(navigationManager).getGarbageFromAllTilesInCorrectOrderForDrifting()
+        verify(navigationManager).findTile(1)
+        verify(navigationManager).findTile(2)
+        verify(tile).current
+        verify(tile2).current
+    }
+
+    @Test
+    fun testDriftGarbagePhase_GarbageSplitAndFitsOnTile() {
+        val garbage = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(1)
+            `when`(amount).thenReturn(100)
+            `when`(checkSplit(50)).thenReturn(true)
+            `when`(type).thenReturn(GarbageType.CHEMICALS)
+        }
+        val splitGarbage = mock(Garbage::class.java).apply {
+            `when`(id).thenReturn(2)
+            `when`(amount).thenReturn(50)
+            `when`(type).thenReturn(GarbageType.CHEMICALS)
+        }
+        val tileCurrent = mock(Current::class.java).apply {
+            `when`(intensity).thenReturn(1)
+            `when`(direction).thenReturn(Direction.EAST)
+            `when`(speed).thenReturn(1)
+        }
+        val tile = mock(Tile::class.java).apply {
+            `when`(id).thenReturn(1)
+            `when`(hasCurrent).thenReturn(true)
+            `when`(current).thenReturn(tileCurrent)
+            `when`(location).thenReturn(Pair(1, 1))
+            `when`(checkGarbageLeft()).thenReturn(true)
+        }
+        val candidateTile = mock(Tile::class.java).apply {
+            `when`(id).thenReturn(2)
+            `when`(canGarbageFitOnTile(splitGarbage)).thenReturn(true)
+            `when`(location).thenReturn(Pair(2, 1))
+        }
+        val tilePath = listOf(candidateTile)
+
+        `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting()).thenReturn(listOf(Pair(1,listOf(garbage))))
+        `when`(navigationManager.findTile(1)).thenReturn(tile)
+        `when`(navigationManager.calculateDrift(tile.location, tileCurrent.direction, tileCurrent.speed)).thenReturn(tilePath)
+        `when`(travelManager.split(garbage, 50)).thenReturn(splitGarbage)
+
+        travelManager.driftGarbagePhase()
+
+        verify(navigationManager).getGarbageFromAllTilesInCorrectOrderForDrifting()
+        verify(navigationManager).findTile(1)
+        verify(tile).current
+        verify(navigationManager).calculateDrift(tile.location, tileCurrent.direction, tileCurrent.speed)
+        verify(tile).setAmountOfGarbage(garbage.id, garbage.amount - 50)
+        verify(candidateTile).addArrivingGarbageToTile(splitGarbage)
     }
 }
