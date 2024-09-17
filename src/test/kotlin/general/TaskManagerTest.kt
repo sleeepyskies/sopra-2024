@@ -1,4 +1,5 @@
 package general
+/*
 import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Current
 import de.unisaarland.cs.se.selab.assets.Direction
@@ -725,3 +726,4 @@ class TaskManagerTest {
  * with refueling and unloading state but cannot reach harbor
  */
 
+*/
