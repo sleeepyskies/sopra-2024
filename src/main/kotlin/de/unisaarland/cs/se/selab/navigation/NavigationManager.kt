@@ -79,6 +79,18 @@ class NavigationManager(
      * @param to : the tile to which we want to calculate the distance
      **/
     fun travelDistance(from: Tile, to: Tile): Int {
+        // check if from == to
+        if (from.id == to.id) {
+            return 0
+        }
+
+        // check if either the location or destination is LAND or restricted
+        val locationIsLand = from.type == TileType.LAND || to.type == TileType.LAND
+        val locationIsRestricted = from.isRestricted || to.isRestricted
+        if (locationIsLand || locationIsRestricted) {
+            return -1
+        }
+
         val tileIDTo = to.id
         val (distances, _) = dijkstra(graph, from.id, false, to.location)
         val distance = distances[tileIDTo] ?: -1
@@ -101,6 +113,14 @@ class NavigationManager(
         to: List<Pair<Int, Int>>,
         travelAmount: Int
     ): Pair<Pair<Pair<Int, Int>, Int>, Int> {
+        // check if from is a LAND tile
+        val checkTile = findTile(from)
+        if (checkTile != null) {
+            if (checkTile.type == TileType.LAND) {
+                return Pair(Pair(from, checkTile.id), 0)
+            }
+        }
+
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
@@ -196,6 +216,14 @@ class NavigationManager(
         outOfRestriction: Boolean = false,
         toSpecificLocation: Pair<Int, Int>? = null
     ): Pair<Map<Int, Int>, Map<Int, Int?>> {
+        // check if source tileID is of type LAND
+        val checkTile = findTile(source)
+        if (checkTile != null) {
+            if (checkTile.type == TileType.LAND) {
+                return Pair(mapOf(source to 0), emptyMap())
+            }
+        }
+
         val distances = mutableMapOf<Int, Int>().withDefault { Int.MAX_VALUE }
         val previousNodes = mutableMapOf<Int, Int?>()
         val priorityQueue = PriorityQueue<Node>()
