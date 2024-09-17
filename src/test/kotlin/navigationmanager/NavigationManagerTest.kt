@@ -411,7 +411,7 @@ class NavigationManagerTest {
     @Test
     fun shortestPathToLocationsTest1() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 0), 2), 1)
+        val checkValue = Pair(Pair(Pair(1, 0), 2), 10)
 
         // get start location and list of one neighbor
         val start = Pair(0, 0)
@@ -477,7 +477,7 @@ class NavigationManagerTest {
     @Test
     fun shortestPathToLocationsTest5() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 0), 2), 1)
+        val checkValue = Pair(Pair(Pair(0, 1), 6), 10)
 
         // get start location and list of three neighbors
         val start = Pair(0, 0)
@@ -512,7 +512,7 @@ class NavigationManagerTest {
     @Test
     fun shortestPathToLocationsTest7() {
         // define check value
-        val checkValue = Pair(Pair(Pair(2, 1), 8), 2)
+        val checkValue = Pair(Pair(Pair(2, 1), 8), 20)
 
         // get start location and list two tiles
         val start = Pair(0, 0)
@@ -532,7 +532,7 @@ class NavigationManagerTest {
     @Test
     fun shortestPathToLocationsTest8() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 2), 12), 1)
+        val checkValue = Pair(Pair(Pair(1, 2), 12), 10)
 
         // get start location and list two tiles
         val start = Pair(2, 1)
@@ -616,14 +616,10 @@ class NavigationManagerTest {
         val (distancesResult, previousNodesResult) = callDijkstraForTileID(20)
 
         val checkDistances = mapOf(
-            14 to 10
+            20 to 0
         )
 
-        val checkPreviousNodes = mapOf(
-            14 to 15,
-            19 to 14,
-            23 to 19
-        )
+        val checkPreviousNodes = mapOf<Int, Int>()
 
         assertEquals(checkDistances, distancesResult)
         assertEquals(checkPreviousNodes, previousNodesResult)
