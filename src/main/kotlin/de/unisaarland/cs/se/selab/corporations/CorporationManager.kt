@@ -52,20 +52,21 @@ class CorporationManager(private val simData: SimulationData) {
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val possibleLocationsToMove = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
-            if (possibleLocationsToMove.size != 1 || possibleLocationsToMove[0] != it.location) {
+            if (!(possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location)) {
                 it.updateVelocity()
                 val tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                     it.location,
                     possibleLocationsToMove,
                     it.currentVelocity / VELOCITY_DIVISOR
                 )
-                if (tileInfoToMove.first.second != 0) {
+
+                if (tileInfoToMove.second != 0) {
                     // getting the target location, not the actual location that the ship will move this tick
                     // so that we can assign capacities to that target
                     // and no other ship will be assigned to that location
                     gbAssignedAmountList.addAll(assignCapacityToGarbageList(tileInfoToMove.second, it.capacityInfo))
-                    Logger.shipMovement(it.id, it.tileId, tileInfoToMove.first.second)
                     shipMoveToLocation(it, tileInfoToMove.first)
+                    Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
                     updateInfo(corporation, scan(it.location, it.visibilityRange))
                 } else {
                     it.currentVelocity = 0

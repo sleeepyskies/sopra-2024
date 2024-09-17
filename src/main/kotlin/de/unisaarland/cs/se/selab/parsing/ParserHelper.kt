@@ -11,7 +11,6 @@ import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.TileType
 import org.json.JSONObject
-import java.io.File
 
 /**
  * A Parser Helper class containing useful shared methods and constants
@@ -37,9 +36,9 @@ class ParserHelper {
      */
     public fun validateSchema(itemJSON: JSONObject, schemaPath: String): Boolean {
         // create validator from schema
-        val schemaContent = File(schemaPath).readText()
-        val schemaJSON = JsonParser(schemaContent).parse()
-        val schema = SchemaLoader(schemaJSON).load()
+        // val schemaContent = File(schemaPath).readText()
+        // val schemaJSON = JsonParser(schemaContent).parse()
+        val schema = SchemaLoader.forURL("classpath://schema/$schemaPath").load()
         val validator = Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
 
         // validate JSONObject
