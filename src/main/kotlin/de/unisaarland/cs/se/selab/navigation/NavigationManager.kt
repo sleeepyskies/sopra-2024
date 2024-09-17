@@ -113,14 +113,6 @@ class NavigationManager(
         to: List<Pair<Int, Int>>,
         travelAmount: Int
     ): Pair<Pair<Pair<Int, Int>, Int>, Int> {
-        // check if from is a LAND tile
-        val checkTile = findTile(from)
-        if (checkTile != null) {
-            if (checkTile.type == TileType.LAND) {
-                return Pair(Pair(from, checkTile.id), 0)
-            }
-        }
-
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
@@ -329,7 +321,7 @@ class NavigationManager(
         }
         val minTileIdLocationToExplore = tilesInRadiusOfTravel.minByOrNull {
             findTile(it)?.id ?: Int.MAX_VALUE
-        } ?: return from // again, we can use !! here because we already filtered by tiles that dont exist
+        } ?: return from // again, we can use !! here because we already filtered by tiles that don't exist
         return minTileIdLocationToExplore
     }
 
@@ -344,7 +336,7 @@ class NavigationManager(
         from: Pair<Int, Int>,
         travelAmount: Int
     ): Pair<Int, Int> {
-        // Run dijkstra from the current location only considering only restricted tiles
+        // Run dijkstra from the current location only considering restricted tiles
         val tileIDOfLocation = tiles.getValue(from).id
         var (distances, previousNodes) = dijkstra(graph, tileIDOfLocation, true)
         // Filter the found locations by the ones that are next to a non-restricted tile which is not land
@@ -440,8 +432,8 @@ class NavigationManager(
             filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(homeHarbors, distances)
         if (tileIDLocationToTravelTo == -1) return false
         // Check if the distance to the destination tile is greater than the maxDistance with current Fuel
-        val pathLength = distances[tileIDLocationToTravelTo] ?: 0
-        return pathLength > maxDistance
+        val pathLength = (distances[tileIDLocationToTravelTo] ?: 0) / DEFAULT_DISTANCE
+        return pathLength >= maxDistance
     }
 
     /**

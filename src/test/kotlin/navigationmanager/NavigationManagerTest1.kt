@@ -8,15 +8,16 @@ import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito.times
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 /**
  * Class holding the tests for the NavigationManager class.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class NavigationManagerTest {
+class NavigationManagerTest1 {
     // navigation manager for testing
     private lateinit var nm: NavigationManager
 
@@ -124,6 +125,16 @@ class NavigationManagerTest {
             tile.isRestricted = false
         }
         this.nm.initializeAndUpdateGraphStructure()
+    }
+
+    /**
+     * Removes all garbage from the tiles in the map.
+     */
+    @AfterEach
+    fun resetGarbage() {
+        for (tile in this.nm.tiles.values) {
+            tile.currentGarbage.clear()
+        }
     }
 
     /**
@@ -625,5 +636,298 @@ class NavigationManagerTest {
 
         assertEquals(checkDistances, distancesResult)
         assertEquals(checkPreviousNodes, previousNodesResult)
+    }
+
+    // --------------------------------------- getExplorePoint() tests ---------------------------------------
+
+    @Test
+    fun getExplorePointTest1() {
+        // define the checkValue
+        val checkValue = Pair(4, 4)
+
+        // call from tile enclosed by LAND, no travel amount
+        val result = this.nm.getExplorePoint(Pair(4, 4), 0)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest2() {
+        // define the checkValue
+        val checkValue = Pair(4, 4)
+
+        // call from tile enclosed by LAND, some travel amount
+        val result = this.nm.getExplorePoint(Pair(4, 4), 2)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest3() {
+        // define the checkValue
+        val checkValue = Pair(4, 2)
+
+        // call from tile with 1 furthest location, some travel amount
+        val result = this.nm.getExplorePoint(Pair(2, 4), 3)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest4() {
+        // define the checkValue
+        val checkValue = Pair(1, 2)
+
+        // call from tile with many furthest locations, no travel amount
+        val result = this.nm.getExplorePoint(Pair(1, 2), 0)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest5() {
+        // define the checkValue
+        val checkValue = Pair(0, 0)
+
+        // call from tile with many furthest locations, some travel amount
+        val result = this.nm.getExplorePoint(Pair(1, 2), 2)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest7() {
+        // define the checkValue
+        val checkValue = Pair(4, 2)
+
+        // call from tile with one furthest location, and travel amount, but no dest due to restrictions
+        val result = this.nm.getExplorePoint(Pair(4, 2), 2)
+
+        // restrict tile 3, 2
+        restrictTile(Pair(3, 2))
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getExplorePointTest6() {
+        // define the checkValue
+        val checkValue = Pair(2, 0)
+
+        // call from tile with many furthest locations, some travel amount
+        val result = this.nm.getExplorePoint(Pair(1, 2), 2)
+
+        // restrict tile (0, 0) and (1, 0)
+        restrictTile(Pair(0, 0))
+        restrictTile(Pair(1, 0))
+
+        assertEquals(checkValue, result)
+    }
+
+    // ------------------------------------ getDestinationOutOfRestriction() tests ------------------------------------
+
+    @Test
+    fun getDestinationOutOfRestrictionTest1() {
+        // define the checkValue
+        val checkValue = Pair(1, 1)
+
+        // call from tile that is not restricted, we can move
+        val result = this.nm.getDestinationOutOfRestriction(Pair(1, 2), 1)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getDestinationOutOfRestrictionTest2() {
+        // define the checkValue
+        val checkValue = Pair(3, 2)
+
+        // call from that is not restricted, we can move out
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
+
+        // restrict tile (4, 2)
+        restrictTile(Pair(4, 2))
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getDestinationOutOfRestrictionTest3() {
+        // define the checkValue
+        val checkValue = Pair(3, 3)
+
+        // 2 tiles restricted, we can move out
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 2)
+
+        // restrict tile (4, 2), (3, 2)
+        restrictTile(Pair(4, 2))
+        restrictTile(Pair(3, 2))
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getDestinationOutOfRestrictionTest4() {
+        // define the checkValue
+        val checkValue = Pair(3, 2)
+
+        // 2 tiles restricted, we cannot move out fully
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 2), 1)
+
+        // restrict tile (4, 2), (3, 2)
+        restrictTile(Pair(4, 2))
+        restrictTile(Pair(3, 2))
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getDestinationOutOfRestrictionTest5() {
+        // define the checkValue
+        val checkValue = Pair(4, 4)
+
+        // on one single tile, enough travel to leave but no path due to LAND
+        val result = this.nm.getDestinationOutOfRestriction(Pair(4, 4), 3)
+
+        assertEquals(checkValue, result)
+    }
+
+    @Test
+    fun getDestinationOutOfRestrictionTest6() {
+        // define the checkValue
+        val checkValue = Pair(1, 0)
+
+        // on one single tile, enough travel to leave but no path due to LAND
+        val result = this.nm.getDestinationOutOfRestriction(Pair(1, 2), 2)
+
+        // restrict tiles (0, 0), (1, 3), (0, 2), (1, 1), (2, 1)
+        restrictTile(Pair(0, 0))
+        restrictTile(Pair(1, 3))
+        restrictTile(Pair(0, 2))
+        restrictTile(Pair(1, 1))
+        restrictTile(Pair(2, 1))
+
+        assertEquals(checkValue, result)
+    }
+
+    // ------------------------------------ findTile() tests ------------------------------------
+
+    @Test
+    fun findTileTest1() {
+        // call findTile with a valid location
+        val result = this.nm.findTile(Pair(0, 0))
+
+        // assert based on tileID
+        assertEquals(1, result?.id)
+    }
+
+    @Test
+    fun findTileTest2() {
+        // call findTile with an invalid location
+        val result = this.nm.findTile(Pair(-1, Int.MAX_VALUE))
+
+        // assert null
+        assertNull(result)
+    }
+
+    @Test
+    fun findTileTest3() {
+        // call findTile with a valid ID
+        val result = this.nm.findTile(14)
+
+        // assert based on tileID
+        assertEquals(14, result?.id)
+    }
+
+    @Test
+    fun findTileTest4() {
+        // call findTile with an invalid ID
+        val result = this.nm.findTile(11283.328f.toInt().toDouble().toInt())
+
+        // assert based on tileID
+        assertNull(result)
+    }
+
+    // ------------------------------------ locationByTileId() tests ------------------------------------
+
+    @Test
+    fun locationByTileIdTest1() {
+        // call locationByTileId with a valid location
+        val result = this.nm.locationByTileId(19)
+
+        assertEquals(Pair(3, 3), result)
+    }
+
+    @Test
+    fun locationByTileIdTest2() {
+        // call locationByTileId with an invalid location
+        val result = this.nm.locationByTileId(-1726317)
+
+        assertNull(result)
+    }
+
+    // ------------------------------------ shouldMoveToHarbor() tests ------------------------------------
+    @Test
+    fun shouldMoveToHarborTest1() {
+        // define the harbors
+        val harbors = listOf(Pair(0, 0), Pair(4, 4))
+
+        // call shouldMoveToHarbor when the ship must not return to harbor
+        val result = this.nm.shouldMoveToHarbor(Pair(0, 0), 1000, harbors)
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun shouldMoveToHarborTest2() {
+        // define the harbors
+        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+
+        // ship cannot move any further away and still make it back to a home harbor
+        val result = this.nm.shouldMoveToHarbor(Pair(1, 2), 4, harbors)
+
+        assert(result)
+    }
+
+    @Test
+    fun shouldMoveToHarborTest3() {
+        // define the harbors
+        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+
+        // ship cannot make it to the harbor
+        val result = this.nm.shouldMoveToHarbor(Pair(1, 3), 4, harbors)
+
+        assert(result)
+    }
+
+    @Test
+    fun shouldMoveToHarborTest4() {
+        // define the harbors
+        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+
+        // ship does not need to refuel
+        val result = this.nm.shouldMoveToHarbor(Pair(1, 2), 6, harbors)
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun shouldMoveToHarborTest5() {
+        // define the harbors
+        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+
+        // ship does not need to refuel
+        val result1 = this.nm.shouldMoveToHarbor(Pair(1, 3), 7, harbors)
+
+        assertFalse(result1)
+
+        // restrict tiles (1, 2), (1, 1)
+        restrictTile(Pair(1, 2))
+        restrictTile(Pair(1, 1))
+
+        // ship does not need to refuel
+        val result2 = this.nm.shouldMoveToHarbor(Pair(1, 3), 7, harbors)
+
+        assert(result2)
     }
 }
