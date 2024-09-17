@@ -700,11 +700,11 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(4, 2)
 
-        // call from tile with one furthest location, and travel amount, but no dest due to restrictions
-        val result = this.nm.getExplorePoint(Pair(4, 2), 2)
-
         // restrict tile 3, 2
         restrictTile(Pair(3, 2))
+
+        // call from tile with one furthest location, and travel amount, but no dest due to restrictions
+        val result = this.nm.getExplorePoint(Pair(4, 2), 2)
 
         assertEquals(checkValue, result)
     }
@@ -714,12 +714,12 @@ class NavigationManagerTest1 {
         // define the checkValue
         val checkValue = Pair(2, 0)
 
-        // call from tile with many furthest locations, some travel amount
-        val result = this.nm.getExplorePoint(Pair(1, 2), 2)
-
         // restrict tile (0, 0) and (1, 0)
         restrictTile(Pair(0, 0))
         restrictTile(Pair(1, 0))
+
+        // call from tile with many furthest locations, some travel amount
+        val result = this.nm.getExplorePoint(Pair(1, 2), 2)
 
         assertEquals(checkValue, result)
     }

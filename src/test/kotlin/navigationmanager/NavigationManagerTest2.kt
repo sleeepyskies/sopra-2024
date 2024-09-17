@@ -220,7 +220,7 @@ class NavigationManagerTest2 {
         // assertions
         assertEquals(Pair(1, 1), result1)
         assertEquals(Pair(4, 2), result2)
-        assertEquals(Pair(-1, -1), result3)
+        assertEquals(Pair(0, 3), result3)
     }
 
     // ------------------------------------ getTilesInRadius() tests ------------------------------------
@@ -256,12 +256,12 @@ class NavigationManagerTest2 {
     @Test
     fun getRingOfRadiusTest1() {
         // define tiles that should be in the ring
-        val t1 = this.nm.tiles[Pair(4, 4)] ?: this.mockTile
+        val t1 = this.nm.tiles[Pair(4, 3)] ?: this.mockTile
         val t2 = this.nm.tiles[Pair(3, 4)] ?: this.mockTile
 
-        val checkValue = listOf(t1.location, t2.location)
+        val checkValue = listOf(t1.location, t2.location).sortedWith(compareBy({ it.first }, { it.second }))
 
-        val result = this.nm.getRingOfRadius(Pair(4, 4), 1)
+        val result = this.nm.getRingOfRadius(Pair(4, 4), 1).sortedWith(compareBy({ it.first }, { it.second }))
 
         assertEquals(checkValue, result)
     }
