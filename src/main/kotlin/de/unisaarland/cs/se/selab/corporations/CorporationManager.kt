@@ -30,7 +30,6 @@ class CorporationManager(private val simData: SimulationData) {
      */
     fun startCorporatePhase() {
         simData.corporations.forEach {
-            scanAll(it.ships, it)
             moveShipsPhase(it)
             startCollectGarbagePhase(it)
             startCooperationPhase(it)
@@ -513,6 +512,9 @@ class CorporationManager(private val simData: SimulationData) {
         ships.forEach {
             val scanInfo = scan(it.location, it.visibilityRange)
             updateInfo(corporation, scanInfo)
+        }
+        simData.garbage.filter { it.trackedBy.contains(corporation.id) }.forEach {
+            corporation.visibleGarbage[it.id] = Pair(it.location, it.type)
         }
     }
 
