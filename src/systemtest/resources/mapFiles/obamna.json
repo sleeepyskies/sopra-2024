@@ -1,0 +1,224 @@
+{
+        "tiles": [
+                {
+                        "id": 1,
+                        "coordinates": {
+                                "x": 0,
+                                "y": 0
+                        },
+                        "category": "DEEP_OCEAN",
+                        "current": true,
+                        "direction": 60,
+                        "speed": 10,
+                        "intensity": 1
+                },
+                {
+                        "id": 2,
+                        "coordinates": {
+                                "x": 1,
+                                "y": 0
+                        },
+                        "category": "SHALLOW_OCEAN"
+                },
+                {
+                        "id": 3,
+                        "coordinates": {
+                                "x": 2,
+                                "y": 0
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 4,
+                        "coordinates": {
+                                "x": 3,
+                                "y": 0
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 5,
+                        "coordinates": {
+                                "x": 4,
+                                "y": 0
+                        },
+                        "category": "SHORE",
+                        "harbor": true
+                },
+                {
+                        "id": 6,
+                        "coordinates": {
+                                "x": 0,
+                                "y": 1
+                        },
+                        "category": "DEEP_OCEAN",
+                        "current": true,
+                        "direction": 0,
+                        "speed": 30,
+                        "intensity": 5
+                },
+                {
+                        "id": 7,
+                        "coordinates": {
+                                "x": 1,
+                                "y": 1
+                        },
+                        "category": "SHALLOW_OCEAN"
+                },
+                {
+                        "id": 8,
+                        "coordinates": {
+                                "x": 2,
+                                "y": 1
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 9,
+                        "coordinates": {
+                                "x": 3,
+                                "y": 1
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 10,
+                        "coordinates": {
+                                "x": 4,
+                                "y": 1
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 11,
+                        "coordinates": {
+                                "x": 0,
+                                "y": 2
+                        },
+                        "category": "SHALLOW_OCEAN"
+                },
+                {
+                        "id": 12,
+                        "coordinates": {
+                                "x": 1,
+                                "y": 2
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 13,
+                        "coordinates": {
+                                "x": 2,
+                                "y": 2
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 14,
+                        "coordinates": {
+                                "x": 3,
+                                "y": 2
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 15,
+                        "coordinates": {
+                                "x": 4,
+                                "y": 2
+                        },
+                        "category": "SHORE",
+                        "harbor": true
+                },
+                {
+                        "id": 16,
+                        "coordinates": {
+                                "x": 0,
+                                "y": 3
+                        },
+                        "category": "SHALLOW_OCEAN"
+                },
+                {
+                        "id": 17,
+                        "coordinates": {
+                                "x": 1,
+                                "y": 3
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 18,
+                        "coordinates": {
+                                "x": 2,
+                                "y": 3
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 19,
+                        "coordinates": {
+                                "x": 3,
+                                "y": 3
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 20,
+                        "coordinates": {
+                                "x": 4,
+                                "y": 3
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 21,
+                        "coordinates": {
+                                "x": 0,
+                                "y": 4
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 22,
+                        "coordinates": {
+                                "x": 1,
+                                "y": 4
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 23,
+                        "coordinates": {
+                                "x": 2,
+                                "y": 4
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                },
+                {
+                        "id": 24,
+                        "coordinates": {
+                                "x": 3,
+                                "y": 4
+                        },
+                        "category": "LAND"
+                },
+                {
+                        "id": 25,
+                        "coordinates": {
+                                "x": 4,
+                                "y": 4
+                        },
+                        "category": "SHORE",
+                        "harbor": false
+                }
+        ]
+}
