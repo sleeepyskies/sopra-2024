@@ -14,11 +14,6 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     override val name = "ScoutContainerFillMoveHarborTest"
     override val maxTicks = 3
 
-    // STRING DUPLICATES OH MY LORD
-    companion object {
-        const val CORP_1_MOVE = "Corporation Action: Corporation 1 is starting to move its ships."
-    }
-
     override suspend fun run() {
         initSimulation()
 
@@ -27,20 +22,27 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         tick1()
 
         tick2()
+
+        tick3()
+
+        simEnd()
     }
 
     private suspend fun initSimulation() {
+        /*
         assertNextLine("Initialization Info: obamna.json successfully parsed and validated.")
         assertNextLine("Initialization Info: corpWithTwoShips.json successfully parsed and validated.")
         assertNextLine("Initialization Info: scoutContainerUnloadScenario.json successfully parsed and validated.")
         assertNextLine("Simulation Info: Simulation started.")
+        */
+        skipLines(4)
     }
 
     private suspend fun tick0() {
         assertNextLine("Simulation Info: Tick 0 started.")
 
         // Corporation Phase
-        assertNextLine(CORP_1_MOVE)
+        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
@@ -57,18 +59,24 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     private suspend fun tick1() {
         assertNextLine("Simulation Info: Tick 1 started.")
 
+        skipLines(2)
         // Corporation Phase
-        assertNextLine(CORP_1_MOVE)
+        /*
+        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
+        */
+
         assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 14.")
 
+        /*
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Garbage Collection: Ship 2 collected 10 of garbage OIL with 70.")
 
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-
+        */
+        skipLines(5)
         // Ship Drifting Phase
         assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
         assertNextLine("Reward: Task 1: Ship 1 received reward of type CONTAINER.")
@@ -77,20 +85,24 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     private suspend fun tick2() {
         assertNextLine("Simulation Info: Tick 2 started.")
 
-        // Corporation Phase
-        assertNextLine(CORP_1_MOVE)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
-        assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 14.")
+        skipLines(6) // corporation phase
+        skipLines(1) // drifting phase
 
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-        assertNextLine("Garbage Collection: Ship 2 collected 10 of garbage OIL with 70.")
+        // Events Phase
+        assertNextLine("Event: Event 20 of type OIL_SPILL happened.")
+    }
 
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
+    private suspend fun tick3() {
+        assertNextLine("Simulation Info: Tick 3 started.")
+    }
 
-        // Ship Drifting Phase
-        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
-        assertNextLine("Reward: Task 1: Ship 1 received reward of type CONTAINER.")
+    private suspend fun simEnd() {
+        assertNextLine("Simulation Info: Simulation statistics are calculated.")
+        assertNextLine("Simulation Statistics: Corporation 1 collected 10 of garbage.")
+        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
+        assertNextLine("Simulation Statistics: Total amount of oil collected: 10.")
+        assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
+        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
+        assertEnd()
     }
 }

@@ -7,7 +7,16 @@
       "amount": 10
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": 20,
+      "type": "OIL_SPILL",
+      "tick":  2,
+      "location": 7,
+      "radius": 1,
+      "amount": 10
+    }
+  ],
   "tasks": [
     {
       "id": 1,
@@ -16,7 +25,7 @@
       "shipID": 2,
       "targetTile": 14,
       "rewardID": 1,
-      "rewardShipID": 2
+      "rewardShipID": 1
     }
   ],
   "rewards": [
