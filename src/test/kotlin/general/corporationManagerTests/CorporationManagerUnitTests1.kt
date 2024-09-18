@@ -290,7 +290,7 @@ class CorporationManagerUnitTests1 {
         val ship2 = Ship(
             2, "black_pearl_which_needs_refuel", 1, mutableMapOf(), 1, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
-            10, 300, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            10, 400, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         simDat.ships.addAll(listOf(ship, ship2))
