@@ -121,9 +121,10 @@ class SimulationParser(
             return null
         }
 
+        placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
+
         // return final simulator
         return if (crossValidateScenario()) {
-            placeGarbageOnTiles(scenarioParser.tileXYtoGarbage)
             makeManagers(scenarioParser.highestGarbageID)
             // log
             Logger.initInfo(this.scenarioFile)

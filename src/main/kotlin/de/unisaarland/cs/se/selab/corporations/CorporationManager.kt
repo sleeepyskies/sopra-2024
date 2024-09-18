@@ -331,7 +331,7 @@ class CorporationManager(private val simData: SimulationData) {
                 }
             }
         }
-        if (ship.capacityInfo.values.any { it.first <= 0 }) {
+        if (ship.capacityInfo.values.any { it.first <= 0 && it.second != 0 }) {
             ship.state = when (ship.state) {
                 ShipState.NEED_REFUELING -> {
                     ShipState.NEED_REFUELING_AND_UNLOADING
@@ -373,7 +373,8 @@ class CorporationManager(private val simData: SimulationData) {
     private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
         val shipType = ship.type
         val shipLocation = ship.location
-        val shipMaxTravelDistance = ship.currentVelocity / VELOCITY_DIVISOR
+        val shipMaxTravelDistance =
+            (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
 
         if (checkRestriction(ship.location)) {
             return listOf(
@@ -637,7 +638,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.PLASTIC]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.PLASTIC]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
             }
             GarbageType.OIL -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.OIL]?.first ?: 0)
@@ -646,7 +647,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.OIL]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.OIL]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
             }
             GarbageType.CHEMICALS -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.CHEMICALS]?.first ?: 0)
@@ -655,7 +656,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.CHEMICALS]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.CHEMICALS]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.amount)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
             }
             GarbageType.NONE -> {}
         }
