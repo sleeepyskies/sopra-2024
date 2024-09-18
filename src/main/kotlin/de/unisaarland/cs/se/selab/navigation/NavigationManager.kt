@@ -359,13 +359,10 @@ class NavigationManager(
         if (distancesFilteredByTileNextToNonRestrictedTile.isEmpty()) return from
         // Get the lowest tile id,
         // if there are multiple points with same distance that are next to a non-restricted tile
-        println(distancesFilteredByTileNextToNonRestrictedTile)
         for ((k, v) in distancesFilteredByTileNextToNonRestrictedTile) {
             // Get the path length to the destination tile
             val pathLength = v / DEFAULT_DISTANCE
             // Compute how many tiles we have to go back in the path
-            println(pathLength)
-            println(travelAmount)
             val goBackInPathByAmountOfTile = pathLength.minus(travelAmount) + 1
             // Get the non-restricted tile with lowest tileID from the point of which we want to leave the restriction
             val neighborWithLowestTileID = graph[k]
@@ -373,8 +370,6 @@ class NavigationManager(
                     !it.second.first && !it.second.second // not land and not restricted
                 }
                 ?.minByOrNull { it.first } ?: return from
-            println(neighborWithLowestTileID.second.first)
-            println(neighborWithLowestTileID.second.second)
 
             val newParentStructure = previousNodes.toMutableMap()
             newParentStructure[neighborWithLowestTileID.first] = k
@@ -386,11 +381,9 @@ class NavigationManager(
             } else {
                 // Get the node to travel to, in case we cant travel the whole amount
                 var node = neighborWithLowestTileID.first
-                println(node)
                 repeat(goBackInPathByAmountOfTile) {
                     node = previousNodes[node] ?: node // WAS ?: return from
                 }
-                println(node)
                 result = locationByTileId(node) ?: from
             }
             return result
@@ -483,14 +476,6 @@ class NavigationManager(
         }
 
         pathMap.reverse()
-        val currentTile = findTile(location)
-        if (currentTile != null) {
-            pathMap.add(currentTile)
-        }
-
-        for (a in pathMap) {
-            println(a.id)
-        }
         return pathMap
     }
 

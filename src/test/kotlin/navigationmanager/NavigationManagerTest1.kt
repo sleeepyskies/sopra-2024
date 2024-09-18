@@ -155,8 +155,11 @@ class NavigationManagerTest1 {
         // get access to the private graph field
         val graphField = this.nm::class.java.getDeclaredField("graph")
         graphField.isAccessible = true
-        val graph = graphField.get(this.nm) as Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
-        return graph[tileID] ?: emptyList()
+        val graph = (
+            graphField.get(this.nm)
+                ?: error("Graph field is null")
+            ) as Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
+        return graph[tileID].orEmpty()
     }
 
     /**
@@ -177,16 +180,20 @@ class NavigationManagerTest1 {
         // get access to the private graph field
         val graphField = this.nm::class.java.getDeclaredField("graph")
         graphField.isAccessible = true
-        val graph = graphField.get(this.nm) as Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
-
+        val graph = (
+            graphField.get(this.nm)
+                ?: error("Graph field is null")
+            ) as Map<Int, List<Pair<Int, Pair<Boolean, Boolean>>>>
         // call dijkstra method
-        return dijkstra.invoke(
-            nm,
-            graph,
-            tileID,
-            false,
-            null
-        ) as Pair<Map<Int, Int>, Map<Int, Int?>>
+        return (
+            dijkstra.invoke(
+                nm,
+                graph,
+                tileID,
+                false,
+                null
+            ) ?: error("Dijkstra invocation returned null")
+            ) as Pair<Map<Int, Int>, Map<Int, Int?>>
     }
 
     // ----------------------------------- initializeAndUpdateGraphStructure() tests -----------------------------------
@@ -632,7 +639,7 @@ class NavigationManagerTest1 {
             20 to 0
         )
 
-        val checkPreviousNodes = mapOf<Int, Int>()
+        val checkPreviousNodes = emptyMap<Int, Int>()
 
         assertEquals(checkDistances, distancesResult)
         assertEquals(checkPreviousNodes, previousNodesResult)

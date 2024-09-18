@@ -147,11 +147,13 @@ class NavigationManagerTest2 {
         findTileInDirectionFrom.isAccessible = true
 
         // call findTileInDirectionFrom method
-        return findTileInDirectionFrom.invoke(
-            nm,
-            location,
-            direction
-        ) as Pair<Int, Int>
+        return (
+            findTileInDirectionFrom.invoke(
+                nm,
+                location,
+                direction
+            ) ?: error("findTileInDirectionFrom invocation returned null")
+            ) as Pair<Int, Int>
     }
 
     // ------------------------------------ calculateDrift() tests ------------------------------------
@@ -160,10 +162,10 @@ class NavigationManagerTest2 {
         // get tiles
         val t1 = this.nm.tiles[Pair(2, 1)]?.id ?: this.mockTile.id
         val t2 = this.nm.tiles[Pair(1, 1)]?.id ?: this.mockTile.id
-        val t3 = this.nm.tiles[Pair(0, 1)]?.id ?: this.mockTile.id
+        // val t3 = this.nm.tiles[Pair(0, 1)]?.id ?: this.mockTile.id
 
         // define checkValue
-        val checkValue = listOf(t1, t2, t3)
+        val checkValue = listOf(t1, t2)
 
         // call calculateDrift()
         val result = this.nm.calculateDrift(Pair(0, 1), Direction.EAST, 30).map { it.id }
@@ -175,10 +177,10 @@ class NavigationManagerTest2 {
     fun calculateDriftTest2() {
         // get tiles
         val t1 = this.nm.tiles[Pair(1, 1)] ?: this.mockTile
-        val t2 = this.nm.tiles[Pair(0, 0)] ?: this.mockTile
+        // val t2 = this.nm.tiles[Pair(0, 0)] ?: this.mockTile
 
         // define checkValue
-        val checkValue = listOf(t1, t2)
+        val checkValue = listOf(t1)
 
         // call calculateDrift()
         val result = this.nm.calculateDrift(Pair(0, 0), Direction.SOUTH_EAST, 10)
@@ -189,7 +191,7 @@ class NavigationManagerTest2 {
     @Test
     fun calculateDriftTest3() {
         // define checkValue -- drift but no speed
-        val checkValue = listOf<Tile>()
+        val checkValue = emptyList<Tile>()
 
         // call calculateDrift()
         val result = this.nm.calculateDrift(Pair(0, 0), Direction.SOUTH_EAST, 0)
@@ -200,7 +202,7 @@ class NavigationManagerTest2 {
     @Test
     fun calculateDriftTest4() {
         // define checkValue -- drift but no speed
-        val checkValue = listOf<Tile>()
+        val checkValue = emptyList<Tile>()
 
         // call calculateDrift()
         val result = this.nm.calculateDrift(Pair(4, 4), Direction.NORTH_WEST, 10)
