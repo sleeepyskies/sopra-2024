@@ -367,7 +367,7 @@ class SimulationParser(
             // get ships
             val rewardShip = this.ships.find { it.id == task.rewardShip }
             val assignedShip = this.ships.find { it.id == task.assignedShipId }
-            if (rewardShip == null || assignedShip == null || rewardShip.id != assignedShip.id) {
+            if (rewardShip == null || assignedShip == null || rewardShip.corporation != assignedShip.corporation) {
                 log.error(
                     "SIMULATION PARSER: The task ${task.id} has an " +
                         "assigned ship and a reward ship from different corporations."
