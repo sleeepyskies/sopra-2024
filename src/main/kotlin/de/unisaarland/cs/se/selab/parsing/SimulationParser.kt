@@ -469,6 +469,7 @@ class SimulationParser(
             crossValidateRewardAssignedIds() &&
             crossValidateRewardGarbageTypeOnTile()
     }
+
     private fun crossValidateRewardGarbageTypeOnTile(): Boolean {
         // get all reward initial locations
         for (task in this.tasks.flatMap { it.value }.filter { it.type == TaskType.COLLECT }) {
