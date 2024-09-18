@@ -48,6 +48,7 @@ class CorporationManager(private val simData: SimulationData) {
         val gbAssignedAmountList = mutableListOf<Garbage>()
         scanAll(corporation.ships, corporation)
         corporation.ships.forEach {
+            println("here for ship ${it.id} from corp ${corporation.id}")
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val possibleLocationsToMove = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
@@ -58,8 +59,9 @@ class CorporationManager(private val simData: SimulationData) {
                     possibleLocationsToMove,
                     it.currentVelocity / VELOCITY_DIVISOR
                 )
-
+                println("tileInfoToMove $tileInfoToMove")
                 if (tileInfoToMove.second != 0) {
+                    println("able to move ship ${it.id} from corp ${corporation.id}")
                     // getting the target location, not the actual location that the ship will move this tick
                     // so that we can assign capacities to that target
                     // and no other ship will be assigned to that location
@@ -68,9 +70,11 @@ class CorporationManager(private val simData: SimulationData) {
                     Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
                     updateInfo(corporation, scan(it.location, it.visibilityRange))
                 } else {
+                    println("not able to move ship ${it.id}")
                     it.currentVelocity = 0
                 }
             } else {
+                println("not able to move ship ${it.id} from corp ${corporation.id}")
                 it.currentVelocity = 0
             }
             // after every ship of this corporation has moved

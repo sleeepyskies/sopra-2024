@@ -13,7 +13,7 @@ class ExampleSystemTest : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/scenario.json"
     override val map = "mapFiles/smallMap1.json"
     override val name = "ExampleTest"
-    override val maxTicks = 0
+    override val maxTicks = 10
     override suspend fun run() {
         val expectedString = "Simulation Statistics: Corporation 1 collected 0 of garbage."
         if (skipUntilLogType(Logs.SIMULATION_STATISTICS) != expectedString) {
