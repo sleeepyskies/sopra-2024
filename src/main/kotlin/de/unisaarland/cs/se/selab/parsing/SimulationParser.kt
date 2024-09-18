@@ -242,7 +242,7 @@ class SimulationParser(
         }
 
         // check no tile has more than 1000 OIL
-        if (tileOilMap.values.max() > THOUSAND) {
+        if ((tileOilMap.values.maxOrNull() ?: 0) > THOUSAND) {
             log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
             return false
         }

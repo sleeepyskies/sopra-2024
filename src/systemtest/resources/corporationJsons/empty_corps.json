@@ -1,0 +1,30 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "Ocean Scouters Inc.",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        5
+      ],
+      "garbageTypes": ["PLASTIC"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "Collecter",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 5,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    }
+  ]
+}
