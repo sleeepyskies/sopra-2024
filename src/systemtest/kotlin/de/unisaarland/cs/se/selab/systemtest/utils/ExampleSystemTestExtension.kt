@@ -36,7 +36,8 @@ enum class Logs(private val message: String) {
     INITIALIZATION_INFO("Initialization Info"),
     SIMULATION_INFO("Simulation Info"),
     SIMULATION_STATISTICS("Simulation Statistics"),
-    TOTAL_AMOUNT_OF_GARBAGE("Simulation Statistics: Total amount of garbage still in the ocean");
+    TOTAL_AMOUNT_OF_GARBAGE("Simulation Statistics: Total amount of garbage still in the ocean"),
+    EVENT("Event: Event");
 
     override fun toString(): String {
         return message
