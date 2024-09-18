@@ -1,5 +1,5 @@
 package general.eventManagerTests
-/*
+
 import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Current
@@ -220,7 +220,7 @@ class EventManagerUnitTest {
 
         val graph = NavigationManager::class.java.getDeclaredField("graph")
         graph.isAccessible = true
-        val gra = graph.get(nm) as Map<*, *>
+        val gra = (graph.get(nm) ?: error("Graph is null")) as Map<*, *>
         for (coordinates in restrictedTiles) {
             val tile = nm.findTile(coordinates)
             assertNotNull(tile)
@@ -236,4 +236,3 @@ class EventManagerUnitTest {
         }
     }
 }
-*/
