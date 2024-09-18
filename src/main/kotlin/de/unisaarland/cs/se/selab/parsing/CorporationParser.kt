@@ -1,11 +1,6 @@
 
 package de.unisaarland.cs.se.selab.parsing
 
-import com.github.erosb.jsonsKema.FormatValidationPolicy
-import com.github.erosb.jsonsKema.JsonParser
-import com.github.erosb.jsonsKema.SchemaLoader
-import com.github.erosb.jsonsKema.Validator
-import com.github.erosb.jsonsKema.ValidatorConfig
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.GarbageType
@@ -15,6 +10,7 @@ import de.unisaarland.cs.se.selab.assets.ShipType
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
@@ -22,12 +18,12 @@ import java.io.IOException
 /**
  * Parses corporation data from a file.
  *
- * @property fileName The name of the file to parse.
+ * @property corporationFilePath The name of the file to parse.
  * @property corporations The list of corporations to update.
  * @property ships The list of ships to update.
  */
 class CorporationParser(
-    private val fileName: String,
+    private val corporationFilePath: String,
     private val idLocationMapping: Map<Int, Pair<Int, Int>>
 ) {
     /**
@@ -40,10 +36,13 @@ class CorporationParser(
     private val log: Log = LogFactory.getLog("debugger")
     val corporations = mutableListOf<Corporation>()
     val ships = mutableListOf<Ship>()
-    private val validator = initCorporationsSchemaValidator()
     private val corporationIds = mutableSetOf<Int>()
     private val shipIds = mutableSetOf<Int>()
     private val harborLocationsSet = mutableSetOf<Pair<Int, Int>>()
+
+    // parser helper
+    private val helper = ParserHelper()
+    private val corporationsSchema = "corporations.schema"
 
     /**
      * Parses corporation data from a file.
@@ -52,26 +51,34 @@ class CorporationParser(
      */
     fun parseAllCorporations(): Boolean {
         // parse input file and check if path is valid
-        val corporationsFileContent = try {
-            File(fileName).readText()
+        // create corp JSON object
+        var success = true
+
+        val corpJSONObject = try {
+            JSONObject(File(corporationFilePath).readText())
         } catch (e: IOException) {
             log.error("CORPORATION PARSER: The file could not be read.", e)
             return false
-        }
-        val corporationsJson = JsonParser(corporationsFileContent).parse()
-        val schemaValidation = validator.validate(corporationsJson)
-        // create JSONObject from file
-        val corporationsJSONObject = JSONObject(File(fileName).readText())
-        // Get Corporations array from file
-        val corporationsJSON = corporationsJSONObject.getJSONArray("corporations")
-        // checking for invalid schema and empty corporations array
-        if (schemaValidation != null || corporationsJSON.length() == 0) {
+        } catch (e: JSONException) {
+            log.error("CORPORATION PARSER: The file is not a valid JSON.", e)
             return false
         }
 
-        val shipsJSON = corporationsJSONObject.getJSONArray("ships")
+        // validate corporation JSON against schema
+        if (helper.validateSchema(corpJSONObject, this.corporationsSchema)) {
+            log.error("MAP PARSER: The file does not match the schema.")
+            success = false
+        }
+
+        // get the ships array
+        val shipsJSON = corpJSONObject.getJSONArray("ships")
+
+        // get the corporations array
+        val corporationsJSON = corpJSONObject.getJSONArray("corporations")
+
         val garbageCollectingShips = mutableListOf<Ship>()
         val shipsList = mutableListOf<Ship>()
+
         if (!parseShips(shipsJSON, shipsList, garbageCollectingShips)) return false
 
         // parse and validate all corporations
@@ -85,7 +92,7 @@ class CorporationParser(
                 return false
             }
         }
-        return true
+        return success
     }
 
     /**
@@ -99,6 +106,10 @@ class CorporationParser(
         collectingShips: MutableList<Ship>
     ): Boolean {
         // validate corporation
+        if (helper.validateSchema(corporationJsonObject, "corporation.schema")) {
+            log.error("CORPORATION PARSER: One of the corporations does not match the corporation schema.")
+            return false
+        }
         if (!validateCorporation(corporationJsonObject)) return false
         // adding ids to check for duplicates
         val corporationId = corporationJsonObject.getInt(ID)
@@ -126,10 +137,8 @@ class CorporationParser(
     }
     private fun parseShip(shipJsonObject: JSONObject): Ship? {
         // validate ship
-        val shipValidator = initShipSchemaValidator()
-        val shipJSONValue = JsonParser(shipJsonObject.toString()).parse()
-        val schemaValidation = shipValidator.validate(shipJSONValue)
-        if (schemaValidation != null) {
+        if (helper.validateSchema(shipJsonObject, "ships.schema")) {
+            log.error("MAP PARSER: The file does not match the schema.")
             return null
         }
         // ensures that ship ids are unique
@@ -192,12 +201,16 @@ class CorporationParser(
         return ship
     }
     private fun parseGarbageTypes(corporationGarbageTypes: JSONArray, garbageList: MutableList<GarbageType>): Boolean {
+        if (corporationGarbageTypes.length() == 0) {
+            return true
+        }
         for (index in 0 until corporationGarbageTypes.length()) {
             val garbageType = convertGarbageTypeToEnum(corporationGarbageTypes.getString(index)) ?: return false
             garbageList.add(garbageType)
         }
         return true
     }
+
     private fun parseHomeHarbors(
         corporationHomeHarbors: JSONArray,
         homeHarborsList: MutableList<Pair<Int, Int>>
@@ -210,6 +223,7 @@ class CorporationParser(
         }
         return homeHarborsList.isNotEmpty()
     }
+
     private fun parseShips(
         corporationShips: JSONArray,
         shipsList: MutableList<Ship>,
@@ -225,12 +239,7 @@ class CorporationParser(
         }
         return shipsList.isNotEmpty()
     }
-    private fun initCorporationsSchemaValidator(): Validator {
-        val schema = SchemaLoader.forURL("classpath://schema/corporations.schema").load()
 
-        // create and return validator
-        return Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
-    }
     private fun validateShipsOfCorporation(
         corporationShips: JSONArray,
         shipsList: List<Ship>,
@@ -238,9 +247,14 @@ class CorporationParser(
     ): Boolean {
         for (index in 0 until corporationShips.length()) {
             val shipId = corporationShips.getInt(index)
-            if (shipsList.none { it.id == shipId } ||
-                shipsList.any { it.id == shipId && it.corporation != corporationID }
-            ) {
+            println(shipId)
+            println(shipsList)
+            println(corporationID)
+            val shipWithIdExistInCorporation = shipsList.none { it.id == shipId }
+            val shipWithIdIsOfCorrectCorporation = shipsList.any { it.id == shipId && it.corporation != corporationID }
+            println(shipWithIdExistInCorporation)
+            println(shipWithIdIsOfCorrectCorporation)
+            if (shipWithIdExistInCorporation || shipWithIdIsOfCorrectCorporation) {
                 return false
             }
         }
@@ -266,18 +280,7 @@ class CorporationParser(
         }
         return true
     }
-    private fun initCorporationSchemaValidator(): Validator {
-        // read content of JSON schema
-        val schema = SchemaLoader.forURL("classpath://schema/corporation.schema").load()
-        // create and return validator
-        return Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
-    }
-    private fun initShipSchemaValidator(): Validator {
-        // read content of JSON schema
-        val schema = SchemaLoader.forURL("classpath://schema/ships.schema").load()
-        // create and return validator
-        return Validator.create(schema, ValidatorConfig(FormatValidationPolicy.ALWAYS))
-    }
+
     private fun convertShipTypeToEnum(type: String): ShipType? {
         return when (type) {
             "SCOUTING" -> ShipType.SCOUTING_SHIP
@@ -295,11 +298,8 @@ class CorporationParser(
         }
     }
     private fun validateCorporation(corporationJsonObject: JSONObject): Boolean {
-        val corporationValidator = initCorporationSchemaValidator()
-        val corporationJSONValue = JsonParser(corporationJsonObject.toString()).parse()
-        val schemaValidation = corporationValidator.validate(corporationJSONValue)
         val corporationName = corporationJsonObject.optString(NAME, "")
         val corporationId = corporationJsonObject.getInt(ID)
-        return schemaValidation == null && !corporationIds.contains(corporationId) && corporationName.isNotEmpty()
+        return !corporationIds.contains(corporationId) && corporationName.isNotEmpty()
     }
 }
