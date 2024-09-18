@@ -375,7 +375,6 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A list of possible locations for the ship to move to.
      */
     private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
-        println(corporation.garbage)
         val shipType = ship.type
         val shipLocation = ship.location
         val shipMaxTravelDistance =
