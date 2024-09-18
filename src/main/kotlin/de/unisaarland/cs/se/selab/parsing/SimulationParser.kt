@@ -99,6 +99,14 @@ class SimulationParser(
             return null
         }
 
+        if (crossValidateCorporations()) {
+            Logger.setCorporationsInitialCollectedGarbage(corporations.map { it.id })
+            Logger.initInfo(this.corporationFile)
+        } else {
+            Logger.initInfoInvalid(corporationFile)
+            return null
+        }
+
         // parse and validate scenario
         if (scenarioParser.parseScenario()) {
             // file valid
@@ -110,14 +118,6 @@ class SimulationParser(
         } else {
             // file invalid
             Logger.initInfoInvalid(scenarioFile)
-            return null
-        }
-
-        if (crossValidateCorporations()) {
-            Logger.setCorporationsInitialCollectedGarbage(corporations.map { it.id })
-            Logger.initInfo(this.corporationFile)
-        } else {
-            Logger.initInfoInvalid(corporationFile)
             return null
         }
 

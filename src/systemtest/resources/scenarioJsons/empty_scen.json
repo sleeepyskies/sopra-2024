@@ -3,10 +3,10 @@
   "events": [{
     "id": 1,
     "type": "OIL_SPILL",
-    "tick": 4,
-    "duration": 2,
-    "location": 22,
-    "radius": 1
+    "tick": 1,
+    "location": 7,
+    "radius": 1,
+    "amount": 1000
   }],
   "tasks": [],
   "rewards": []

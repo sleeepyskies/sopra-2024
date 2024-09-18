@@ -13,15 +13,12 @@ class OilSpillHappensCorrectly : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/empty_scen.json"
     override val map = "mapFiles/obamna.json"
     override val name = "OilSpillCorrect"
-    override val maxTicks = 1
+    override val maxTicks = 2
     override suspend fun run() {
-        val expectedString = "Simulation Statistics: Corporation 1 collected 0 of garbage."
-        if (skipUntilLogType(Logs.SIMULATION_STATISTICS) != expectedString) {
-            throw SystemTestAssertionError("Collected plastic should be 0!")
+        val expectedString = "Simulation Statistics: Total amount of garbage still in the ocean: 7000."
+        if (skipUntilLogType(Logs.TOTAL_AMOUNT_OF_GARBAGE) != expectedString) {
+            throw SystemTestAssertionError("Uncollected oil should be 7000!")
         }
-        assertNextLine("Simulation Statistics: Corporation 2 collected 0 of garbage.")
-        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
-        skipLines(2)
-        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 1000.")
+        assertEnd()
     }
 }

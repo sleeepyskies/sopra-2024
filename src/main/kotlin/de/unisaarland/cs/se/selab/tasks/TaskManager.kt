@@ -65,6 +65,8 @@ class TaskManager(private val simData: SimulationData) {
             }
         }
         simData.activeTasks.removeAll(fulfilled)
+
+        simData.tick++
     }
 
     /**

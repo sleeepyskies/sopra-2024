@@ -175,11 +175,13 @@ class EventManager(private val simulationData: SimulationData) {
             val newAmountGarbage = currentTile.oilMaxCapacity - currentTile.currentOilAmount
             val newGarbage = createGarbage(newAmountGarbage, currentTile)
             updateToCorporations.add(newGarbage)
-            currentTile.addArrivingGarbageToTile(newGarbage)
+            currentTile.addGarbageToTile(newGarbage)
+            simulationData.garbage.add(newGarbage)
         } else {
             val newGarbage = createGarbage(event.amount, currentTile)
             updateToCorporations.add(newGarbage)
-            currentTile.addArrivingGarbageToTile(newGarbage)
+            currentTile.addGarbageToTile(newGarbage)
+            simulationData.garbage.add(newGarbage)
         }
         tilesToUpdate.add(currentTile)
     }

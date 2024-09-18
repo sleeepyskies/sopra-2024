@@ -41,6 +41,10 @@ class MapParser(
     // Map of tile id to location used in corporation parser
     val idLocationMapping: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
 
+    companion object {
+        const val THOUSAND = 1000
+    }
+
     /**
      * Parses map data from a file.
      *
@@ -161,7 +165,7 @@ class MapParser(
             }
             TileType.SHORE -> {
                 val harbor = tileJSON.getBoolean("harbor")
-                Tile(id, Pair(cordX, cordY), TileType.SHORE, harbor, mockCurrent, false, 0)
+                Tile(id, Pair(cordX, cordY), TileType.SHORE, harbor, mockCurrent, false, THOUSAND)
             }
             else -> {
                 null
