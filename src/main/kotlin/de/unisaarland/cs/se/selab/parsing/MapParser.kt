@@ -150,13 +150,13 @@ class MapParser(
                     val intensity = tileJSON.getInt("intensity")
                     val realCurrent = direction?.let { Current(it, intensity, speed) }
                     if (realCurrent != null) {
-                        Tile(id, Pair(cordX, cordY), TileType.SHALLOW_OCEAN, false, realCurrent, true)
+                        Tile(id, Pair(cordX, cordY), TileType.DEEP_OCEAN, false, realCurrent, true)
                     } else {
                         null
                     }
                 } else {
                     // has no current
-                    Tile(id, Pair(cordX, cordY), TileType.SHALLOW_OCEAN, false, mockCurrent, false)
+                    Tile(id, Pair(cordX, cordY), TileType.DEEP_OCEAN, false, mockCurrent, false)
                 }
             }
             TileType.SHORE -> {
