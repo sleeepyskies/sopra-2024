@@ -138,7 +138,6 @@ class ScenarioParser(
 
             // get event
             val event = parseEvent(eventJSON)
-            println(event)
 
             // check event is valid and created correctly
             if (event == null || !validateEventProperties(event)) {
@@ -147,7 +146,6 @@ class ScenarioParser(
             } else {
                 // event is valid, add to list
                 this.events.getOrPut(event.tick) { mutableListOf() }.add(event)
-                println(this.events)
                 this.eventIDs.add(event.id)
             }
         }
@@ -213,7 +211,6 @@ class ScenarioParser(
         for (index in 0 until tasksJSONArray.length()) {
             // get task JSON
             val taskJSON = tasksJSONArray.getJSONObject(index)
-            println(taskJSON)
 
             // validate task JSON against schema
             if (helper.validateSchema(taskJSON, this.taskSchema)) {

@@ -376,7 +376,6 @@ class TaskManagerTest {
         sd.scheduledTasks[1] = listOf(task)
         sd.tick = 1
         sd.rewards.add(reward)
-        println(sd.activeTasks)
         taskManager.startTasksPhase()
         assertTrue(sd.activeTasks.isEmpty())
         assertTrue(ship.state == ShipState.NEED_REFUELING)

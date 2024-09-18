@@ -273,7 +273,6 @@ class ScenarioParserTest {
         scenarioFile.writeText(jsonData)
         val result = scenarioParser.parseScenario()
         assertFalse(result)
-        println(scenarioParser.garbage)
     }
 
     @Test
