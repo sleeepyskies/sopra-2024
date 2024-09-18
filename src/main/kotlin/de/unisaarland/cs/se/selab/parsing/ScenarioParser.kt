@@ -10,6 +10,7 @@ import de.unisaarland.cs.se.selab.assets.Reward
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
+import de.unisaarland.cs.se.selab.assets.TaskType
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.json.JSONArray
@@ -137,6 +138,7 @@ class ScenarioParser(
 
             // get event
             val event = parseEvent(eventJSON)
+            println(event)
 
             // check event is valid and created correctly
             if (event == null || !validateEventProperties(event)) {
@@ -144,7 +146,8 @@ class ScenarioParser(
                 return false
             } else {
                 // event is valid, add to list
-                this.events[event.tick]?.add(event)
+                this.events.getOrPut(event.tick) { mutableListOf() }.add(event)
+                println(this.events)
                 this.eventIDs.add(event.id)
             }
         }
@@ -210,9 +213,10 @@ class ScenarioParser(
         for (index in 0 until tasksJSONArray.length()) {
             // get task JSON
             val taskJSON = tasksJSONArray.getJSONObject(index)
+            println(taskJSON)
 
             // validate task JSON against schema
-            if (!helper.validateSchema(taskJSON, this.taskSchema)) {
+            if (helper.validateSchema(taskJSON, this.taskSchema)) {
                 log.error("SCENARIO PARSER: The tasks do not match the schema.")
                 return false
             }
@@ -230,7 +234,8 @@ class ScenarioParser(
             }
 
             // task is valid, add to list
-            this.tasks[task.tick]?.add(task) // never null since we check previously
+            /** CORRECT THIS **/
+            this.tasks.getOrPut(task.tick) { mutableListOf() }.add(task)
             this.taskIDs.add(task.id)
         }
         // success
@@ -248,7 +253,7 @@ class ScenarioParser(
             val rewardJSON = rewardsJSONArray.getJSONObject(index)
 
             // validate reward JSON against schema
-            if (!helper.validateSchema(rewardJSON, this.rewardSchema)) {
+            if (helper.validateSchema(rewardJSON, this.rewardSchema)) {
                 log.error("SCENARIO PARSER: The rewards do not match the schema.")
                 return false
             }
@@ -470,12 +475,51 @@ class ScenarioParser(
      */
     private fun crossValidateTasksForRewards(): Boolean {
         // Cross validate tasks for rewards
-        // go over tasks, and check reward actually exists
         for (task in this.tasks.values.flatten()) {
-            if (!this.rewardIDs.contains(task.rewardId)) {
-                log.error("SCENARIO PARSER: Error when cross validating tasks and rewards.")
+            if (!isValidTaskReward(task)) {
                 return false
             }
+        }
+        return true
+    }
+
+    private fun isValidTaskReward(task: Task): Boolean {
+        return when (task.type) {
+            TaskType.COLLECT -> isValidCollectTaskReward(task)
+            TaskType.COORDINATE -> isValidCoordinateTaskReward(task)
+            TaskType.EXPLORE -> isValidExploreTaskReward(task)
+            TaskType.FIND -> isValidFindTaskReward(task)
+        } && this.rewardIDs.contains(task.rewardId)
+    }
+
+    private fun isValidCollectTaskReward(task: Task): Boolean {
+        if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.CONTAINER) {
+            log.error("SCENARIO PARSER: A collecting task has a reward of the wrong type.")
+            return false
+        }
+        return true
+    }
+
+    private fun isValidCoordinateTaskReward(task: Task): Boolean {
+        if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.RADIO) {
+            log.error("SCENARIO PARSER: A coordinating task has a reward of the wrong type.")
+            return false
+        }
+        return true
+    }
+
+    private fun isValidExploreTaskReward(task: Task): Boolean {
+        if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TELESCOPE) {
+            log.error("SCENARIO PARSER: An exploring task has a reward of the wrong type.")
+            return false
+        }
+        return true
+    }
+
+    private fun isValidFindTaskReward(task: Task): Boolean {
+        if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TRACKING) {
+            log.error("SCENARIO PARSER: A finding task has a reward of the wrong type.")
+            return false
         }
         return true
     }
