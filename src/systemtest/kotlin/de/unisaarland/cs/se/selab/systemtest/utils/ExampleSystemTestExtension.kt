@@ -35,7 +35,8 @@ abstract class ExampleSystemTestExtension : SystemTest() {
 enum class Logs(private val message: String) {
     INITIALIZATION_INFO("Initialization Info"),
     SIMULATION_INFO("Simulation Info"),
-    SIMULATION_STATISTICS("Simulation Statistics");
+    SIMULATION_STATISTICS("Simulation Statistics"),
+    TOTAL_AMOUNT_OF_GARBAGE("Simulation Statistics: Total amount of garbage still in the ocean");
 
     override fun toString(): String {
         return message
