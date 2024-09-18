@@ -391,11 +391,10 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
                 val possibleHarbors = corporation.harbors
                     .filter { simData.navigationManager.canReachDestination(ship, it) }
-                if (possibleHarbors.isEmpty()) {
+                possibleHarbors.ifEmpty {
                     listOf(shipLocation)
-                } else {
-                    possibleHarbors
                 }
+                possibleHarbors
             }
             ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
                 mutableListOf(shipLocation)
