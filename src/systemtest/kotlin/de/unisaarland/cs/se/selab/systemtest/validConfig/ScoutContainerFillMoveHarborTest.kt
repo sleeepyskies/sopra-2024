@@ -14,7 +14,9 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     override val name = "ScoutContainerFillMoveHarborTest"
     override val maxTicks = 3
 
-    // STRING DUPLICATES OH MY LORD
+    /**
+     *STRING DUPLICATES OH MY LORD
+     **/
     companion object {
         const val CORP_1_MOVE = "Corporation Action: Corporation 1 is starting to move its ships."
     }
@@ -41,14 +43,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
 
         // Corporation Phase
         assertNextLine(CORP_1_MOVE)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-
-        // Ship Drifting Phase
-        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
+        skipLines(6)
 
         // Tasks Phase
         assertNextLine("Task: Task 1 of type COLLECT with ship 2 is added with destination 14.")

@@ -41,6 +41,9 @@ class MapParser(
     // Map of tile id to location used in corporation parser
     val idLocationMapping: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
 
+    /**
+     * Default value
+     */
     companion object {
         const val THOUSAND = 1000
     }

@@ -52,6 +52,7 @@ class CorporationManager(private val simData: SimulationData) {
             val possibleLocationsToMove = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
             if (!(possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location)) {
+
                 it.updateVelocity()
                 val tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                     it.location,
@@ -72,14 +73,14 @@ class CorporationManager(private val simData: SimulationData) {
             } else {
                 it.currentVelocity = 0
             }
-            // after every ship of this corporation has moved
-            // we set the assignments on the garbage that ships are assigned to  0
-            flushAllGarbageAssignments(gbAssignedAmountList)
-            applyTrackersForCorporation(corporation)
-            corporation.visibleShips.clear()
-            corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
-            corporation.visibleGarbage.clear()
         }
+        // after every ship of this corporation has moved
+        // we set the assignments on the garbage that ships are assigned to  0
+        flushAllGarbageAssignments(gbAssignedAmountList)
+        applyTrackersForCorporation(corporation)
+        corporation.visibleShips.clear()
+        corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
+        corporation.visibleGarbage.clear()
     }
 
     /**
@@ -90,7 +91,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun startCollectGarbagePhase(corporation: Corporation) {
         Logger.corporationActionCollectGarbage(corporation.id)
         corporation.ships.filter {
-            it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.isNotEmpty()
+            it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.any { it.second != 0 }
         }.forEach { ship ->
             val tile = simData.navigationManager.findTile(ship.location) ?: return
             processGarbageOnTile(tile, ship, corporation)
@@ -125,6 +126,7 @@ class CorporationManager(private val simData: SimulationData) {
         if (shouldRemove) {
             tile.currentGarbage.remove(gb)
             simData.garbage.remove(gb)
+            simData.corporations.find { it.id == ship.corporation }?.garbage?.remove(gb.id)
         }
     }
 
@@ -461,7 +463,8 @@ class CorporationManager(private val simData: SimulationData) {
                 if (corporation.garbage.isNotEmpty()) {
                     return corporation.garbage.map { it.value.first }.toList()
                 }
-                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
+                val test = simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance)
+                return listOf(test)
             }
         }
     }

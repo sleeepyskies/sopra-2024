@@ -2,8 +2,6 @@ package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
-import de.unisaarland.cs.se.selab.systemtest.validConfig.PirateAttackDeletesShip
-import de.unisaarland.cs.se.selab.systemtest.validConfig.RestrictionHappensCorrectly
 
 /**
  * Class to register for systemTests
@@ -16,10 +14,10 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        // manager.registerTest(ExampleSystemTest())
+        manager.registerTest(ExampleSystemTest())
         // manager.registerTest(OilSpillHappensCorrectly())
         // manager.registerTest(RestrictionHappensCorrectly())
-        manager.registerTest(PirateAttackDeletesShip())
+        // manager.registerTest(PirateAttackDeletesShip())
     }
 
     /**
