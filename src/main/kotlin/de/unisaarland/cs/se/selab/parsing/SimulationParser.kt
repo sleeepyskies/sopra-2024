@@ -377,6 +377,19 @@ class SimulationParser(
         return true
     }
 
+    private fun crossValidateAllHarborsOnMapBelongToACorporation(): Boolean {
+        val allHarborsOfCorporations = this.corporations.flatMap { it.harbors }.toSet()
+        val allTilesWithHarbor = this.navigationManager.tiles.values.filter { it.isHarbor }
+        for (harbor in allTilesWithHarbor) {
+            val tile = allHarborsOfCorporations.find { it == harbor.location }
+            if (tile == null) {
+                log.error("SIMULATION PARSER: A harbor does not belong to any corporation.")
+                return false
+            }
+        }
+        return true
+    }
+
     /**
      * Takes a location, and checks whether any of the homeHarbors are reachable from this point.
      */
@@ -453,7 +466,8 @@ class SimulationParser(
     private fun crossValidateCorporations(): Boolean {
         return crossValidateCorporationHarborOnHarborTile() &&
             crossValidateShipsOnTiles() &&
-            crossValidateShipsCanReachHarbor()
+            crossValidateShipsCanReachHarbor() &&
+            crossValidateAllHarborsOnMapBelongToACorporation()
     }
 
     /**
