@@ -2,7 +2,6 @@ package de.unisaarland.cs.se.selab.navigation
 
 import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Garbage
-import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import java.util.PriorityQueue
