@@ -4,11 +4,13 @@ import de.unisaarland.cs.se.selab.Logger
 import de.unisaarland.cs.se.selab.assets.*
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.PrintWriter
+import kotlin.test.AfterTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -128,6 +130,19 @@ class CorporationManagerUnitTests1 {
         )
         this.cm = CorporationManager(simDat)
     }
+
+    @AfterEach
+    fun cleanup() {
+        for (tile in this.nm.tiles) {
+            tile.value.isRestricted = false
+            tile.value.currentGarbage.clear()
+        }
+        simDat.corporations = listOf()
+        simDat.ships.clear()
+        simDat.garbage.clear()
+        simDat.activeTasks.clear()
+    }
+
 
     @Test
     fun testScan() {
@@ -748,4 +763,35 @@ class CorporationManagerUnitTests1 {
         assertEquals(1, output.size)
         assertEquals(listOf(Pair(2, 0)), output)
     }
+
+    @Test
+    fun test_moveShipsPhase() {
+        val ship1 = Ship(
+            1, "black_pearl", 1, mutableMapOf(), 0, Pair(1, 0),
+            Direction.EAST, 2, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val ship2 = Ship(
+            2, "white_pearl", 1, mutableMapOf(), 1, Pair(1, 0),
+            Direction.EAST, 2, 10, 10, 10, 1000,
+            10, 1000, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
+            hasRadio = false, hasTracker = false, travelingToHarbor = false
+        )
+        val garbage1 = Garbage(1, 50, GarbageType.OIL, 1, Pair(0, 0))
+        val garbage2 = Garbage(2, 50, GarbageType.OIL, 1, Pair(0, 0))
+        t1.addGarbageToTile(garbage1)
+        t1.addGarbageToTile(garbage2)
+        simDat.corporations[0].ships.addAll(listOf(ship1, ship2))
+        simDat.ships.addAll(listOf(ship1, ship2))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "moveShipsPhase",
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        method.invoke(cm, simDat.corporations[0])
+        assertEquals(Pair(0, 0), ship1.location)
+        assertEquals(Pair(0, 0), ship2.location)
+    }
+
 }
