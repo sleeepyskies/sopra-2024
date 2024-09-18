@@ -15,6 +15,7 @@ import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
 import de.unisaarland.cs.se.selab.assets.TaskType
+import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
 import de.unisaarland.cs.se.selab.events.EventManager
@@ -465,6 +466,55 @@ class SimulationParser(
             crossValidateTasksForShips() &&
             crossValidateTasksSameShipCorporation() &&
             crossValidateTaskLocation() &&
-            crossValidateRewardAssignedIds()
+            crossValidateRewardAssignedIds() &&
+            crossValidateRewardGarbageTypeOnTile()
+    }
+
+    private fun crossValidateRewardGarbageTypeOnTile(): Boolean {
+        // get all reward initial locations
+        for (task in this.tasks.flatMap { it.value }.filter { it.type == TaskType.COLLECT }) {
+            // get tile id of the task
+            val tileId = task.targetTileId
+            // get tile
+            val tile = this.navigationManager.findTile(tileId)
+            val reward = this.rewards.find { it.id == task.rewardId }
+            if (!isValidRewardOnTile(reward, tile)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun isValidRewardOnTile(reward: Reward?, tile: Tile?): Boolean {
+        return when (reward?.garbageType) {
+            GarbageType.PLASTIC -> isValidPlasticReward(tile)
+            GarbageType.OIL -> isValidOilReward(tile)
+            GarbageType.CHEMICALS -> isValidChemicalsReward(tile)
+            GarbageType.NONE, null -> false
+        }
+    }
+
+    private fun isValidPlasticReward(tile: Tile?): Boolean {
+        if (tile != null && tile.currentGarbage.count { it.type == GarbageType.PLASTIC } == 0) {
+            log.error("SIMULATION PARSER: A reward has an invalid initial tile, there is no plastic on this tile.")
+            return false
+        }
+        return true
+    }
+
+    private fun isValidOilReward(tile: Tile?): Boolean {
+        if (tile != null && tile.currentGarbage.count { it.type == GarbageType.OIL } == 0) {
+            log.error("SIMULATION PARSER: A reward has an invalid initial tile, there is no oil on this tile.")
+            return false
+        }
+        return true
+    }
+
+    private fun isValidChemicalsReward(tile: Tile?): Boolean {
+        if (tile != null && tile.currentGarbage.count { it.type == GarbageType.CHEMICALS } == 0) {
+            log.error("SIMULATION PARSER: A reward has an invalid initial tile, there is no chemicals on this tile.")
+            return false
+        }
+        return true
     }
 }

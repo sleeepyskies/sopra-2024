@@ -352,6 +352,7 @@ class TaskManagerTest {
     }
 
     /** Test for a ship which needs refueling but is also assigned a task **/
+
     @Test
     fun `ship needs refueling but also has a task`() {
         val ship = Ship(
@@ -375,6 +376,7 @@ class TaskManagerTest {
         sd.scheduledTasks[1] = listOf(task)
         sd.tick = 1
         sd.rewards.add(reward)
+        println(sd.activeTasks)
         taskManager.startTasksPhase()
         assertTrue(sd.activeTasks.isEmpty())
         assertTrue(ship.state == ShipState.NEED_REFUELING)
@@ -382,6 +384,7 @@ class TaskManagerTest {
     }
 
     /** Test for correct granting of rewards **/
+
     @Test
     fun `ship completes a task and gets a container reward`() {
         val ship = Ship(
@@ -724,9 +727,3 @@ class TaskManagerTest {
         assertTrue(ship.currentTaskId == -1)
     }
 }
-
-/** test grant reward with container of already collectable garbage reward
- * test grant reward with container of not yet collectable garbage reward
- * test no active tasks
- * with refueling and unloading state but cannot reach harbor
- */
