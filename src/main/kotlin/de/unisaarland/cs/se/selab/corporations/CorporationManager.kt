@@ -52,14 +52,16 @@ class CorporationManager(private val simData: SimulationData) {
             val possibleLocationsToMove = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
             if (!(possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location)) {
-
-                it.updateVelocity()
+                val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                 val tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                     it.location,
                     possibleLocationsToMove,
-                    it.currentVelocity / VELOCITY_DIVISOR
+                    anticipatedVelocity / VELOCITY_DIVISOR
                 )
+
                 if (tileInfoToMove.second != 0) {
+                    it.updateVelocity()
+                    it.currentFuel -= tileInfoToMove.second * it.fuelConsumptionRate
                     // getting the target location, not the actual location that the ship will move this tick
                     // so that we can assign capacities to that target
                     // and no other ship will be assigned to that location
@@ -91,7 +93,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun startCollectGarbagePhase(corporation: Corporation) {
         Logger.corporationActionCollectGarbage(corporation.id)
         corporation.ships.filter {
-            it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.any { it.second != 0 }
+            it.type == ShipType.COLLECTING_SHIP || it.capacityInfo.values.any { x -> x.second != 0 }
         }.forEach { ship ->
             val tile = simData.navigationManager.findTile(ship.location) ?: return
             processGarbageOnTile(tile, ship, corporation)
@@ -280,7 +282,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun getInfo(
         corporationId: Int
     ): Map<Int, Pair<Pair<Int, Int>, GarbageType>> {
-        val corp = simData.corporations[corporationId]
+        val corp = simData.corporations.find { it.id == corporationId } ?: return emptyMap()
         // garbageId, location-type
         val garbageInfo = mutableMapOf<Int, Pair<Pair<Int, Int>, GarbageType>>()
         corp.garbage.forEach { t, (u, type) ->
@@ -463,8 +465,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (corporation.garbage.isNotEmpty()) {
                     return corporation.garbage.map { it.value.first }.toList()
                 }
-                val test = simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance)
-                return listOf(test)
+                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
             }
         }
     }
@@ -641,7 +642,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.PLASTIC]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.PLASTIC]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
             }
             GarbageType.OIL -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.OIL]?.first ?: 0)
@@ -650,7 +651,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.OIL]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.OIL]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
             }
             GarbageType.CHEMICALS -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.CHEMICALS]?.first ?: 0)
@@ -659,7 +660,7 @@ class CorporationManager(private val simData: SimulationData) {
                     ship.capacityInfo[GarbageType.CHEMICALS]?.first?.minus(collectionAmount) ?: 0,
                     ship.capacityInfo[GarbageType.CHEMICALS]?.second ?: 0
                 )
-                Logger.garbageCollection(ship.id, collectionAmount, gb.type.toString(), gb.id)
+                Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
             }
             GarbageType.NONE -> {}
         }

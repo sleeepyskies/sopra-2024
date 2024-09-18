@@ -1,4 +1,5 @@
 package de.unisaarland.cs.se.selab
+import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.TaskType
 import java.io.PrintWriter
@@ -95,7 +96,26 @@ object Logger {
     /**
      * Logs the garbage collection of a ship.
      */
-    fun garbageCollection(shipId: Int, amt: Int, garbageType: String, garbageId: Int) {
+    fun garbageCollection(shipId: Int, amt: Int, garbageId: Int, corpId: Int, garbageType: GarbageType) {
+        when (garbageType) {
+            GarbageType.PLASTIC -> {
+                val (plastic, oil, chemical) = corporationCollectedGarbage[corpId] ?: Triple(0, 0, 0)
+                corporationCollectedGarbage =
+                    corporationCollectedGarbage + (corpId to Triple(plastic + amt, oil, chemical))
+            }
+            GarbageType.OIL -> {
+                val (plastic, oil, chemical) = corporationCollectedGarbage[corpId] ?: Triple(0, 0, 0)
+                corporationCollectedGarbage =
+                    corporationCollectedGarbage + (corpId to Triple(plastic, oil + amt, chemical))
+            }
+            GarbageType.CHEMICALS -> {
+                val (plastic, oil, chemical) = corporationCollectedGarbage[corpId] ?: Triple(0, 0, 0)
+                corporationCollectedGarbage =
+                    corporationCollectedGarbage + (corpId to Triple(plastic, oil, chemical + amt))
+            }
+
+            GarbageType.NONE -> {}
+        }
         outputBuffer.println("Garbage Collection: Ship $shipId collected $amt of garbage $garbageType with $garbageId.")
     }
 

@@ -154,6 +154,7 @@ class CorporationManagerUnitTests2 {
             mutableListOf(),
             mutableListOf(GarbageType.CHEMICALS, GarbageType.OIL)
         )
+        Logger.setCorporationsInitialCollectedGarbage(listOf(corp1.id, corp2.id, corp3.id))
         sd = SimulationData(
             nm, mutableListOf(corp1, corp2, corp3), mutableListOf(ship), mutableListOf(), mutableListOf(),
             mutableMapOf(),
