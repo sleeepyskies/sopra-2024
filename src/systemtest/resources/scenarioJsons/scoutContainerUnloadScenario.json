@@ -1,0 +1,30 @@
+{
+  "garbage": [
+    {
+      "id": 70,
+      "type": "OIL",
+      "location": 14,
+      "amount": 10
+    }
+  ],
+  "events": [],
+  "tasks": [
+    {
+      "id": 1,
+      "type": "COLLECT",
+      "tick": 0,
+      "shipID": 2,
+      "targetTile": 14,
+      "rewardID": 1,
+      "rewardShipID": 2
+    }
+  ],
+  "rewards": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "capacity": 50,
+      "garbageType": "OIL"
+    }
+  ]
+}
