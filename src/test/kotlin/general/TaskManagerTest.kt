@@ -302,7 +302,7 @@ class TaskManagerTest {
         val reward = Reward(1, RewardType.CONTAINER, 0, 100, GarbageType.OIL)
         sd.ships.add(ship)
         sd.scheduledTasks[2] = listOf(task)
-        sd.tick = 1
+        sd.tick = 0
         sd.rewards.add(reward)
 
         taskManager.startTasksPhase()
