@@ -174,6 +174,10 @@ class EventManagerUnitTest {
         assertTrue(t7.currentGarbage.isNotEmpty() && t7.currentOilAmount == 1000)
         assertTrue(t19.currentGarbage.isNotEmpty() && t19.currentOilAmount == 500)
         assertTrue(t18.currentGarbage.isEmpty())
+        sd.garbage.clear()
+        sd.scheduledEvents.clear()
+        nm.tiles.forEach() { it.value.currentGarbage.clear() }
+        nm.tiles.forEach() { it.value.currentOilAmount = 0 }
     }
 
     /** updatePhase upcoming list empty, one event active end return true

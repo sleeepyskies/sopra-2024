@@ -71,7 +71,7 @@ class TravelManagerTest2 {
         val method = TravelManager::class.java.getDeclaredMethod("getShipsByLowestTileIDThenLowestShipID")
         method.isAccessible = true
         // Call the method under test
-        val result = method.invoke(travelManager) as List<*>
+        val result = (method.invoke(travelManager) ?: error("Result is null")) as List<*>
 
         // Verify the result
         val expected = listOf(

@@ -521,7 +521,7 @@ class TravelManagerTest {
             `when`(current).thenReturn(null)
         }
         `when`(navigationManager.getGarbageFromAllTilesInCorrectOrderForDrifting())
-            .thenReturn(listOf(Pair(3, listOf())))
+            .thenReturn(listOf(Pair(3, mutableListOf())))
         `when`(navigationManager.findTile(3)).thenReturn(null)
 
         travelManager.driftGarbagePhase()

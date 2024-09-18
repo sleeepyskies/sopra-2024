@@ -148,7 +148,7 @@ class CorporationManagerUnitTests3 {
             tile.value.isRestricted = false
             tile.value.currentGarbage.clear()
         }
-        simDat.corporations = listOf()
+        simDat.corporations = mutableListOf()
         simDat.ships.clear()
         simDat.garbage.clear()
         simDat.activeTasks.clear()
@@ -486,11 +486,11 @@ class CorporationManagerUnitTests3 {
             GarbageType.OIL to Pair(1000, 1000),
             GarbageType.PLASTIC to Pair(1000, 1000)
         )
-        val garbageToBeUpdated = method.invoke(cm, 2, collectableGarbageShip1) as List<*>
+        val garbageToBeUpdated = (method.invoke(cm, 2, collectableGarbageShip1) ?: error("list is null")) as List<*>
         assertEquals(2, garbageToBeUpdated.size)
         assertEquals(500, garbage1.assignedCapacity)
         assertEquals(50, garbage2.assignedCapacity)
-        val garbageToBeUpdated2 = method.invoke(cm, 2, collectableGarbageShip2) as List<*>
+        val garbageToBeUpdated2 = (method.invoke(cm, 2, collectableGarbageShip2) ?: error("list is null")) as List<*>
         assertEquals(2, garbageToBeUpdated2.size)
         assertEquals(500, garbage1.assignedCapacity)
         assertEquals(1000, garbage2.assignedCapacity)
@@ -577,13 +577,13 @@ class CorporationManagerUnitTests3 {
             Corporation::class.java
         )
         method.isAccessible = true
-        var output = method.invoke(cm, ship1.type, ship1.location, 1, corporation) as List<*>
+        var output = (method.invoke(cm, ship1.type, ship1.location, 1, corporation) ?: error("List is null")) as List<*>
         assertEquals(1, output.size)
         assertEquals(listOf(Pair(0, 0)), output)
         val garbage3 = Garbage(2, 50, GarbageType.OIL, 3, Pair(2, 0))
         simDat.garbage.add(garbage3)
         corporation.visibleGarbage[garbage3.id] = Pair(garbage3.location, garbage3.type)
-        output = method.invoke(cm, ship1.type, ship1.location, 1, corporation) as List<*>
+        output = (method.invoke(cm, ship1.type, ship1.location, 1, corporation) ?: error("List is null")) as List<*>
         assertEquals(1, output.size)
         assertEquals(listOf(Pair(2, 0)), output)
     }

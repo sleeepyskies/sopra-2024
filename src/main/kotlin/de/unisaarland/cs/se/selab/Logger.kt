@@ -19,10 +19,9 @@ object Logger {
      * Set the output stream of the logger
      */
     fun setOutput(outputStream: PrintWriter) {
-        if (this::outputBuffer.isInitialized) {
-            throw IllegalCallerException("Already initialized output buffer!")
+        if (!this::outputBuffer.isInitialized) {
+            outputBuffer = outputStream
         }
-        outputBuffer = outputStream
     }
 
     /**

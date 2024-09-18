@@ -147,7 +147,7 @@ class CorporationManagerUnitTests1 {
             tile.value.isRestricted = false
             tile.value.currentGarbage.clear()
         }
-        simDat.corporations = listOf()
+        simDat.corporations = mutableListOf()
         simDat.ships.clear()
         simDat.garbage.clear()
         simDat.activeTasks.clear()
