@@ -451,28 +451,6 @@ class NavigationManager(
     }
 
     /**
-     * Checks if a ship can reach a destination given its current fuel
-     * @param ship : the ship to check
-     * @param targetDestination : the destination to go to
-     * @return true if the ship can reach the destination
-     */
-    fun canReachDestination(
-        ship: Ship,
-        targetDestination: Pair<Int, Int>
-    ): Boolean {
-        // Run dijkstra from the current location
-        val shipTile = findTile(ship.location) ?: return false
-        val (distances, _) = dijkstra(graph, shipTile.id)
-        val tileIdDestination = findTile(targetDestination)?.id ?: return false
-        // Check if the distance to the destination tile is greater than the maxDistance with current Fuel
-        val currentFuel = ship.currentFuel
-        val fuelConsumption = ship.fuelConsumptionRate
-        val maxTravelDistanceTiles = currentFuel / fuelConsumption / DEFAULT_DISTANCE
-        val pathLength = (distances[tileIdDestination] ?: 0) / DEFAULT_DISTANCE
-        return pathLength <= maxTravelDistanceTiles
-    }
-
-    /**
      * Calculate the tile (also return the path in case garbage gets drifted we would
      * need all the tiles in the path) which the drifted object should land on taking
      * into account current
