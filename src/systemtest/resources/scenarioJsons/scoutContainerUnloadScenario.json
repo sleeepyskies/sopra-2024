@@ -13,7 +13,7 @@
       "type": "OIL_SPILL",
       "tick":  2,
       "location": 7,
-      "radius": 1,
+      "radius": 0,
       "amount": 10
     }
   ],
@@ -32,7 +32,7 @@
     {
       "id": 1,
       "type": "CONTAINER",
-      "capacity": 50,
+      "capacity": 10,
       "garbageType": "OIL"
     }
   ]

@@ -116,7 +116,6 @@ class NavigationManager(
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
-
         // Filter the possible locations by the distances to the origin and return the lowest tileId
         // If there is no location to travel to, return current location
         val tileIDLocationToTravelTo = filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(to, distances)
@@ -245,7 +244,8 @@ class NavigationManager(
                     distances,
                     previousNodes,
                     priorityQueue,
-                    outOfRestriction
+                    outOfRestriction,
+                    previousNodes
                 )
             }
         }
@@ -272,7 +272,8 @@ class NavigationManager(
         distances: MutableMap<Int, Int>,
         previousNodes: MutableMap<Int, Int?>,
         priorityQueue: PriorityQueue<Node>,
-        outOfRestriction: Boolean
+        outOfRestriction: Boolean,
+        parents: Map<Int, Int?>
     ) {
         val isLand = notTraversable.first
         val isRestricted = notTraversable.second
@@ -285,9 +286,11 @@ class NavigationManager(
             return
         }
         val newDistance = currentDistance + DEFAULT_DISTANCE
-
         if (newDistance < distances.getValue(neighbor) ||
-            (newDistance == distances.getValue(neighbor) && neighbor < currentNode.id)
+            (
+                newDistance == distances.getValue(neighbor) &&
+                    currentNode.id < (parents.getValue(neighbor) ?: Int.MAX_VALUE)
+                )
         ) {
             distances[neighbor] = newDistance
             previousNodes[neighbor] = currentNode.id

@@ -12,7 +12,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/scoutContainerUnloadScenario.json"
     override val map = "mapFiles/obamna.json"
     override val name = "ScoutContainerFillMoveHarborTest"
-    override val maxTicks = 3
+    override val maxTicks = 7
 
     override suspend fun run() {
         initSimulation()
@@ -24,6 +24,14 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         tick2()
 
         tick3()
+
+        tick4()
+
+        tick5()
+
+        tick6()
+
+        tick7()
 
         simEnd()
     }
@@ -94,6 +102,56 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
 
     private suspend fun tick3() {
         assertNextLine("Simulation Info: Tick 3 started.")
+
+        // corporation phase
+        skipLines(2)
+        assertNextLine("Garbage Collection: Ship 1 collected 10 of garbage OIL with 71.")
+
+        skipLines(3)
+    }
+
+    private suspend fun tick4() {
+        assertNextLine("Simulation Info: Tick 4 started.")
+
+        // corporation phase
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 2.")
+
+        skipLines(3)
+    }
+
+    private suspend fun tick5() {
+        assertNextLine("Simulation Info: Tick 5 started.")
+
+        // corporation phase
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 3.")
+
+        skipLines(3)
+    }
+
+    private suspend fun tick6() {
+        assertNextLine("Simulation Info: Tick 6 started.")
+
+        // corporation phase
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 4.")
+
+        skipLines(3)
+    }
+
+    private suspend fun tick7() {
+        assertNextLine("Simulation Info: Tick 7 started.")
+
+        // corporation phase
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 5.")
+
+        skipLines(2)
+
+        assertNextLine("Unload: Ship 1 unloaded 10 of garbage OIL at harbor 5.")
+
+        skipLines(1)
     }
 
     private suspend fun simEnd() {
