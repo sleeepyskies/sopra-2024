@@ -10,7 +10,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.Logs
 class OilSpillHappensCorrectly : ExampleSystemTestExtension() {
     override val description = "applying oil spill"
     override val corporations = "corporationJsons/empty_corps.json"
-    override val scenario = "scenarioJsons/empty_scen.json"
+    override val scenario = "scenarioJsons/justOilSpill.json"
     override val map = "mapFiles/obamna.json"
     override val name = "OilSpillCorrect"
     override val maxTicks = 2

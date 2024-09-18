@@ -1,0 +1,11 @@
+{
+  "garbage": [],
+  "events": [{
+    "id": 1,
+    "type": "PIRATE_ATTACK",
+    "tick": 1,
+    "shipID": 1
+  }],
+  "tasks": [],
+  "rewards": []
+}
