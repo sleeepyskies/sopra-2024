@@ -693,7 +693,7 @@ class TaskManagerTest {
     }
 
     @Test
-    fun `with refueling and unloading state but tıle does not exıst`() {
+    fun `with refueling and unloading state but tile does not exist`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 10,
             Pair(69, 420), direction = Direction.EAST,
