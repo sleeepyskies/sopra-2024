@@ -1,6 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InavlidCurrent
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.GarbageDriftsCorrectly
 import de.unisaarland.cs.se.selab.systemtest.validConfig.OilSpillHappensCorrectly
@@ -25,8 +26,8 @@ object SystemTestRegistration {
         manager.registerTest(PirateAttackDeletesShip())
         manager.registerTest(ScoutContainerFillMoveHarborTest())
         // manager.registerTest(WrongNeighbors())
-        // manager.registerTest(InavlidCurrent())
-        manager.registerTest(GarbageDriftsCorrectly())
+        manager.registerTest(InavlidCurrent())
+       //  manager.registerTest(GarbageDriftsCorrectly())
         // manager.registerTest(RewardsGivenAndFunctionCorrectly())
     }
 
