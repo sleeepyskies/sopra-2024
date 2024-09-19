@@ -1,8 +1,8 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-
-class TaskCouldNotBeAssignedNotEnoughFuel: ExampleSystemTestExtension() {
+/**test*/
+class TaskCouldNotBeAssignedNotEnoughFuel : ExampleSystemTestExtension() {
     override val description = "no"
     override val corporations = "corporationJsons/corpWithOneScoutingShip.json"
     override val scenario = "scenarioJsons/shipShouldGetRewardNextTick.json"
@@ -25,7 +25,6 @@ class TaskCouldNotBeAssignedNotEnoughFuel: ExampleSystemTestExtension() {
     }
     private suspend fun tick0() {
         assertNextLine("Simulation Info: Tick 0 started.")
-
         // Corporation Phase
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 2.")
@@ -33,12 +32,9 @@ class TaskCouldNotBeAssignedNotEnoughFuel: ExampleSystemTestExtension() {
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-
         // Ship Drifting Phase
         // assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
-
         // Tasks Phase
         assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 3.")
     }
-
 }

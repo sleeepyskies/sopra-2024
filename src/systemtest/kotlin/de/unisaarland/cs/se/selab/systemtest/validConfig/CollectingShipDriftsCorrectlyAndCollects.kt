@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-
+/**test*/
 class CollectingShipDriftsCorrectlyAndCollects : ExampleSystemTestExtension() {
     override val description = "tests if garbage is drifted correctly"
     override val corporations = "corporationJsons/empty_corps.json"
