@@ -1,7 +1,11 @@
 package de.unisaarland.cs.se.selab.travelling
 
 import de.unisaarland.cs.se.selab.Logger
-import de.unisaarland.cs.se.selab.assets.*
+import de.unisaarland.cs.se.selab.assets.Direction
+import de.unisaarland.cs.se.selab.assets.Garbage
+import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.Tile
 
 /**
  * Manages the travel-related operations in the simulation.
