@@ -47,7 +47,7 @@ class CorporationManager(private val simData: SimulationData) {
         Logger.corporationActionMove(corporation.id)
         val gbAssignedAmountList = mutableListOf<Garbage>()
         scanAll(corporation.ships, corporation)
-        corporation.ships.forEach {
+        corporation.ships.sortedBy { it.id }.forEach {
             val isOnRestrictedTile = checkRestriction(it.location)
             val shipMaxTravelDistance =
                 (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
