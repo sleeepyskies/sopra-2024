@@ -2,33 +2,15 @@
   "garbage": [
     {
       "id": 70,
-      "type": "OIL",
+      "type": "PLASTIC",
       "location": 8,
-      "amount": 500
-    },
-    {
-      "id": 74,
-      "type": "OIL",
-      "location": 6,
-      "amount": 500
-    },
-    {
-      "id": 72,
-      "type": "OIL",
-      "location": 6,
-      "amount": 500
+      "amount": 2000
     },
     {
       "id": 71,
       "type": "OIL",
-      "location":7,
-      "amount": 500
-    },
-    {
-      "id": 73,
-      "type": "PLASTIC",
-      "location": 6,
-      "amount": 200
+      "location": 8,
+      "amount": 1000
     }
   ],
   "events": [],

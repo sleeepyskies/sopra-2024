@@ -50,7 +50,7 @@ class GarbageDriftsCorrectly : ExampleSystemTestExtension() {
         assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 2050.")
+        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 2300.")
         assertEnd()
     }
 }
