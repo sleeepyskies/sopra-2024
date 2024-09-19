@@ -78,7 +78,9 @@ class SimulationParser(
             this.navigationManager.initializeAndUpdateGraphStructure()
         } else {
             // file invalid
+            log.error("SIMULATION PARSER: The map file is invalid. (before Logger call)")
             Logger.initInfoInvalid(this.mapFile)
+            log.error("SIMULATION PARSER: The map file is invalid. (after Logger call)")
             return null
         }
 
