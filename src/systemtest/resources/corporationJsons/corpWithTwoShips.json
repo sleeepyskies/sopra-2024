@@ -4,7 +4,7 @@
       "id": 1,
       "name": "OBAMNAsODA",
       "ships": [
-        1
+        1, 2
       ],
       "homeHarbors": [
         5, 15
@@ -35,7 +35,7 @@
       "acceleration": 10,
       "fuelCapacity": 3000,
       "fuelConsumption": 5,
-      "capacity": 1000,
+      "capacity": 50000,
       "garbageType": "OIL"
     }
   ]

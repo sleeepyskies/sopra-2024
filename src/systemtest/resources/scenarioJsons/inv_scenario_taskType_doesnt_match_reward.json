@@ -1,0 +1,32 @@
+{
+  "events": [{
+    "type": "STORM",
+    "id": 1,
+    "tick": 1,
+    "location": 1,
+    "radius": 5,
+    "speed": 10,
+    "direction": 180
+  }],
+  "garbage": [{
+    "id": 1,
+    "type": "PLASTIC",
+    "location": 1,
+    "amount": 1
+  }],
+  "tasks": [
+    {
+      "id": 5,
+      "type": "EXPLORE",
+      "tick": 1,
+      "shipID": 1,
+      "targetTile": 1,
+      "rewardID": 1,
+      "rewardShipID": 1
+    }
+  ],
+  "rewards": [{
+    "id": 1,
+    "type": "RADIO"
+  }]
+}
