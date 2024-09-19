@@ -68,7 +68,7 @@ class SimulationParser(
      */
     fun createSimulator(): Simulator? {
         // init map parser
-        val mapParser = MapParser(mapFile)
+        val mapParser = MapParser(this.mapFile)
 
         // parse and validate map
         if (mapParser.parseMap()) {
@@ -78,7 +78,7 @@ class SimulationParser(
             this.navigationManager.initializeAndUpdateGraphStructure()
         } else {
             // file invalid
-            Logger.initInfoInvalid(mapFile)
+            Logger.initInfoInvalid(this.mapFile)
             return null
         }
 
@@ -87,7 +87,7 @@ class SimulationParser(
 
         // init corporation parser and scenario parser
         val corporationParser = CorporationParser(corporationFile, idLocationMapping)
-        val scenarioParser = ScenarioParser(scenarioFile, idLocationMapping)
+        val scenarioParser = ScenarioParser(this.scenarioFile, idLocationMapping)
         // parse and validate corporations
         if (corporationParser.parseAllCorporations()) {
             // file valid
@@ -95,7 +95,7 @@ class SimulationParser(
             this.ships = corporationParser.ships
         } else {
             // file invalid
-            Logger.initInfoInvalid(corporationFile)
+            Logger.initInfoInvalid(this.corporationFile)
             return null
         }
 
@@ -103,7 +103,7 @@ class SimulationParser(
             Logger.setCorporationsInitialCollectedGarbage(corporations.map { it.id })
             Logger.initInfo(this.corporationFile)
         } else {
-            Logger.initInfoInvalid(corporationFile)
+            Logger.initInfoInvalid(this.corporationFile)
             return null
         }
 
@@ -117,7 +117,7 @@ class SimulationParser(
             this.tasks = scenarioParser.tasks.mapValues { entry -> entry.value.toList() }.toMutableMap()
         } else {
             // file invalid
-            Logger.initInfoInvalid(scenarioFile)
+            Logger.initInfoInvalid(this.scenarioFile)
             return null
         }
 
@@ -217,7 +217,8 @@ class SimulationParser(
     }
 
     /**
-     * Checks that garbage only occurs on valid tiles and that no tile has more than 1000 OIL
+     * Checks that garbage only occurs on valid tiles, no tile has more than
+     * 1000 OIL and that DEEP_OCEAN tiles have no chemicals on them initially.
      */
     private fun crossValidateGarbageOnTiles(): Boolean {
         // get all garbage initial locations
@@ -248,6 +249,14 @@ class SimulationParser(
         if ((tileOilMap.values.maxOrNull() ?: 0) > THOUSAND) {
             log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
             return false
+        }
+
+        // check no DEEP_OCEAN has any chemicals at all
+        for (tile in this.navigationManager.tiles.values.filter { it.type == TileType.DEEP_OCEAN }) {
+            if (tile.currentGarbage.any { it.type == GarbageType.CHEMICALS }) {
+                log.error("SIMULATION PARSER: A DEEP_OCEAN tile has some chemicals on it.")
+                return false
+            }
         }
 
         return true
@@ -304,7 +313,7 @@ class SimulationParser(
 
         // check pirates only attack real ships
         for (attack in pirateEvents) {
-            if (!this.ships.any { it.id == attack.shipID }) {
+            if (this.ships.none { it.id == attack.shipID }) {
                 log.error("SIMULATION PARSER: A pirate attack event ${attack.id} has invalid shipID.")
                 return false
             }
