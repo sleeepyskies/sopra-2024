@@ -9,7 +9,7 @@ class RewardsGivenAndFunctionCorrectly : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/rewardAndFunctionCorrectCorps.json"
     override val scenario = "scenarioJsons/rewardAndFunctionCorrectScen.json"
     override val map = "mapFiles/smallMap1.json"
-    override val name = "ExampleTest"
+    override val name = "reward test"
     override val maxTicks = 10
     override suspend fun run() {
         val expectedString = "Simulation Statistics: Corporation 1 collected 0 of garbage."
