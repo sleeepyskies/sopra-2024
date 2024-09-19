@@ -145,7 +145,9 @@ class SimulationParser(
 
             // place on tile
             if (garbage != null) {
-                tile.currentGarbage.addAll(garbage)
+                for (garb in garbage) {
+                    tile.addGarbageToTile(garb)
+                }
             }
         }
     }

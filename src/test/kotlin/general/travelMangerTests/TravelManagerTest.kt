@@ -21,7 +21,6 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.io.PrintWriter
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -126,11 +125,6 @@ class TravelManagerTest {
             `when`(amount).thenReturn(50)
             `when`(type).thenReturn(GarbageType.CHEMICALS)
         }
-        val oldGarbage = mock(Garbage::class.java).apply {
-            `when`(id).thenReturn(1)
-            `when`(amount).thenReturn(50)
-            `when`(type).thenReturn(GarbageType.CHEMICALS)
-        }
 
         // Mock tiles
         val tile = mock(Tile::class.java).apply {
@@ -151,14 +145,12 @@ class TravelManagerTest {
         val method = TravelManager::class.java.getDeclaredMethod(
             "driftGarbageAlongPath",
             Garbage::class.java,
-            Garbage::class.java,
             Boolean::class.java,
             List::class.java,
-            Tile::class.java,
-            Int::class.java
+            Tile::class.java
         )
         method.isAccessible = true
-        val result = method.invoke(travelManager, garbage, oldGarbage, false, path, tile, 50) as? Tile
+        val result = method.invoke(travelManager, garbage, false, path, tile) as? Tile
 
         // Verify results
         verify(tile).removeGarbageFromTile(garbage)
@@ -170,11 +162,6 @@ class TravelManagerTest {
     fun testDriftGarbageAlongPath_GarbageDoesNotFitOnAnyTile() {
         // Mock garbage
         val garbage = mock(Garbage::class.java).apply {
-            `when`(id).thenReturn(1)
-            `when`(amount).thenReturn(50)
-            `when`(type).thenReturn(GarbageType.CHEMICALS)
-        }
-        val oldGarbage = mock(Garbage::class.java).apply {
             `when`(id).thenReturn(1)
             `when`(amount).thenReturn(50)
             `when`(type).thenReturn(GarbageType.CHEMICALS)
@@ -196,19 +183,17 @@ class TravelManagerTest {
         val method = TravelManager::class.java.getDeclaredMethod(
             "driftGarbageAlongPath",
             Garbage::class.java,
-            Garbage::class.java,
             Boolean::class.java,
             List::class.java,
-            Tile::class.java,
-            Int::class.java
+            Tile::class.java
         )
         method.isAccessible = true
-        val result = method.invoke(travelManager, garbage, oldGarbage, false, path, tile, 50) as? Tile
+        val result = method.invoke(travelManager, garbage, false, path, tile) as? Tile
 
         // Verify results
         verify(tile, never()).removeGarbageFromTile(garbage)
         verify(candidateTile, never()).addArrivingGarbageToTile(garbage)
-        assertNull(result)
+        assertEquals(tile, result)
     }
 
     @Test
@@ -217,11 +202,6 @@ class TravelManagerTest {
         val garbage = mock(Garbage::class.java).apply {
             `when`(id).thenReturn(2)
             `when`(amount).thenReturn(50)
-            `when`(type).thenReturn(GarbageType.CHEMICALS)
-        }
-        val oldGarbage = mock(Garbage::class.java).apply {
-            `when`(id).thenReturn(1)
-            `when`(amount).thenReturn(100)
             `when`(type).thenReturn(GarbageType.CHEMICALS)
         }
 
@@ -244,17 +224,14 @@ class TravelManagerTest {
         val method = TravelManager::class.java.getDeclaredMethod(
             "driftGarbageAlongPath",
             Garbage::class.java,
-            Garbage::class.java,
             Boolean::class.java,
             List::class.java,
-            Tile::class.java,
-            Int::class.java
+            Tile::class.java
         )
         method.isAccessible = true
-        val result = method.invoke(travelManager, garbage, oldGarbage, true, path, tile, 50) as? Tile
+        val result = method.invoke(travelManager, garbage, true, path, tile) as? Tile
 
         // Verify results
-        verify(tile).setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - 50)
         verify(candidateTile).addArrivingGarbageToTile(garbage)
         assertEquals(candidateTile, result)
     }
@@ -265,11 +242,6 @@ class TravelManagerTest {
         val garbage = mock(Garbage::class.java).apply {
             `when`(id).thenReturn(2)
             `when`(amount).thenReturn(50)
-            `when`(type).thenReturn(GarbageType.CHEMICALS)
-        }
-        val oldGarbage = mock(Garbage::class.java).apply {
-            `when`(id).thenReturn(1)
-            `when`(amount).thenReturn(100)
             `when`(type).thenReturn(GarbageType.CHEMICALS)
         }
 
@@ -297,20 +269,16 @@ class TravelManagerTest {
         val method = TravelManager::class.java.getDeclaredMethod(
             "driftGarbageAlongPath",
             Garbage::class.java,
-            Garbage::class.java,
             Boolean::class.java,
             List::class.java,
-            Tile::class.java,
-            Int::class.java
+            Tile::class.java
         )
         method.isAccessible = true
-        val result = method.invoke(travelManager, garbage, oldGarbage, true, path, tile, 50) as? Tile
+        val result = method.invoke(travelManager, garbage, true, path, tile) as? Tile
 
         // Verify results
-        verify(tile).setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - 50)
         verify(candidateTile2).addArrivingGarbageToTile(garbage)
         assertEquals(candidateTile2, result)
-        verify(tile, never()).removeGarbageFromTile(garbage)
         verify(candidateTile1, never()).addArrivingGarbageToTile(garbage)
     }
 
@@ -464,7 +432,7 @@ class TravelManagerTest {
         verify(navigationManager).calculateDrift(tile.location, Direction.EAST, 1)
         verify(tile, never()).removeGarbageFromTile(garbage)
         verify(candidateTile, never()).addArrivingGarbageToTile(garbage)
-        assertTrue(tilesToUpdate.isEmpty())
+        assertEquals(setOf(tile), tilesToUpdate)
     }
 
     @Test
