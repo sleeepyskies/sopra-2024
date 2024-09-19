@@ -12,7 +12,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/scoutContainerUnloadScenario.json"
     override val map = "mapFiles/obamna.json"
     override val name = "ScoutContainerFillMoveHarborTest"
-    override val maxTicks = 7
+    override val maxTicks = 9
 
     override suspend fun run() {
         initSimulation()
@@ -32,6 +32,8 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         tick6()
 
         tick7()
+
+        tick8()
 
         simEnd()
     }
@@ -117,7 +119,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 2.")
 
-        skipLines(3)
+        skipLines(4)
     }
 
     private suspend fun tick5() {
@@ -127,7 +129,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 3.")
 
-        skipLines(3)
+        skipLines(4)
     }
 
     private suspend fun tick6() {
@@ -137,7 +139,7 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 4.")
 
-        skipLines(3)
+        skipLines(4)
     }
 
     private suspend fun tick7() {
@@ -147,7 +149,16 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 5.")
 
-        skipLines(2)
+        skipLines(3)
+
+        skipLines(1)
+    }
+
+    private suspend fun tick8() {
+        assertNextLine("Simulation Info: Tick 8 started.")
+
+        // corporation phase
+        skipLines(4)
 
         assertNextLine("Unload: Ship 1 unloaded 10 of garbage OIL at harbor 5.")
 
@@ -155,10 +166,11 @@ class ScoutContainerFillMoveHarborTest : ExampleSystemTestExtension() {
     }
 
     private suspend fun simEnd() {
+        assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
-        assertNextLine("Simulation Statistics: Corporation 1 collected 10 of garbage.")
+        assertNextLine("Simulation Statistics: Corporation 1 collected 20 of garbage.")
         assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of oil collected: 10.")
+        assertNextLine("Simulation Statistics: Total amount of oil collected: 20.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
         assertEnd()
