@@ -72,6 +72,7 @@ class CorporationParser(
     val corporations = mutableListOf<Corporation>()
     val ships = mutableListOf<Ship>()
     private val corporationIds = mutableSetOf<Int>()
+    private val corporationNames = mutableSetOf<String>()
     private val shipIds = mutableSetOf<Int>()
     private val harborLocationsSet = mutableSetOf<Pair<Int, Int>>()
 
@@ -383,6 +384,21 @@ class CorporationParser(
         return true
     }
 
+    /**
+     * Validates that the collecting ships of a corporation can handle the specified garbage types.
+     *
+     * This function performs two main checks:
+     * 1. Ensures that for each garbage type in the `garbageList`, there is at least one collecting ship
+     *    in the `collectingShips` list that can handle that garbage type.
+     * 2. Ensures that each collecting ship in the `collectingShips` list does not handle any garbage type
+     *    that is not listed in the `garbageList` for the specified corporation.
+     *
+     * @param collectingShips A list of `Ship` objects representing the collecting ships.
+     * @param garbageList A list of `GarbageType` objects representing the garbage types the corporation can handle.
+     * @param corporationId The ID of the corporation to which the ships should belong.
+     * @return `true` if all collecting ships can handle the specified garbage types
+     * and do not handle any unspecified types, `false` otherwise.
+     */
     private fun validateGarbageCollection(
         collectingShips: List<Ship>,
         garbageList: List<GarbageType>,
@@ -422,6 +438,11 @@ class CorporationParser(
     private fun validateCorporation(corporationJsonObject: JSONObject): Boolean {
         val corporationName = corporationJsonObject.optString(NAME, "")
         val corporationId = corporationJsonObject.getInt(ID)
+        if (corporationNames.contains(corporationName)) {
+            log.error("CORPORATION PARSER: Duplicate corporation name found: $corporationName")
+            return false
+        }
+        corporationNames.add(corporationName)
         return !corporationIds.contains(corporationId) && corporationName.isNotEmpty()
     }
 }
