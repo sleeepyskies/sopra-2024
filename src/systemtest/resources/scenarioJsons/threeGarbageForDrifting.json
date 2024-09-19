@@ -1,0 +1,25 @@
+{
+  "garbage": [
+    {
+      "id": 70,
+      "type": "OIL",
+      "location": 1,
+      "amount": 100
+    },
+    {
+      "id": 71,
+      "type": "OIL",
+      "location": 1,
+      "amount": 50
+    },
+    {
+      "id": 72,
+      "type": "OIL",
+      "location": 7,
+      "amount": 950
+    }
+  ],
+  "events": [],
+  "tasks": [],
+  "rewards": []
+}
