@@ -1,0 +1,106 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "Ocean Scouters Inc.",
+      "ships": [
+        1, 2, 3
+      ],
+      "homeHarbors": [
+        7, 9
+      ],
+      "garbageTypes": ["PLASTIC", "OIL"]
+    },
+    {
+      "id": 2,
+      "name": "Ocean Cleaners Inc.",
+      "ships": [
+        4, 5, 6
+      ],
+      "homeHarbors": [
+        9
+      ],
+      "garbageTypes": [
+        "OIL", "PLASTIC"
+      ]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "Explorer",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 7,
+      "maxVelocity": 100,
+      "acceleration": 25,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 5
+    },
+    {
+      "id": 2,
+      "name": "Collecter",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 3,
+      "name": "asdf",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 4,
+      "name": "ghghghg",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 5,
+      "name": "aseedf",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 6,
+      "name": "yyyyyyy",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 100,
+      "acceleration": 25,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 5
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "garbage": [
+    {
+      "id": 14,
+      "type": "OIL",
+      "location": 1,
+      "amount": 1000
+    },
+    {
+      "id": 3,
+      "type": "OIL",
+      "location": 21,
+      "amount": 1000
+    }
+  ],
+  "events": [],
+  "tasks": [
+    {
+      "id":  1,
+      "type": "COLLECT",
+      "tick": 2,
+      "shipID": 2,
+      "targetTile": 14,
+      "rewardID": 1,
+      "rewardShipID": 1
+    }
+  ],
+  "rewards": [{
+    "id": 1,
+    "type": "RADIO"
+  }]
+}
