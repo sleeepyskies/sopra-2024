@@ -171,7 +171,7 @@ object Logger {
      */
     fun currentDriftGarbage(garbageType: String, garbageId: Int, amt: Int, startTileId: Int, endTileId: Int) {
         outputBuffer.println(
-            "32 Current Drift: $garbageType $garbageId " +
+            "Current Drift: $garbageType $garbageId " +
                 "with amount $amt drifted from tile $startTileId to tile $endTileId."
         )
     }

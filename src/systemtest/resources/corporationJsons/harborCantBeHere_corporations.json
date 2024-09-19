@@ -1,0 +1,42 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1, 2
+      ],
+      "homeHarbors": [
+        7, 15, 5
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "iCanSeeeee",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 2,
+      "name": "gimmeThat",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 15,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    }
+  ]
+}

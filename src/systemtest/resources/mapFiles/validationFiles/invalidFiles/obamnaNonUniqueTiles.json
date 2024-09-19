@@ -10,7 +10,7 @@
                         "current": true,
                         "direction": 60,
                         "speed": 10,
-                        "intensity": 3
+                        "intensity": 1
                 },
                 {
                         "id": 2,
@@ -57,7 +57,7 @@
                         "current": true,
                         "direction": 0,
                         "speed": 30,
-                        "intensity": 3
+                        "intensity": 5
                 },
                 {
                         "id": 7,
@@ -68,7 +68,7 @@
                         "category": "SHALLOW_OCEAN"
                 },
                 {
-                        "id": 8,
+                        "id": 2,
                         "coordinates": {
                                 "x": 2,
                                 "y": 1

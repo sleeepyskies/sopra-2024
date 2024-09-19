@@ -155,7 +155,8 @@ class TravelManager(private val simData: SimulationData) {
                 return candidateTile
             }
         }
-        // IF was split, we add the new split off garbage to the tile and log it
+        // IF was split, we add the new split off garbage to t
+        // he tile we started on since there is no tile to move to and log it
         if (wasSplit) {
             Logger.currentDriftGarbage(
                 garbage.type.toString(),

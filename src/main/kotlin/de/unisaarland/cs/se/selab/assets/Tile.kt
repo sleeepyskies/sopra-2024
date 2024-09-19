@@ -34,10 +34,12 @@ class Tile(
      * @return true if the garbage can fit, false otherwise
      */
     fun canGarbageFitOnTile(garbage: Garbage): Boolean {
+        if (type == TileType.LAND) return false
+
         return when (garbage.type) {
             GarbageType.OIL -> currentOilAmount + garbage.amount <= oilMaxCapacity
-            GarbageType.CHEMICALS -> currentChemicalAmount + garbage.amount <= oilMaxCapacity
-            GarbageType.PLASTIC -> currentPlasticAmount + garbage.amount <= oilMaxCapacity
+            GarbageType.CHEMICALS -> true
+            GarbageType.PLASTIC -> true
             GarbageType.NONE -> false
         }
     }

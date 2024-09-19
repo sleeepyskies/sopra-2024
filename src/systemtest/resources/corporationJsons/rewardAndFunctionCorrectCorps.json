@@ -42,7 +42,7 @@
       "id": 2,
       "name": "Collecter",
       "type": "COLLECTING",
-      "corporation": 2,
+      "corporation": 1,
       "location": 7,
       "maxVelocity": 10,
       "acceleration": 10,
