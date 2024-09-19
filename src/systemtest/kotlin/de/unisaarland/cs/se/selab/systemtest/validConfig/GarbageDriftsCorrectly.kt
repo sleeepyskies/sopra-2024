@@ -1,7 +1,6 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-import de.unisaarland.cs.se.selab.systemtest.utils.Logs
 
 /**
  * Tests if garbage is drifted correctly
