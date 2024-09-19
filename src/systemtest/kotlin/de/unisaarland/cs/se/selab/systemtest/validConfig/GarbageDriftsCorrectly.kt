@@ -1,8 +1,11 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
+import de.unisaarland.cs.se.selab.systemtest.utils.Logs
 
-
+/**
+ * Tests if garbage is drifted correctly
+ */
 class GarbageDriftsCorrectly : ExampleSystemTestExtension() {
     override val description = "tests if garbage is drifted correctly"
     override val corporations = "corporationJsons/empty_corps.json"
@@ -11,6 +14,6 @@ class GarbageDriftsCorrectly : ExampleSystemTestExtension() {
     override val name = "test"
     override val maxTicks = 4
     override suspend fun run() {
-        val test = 1
+        skipUntilLogType(Logs.TOTAL_AMOUNT_OF_GARBAGE)
     }
 }
