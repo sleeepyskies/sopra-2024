@@ -8,7 +8,7 @@ class TaskGotCompletedAssignRewardToShip : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/corpWithOneScoutingShip.json"
     override val scenario = "scenarioJsons/shipShouldGetRewardNextTick.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "CorporationFileInvalid"
+    override val name = "task got completed, reward given to correct ship system test"
     override val maxTicks = 2
 
     override suspend fun run() {
