@@ -1,11 +1,7 @@
 package de.unisaarland.cs.se.selab.travelling
 
 import de.unisaarland.cs.se.selab.Logger
-import de.unisaarland.cs.se.selab.assets.Direction
-import de.unisaarland.cs.se.selab.assets.Garbage
-import de.unisaarland.cs.se.selab.assets.Ship
-import de.unisaarland.cs.se.selab.assets.SimulationData
-import de.unisaarland.cs.se.selab.assets.Tile
+import de.unisaarland.cs.se.selab.assets.*
 
 /**
  * Manages the travel-related operations in the simulation.
@@ -155,7 +151,8 @@ class TravelManager(private val simData: SimulationData) {
                 return candidateTile
             }
         }
-        // IF was split, we add the new split off garbage to the tile and log it
+        // IF was split, we add the new split off garbage to t
+        // he tile we started on since there is no tile to move to and log it
         if (wasSplit) {
             Logger.currentDriftGarbage(
                 garbage.type.toString(),
