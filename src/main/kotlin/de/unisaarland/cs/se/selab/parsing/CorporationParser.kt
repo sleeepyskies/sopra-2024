@@ -102,7 +102,7 @@ class CorporationParser(
 
         // validate corporation JSON against schema
         if (helper.validateSchema(corpJSONObject, this.corporationsSchema)) {
-            log.error("MAP PARSER: The file does not match the schema.")
+            log.error("CORPORATION PARSER: The file does not match the schema.")
             success = false
         }
 

@@ -1,0 +1,30 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        5, 15
+      ],
+      "garbageTypes": ["PLASTIC"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "iCanSeeeee",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 17,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 9,
+      "garbageType": "PLASTIC",
+      "capacity": 1000
+    }
+  ]
+}
