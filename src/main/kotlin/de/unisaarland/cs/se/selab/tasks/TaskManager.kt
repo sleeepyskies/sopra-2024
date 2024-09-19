@@ -107,7 +107,10 @@ class TaskManager(private val simData: SimulationData) {
         val capacityInfo = ship.capacityInfo
         val currentPair = capacityInfo[reward.garbageType]
         if (currentPair != null) {
-            capacityInfo[reward.garbageType] = currentPair.copy(second = currentPair.second + reward.capacity)
+            capacityInfo[reward.garbageType] = currentPair.copy(
+                first = currentPair.first + reward.capacity,
+                second = currentPair.second + reward.capacity
+            )
         } else {
             capacityInfo[reward.garbageType] = Pair(reward.capacity, reward.capacity)
         }

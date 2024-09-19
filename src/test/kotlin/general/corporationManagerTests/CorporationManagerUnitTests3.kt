@@ -302,13 +302,13 @@ class CorporationManagerUnitTests3 {
     @Test
     fun test_defaultBehaviourOfCollectingShip() {
         val ship = Ship(
-            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            1, "black_pearl", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 0, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val ship2 = Ship(
-            2, "white_pearl", 2, mutableMapOf(), 0, Pair(0, 0),
+            2, "white_pearl", 2, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 0, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
@@ -547,7 +547,7 @@ class CorporationManagerUnitTests3 {
         val garbage1 = Garbage(1, 50, GarbageType.OIL, 2, Pair(1, 0), assignedCapacity = 50)
         val garbage2 = Garbage(2, 50, GarbageType.PLASTIC, 3, Pair(2, 0))
         val ship1 = Ship(
-            1, "black_pearl", 1, mutableMapOf(), 0, Pair(0, 0),
+            1, "black_pearl", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 0, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
@@ -571,19 +571,18 @@ class CorporationManagerUnitTests3 {
 
         val method = CorporationManager::class.java.getDeclaredMethod(
             "handleDefaultState",
-            ShipType::class.java,
-            Pair::class.java,
+            Ship::class.java,
             Int::class.java,
             Corporation::class.java
         )
         method.isAccessible = true
-        var output = (method.invoke(cm, ship1.type, ship1.location, 1, corporation) ?: error("List is null")) as List<*>
+        var output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as List<*>
         assertEquals(1, output.size)
         assertEquals(listOf(Pair(0, 0)), output)
         val garbage3 = Garbage(2, 50, GarbageType.OIL, 3, Pair(2, 0))
         simDat.garbage.add(garbage3)
         corporation.visibleGarbage[garbage3.id] = Pair(garbage3.location, garbage3.type)
-        output = (method.invoke(cm, ship1.type, ship1.location, 1, corporation) ?: error("List is null")) as List<*>
+        output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as List<*>
         assertEquals(1, output.size)
         assertEquals(listOf(Pair(2, 0)), output)
     }
@@ -591,7 +590,7 @@ class CorporationManagerUnitTests3 {
     @Test
     fun test_moveShipsPhase() {
         val ship1 = Ship(
-            1, "black_pearl", 1, mutableMapOf(), 0, Pair(1, 0),
+            1, "black_pearl", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 0, Pair(1, 0),
             Direction.EAST, 2, 10, 10, 10, 1000,
             10, 1000, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false

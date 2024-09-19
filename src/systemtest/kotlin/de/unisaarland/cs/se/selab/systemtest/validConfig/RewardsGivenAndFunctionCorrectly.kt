@@ -10,7 +10,7 @@ class RewardsGivenAndFunctionCorrectly : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/rewardAndFunctionCorrectScen.json"
     override val map = "mapFiles/smallMap1.json"
     override val name = "reward test"
-    override val maxTicks = 10
+    override val maxTicks = 15
     override suspend fun run() {
         val expectedString = "Simulation Statistics: Corporation 1 collected 0 of garbage."
         if (skipUntilLogType(Logs.SIMULATION_STATISTICS) != expectedString) {

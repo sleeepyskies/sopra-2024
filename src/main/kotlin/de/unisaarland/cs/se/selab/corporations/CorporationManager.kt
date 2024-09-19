@@ -115,21 +115,44 @@ class CorporationManager(private val simData: SimulationData) {
 
     private fun processGarbageOnTile(tile: Tile, ship: Ship, corporation: Corporation) {
         val gbList = tile.getGarbageByLowestID()
+        val plasticList = gbList.filter { it.type == GarbageType.PLASTIC }
         gbList.forEach { gb ->
-            if (corporation.collectableGarbageTypes.contains(gb.type)) {
+            if (corporation.collectableGarbageTypes.contains(gb.type) && ship.capacityInfo.keys.contains(gb.type)) {
                 handleGarbageType(gb, tile, ship)
             }
         }
+    }
+    private fun collectPlasticForShip(tile: Tile, ship: Ship) {
+        val plasticList = tile.getGarbageByLowestID().filter { it.type == GarbageType.PLASTIC }.toMutableList()
+        val alreadyRemoved = mutableListOf<Garbage>()
+        plasticList.forEach { gb ->
+            if ((ship.capacityInfo[GarbageType.PLASTIC]?.first ?: 0) > 0) {
+                if (gb !in alreadyRemoved && collectGarbageOnTile(gb, ship)) {
+                    tile.currentGarbage.remove(gb)
+                    simData.garbage.remove(gb)
+                    simData.corporations.find { it.id == ship.corporation }?.garbage?.remove(gb.id)
+                    alreadyRemoved.add(gb)
+                }
+            }
+        }
+        for (gb in alreadyRemoved) {
+            tile.removeGarbageFromTile(gb)
+        }
+    }
+    private fun collectPlasticTogether(tile: Tile, plasticShips: List<Ship>) {
+        plasticShips.forEach { collectPlasticForShip(tile, it) }
     }
 
     private fun handleGarbageType(gb: Garbage, tile: Tile, ship: Ship) {
         val shouldRemove = when (gb.type) {
             GarbageType.PLASTIC -> {
-                if (checkEnoughShipsForPlasticRemoval(tile, getShipsOnTile(tile.location))) {
-                    collectGarbageOnTile(gb, ship)
-                } else {
-                    false
+                val plasticShips = getShipsOnTile(tile.location).filter {
+                    it.capacityInfo[GarbageType.PLASTIC]?.second != 0
                 }
+                if (checkEnoughShipsForPlasticRemoval(tile, plasticShips)) {
+                    collectPlasticTogether(tile, plasticShips)
+                }
+                false
             }
             GarbageType.OIL, GarbageType.CHEMICALS -> {
                 collectGarbageOnTile(gb, ship)
@@ -388,7 +411,6 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A list of possible locations for the ship to move to.
      */
     private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
-        val shipType = ship.type
         val shipLocation = ship.location
         val shipMaxTravelDistance =
             (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
@@ -417,7 +439,7 @@ class CorporationManager(private val simData: SimulationData) {
                 handleTaskedState(ship)
             }
             ShipState.DEFAULT -> {
-                handleDefaultState(shipType, shipLocation, shipMaxTravelDistance, corporation)
+                handleDefaultState(ship, shipMaxTravelDistance, corporation)
             }
         }
     }
@@ -447,28 +469,30 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A list of possible locations for the ship to move to.
      */
     private fun handleDefaultState(
-        shipType: ShipType,
-        shipLocation: Pair<Int, Int>,
+        ship: Ship,
         shipMaxTravelDistance: Int,
         corporation: Corporation
     ): List<Pair<Int, Int>> {
-        return when (shipType) {
+        return when (ship.type) {
             ShipType.COLLECTING_SHIP -> {
                 if (corporation.visibleGarbage.isNotEmpty()) {
                     var out = corporation.visibleGarbage
-                        .filter { corporation.collectableGarbageTypes.contains(it.value.second) }
+                        .filter {
+                            corporation.collectableGarbageTypes.contains(it.value.second) &&
+                                ship.capacityInfo.contains(it.value.second)
+                        }
                         .filter { (k, _) -> getOnlyAssignableGarbagePredicate(k) }
                         .map { it.value.first }.toList()
-                    if (out.isEmpty()) out = listOf(shipLocation)
+                    if (out.isEmpty()) out = listOf(ship.location)
                     return out
                 }
-                listOf(shipLocation)
+                listOf(ship.location)
             }
             ShipType.COORDINATING_SHIP -> {
                 if (corporation.visibleShips.isNotEmpty()) {
                     return corporation.visibleShips.map { it.value.second }.toList()
                 }
-                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
+                listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance))
             }
             ShipType.SCOUTING_SHIP -> {
                 if (corporation.visibleGarbage.isNotEmpty()) {
@@ -477,7 +501,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (corporation.garbage.isNotEmpty()) {
                     return corporation.garbage.map { it.value.first }.toList()
                 }
-                listOf(simData.navigationManager.getExplorePoint(shipLocation, shipMaxTravelDistance))
+                listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance))
             }
         }
     }

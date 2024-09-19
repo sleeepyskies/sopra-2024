@@ -28,8 +28,8 @@ data class Garbage(
      * @return True if the garbage should be removed, false otherwise.
      */
     fun collectAndShouldBeRemoved(amt: Int): Boolean {
-        amount -= amt
-        return amount <= 0
+        amount = (amount - amt).coerceAtLeast(0)
+        return amount == 0
     }
 
     /**
