@@ -88,7 +88,7 @@ class SimulationParser(
         val idLocationMapping = mapParser.idLocationMapping
 
         // init corporation parser and scenario parser
-        val corporationParser = CorporationParser(corporationFile, idLocationMapping)
+        val corporationParser = CorporationParser(this.corporationFile, idLocationMapping)
         val scenarioParser = ScenarioParser(this.scenarioFile, idLocationMapping)
         // parse and validate corporations
         if (corporationParser.parseAllCorporations()) {
