@@ -364,11 +364,9 @@ class CorporationParser(
         shipsList: List<Ship>,
         corporationID: Int
     ): Boolean {
+        val corporationShipIds = mutableSetOf<Int>()
         for (index in 0 until corporationShips.length()) {
             val shipId = corporationShips.getInt(index)
-            println(shipId)
-            println(shipsList)
-            println(corporationID)
             // The line checks if there are no ships in the shipsList (ships we parsed) with the given
             // shipId (ships owned by corporation).
             val shipWithIdDoesNotExistInCorporation = shipsList.none { it.id == shipId }
@@ -378,6 +376,13 @@ class CorporationParser(
             val shipWithIdIsOfCorrectCorporation = shipsList.any { it.id == shipId && it.corporation != corporationID }
 
             if (shipWithIdDoesNotExistInCorporation || shipWithIdIsOfCorrectCorporation) {
+                return false
+            }
+            corporationShipIds.add(shipId)
+        }
+
+        for (ship in shipsList) {
+            if (ship.corporation == corporationID && !corporationShipIds.contains(ship.id)) {
                 return false
             }
         }
