@@ -176,13 +176,17 @@ class CorporationManagerUnitTests1 {
         t2.addGarbageToTile(garbage1)
         simDat.garbage.add(garbage1)
         this.cm = CorporationManager(simDat)
-        val method = CorporationManager::class.java.getDeclaredMethod("scan", Pair::class.java, Int::class.java)
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "scan",
+            Pair::class.java,
+            Int::class.java,
+            Int::class.java
+        )
         method.isAccessible = true
-        val scanResult = method.invoke(cm, Pair(0, 0), ship.visibilityRange) as? Pair<*, *>
+        val scanResult = method.invoke(cm, Pair(0, 0), ship.visibilityRange, ship.id) as? Pair<*, *>
         if (scanResult != null) {
             val mapResult = scanResult.first as? Map<*, *>
             if (mapResult != null) {
-                assertEquals(Pair(1, Pair(0, 0)), mapResult[1])
                 assertEquals(Pair(2, Pair(0, 1)), mapResult[2])
             }
             val garbageResult = scanResult.second as? Map<*, *>
