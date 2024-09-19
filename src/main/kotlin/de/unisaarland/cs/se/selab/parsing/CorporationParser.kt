@@ -366,9 +366,6 @@ class CorporationParser(
     ): Boolean {
         for (index in 0 until corporationShips.length()) {
             val shipId = corporationShips.getInt(index)
-            println(shipId)
-            println(shipsList)
-            println(corporationID)
             // The line checks if there are no ships in the shipsList (ships we parsed) with the given
             // shipId (ships owned by corporation).
             val shipWithIdDoesNotExistInCorporation = shipsList.none { it.id == shipId }
