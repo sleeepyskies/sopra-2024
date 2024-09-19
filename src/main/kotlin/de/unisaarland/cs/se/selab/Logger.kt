@@ -49,6 +49,7 @@ object Logger {
      */
     fun initInfoInvalid(filePath: String) {
         outputBuffer.println("Initialization Info: $filePath is invalid.")
+        outputBuffer.flush()
     }
 
     /**
