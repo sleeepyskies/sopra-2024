@@ -48,16 +48,29 @@ class CorporationManager(private val simData: SimulationData) {
         val gbAssignedAmountList = mutableListOf<Garbage>()
         scanAll(corporation.ships, corporation)
         corporation.ships.forEach {
+            val isOnRestrictedTile = checkRestriction(it.location)
+            val shipMaxTravelDistance =
+                (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
             // determine behavior will return cor a collecting ship the tiles that still need assignment
+
             val possibleLocationsToMove = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
-            if (!(possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location)) {
+            if (!(possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location) ||
+                isOnRestrictedTile
+            ) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
-                val tileInfoToMove = simData.navigationManager.shortestPathToLocations(
-                    it.location,
-                    possibleLocationsToMove,
-                    anticipatedVelocity / VELOCITY_DIVISOR
-                )
+                val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Int>
+                if (isOnRestrictedTile) {
+                    val outOfRestrictionTile = possibleLocationsToMove.first()
+                    val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
+                    tileInfoToMove = Pair(Pair(outOfRestrictionTile, tileIdOfTile), shipMaxTravelDistance)
+                } else {
+                    tileInfoToMove = simData.navigationManager.shortestPathToLocations(
+                        it.location,
+                        possibleLocationsToMove,
+                        anticipatedVelocity / VELOCITY_DIVISOR
+                    )
+                }
 
                 if (tileInfoToMove.second != 0) {
                     it.updateVelocity()
@@ -68,7 +81,7 @@ class CorporationManager(private val simData: SimulationData) {
                     gbAssignedAmountList.addAll(assignCapacityToGarbageList(tileInfoToMove.second, it.capacityInfo))
                     shipMoveToLocation(it, tileInfoToMove.first)
                     Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
-                    updateInfo(corporation, scan(it.location, it.visibilityRange))
+                    updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
                 } else {
                     it.currentVelocity = 0
                 }
@@ -139,9 +152,9 @@ class CorporationManager(private val simData: SimulationData) {
      */
     private fun startCooperationPhase(corporation: Corporation) {
         Logger.corporationActionCooperate(corporation.id)
-        corporation.ships.filter { it.hasRadio || it.type == ShipType.COORDINATING_SHIP }.forEach {
-            getShipsOnTile(it.location).filter { ship -> ship.corporation != corporation.id }.forEach { target ->
-                val targetsCorp = simData.corporations[target.corporation]
+        corporation.ships.filter { it.hasRadio || it.type == ShipType.COORDINATING_SHIP }.forEach outer@{
+            getShipsOnTile(it.location).filter { ship -> ship.corporation != corporation.id }.forEach inner@{ target ->
+                val targetsCorp = simData.corporations.find { corp -> corp.id == target.corporation } ?: return@inner
                 if (corporation.lastCooperatedWith != targetsCorp.id) {
                     corporation.lastCooperatedWith = targetsCorp.id
                     shareInformation(corporation, getInfo(targetsCorp.id))
@@ -379,7 +392,6 @@ class CorporationManager(private val simData: SimulationData) {
         val shipLocation = ship.location
         val shipMaxTravelDistance =
             (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
-
         if (checkRestriction(ship.location)) {
             return listOf(
                 simData.navigationManager.getDestinationOutOfRestriction(
@@ -520,7 +532,7 @@ class CorporationManager(private val simData: SimulationData) {
      */
     private fun scanAll(ships: List<Ship>, corporation: Corporation) {
         ships.forEach {
-            val scanInfo = scan(it.location, it.visibilityRange)
+            val scanInfo = scan(it.location, it.visibilityRange, it.id)
             updateInfo(corporation, scanInfo)
         }
         simData.garbage.filter { it.trackedBy.contains(corporation.id) }.forEach {
@@ -570,7 +582,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @param range The range to scan within.
      * @return A triple containing maps and a list with the scan results.
      */
-    private fun scan(location: Pair<Int, Int>, range: Int):
+    private fun scan(location: Pair<Int, Int>, range: Int, shipWhichIsScanning: Int):
         Pair<Map<Int, Pair<Int, Pair<Int, Int>>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>> {
         val tilesInScanRange = simData.navigationManager.getTilesInRadius(location, range)
         val shipInfo = mutableMapOf<Int, Pair<Int, Pair<Int, Int>>>()
@@ -581,7 +593,8 @@ class CorporationManager(private val simData: SimulationData) {
                 garbageInfo[it.id] = Pair(tileLocation, it.type)
             }
             val ships = getShipsOnTile(tileLocation)
-            ships.forEach {
+            val filteredShips = ships.filter { it.id != shipWhichIsScanning }
+            filteredShips.forEach {
                 shipInfo[it.id] = Pair(it.corporation, it.location)
             }
         }

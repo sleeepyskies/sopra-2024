@@ -1,0 +1,52 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "Coordinators of the sea",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        7
+      ],
+      "garbageTypes": []
+    },
+    {
+      "id": 2,
+      "name": "Seekers of the sea (we also coordinate)",
+      "ships": [
+        2
+      ],
+      "homeHarbors": [
+        9
+      ],
+      "garbageTypes": []
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "White Swan",
+      "type": "COORDINATING",
+      "corporation": 1,
+      "location": 8,
+      "maxVelocity": 50,
+      "acceleration": 15,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "visibilityRange": 1
+    },
+    {
+      "id": 2,
+      "name": "Black Swan",
+      "type": "COORDINATING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 30,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "visibilityRange": 1
+    }
+  ]
+}
