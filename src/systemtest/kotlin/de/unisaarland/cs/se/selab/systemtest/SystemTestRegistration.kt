@@ -1,8 +1,8 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InavlidCurrent
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
-import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
 /**
  * Class to register for systemTests
@@ -20,8 +20,12 @@ object SystemTestRegistration {
         // manager.registerTest(RestrictionHappensCorrectly())
         // manager.registerTest(PirateAttackDeletesShip())
         // manager.registerTest(ScoutContainerFillMoveHarborTest())
-        // manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
-        manager.registerTest(GarbageDriftsCorrectly())
+        // manager.registerTest(WrongNeighbors())
+        // manager.registerTest(OilSpillHappensCorrectly())
+        // manager.registerTest(RestrictionHappensCorrectly())
+        // manager.registerTest(PirateAttackDeletesShip())
+        // manager.registerTest(ScoutContainerFillMoveHarborTest())
+        manager.registerTest(InavlidCurrent())
     }
 
     /**
