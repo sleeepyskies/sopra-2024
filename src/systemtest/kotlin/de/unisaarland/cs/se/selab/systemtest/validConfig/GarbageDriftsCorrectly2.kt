@@ -2,6 +2,9 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
+/**
+ * Tests if garbage is drifted correctly (but now for another case)
+ */
 class GarbageDriftsCorrectly2 : ExampleSystemTestExtension() {
     override val description = "tests if garbage is drifted correctly"
     override val corporations = "corporationJsons/empty_corps.json"

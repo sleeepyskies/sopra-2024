@@ -126,11 +126,9 @@ class TravelManager(private val simData: SimulationData) {
     /**
      * Drifts garbage along a path.
      * @param garbage the garbage to be drifted
-     * @param oldGarbage the old garbage that was split
      * @param wasSplit if the garbage was split
      * @param path the path to drift along
      * @param tile the tile to drift from
-     * @param driftCapacity the capacity to drift
      * @return the tile the garbage was drifted to
      */
     private fun driftGarbageAlongPath(
