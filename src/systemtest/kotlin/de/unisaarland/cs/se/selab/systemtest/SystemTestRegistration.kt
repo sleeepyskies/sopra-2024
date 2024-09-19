@@ -25,8 +25,9 @@ object SystemTestRegistration {
         manager.registerTest(WrongNeighbors())
         manager.registerTest(InvalidCurrent())
         manager.registerTest(RewardsGivenAndFunctionCorrectly())
-        */
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
+        manager.registerTest(ShipCannotBeAssignedTask())
+        */
     }
 
     /**

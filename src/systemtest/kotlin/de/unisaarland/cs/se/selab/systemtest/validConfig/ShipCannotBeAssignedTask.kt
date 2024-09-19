@@ -11,7 +11,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/shipCannotBeAssignedTask_scenario.json"
     override val map = "mapFiles/obamna.json"
     override val name = "ShipCannotBeAssignedTask"
-    override val maxTicks = 8
+    override val maxTicks = 9
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -22,6 +22,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         tick5()
         tick6()
         tick7()
+        tick8()
         simEnd()
     }
 
@@ -116,6 +117,17 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Refueling: Ship 1 refueled at harbor 5.")
         skipLines(1)
+    }
+
+    private suspend fun tick8() {
+        // ship has 0
+        // Tick start
+        assertNextLine("Simulation Info: Tick 8 started.")
+
+        // Corporation Phase
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 3.")
+        skipLines(4)
     }
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
