@@ -53,6 +53,33 @@ class MapParserTest {
     }
 
     @Test
+    fun `test parseMap with negative coordinates`() {
+        // Write valid JSON data to the map file
+        val jsonData = """
+            {
+                "tiles": [
+                    {
+                        "id": 1,
+                        "coordinates": {"x": -1, "y": -1},
+                        "category": "LAND"
+                    },
+                    {
+                        "id": 2,
+                        "coordinates": {"x": -1, "y": -3},
+                        "category": "SHORE",
+                        "harbor": true
+                    }
+                ]
+            }
+        """.trimIndent()
+        mapFile.writeText(jsonData)
+
+        // Call parseMap and assert the result
+        val result = mapParser.parseMap()
+        assertTrue(result)
+    }
+
+    @Test
     fun `test parseMap with invalid JSON`() {
         // Write invalid JSON data to the map file
         val jsonData = "{ invalid json }"
