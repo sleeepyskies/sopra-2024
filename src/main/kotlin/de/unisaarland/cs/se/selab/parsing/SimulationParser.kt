@@ -179,7 +179,8 @@ class SimulationParser(
     }
 
     /**
-     * Checks that harbors only occur on shore tiles, as well as non-null tiles.
+     * Checks that harbors only occur on shore tiles, as well
+     * as non-null tiles, and that those tiles have "harbor: true"
      */
     private fun crossValidateCorporationHarborOnHarborTile(): Boolean {
         // get all harbor locations
@@ -190,7 +191,7 @@ class SimulationParser(
             val tile = navigationManager.tiles[location]
 
             // check tile non-null, is SHORE and is a harbor
-            if (tile == null || !(tile.isHarbor && tile.type == TileType.SHORE)) {
+            if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
                 log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
                 return false
             }

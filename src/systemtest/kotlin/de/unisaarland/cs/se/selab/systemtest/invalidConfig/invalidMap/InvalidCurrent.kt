@@ -15,6 +15,5 @@ class InvalidCurrent : ExampleSystemTestExtension() {
     override suspend fun run() {
         assertNextLine("Initialization Info: obamnaInvalidCurrent.json is invalid.")
         assertEnd()
-
     }
 }
