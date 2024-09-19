@@ -100,6 +100,7 @@ class TravelManager(private val simData: SimulationData) {
                 garbageToBeHandled = split(garbageToBeHandled, currentDriftCapacity)
                 tile.setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - currentDriftCapacity)
                 simData.currentHighestGarbageID = garbageToBeHandled.id
+                simData.garbage.add(garbageToBeHandled)
                 wasSplit = true
             }
             // Get tile to which we driftedGarbage, if null, we have to move to the next garbage pile,
