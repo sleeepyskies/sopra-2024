@@ -1,6 +1,8 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
@@ -16,17 +18,16 @@ object SystemTestRegistration {
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
         manager.registerTest(ExampleSystemTest())
-        /*manager.registerTest(OilSpillHappensCorrectly())
+        manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
         manager.registerTest(PirateAttackDeletesShip())
         manager.registerTest(ScoutContainerFillMoveHarborTest())
-        manager.registerTest(GarbageDriftsCorrectly())
-        manager.registerTest(WrongNeighbors())
+        // manager.registerTest(GarbageDriftsCorrectly())
+        // manager.registerTest(WrongNeighbors())
         manager.registerTest(InvalidCurrent())
-        manager.registerTest(RewardsGivenAndFunctionCorrectly())
+        // manager.registerTest(RewardsGivenAndFunctionCorrectly())
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
-        manager.registerTest(ShipCannotBeAssignedTask())
-        */
+        // manager.registerTest(ShipCannotBeAssignedTask())
     }
 
     /**
