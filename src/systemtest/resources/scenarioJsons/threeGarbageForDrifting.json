@@ -10,13 +10,19 @@
       "id": 71,
       "type": "OIL",
       "location": 1,
-      "amount": 50
+      "amount": 150
     },
     {
       "id": 72,
       "type": "OIL",
       "location": 7,
-      "amount": 950
+      "amount": 1000
+    },
+    {
+      "id": 73,
+      "type": "CHEMICALS",
+      "location": 6,
+      "amount": 100
     }
   ],
   "events": [],

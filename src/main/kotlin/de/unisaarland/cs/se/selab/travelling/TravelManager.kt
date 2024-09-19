@@ -98,24 +98,24 @@ class TravelManager(private val simData: SimulationData) {
             // Check if garbage is too large and has to be split
             if (garbageToBeHandled.checkSplit(currentDriftCapacity)) {
                 garbageToBeHandled = split(garbageToBeHandled, currentDriftCapacity)
+                tile.setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - currentDriftCapacity)
+                simData.currentHighestGarbageID = garbageToBeHandled.id
                 wasSplit = true
             }
             // Get tile to which we driftedGarbage, if null, we have to move to the next garbage pile,
             // as there is no tile to drift to, but still use drift capacity needed to make the attempt
             val tileToUpdate = driftGarbageAlongPath(
                 garbageToBeHandled,
-                oldGarbage,
                 wasSplit,
                 tilePath,
                 tile,
-                currentDriftCapacity
             )
-            if (tileToUpdate != null) tilesToUpdate.add(tileToUpdate)
+            tilesToUpdate.add(tileToUpdate)
             // if was split, all capacity has been used
-            if (wasSplit) {
-                return 0
+            return if (wasSplit) {
+                0
             } else {
-                return currentDriftCapacity - garbageToBeHandled.amount
+                currentDriftCapacity - garbageToBeHandled.amount
             }
         } else {
             return 0
@@ -134,22 +134,14 @@ class TravelManager(private val simData: SimulationData) {
      */
     private fun driftGarbageAlongPath(
         garbage: Garbage,
-        oldGarbage: Garbage,
         wasSplit: Boolean,
         path: List<Tile>,
-        tile: Tile,
-        driftCapacity: Int
-    ): Tile? {
+        tile: Tile
+    ): Tile {
         // check if any of the tiles can fit the garbage and add it to the tile
         for (candidateTile in path) {
             if (candidateTile.canGarbageFitOnTile(garbage)) {
-                // Split logic,
-                if (wasSplit) {
-                    simData.currentHighestGarbageID = garbage.id
-                    tile.setAmountOfGarbage(oldGarbage.id, oldGarbage.amount - driftCapacity)
-                } else {
-                    tile.removeGarbageFromTile(garbage)
-                }
+                tile.removeGarbageFromTile(garbage)
                 // add it to tiles that have to be updated because they now have arriving garbage
                 driftGarbage(candidateTile.location, candidateTile.id, garbage)
                 candidateTile.addArrivingGarbageToTile(garbage)
@@ -163,7 +155,18 @@ class TravelManager(private val simData: SimulationData) {
                 return candidateTile
             }
         }
-        return null
+        // IF was split, we add the new split off garbage to the tile and log it
+        if (wasSplit) {
+            Logger.currentDriftGarbage(
+                garbage.type.toString(),
+                garbage.id,
+                garbage.amount,
+                tile.id,
+                tile.id
+            )
+            tile.addArrivingGarbageToTile(garbage)
+        }
+        return tile
     }
 
     /**
