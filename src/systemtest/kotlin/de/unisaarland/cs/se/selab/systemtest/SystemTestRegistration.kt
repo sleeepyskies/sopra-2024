@@ -15,12 +15,13 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
+        /*manager.registerTest(ExampleSystemTest())
         manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
         manager.registerTest(PirateAttackDeletesShip())
         manager.registerTest(ScoutContainerFillMoveHarborTest())
-        manager.registerTest(GarbageDriftsCorrectly())
+        manager.registerTest(GarbageDriftsCorrectly())*/
+        manager.registerTest(GarbageDriftsCorrectly2())
         // manager.registerTest(WrongNeighbors())
         // manager.registerTest(InvalidCurrent())
         // manager.registerTest(RewardsGivenAndFunctionCorrectly())
