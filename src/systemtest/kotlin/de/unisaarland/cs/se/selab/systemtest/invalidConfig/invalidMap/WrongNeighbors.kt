@@ -1,4 +1,4 @@
-package de.unisaarland.cs.se.selab.systemtest.validConfig.validation
+package de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 

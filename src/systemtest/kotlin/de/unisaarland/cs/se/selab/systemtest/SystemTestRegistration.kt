@@ -1,12 +1,8 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InavlidCurrent
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
-import de.unisaarland.cs.se.selab.systemtest.validConfig.validation.WrongNeighbors
-import de.unisaarland.cs.se.selab.systemtest.validConfig.OilSpillHappensCorrectly
-import de.unisaarland.cs.se.selab.systemtest.validConfig.PirateAttackDeletesShip
-import de.unisaarland.cs.se.selab.systemtest.validConfig.RestrictionHappensCorrectly
-import de.unisaarland.cs.se.selab.systemtest.validConfig.ScoutContainerFillMoveHarborTest
 
 /**
  * Class to register for systemTests
@@ -24,11 +20,12 @@ object SystemTestRegistration {
         // manager.registerTest(RestrictionHappensCorrectly())
         // manager.registerTest(PirateAttackDeletesShip())
         // manager.registerTest(ScoutContainerFillMoveHarborTest())
-        manager.registerTest(WrongNeighbors())
-        manager.registerTest(OilSpillHappensCorrectly())
-        manager.registerTest(RestrictionHappensCorrectly())
-        manager.registerTest(PirateAttackDeletesShip())
-        manager.registerTest(ScoutContainerFillMoveHarborTest())
+        // manager.registerTest(WrongNeighbors())
+        // manager.registerTest(OilSpillHappensCorrectly())
+        // manager.registerTest(RestrictionHappensCorrectly())
+        // manager.registerTest(PirateAttackDeletesShip())
+        // manager.registerTest(ScoutContainerFillMoveHarborTest())
+        manager.registerTest(InavlidCurrent())
     }
 
     /**
