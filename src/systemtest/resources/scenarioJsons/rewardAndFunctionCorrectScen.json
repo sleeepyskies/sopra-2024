@@ -1,7 +1,7 @@
 {
   "garbage": [
     {
-      "id": 14,
+      "id": 1,
       "type": "OIL",
       "location": 1,
       "amount": 1000
@@ -13,13 +13,13 @@
       "amount": 2999
     },
     {
-      "id": 3,
+      "id": 21,
       "type": "OIL",
       "location": 21,
       "amount": 1000
     },
     {
-      "id": 4,
+      "id": 35,
       "type": "PLASTIC",
       "location": 35,
       "amount": 1

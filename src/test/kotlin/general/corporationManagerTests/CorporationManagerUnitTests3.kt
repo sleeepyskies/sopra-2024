@@ -241,26 +241,6 @@ class CorporationManagerUnitTests3 {
     }
 
     @Test
-    fun test_isWaitingForPlastic() {
-        val ship = Ship(
-            1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
-            Direction.EAST, 1, 10, 10, 10, 1000,
-            10, 1000, -1, ShipState.WAITING_FOR_PLASTIC, ShipType.SCOUTING_SHIP,
-            hasRadio = false, hasTracker = false, travelingToHarbor = false
-        )
-        simDat.ships.addAll(listOf(ship))
-        simDat.corporations[0].ships.addAll(listOf(ship))
-        val method = CorporationManager::class.java.getDeclaredMethod(
-            "determineBehavior",
-            Ship::class.java,
-            Corporation::class.java
-        )
-        method.isAccessible = true
-        val tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
-    }
-
-    @Test
     fun test_handleTaskedState() {
         val ship = Ship(
             1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),

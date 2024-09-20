@@ -34,6 +34,9 @@ class TaskManager(private val simData: SimulationData) {
             for (task in scheduledTasks) {
                 val assignedShip = simData.ships.find { it.id == task.assignedShipId }
                 if (assignedShip != null) {
+                    if (assignedShip.currentTaskId != -1) {
+                        simData.activeTasks.remove(simData.activeTasks.find { it.id == assignedShip.currentTaskId })
+                    }
                     assignTask(assignedShip, task)
                 }
             }

@@ -7,7 +7,7 @@ class CollectingShipDriftsCorrectlyAndCollects : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/empty_corps.json"
     override val scenario = "scenarioJsons/threeGarbageForDrifting.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "garbDriftCorrect1"
+    override val name = "CollectingShipDriftsCorrectlyAndCollects"
     override val maxTicks = 3
     override suspend fun run() {
         initSimulation()
