@@ -30,16 +30,7 @@ class TaskManager(private val simData: SimulationData) {
         // get tasks scheduled for this tick
         val scheduledTasks = simData.scheduledTasks[simData.tick]
         if (scheduledTasks != null) {
-            // there are scheduled tasks, assign them
-            for (task in scheduledTasks) {
-                val assignedShip = simData.ships.find { it.id == task.assignedShipId }
-                if (assignedShip != null) {
-                    if (assignedShip.currentTaskId != -1) {
-                        simData.activeTasks.remove(simData.activeTasks.find { it.id == assignedShip.currentTaskId })
-                    }
-                    assignTask(assignedShip, task)
-                }
-            }
+            handleScheduledTasks(scheduledTasks)
         }
         // get active tasks, check if they have been completed
         val fulfilled = mutableListOf<Task>()
@@ -70,6 +61,18 @@ class TaskManager(private val simData: SimulationData) {
         simData.activeTasks.removeAll(fulfilled)
 
         simData.tick++
+    }
+    private fun handleScheduledTasks(scheduledTasks: List<Task>) {
+        // there are scheduled tasks, assign them
+        for (task in scheduledTasks) {
+            val assignedShip = simData.ships.find { it.id == task.assignedShipId }
+            if (assignedShip != null) {
+                if (assignedShip.currentTaskId != -1) {
+                    simData.activeTasks.remove(simData.activeTasks.find { it.id == assignedShip.currentTaskId })
+                }
+                assignTask(assignedShip, task)
+            }
+        }
     }
 
     /**
