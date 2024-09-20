@@ -135,6 +135,8 @@ class TaskManager(private val simData: SimulationData) {
         return !(
             ship.state == ShipState.NEED_REFUELING_AND_UNLOADING ||
                 ship.state == ShipState.NEED_REFUELING ||
+                ship.state == ShipState.REFUELING ||
+                ship.state == ShipState.REFUELING_AND_UNLOADING ||
                 !hasPathToTask(ship, task) ||
                 !canReachTaskAndHarbor(ship, task)
             )
