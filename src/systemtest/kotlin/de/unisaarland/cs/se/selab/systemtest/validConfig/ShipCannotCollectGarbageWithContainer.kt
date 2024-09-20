@@ -32,19 +32,22 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Tick 0 started.")
 
         // Corporation Phase
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+        c1Mmoving()
         assertNextLine("Ship Movement: Ship 55 moved with speed 13 to tile 6.")
-
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
+        corp1()
 
         // Ship Drifting
         assertNextLine("Current Drift: Ship 55 drifted from tile 6 to tile 8.")
 
         // Task Phase
         assertNextLine("Task: Task 1 of type COLLECT with ship 51 is added with destination 14.")
+    }
+
+    private suspend fun corp1() {
+        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
+        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
+        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
+        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
     }
 
     private suspend fun tick1() {
@@ -72,19 +75,18 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         // Task Phase
         assertNextLine("Reward: Task 51: Ship 55 received reward of type CONTAINER.")
     }
+    private suspend fun c1Mmoving() {
+        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+    }
 
     private suspend fun tick2() {
         assertNextLine("Simulation Info: Tick 2 started.")
 
         // Corporation Phase
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+        c1Mmoving()
         assertNextLine("Ship Movement: Ship 55 moved with speed 39 to tile 3.")
 
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
+        corp1()
     }
 
     private suspend fun simEnd() {
