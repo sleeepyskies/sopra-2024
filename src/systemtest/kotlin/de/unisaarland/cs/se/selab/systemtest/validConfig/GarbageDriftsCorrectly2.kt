@@ -11,7 +11,7 @@ class GarbageDriftsCorrectly2 : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/oneGarbageForShipDrifting.json"
     override val map = "mapFiles/obamaButWeaker.json"
     override val name = "test"
-    override val maxTicks = 6
+    override val maxTicks = 7
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -20,6 +20,7 @@ class GarbageDriftsCorrectly2 : ExampleSystemTestExtension() {
         tick3()
         tick4()
         tick5()
+        tick6()
         simEnd()
     }
 
@@ -48,17 +49,16 @@ class GarbageDriftsCorrectly2 : ExampleSystemTestExtension() {
     private suspend fun tick2() {
         skipLines(3)
         assertNextLine("Garbage Collection: Ship 1 collected 1000 of garbage PLASTIC with 70.")
+        skipLines(5)
         assertNextLine("Garbage Collection: Ship 3 collected 1000 of garbage PLASTIC with 70.")
-        skipLines(4)
-        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 3.")
-        skipLines(4)
+        skipLines(3)
     }
 
     private suspend fun tick3() {
         skipLines(2)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 3.")
         skipLines(5)
-        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 4.")
+        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 3.")
         skipLines(4)
     }
 
@@ -66,14 +66,22 @@ class GarbageDriftsCorrectly2 : ExampleSystemTestExtension() {
         skipLines(2)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 4.")
         skipLines(5)
-        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 5.")
+        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 4.")
         skipLines(4)
     }
 
     private suspend fun tick5() {
         skipLines(2)
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 5.")
-        skipLines(8)
+        skipLines(5)
+        assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 5.")
+        skipLines(4)
+    }
+
+    private suspend fun tick6() {
+        skipLines(5)
+        assertNextLine("Unload: Ship 1 unloaded 1000 of garbage PLASTIC at harbor 5.")
+        skipLines(5)
         assertNextLine("Unload: Ship 3 unloaded 1000 of garbage PLASTIC at harbor 5.")
         skipLines(1)
     }
