@@ -77,7 +77,9 @@ class TaskManager(private val simData: SimulationData) {
      */
     private fun assignTask(ship: Ship, task: Task) {
         // check if ship should be assigned the task
+        println("hfhhhggjhgjhg")
         if (shouldBeAssignedTask(ship, task)) {
+            println("hellohelooooo")
             // add to active tasks list
             simData.activeTasks.add(task)
 
@@ -129,9 +131,8 @@ class TaskManager(private val simData: SimulationData) {
      * @return true if the ship should be assigned the task, false otherwise
      */
     private fun shouldBeAssignedTask(ship: Ship, task: Task): Boolean {
-        if (ship.location == simData.navigationManager.findTile(task.targetTileId)?.location) {
-            return true
-        }
+        /**
+         }**/
         return !(
             ship.state == ShipState.NEED_REFUELING_AND_UNLOADING ||
                 ship.state == ShipState.NEED_REFUELING ||
@@ -155,9 +156,13 @@ class TaskManager(private val simData: SimulationData) {
 
         // get ship location
         val shipLocation = ship.location
+        if (ship.location == simData.navigationManager.findTile(task.targetTileId)?.location) {
+            return true
+        }
 
         // get the maximum amount of tiles this ship can travel
-        val maxTravelDistance = floor(ship.currentFuel.toDouble() / ship.fuelConsumptionRate.toDouble()).toInt()
+        val maxTravelDistance =
+            floor(ship.currentFuel.toDouble() / ship.fuelConsumptionRate.toDouble()).toInt() / DEFAULT_DISTANCE
 
         // check if there is a valid path to the task destination, unpack result
         val nextHop = this.simData.navigationManager.shortestPathToLocations(
