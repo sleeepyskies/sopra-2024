@@ -7,7 +7,6 @@ import de.unisaarland.cs.se.selab.assets.GarbageType
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.ShipType
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -67,7 +66,6 @@ class CorporationParser(
         private const val MIN_OIL_CAPACITY = 50000
         private const val MAX_OIL_CAPACITY = 100000
     }
-    private val log = KotlinLogging.logger("debugger")
     val corporations = mutableListOf<Corporation>()
     val ships = mutableListOf<Ship>()
     private val corporationIds = mutableSetOf<Int>()
@@ -88,20 +86,21 @@ class CorporationParser(
         // parse input file and check if path is valid
         // create corp JSON object
         var success = true
+        var ex1: IOException? = null
+        var ex2: JSONException? = null
 
         val corpJSONObject = try {
             JSONObject(File(corporationFilePath).readText())
         } catch (e: IOException) {
-            log.error(e) { "CORPORATION PARSER: The file could not be read." }
+            ex1 = e
             return false
         } catch (e: JSONException) {
-            log.error(e) { "CORPORATION PARSER: The file is not a valid JSON." }
+            ex2 = e
             return false
         }
 
         // validate corporation JSON against schema
         if (helper.validateSchema(corpJSONObject, this.corporationsSchema)) {
-            log.error { "CORPORATION PARSER: The file does not match the schema." }
             success = false
         }
 
@@ -136,10 +135,6 @@ class CorporationParser(
     private fun checkForShipsWithoutCorporations(shipsList: List<Ship>): Boolean {
         for (ship in shipsList) {
             if (!corporationIds.contains(ship.corporation)) {
-                log.error {
-                    "CORPORATION PARSER: Ship with ID ${ship.id} " +
-                        "has an invalid corporation ID ${ship.corporation}."
-                }
                 return false
             }
         }
@@ -158,7 +153,6 @@ class CorporationParser(
     ): Boolean {
         // validate corporation
         if (helper.validateSchema(corporationJsonObject, "corporation.schema")) {
-            log.error { "CORPORATION PARSER: One of the corporations does not match the corporation schema." }
             return false
         }
         if (!validateCorporation(corporationJsonObject)) return false
@@ -189,7 +183,6 @@ class CorporationParser(
     private fun parseShip(shipJsonObject: JSONObject): Ship? {
         // validate ship
         if (helper.validateSchema(shipJsonObject, "ships.schema")) {
-            log.error { "MAP PARSER: The file does not match the schema." }
             return null
         }
         // ensures that ship ids are unique
@@ -446,7 +439,6 @@ class CorporationParser(
         val corporationName = corporationJsonObject.optString(NAME, "")
         val corporationId = corporationJsonObject.getInt(ID)
         if (corporationNames.contains(corporationName)) {
-            log.error { "CORPORATION PARSER: Duplicate corporation name found: $corporationName" }
             return false
         }
         corporationNames.add(corporationName)
