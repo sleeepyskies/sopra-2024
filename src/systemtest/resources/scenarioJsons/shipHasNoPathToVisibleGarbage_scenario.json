@@ -1,0 +1,13 @@
+{
+  "garbage": [
+    {
+      "id": 70,
+      "type": "PLASTIC",
+      "location": 8,
+      "amount": 100
+    }
+  ],
+  "events": [],
+  "tasks": [],
+  "rewards": []
+}

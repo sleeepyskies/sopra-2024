@@ -3,10 +3,10 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
 /**
- * a
+ * CollectingShipMovesToVisibleGarbage
  */
 class CollectingShipMovesToVisibleGarbage : ExampleSystemTestExtension() {
-    override val description = "no"
+    override val description = "Collecting ship moves to visibleGarbage of a scouting ship."
     override val corporations = "corporationJsons/collectingShipMovesToVisibleGarbage_corporations.json"
     override val scenario = "scenarioJsons/collectingShipMovesToVisibleGarbage_scenario.json"
     override val map = "mapFiles/obamna.json"
