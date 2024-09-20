@@ -21,8 +21,6 @@ import de.unisaarland.cs.se.selab.events.EventManager
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import de.unisaarland.cs.se.selab.tasks.TaskManager
 import de.unisaarland.cs.se.selab.travelling.TravelManager
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 
 /**
  * SimulationParser receives a map, corporation and scenario file as well as a max tick.
@@ -40,12 +38,10 @@ class SimulationParser(
      */
     companion object {
         const val THOUSAND = 1000
-        const val EVENT_LAND = "SIMULATION PARSER: An event occurs on a land tile."
-        const val TASK_INVALID = "SIMULATION PARSER: A task has an invalid location."
     }
 
     // debug logger
-    private val log: Log = LogFactory.getLog("debugger")
+    // private val log: Log = LogFactory.getLog("debugger")
 
     // data
     private lateinit var corporations: List<Corporation>
@@ -77,9 +73,7 @@ class SimulationParser(
             this.navigationManager.initializeAndUpdateGraphStructure()
         } else {
             // file invalid
-            log.error("SIMULATION PARSER: The map file is invalid. (before Logger call)")
             Logger.initInfoInvalid(this.mapFile)
-            log.error("SIMULATION PARSER: The map file is invalid. (after Logger call)")
             return null
         }
 
@@ -191,7 +185,6 @@ class SimulationParser(
 
             // check tile non-null, is SHORE and is a harbor
             if (tile == null || !tile.isHarbor || tile.type != TileType.SHORE) {
-                log.error("SIMULATION PARSER: A corporation has a harbor on an invalid tile.")
                 return false
             }
         }
@@ -211,7 +204,6 @@ class SimulationParser(
 
             // check tile non-null and is not LAND
             if (tile == null || tile.type == TileType.LAND) {
-                log.error("SIMULATION PARSER: A ship has an invalid initial tile.")
                 return false
             }
         }
@@ -233,7 +225,6 @@ class SimulationParser(
 
             // check tile non-null and is not LAND
             if (tile == null || tile.type == TileType.LAND) {
-                log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
                 return false
             }
         }
@@ -249,14 +240,12 @@ class SimulationParser(
 
         // check no tile has more than 1000 OIL
         if ((tileOilMap.values.maxOrNull() ?: 0) > THOUSAND) {
-            log.error("SIMULATION PARSER: A garbage has an invalid initial tile.")
             return false
         }
 
         // check no DEEP_OCEAN has any chemicals at all
         for (tile in this.navigationManager.tiles.values.filter { it.type == TileType.DEEP_OCEAN }) {
             if (tile.currentGarbage.any { it.type == GarbageType.CHEMICALS }) {
-                log.error("SIMULATION PARSER: A DEEP_OCEAN tile has some chemicals on it.")
                 return false
             }
         }
@@ -277,7 +266,6 @@ class SimulationParser(
         for (event in restrictionEvents) {
             val tile = this.navigationManager.tiles[event.location]
             if (tile == null || tile.type == TileType.LAND) {
-                log.error(EVENT_LAND)
                 return false
             }
         }
@@ -286,7 +274,6 @@ class SimulationParser(
         for (event in oilSpillEvents) {
             val tile = this.navigationManager.tiles[event.location]
             if (tile == null || tile.type == TileType.LAND) {
-                log.error(EVENT_LAND)
                 return false
             }
         }
@@ -295,7 +282,6 @@ class SimulationParser(
         for (event in stormEvents) {
             val tile = this.navigationManager.tiles[event.location]
             if (tile == null || tile.type == TileType.LAND) {
-                log.error(EVENT_LAND)
                 return false
             }
         }
@@ -316,7 +302,6 @@ class SimulationParser(
         // check pirates only attack real ships
         for (attack in pirateEvents) {
             if (this.ships.none { it.id == attack.shipID }) {
-                log.error("SIMULATION PARSER: A pirate attack event ${attack.id} has invalid shipID.")
                 return false
             }
         }
@@ -334,13 +319,11 @@ class SimulationParser(
         for (task in tasks) {
             // check assigned ship
             if (!this.ships.any { it.id == task.assignedShipId }) {
-                log.error("SIMULATION PARSER: The task ${task.id} has an invalid assigned shipID.")
                 return false
             }
 
             // check reward ship
             if (!this.ships.any { it.id == task.rewardShip }) {
-                log.error("SIMULATION PARSER: The task ${task.id} has an invalid reward shipID.")
                 return false
             }
         }
@@ -363,7 +346,6 @@ class SimulationParser(
             // check that each ship can reach at least one harbor
             for (ship in ships) {
                 if (!shipCanReachHarbor(ship.location, harbors)) {
-                    log.error("SIMULATION PARSER: The ship ${ship.id} cannot reach any home harbors.")
                     return false
                 }
             }
@@ -381,10 +363,6 @@ class SimulationParser(
             val rewardShip = this.ships.find { it.id == task.rewardShip }
             val assignedShip = this.ships.find { it.id == task.assignedShipId }
             if (rewardShip == null || assignedShip == null || rewardShip.corporation != assignedShip.corporation) {
-                log.error(
-                    "SIMULATION PARSER: The task ${task.id} has an " +
-                        "assigned ship and a reward ship from different corporations."
-                )
                 return false
             }
         }
@@ -397,7 +375,6 @@ class SimulationParser(
         for (harbor in allTilesWithHarbor) {
             val tile = allHarborsOfCorporations.find { it == harbor.location }
             if (tile == null) {
-                log.error("SIMULATION PARSER: A harbor does not belong to any corporation.")
                 return false
             }
         }
@@ -428,10 +405,6 @@ class SimulationParser(
             val assignedShip = this.ships.find { it.id == task.assignedShipId }
             val rewardShip = this.ships.find { it.id == task.rewardShip }
             if (assignedShip?.corporation != rewardShip?.corporation) {
-                log.error(
-                    "SIMULATION PARSER: The task ${task.id} has an " +
-                        "assigned ship and a reward ship from different corporations."
-                )
                 return false
             }
         }
@@ -446,20 +419,17 @@ class SimulationParser(
             val tileDest = this.navigationManager.findTile(task.targetTileId)
 
             if (tileDest == null) {
-                log.error("SIMULATION PARSER: The task ${task.id} has a null location.")
                 return false
             }
 
             when (task.type) {
                 TaskType.EXPLORE, TaskType.FIND, TaskType.COLLECT -> {
                     if (tileDest.type == TileType.LAND) {
-                        log.error(TASK_INVALID)
                         return false
                     }
                 }
                 TaskType.COORDINATE -> {
                     if (!tileDest.isHarbor) {
-                        log.error(TASK_INVALID)
                         return false
                     }
                 }
