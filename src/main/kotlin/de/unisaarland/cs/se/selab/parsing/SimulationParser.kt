@@ -452,13 +452,7 @@ class SimulationParser(
             }
 
             when (task.type) {
-                TaskType.COLLECT -> {
-                    if (tileDest.currentGarbage.isEmpty()) {
-                        log.error(TASK_INVALID)
-                        return false
-                    }
-                }
-                TaskType.EXPLORE, TaskType.FIND -> {
+                TaskType.EXPLORE, TaskType.FIND, TaskType.COLLECT -> {
                     if (tileDest.type == TileType.LAND) {
                         log.error(TASK_INVALID)
                         return false
