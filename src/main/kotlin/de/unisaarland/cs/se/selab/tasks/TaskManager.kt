@@ -77,9 +77,7 @@ class TaskManager(private val simData: SimulationData) {
      */
     private fun assignTask(ship: Ship, task: Task) {
         // check if ship should be assigned the task
-        println("hfhhhggjhgjhg")
         if (shouldBeAssignedTask(ship, task)) {
-            println("hellohelooooo")
             // add to active tasks list
             simData.activeTasks.add(task)
 
