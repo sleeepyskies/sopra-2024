@@ -166,6 +166,8 @@ class EventManager(private val simulationData: SimulationData) {
             // Logger.currentDriftGarbage(garbage.type.toString(), garbage.id, garbage.amount, tile.id, currentTile.id)
             if (currentTile.type == TileType.DEEP_OCEAN && garbage.type == GarbageType.CHEMICALS) {
                 simulationData.garbage.remove(garbage)
+                simulationData.corporations.forEach { it.visibleGarbage.remove(garbage.id) }
+                simulationData.corporations.forEach { it.garbage.remove(garbage.id) }
                 return null
             }
             currentTile.addArrivingGarbageToTile(garbage)
