@@ -10,10 +10,10 @@ class NonUniqueTileIDs : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/corpWithTwoShips.json"
     override val scenario = "scenarioJsons/empty_scen.json"
     override val map = "mapFiles/validationFiles/invalidFiles/obamnaNonUniqueTiles.json"
-    override val name = "Harbor Cant Be Here"
+    override val name = "Non Unique Tile"
     override val maxTicks = 0
     override suspend fun run() {
-        assertNextLine("Initialization Info: obamna.json is invalid.")
+        assertNextLine("Initialization Info: obamnaNonUniqueTiles.json is invalid.")
         assertEnd()
     }
 }

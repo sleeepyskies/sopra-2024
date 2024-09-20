@@ -1,7 +1,9 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
@@ -38,6 +40,8 @@ object SystemTestRegistration {
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         manager.registerTest(InvalidCurrent())
+        manager.registerTest(NonUniqueTileIDs())
+        manager.registerTest(HarborCantBeHere())
     }
 
     /**
