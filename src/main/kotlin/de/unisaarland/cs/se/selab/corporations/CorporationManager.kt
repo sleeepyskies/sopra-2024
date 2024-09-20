@@ -115,32 +115,11 @@ class CorporationManager(private val simData: SimulationData) {
 
     private fun processGarbageOnTile(tile: Tile, ship: Ship, corporation: Corporation) {
         val gbList = tile.getGarbageByLowestID()
-        val plasticList = gbList.filter { it.type == GarbageType.PLASTIC }
         gbList.forEach { gb ->
             if (corporation.collectableGarbageTypes.contains(gb.type) && ship.capacityInfo.keys.contains(gb.type)) {
                 handleGarbageType(gb, tile, ship)
             }
         }
-    }
-    private fun collectPlasticForShip(tile: Tile, ship: Ship) {
-        val plasticList = tile.getGarbageByLowestID().filter { it.type == GarbageType.PLASTIC }.toMutableList()
-        val alreadyRemoved = mutableListOf<Garbage>()
-        plasticList.forEach { gb ->
-            if ((ship.capacityInfo[GarbageType.PLASTIC]?.first ?: 0) > 0) {
-                if (gb !in alreadyRemoved && collectGarbageOnTile(gb, ship)) {
-                    tile.currentGarbage.remove(gb)
-                    simData.garbage.remove(gb)
-                    simData.corporations.find { it.id == ship.corporation }?.garbage?.remove(gb.id)
-                    alreadyRemoved.add(gb)
-                }
-            }
-        }
-        for (gb in alreadyRemoved) {
-            tile.removeGarbageFromTile(gb)
-        }
-    }
-    private fun collectPlasticTogether(tile: Tile, plasticShips: List<Ship>) {
-        plasticShips.forEach { collectPlasticForShip(tile, it) }
     }
 
     private fun handleGarbageType(gb: Garbage, tile: Tile, ship: Ship) {
@@ -150,7 +129,7 @@ class CorporationManager(private val simData: SimulationData) {
                     it.capacityInfo[GarbageType.PLASTIC]?.second != 0
                 }
                 if (checkEnoughShipsForPlasticRemoval(tile, plasticShips)) {
-                    collectPlasticTogether(tile, plasticShips)
+                    collectGarbageOnTile(gb, ship)
                 }
                 false
             }
