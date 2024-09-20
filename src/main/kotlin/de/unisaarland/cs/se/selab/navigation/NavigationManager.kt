@@ -472,9 +472,8 @@ class NavigationManager(
         val maxDistance = speed / DEFAULT_DISTANCE
         // Calculate the path of the drift by going in the direction of the drift
         for (i in 0..<maxDistance) {
-            newTile = findTileInDirectionFrom(newTile, direction)
+            newTile = findTileInDirectionFrom(newTile, direction) ?: break
             val tileObject = findTile(newTile) ?: break
-            if (tileObject.type == TileType.LAND) break
             pathMap.add(tileObject)
         }
 
@@ -488,8 +487,18 @@ class NavigationManager(
      * @param direction : the direction to go to
      * @return the tile in the direction
      */
-    private fun findTileInDirectionFrom(location: Pair<Int, Int>, direction: Direction): Pair<Int, Int> {
-        var outLocation = Pair(-1, -1)
+    private fun findTileInDirectionFrom(location: Pair<Int, Int>, direction: Direction): Pair<Int, Int>? {
+        // check if this tile even exists
+        val outLocation = findTileInDirectionFromHelper(location, direction)
+        val tile = findTile(outLocation)
+        if (tile == null || tile.type == TileType.LAND) {
+            return null
+        }
+        return outLocation
+    }
+
+    private fun findTileInDirectionFromHelper(location: Pair<Int, Int>, direction: Direction): Pair<Int, Int> {
+        var outLocation: Pair<Int, Int>? = null
         when (direction) {
             Direction.EAST -> outLocation = Pair(location.first + 1, location.second)
             Direction.WEST -> outLocation = Pair(location.first - 1, location.second)
@@ -518,11 +527,6 @@ class NavigationManager(
                     Pair(location.first, location.second + 1)
                 }
         }
-        // check if this tile even exists
-        if (findTile(outLocation) == null) {
-            return location
-        }
-
         return outLocation
     }
 
