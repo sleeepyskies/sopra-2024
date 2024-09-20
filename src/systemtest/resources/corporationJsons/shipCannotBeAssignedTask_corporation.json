@@ -21,7 +21,7 @@
       "location": 7,
       "maxVelocity": 100,
       "acceleration": 25,
-      "fuelCapacity": 3000,
+      "fuelCapacity": 3600,
       "fuelConsumption": 10,
       "visibilityRange": 5
     }
