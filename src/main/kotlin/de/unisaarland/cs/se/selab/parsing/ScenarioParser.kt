@@ -11,6 +11,7 @@ import de.unisaarland.cs.se.selab.assets.RewardType
 import de.unisaarland.cs.se.selab.assets.StormEvent
 import de.unisaarland.cs.se.selab.assets.Task
 import de.unisaarland.cs.se.selab.assets.TaskType
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -44,6 +45,7 @@ class ScenarioParser(
 
     // debug logger
     // private val log: Log = LogFactory.getLog("debugger")
+    private val log = KotlinLogging.logger("debugger")
 
     // parser helper
     private val helper = ParserHelper()
@@ -80,22 +82,20 @@ class ScenarioParser(
         // success variable
         var success = true
 
-        var ex1: IOException? = null
-        var ex2: JSONException? = null
-
         // create scenario JSON object
         val scenarioJSONObject = try {
             JSONObject(File(scenarioFilepath).readText())
         } catch (e: IOException) {
-            ex1 = e
+            log.error(e) { "SCENARIO PARSER: The file could not be read." }
             return false
         } catch (e: JSONException) {
-            ex2 = e
+            log.error(e) { "SCENARIO PARSER: The file is not a valid JSON." }
             return false
         }
 
         // validate scenario JSON against schema
         if (helper.validateSchema(scenarioJSONObject, this.scenarioSchema)) {
+            log.error { "SCENARIO PARSER: The file does not match the schema." }
             success = false
         }
 
@@ -132,6 +132,7 @@ class ScenarioParser(
 
             // validate event JSON against schema
             if (helper.validateSchema(eventJSON, this.eventSchema)) {
+                log.error { "SCENARIO PARSER: An event does not match the schema." }
                 return false
             }
 
@@ -140,6 +141,10 @@ class ScenarioParser(
 
             // check event is valid and created correctly
             if (event == null || !validateEventProperties(event)) {
+                log.error {
+                    "SCENARIO PARSER: An event does not have a " +
+                        "unique ID or could not be correctly instantiated."
+                }
                 return false
             } else {
                 // event is valid, add to list
@@ -163,6 +168,7 @@ class ScenarioParser(
 
             // validate garbage JSON against schema
             if (helper.validateSchema(garbageJSON, this.garbageSchema)) {
+                log.error { "SCENARIO PARSER: The garbage do not match the schema." }
                 return false
             }
 
@@ -171,6 +177,10 @@ class ScenarioParser(
 
             // check garbage is valid and created correctly
             if (garbage == null || !validateGarbageProperties(garbage)) {
+                log.error {
+                    "SCENARIO PARSER: A garbage does not have a unique ID" +
+                        " or could not be correctly instantiated."
+                }
                 return false
             }
 
@@ -187,6 +197,7 @@ class ScenarioParser(
                 val garbageList = this.tileXYtoGarbage.getOrPut(locationXY) { mutableListOf() }
                 garbageList.add(garbage)
             } else {
+                log.error { "SCENARIO PARSER: A garbage does not have a valid location." }
                 return false
             }
         }
@@ -206,6 +217,7 @@ class ScenarioParser(
 
             // validate task JSON against schema
             if (helper.validateSchema(taskJSON, this.taskSchema)) {
+                log.error { "SCENARIO PARSER: The tasks do not match the schema." }
                 return false
             }
 
@@ -214,6 +226,10 @@ class ScenarioParser(
 
             // check task is valid and created correctly
             if (task == null || !validateTaskProperties(task)) {
+                log.error {
+                    "SCENARIO PARSER: A task does not have a unique " +
+                        "ID or could not be correctly instantiated."
+                }
                 return false
             }
 
@@ -238,6 +254,7 @@ class ScenarioParser(
 
             // validate reward JSON against schema
             if (helper.validateSchema(rewardJSON, this.rewardSchema)) {
+                log.error { "SCENARIO PARSER: The rewards do not match the schema." }
                 return false
             }
 
@@ -246,6 +263,10 @@ class ScenarioParser(
 
             // check reward is valid and created correctly
             if (reward == null || !validateRewardProperties(reward)) {
+                log.error {
+                    "SCENARIO PARSER: A reward does not have a unique " +
+                        "ID or could not be correctly instantiated."
+                }
                 return false
             }
 
@@ -473,6 +494,7 @@ class ScenarioParser(
 
     private fun isValidCollectTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.CONTAINER) {
+            log.error("SCENARIO PARSER: A collecting task has a reward of the wrong type.")
             return false
         }
         return true
@@ -480,6 +502,7 @@ class ScenarioParser(
 
     private fun isValidCoordinateTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.RADIO) {
+            log.error("SCENARIO PARSER: A coordinating task has a reward of the wrong type.")
             return false
         }
         return true
@@ -487,6 +510,7 @@ class ScenarioParser(
 
     private fun isValidExploreTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TELESCOPE) {
+            log.error("SCENARIO PARSER: An exploring task has a reward of the wrong type.")
             return false
         }
         return true
@@ -494,6 +518,7 @@ class ScenarioParser(
 
     private fun isValidFindTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TRACKING) {
+            log.error("SCENARIO PARSER: A finding task has a reward of the wrong type.")
             return false
         }
         return true

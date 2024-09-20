@@ -5,6 +5,7 @@ import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -21,6 +22,7 @@ class MapParser(
 ) {
     // debug logger
     // private val log: Log = LogFactory.getLog("debugger")
+    private val log = KotlinLogging.logger("debugger")
 
     // parser helper
     private val helper = ParserHelper()
@@ -46,9 +48,6 @@ class MapParser(
         const val THOUSAND = 1000
     }
 
-    var ex1: IOException? = null
-    var ex2: JSONException? = null
-
     /**
      * Parses map data from a file.
      *
@@ -62,15 +61,16 @@ class MapParser(
         val mapJSONObject = try {
             JSONObject(File(mapFilePath).readText())
         } catch (e: IOException) {
-            ex1 = e
+            log.error(e) { "MAP PARSER: The file could not be read." }
             return false
         } catch (e: JSONException) {
-            ex2 = e
+            log.error(e) { "MAP PARSER: The file is not a valid JSON." }
             return false
         }
 
         // validate map JSON against schema
         if (helper.validateSchema(mapJSONObject, this.mapSchema)) {
+            log.error { "MAP PARSER: The file does not match the schema." }
             success = false
         }
 
@@ -97,6 +97,7 @@ class MapParser(
 
             // validate garbage JSON against schema
             if (helper.validateSchema(tileJSON, this.tileSchema)) {
+                log.error { "MAP PARSER: The tile do not match the schema." }
                 return false
             }
 
@@ -105,6 +106,10 @@ class MapParser(
 
             // check garbage is valid and created correctly
             if (tile == null || !validateTileProperties(tile)) {
+                log.error {
+                    "MAP PARSER: A tile does not have a unique ID" +
+                        " or could not be correctly instantiated."
+                }
                 return false
             }
 
@@ -180,6 +185,7 @@ class MapParser(
         for ((location, tile) in this.map) {
             val neighbors = getTilesNeighbors(location)
             if (!validateNeighbors(tile, neighbors)) {
+                log.error { "MAP PARSER: Tile ${tile.id} does not have correct neighbor tile types." }
                 return false
             }
         }
