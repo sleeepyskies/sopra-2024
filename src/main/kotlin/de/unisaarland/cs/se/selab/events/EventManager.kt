@@ -143,19 +143,41 @@ class EventManager(private val simulationData: SimulationData) {
         val garbageOfAffectedTile = tile.getGarbageByLowestID()
         val tileToBeUpdate = mutableListOf<Tile>()
         val tilesToDriftGarbage = simulationData.navigationManager.calculateDrift(coordinates, direction, speed)
+        println("TILES" + tilesToDriftGarbage.map { it.id })
         for (garbage in garbageOfAffectedTile) {
             for (currentTile in tilesToDriftGarbage) {
-                if (currentTile.canGarbageFitOnTile(garbage)) {
-                    currentTile.addArrivingGarbageToTile(garbage)
-                    garbage.location = currentTile.location
-                    garbage.tileId = currentTile.id
-                    tile.removeGarbageFromTile(garbage)
-                    tileToBeUpdate.add(currentTile)
+                val tileToBeUpdated = driftGarbageIfCanFit(tile, currentTile, garbage, tileToBeUpdate)
+                if (tileToBeUpdated != null) {
+                    tileToBeUpdate.add(tileToBeUpdated)
+                    break
                 }
             }
         }
-        return tilesToDriftGarbage
+        return tileToBeUpdate
     }
+
+    private fun driftGarbageIfCanFit(
+        tile: Tile,
+        currentTile: Tile,
+        garbage: Garbage,
+        tileToBeUpdate: MutableList<Tile>
+    ): Tile? {
+        if (currentTile.canGarbageFitOnTile(garbage)) {
+            tile.removeGarbageFromTile(garbage)
+            // Logger.currentDriftGarbage(garbage.type.toString(), garbage.id, garbage.amount, tile.id, currentTile.id)
+            if (currentTile.type == TileType.DEEP_OCEAN && garbage.type == GarbageType.CHEMICALS) {
+                simulationData.garbage.remove(garbage)
+                return null
+            }
+            currentTile.addArrivingGarbageToTile(garbage)
+            garbage.location = currentTile.location
+            garbage.tileId = currentTile.id
+            tileToBeUpdate.add(currentTile)
+            return currentTile
+        }
+        return null
+    }
+
     private fun applyPirateAttack(event: PirateAttackEvent) {
         val shipID = event.shipID
         val ship = simulationData.ships.find { it.id == shipID } ?: return

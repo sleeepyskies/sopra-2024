@@ -50,8 +50,6 @@ class CorporationManager(private val simData: SimulationData) {
         scanAll(corporation.ships, corporation)
         corporation.ships.sortedBy { it.id }.forEach {
             val isOnRestrictedTile = checkRestriction(it.location)
-            val shipMaxTravelDistance =
-                (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
             // determine behavior will return cor a collecting ship the tiles that still need assignment
 
             val possibleLocationsToMove = determineBehavior(it, corporation)
@@ -63,8 +61,14 @@ class CorporationManager(private val simData: SimulationData) {
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Int>
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove.first()
+                    val shipMaxTravelDistance =
+                        (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
-                    tileInfoToMove = Pair(Pair(outOfRestrictionTile, tileIdOfTile), shipMaxTravelDistance)
+                    if (tileIdOfTile != it.tileId) {
+                        tileInfoToMove = Pair(Pair(outOfRestrictionTile, tileIdOfTile), shipMaxTravelDistance)
+                    } else {
+                        tileInfoToMove = Pair(Pair(it.location, it.tileId), 0)
+                    }
                 } else {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                         it.location,

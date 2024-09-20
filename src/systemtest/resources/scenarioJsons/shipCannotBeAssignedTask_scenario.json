@@ -5,7 +5,7 @@
     {
       "id": 1,
       "type": "FIND",
-      "tick": 5,
+      "tick": 6,
       "shipID": 1,
       "targetTile": 3,
       "rewardID": 1,
