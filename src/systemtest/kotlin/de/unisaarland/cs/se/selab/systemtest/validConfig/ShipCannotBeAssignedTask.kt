@@ -31,68 +31,63 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
     }
 
     private suspend fun tick0() {
-        // ship has 3000 fuel
+        // ship has 3600 fuel
         // Tick start
         assertNextLine("Simulation Info: Tick 0 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 3.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 3.") // 3400 fuel, tile 3
         skipLines(4)
     }
 
     private suspend fun tick1() {
-        // ship has 2800 fuel
         // Tick start
         assertNextLine("Simulation Info: Tick 1 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 50 to tile 16.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 50 to tile 16.") // 3000 fuel, tile 16
         skipLines(4)
     }
 
     private suspend fun tick2() {
-        // ship has 2400 fuel
         // Tick start
         assertNextLine("Simulation Info: Tick 2 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 75 to tile 5.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 75 to tile 5.") // 2400 fuel, tile 5
         skipLines(4)
     }
 
     private suspend fun tick3() {
-        // ship has 1800
         // Tick start
         assertNextLine("Simulation Info: Tick 3 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.") // 1800 fuel, tile 16
         skipLines(4)
     }
 
     private suspend fun tick4() {
-        // ship has 1200
         // Tick start
         assertNextLine("Simulation Info: Tick 4 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.") // 1200 fuel, tile 5
         skipLines(4)
     }
 
     private suspend fun tick5() {
-        // ship has 600
         // Tick start
         assertNextLine("Simulation Info: Tick 5 started.")
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.") // 600 fuel, tile 16
         skipLines(4)
     }
 
