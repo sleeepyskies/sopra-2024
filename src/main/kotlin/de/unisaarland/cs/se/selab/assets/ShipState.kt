@@ -28,6 +28,7 @@ enum class ShipState {
      * The ship is currently tasked with a mission.
      */
     TASKED,
+    IS_COOPERATING,
 
     REFUELING,
     UNLOADING,

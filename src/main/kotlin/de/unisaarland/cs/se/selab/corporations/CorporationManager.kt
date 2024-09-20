@@ -8,6 +8,7 @@ import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.ShipType
 import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.Tile
 import kotlin.math.min
 
@@ -96,6 +97,31 @@ class CorporationManager(private val simData: SimulationData) {
         corporation.visibleShips.clear()
         corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
         corporation.visibleGarbage.clear()
+        updateTasks()
+    }
+    private fun updateTasks() {
+        simData.activeTasks.forEach {
+            val taskShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
+            when (it.type) {
+                TaskType.FIND -> {
+                    if (it.targetTileId == taskShip?.tileId &&
+                        simData.navigationManager.findTile(it.targetTileId)?.currentGarbage?.isNotEmpty() == true
+                    ) {
+                        it.isCompleted = true
+                    }
+                }
+                TaskType.COORDINATE -> {
+                    if (it.targetTileId == taskShip?.tileId) {
+                        taskShip.state = ShipState.IS_COOPERATING
+                    }
+                }
+                else -> {
+                    if (it.targetTileId == taskShip?.tileId) {
+                        it.isCompleted = true
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -130,8 +156,9 @@ class CorporationManager(private val simData: SimulationData) {
                 }
                 if (checkEnoughShipsForPlasticRemoval(tile, plasticShips)) {
                     collectGarbageOnTile(gb, ship)
+                } else {
+                    false
                 }
-                false
             }
             GarbageType.OIL, GarbageType.CHEMICALS -> {
                 collectGarbageOnTile(gb, ship)
@@ -163,6 +190,12 @@ class CorporationManager(private val simData: SimulationData) {
                     Logger.cooperate(corporation.id, targetsCorp.id, it.id, target.id)
                 }
             }
+        }
+        corporation.ships.filter { it.state == ShipState.IS_COOPERATING }.forEach {
+            val targetCorps = simData.corporations.filter { corp -> corp.harbors.contains(it.location) }
+            targetCorps.forEach { corp -> shareInformation(corp, getInfo(it.corporation)) }
+            simData.activeTasks.find { task -> task.assignedShipId == it.id }?.isCompleted = true
+            it.state = ShipState.DEFAULT
         }
     }
 
@@ -358,6 +391,9 @@ class CorporationManager(private val simData: SimulationData) {
                 ShipState.TASKED -> {
                     ShipState.TASKED
                 }
+                ShipState.IS_COOPERATING -> {
+                    ShipState.IS_COOPERATING
+                }
                 else -> {
                     ShipState.NEED_UNLOADING
                 }
@@ -394,6 +430,11 @@ class CorporationManager(private val simData: SimulationData) {
         val shipMaxTravelDistance =
             (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
         if (checkRestriction(ship.location)) {
+            if (ship.state == ShipState.IS_COOPERATING) {
+                ship.state = ShipState.TASKED
+            } else {
+                ship.state = ShipState.DEFAULT
+            }
             return listOf(
                 simData.navigationManager.getDestinationOutOfRestriction(
                     ship.location,
@@ -416,6 +457,10 @@ class CorporationManager(private val simData: SimulationData) {
             }
             ShipState.TASKED -> {
                 handleTaskedState(ship)
+            }
+            ShipState.IS_COOPERATING -> {
+                ship.state = ShipState.DEFAULT
+                listOf(shipLocation)
             }
             ShipState.DEFAULT -> {
                 handleDefaultState(ship, shipMaxTravelDistance, corporation)

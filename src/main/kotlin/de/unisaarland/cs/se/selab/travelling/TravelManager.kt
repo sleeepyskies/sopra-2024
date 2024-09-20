@@ -5,6 +5,7 @@ import de.unisaarland.cs.se.selab.assets.Direction
 import de.unisaarland.cs.se.selab.assets.Garbage
 import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.SimulationData
+import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.Tile
 
 /**
@@ -44,6 +45,27 @@ class TravelManager(private val simData: SimulationData) {
         }
         // update all tiles that have garbage arriving
         updateTiles(tilesToUpdate)
+        updateTasks()
+    }
+    private fun updateTasks() {
+        simData.activeTasks.forEach {
+            val taskShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
+            when (it.type) {
+                TaskType.FIND -> {
+                    if (it.targetTileId == taskShip?.tileId &&
+                        simData.navigationManager.findTile(it.targetTileId)?.currentGarbage?.isNotEmpty() == true
+                    ) {
+                        it.isCompleted = true
+                    }
+                }
+                TaskType.EXPLORE -> {
+                    if (it.targetTileId == taskShip?.tileId) {
+                        it.isCompleted = true
+                    }
+                }
+                else -> {}
+            }
+        }
     }
 
     /**
@@ -210,6 +232,7 @@ class TravelManager(private val simData: SimulationData) {
                 driftCapacity--
             }
         }
+        updateTasks()
     }
 
     /**

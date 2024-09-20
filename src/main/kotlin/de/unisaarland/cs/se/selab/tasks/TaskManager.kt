@@ -45,7 +45,7 @@ class TaskManager(private val simData: SimulationData) {
             val assignedShip = simData.ships.find { it.id == task.assignedShipId }
 
             // check if is task is fulfilled
-            if (assignedShip != null && task.taskIsFulfilled(assignedShip.tileId)) {
+            if (assignedShip != null && task.isCompleted) {
                 // update assignedShips taskID
                 assignedShip.currentTaskId = -1
 

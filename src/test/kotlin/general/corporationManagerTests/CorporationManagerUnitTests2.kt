@@ -356,37 +356,37 @@ class CorporationManagerUnitTests2 {
     private fun setupShipsAndGarbage(): List<Ship> {
         val collecting1corp1 = Ship(
             2, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(1, 1),
-            Direction.EAST, 15, 10, 10, 10, 1000,
+            Direction.EAST, 7, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val ableToCollectShip = Ship(
             3, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(0, 2),
-            Direction.EAST, 5, 10, 10, 10, 1000,
+            Direction.EAST, 11, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.COORDINATING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val cantCollectShip = Ship(
             4, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(0, 2),
-            Direction.EAST, 5, 10, 10, 10, 1000,
+            Direction.EAST, 11, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val hasToWaitShip = Ship(
             5, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(0, 3),
-            Direction.EAST, 5, 10, 10, 10, 1000,
+            Direction.EAST, 16, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val collectTogetherShip1 = Ship(
             6, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(0, 1),
-            Direction.EAST, 5, 10, 10, 10, 1000,
+            Direction.EAST, 6, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         val collectTogetherShip2 = Ship(
             7, "Federico_Gravina", 0, mutableMapOf(), 10, Pair(0, 1),
-            Direction.EAST, 5, 10, 10, 10, 1000,
+            Direction.EAST, 6, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
@@ -423,7 +423,7 @@ class CorporationManagerUnitTests2 {
         assertEquals(0, t7.currentGarbage.size)
         assertEquals(0, t11.currentGarbage.size)
         assertEquals(1000, t16.currentGarbage[0].amount)
-        // assertEquals(0, t6.currentGarbage.size)
+        assertEquals(0, t6.currentGarbage.size)
         assertEquals(0, ships[0].capacityInfo[GarbageType.OIL]?.first ?: 1000)
         assertEquals(ships[1].capacityInfo[GarbageType.CHEMICALS]?.first ?: 1000, 0)
         assertTrue(ships[2].capacityInfo.isEmpty())

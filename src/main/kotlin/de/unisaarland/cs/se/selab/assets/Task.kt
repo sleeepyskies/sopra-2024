@@ -20,13 +20,5 @@ data class Task(
     val rewardId: Int,
     val rewardShip: Int
 ) {
-    /**
-     * Checks if the task is fulfilled by comparing the target tile ID with the ship's current tile ID.
-     *
-     * @param shipTileId The current tile ID of the ship.
-     * @return `true` if the task is fulfilled, `false` otherwise.
-     */
-    fun taskIsFulfilled(shipTileId: Int): Boolean {
-        return targetTileId == shipTileId
-    }
+    var isCompleted = false
 }
