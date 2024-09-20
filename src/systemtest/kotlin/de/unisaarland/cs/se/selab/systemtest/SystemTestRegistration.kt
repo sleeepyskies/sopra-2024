@@ -17,7 +17,6 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        /*
         manager.registerTest(ExampleSystemTest())
         manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
@@ -39,7 +38,6 @@ object SystemTestRegistration {
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
-        */
         manager.registerTest(InvalidCurrent())
     }
 
