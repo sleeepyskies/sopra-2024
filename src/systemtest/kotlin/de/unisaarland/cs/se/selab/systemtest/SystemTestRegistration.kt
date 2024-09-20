@@ -36,6 +36,8 @@ object SystemTestRegistration {
         manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
+        manager.registerTest(ShipCannotCollectGarbageWithContainer())
+        manager.registerTest(InvalidCurrent())
     }
 
     /**

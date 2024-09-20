@@ -6,12 +6,12 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
  * Sys test.
  */
 class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
-    override val description = "A ship has a task scheduled, but cannot be assigned the task since it needs to refuel.s"
+    override val description = "A ship has a task scheduled, but cannot be assigned the task since it needs to refuel."
     override val corporations = "corporationJsons/shipCannotBeAssignedTask_corporation.json"
     override val scenario = "scenarioJsons/shipCannotBeAssignedTask_scenario.json"
     override val map = "mapFiles/obamna.json"
     override val name = "ShipCannotBeAssignedTask"
-    override val maxTicks = 9
+    override val maxTicks = 7 // was 9 before
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -97,9 +97,12 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Tick 6 started.")
 
         // Corporation Phase
+        skipLines(3)
+        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
+        assertNextLine("Refueling: Ship 1 refueled at harbor 5.")
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.")
-        skipLines(4)
+
+        // made it so that refuel logic is based on how much a ship can move, not how much it would move
     }
 
     private suspend fun tick7() {

@@ -79,7 +79,6 @@ class CorporationManager(private val simData: SimulationData) {
                         anticipatedVelocity / VELOCITY_DIVISOR
                     )
                 }
-
                 if (tileInfoToMove.second != 0) {
                     it.updateVelocity()
                     it.currentFuel -= tileInfoToMove.second * it.fuelConsumptionRate
@@ -147,7 +146,17 @@ class CorporationManager(private val simData: SimulationData) {
 
     private fun processGarbageOnTile(tile: Tile, ship: Ship, corporation: Corporation) {
         val gbList = tile.getGarbageByLowestID()
-        gbList.forEach { gb ->
+        gbList.filter { it.type == GarbageType.PLASTIC }.forEach { gb ->
+            if (corporation.collectableGarbageTypes.contains(gb.type) && ship.capacityInfo.keys.contains(gb.type)) {
+                handleGarbageType(gb, tile, ship)
+            }
+        }
+        gbList.filter { it.type == GarbageType.OIL }.forEach { gb ->
+            if (corporation.collectableGarbageTypes.contains(gb.type) && ship.capacityInfo.keys.contains(gb.type)) {
+                handleGarbageType(gb, tile, ship)
+            }
+        }
+        gbList.filter { it.type == GarbageType.CHEMICALS }.forEach { gb ->
             if (corporation.collectableGarbageTypes.contains(gb.type) && ship.capacityInfo.keys.contains(gb.type)) {
                 handleGarbageType(gb, tile, ship)
             }
@@ -455,18 +464,11 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
                 corporation.harbors
             }
-            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
+            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING, ShipState.IS_COOPERATING -> {
                 mutableListOf(shipLocation)
-            }
-            ShipState.WAITING_FOR_PLASTIC -> {
-                listOf(shipLocation)
             }
             ShipState.TASKED -> {
                 handleTaskedState(ship)
-            }
-            ShipState.IS_COOPERATING -> {
-                ship.state = ShipState.DEFAULT
-                listOf(shipLocation)
             }
             ShipState.DEFAULT -> {
                 handleDefaultState(ship, shipMaxTravelDistance, corporation)
@@ -564,6 +566,8 @@ class CorporationManager(private val simData: SimulationData) {
         // location, shipId-corpId is the order for the first map
         corporation.visibleShips.putAll(info.first)
         corporation.visibleGarbage.putAll(info.second)
+        val removedGarbage = corporation.garbage.filter { !info.second.containsKey(it.key) }
+        corporation.garbage.keys.removeAll(removedGarbage.keys)
         return true
     }
 
