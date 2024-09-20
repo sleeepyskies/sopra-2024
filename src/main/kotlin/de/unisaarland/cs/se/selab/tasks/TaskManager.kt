@@ -142,6 +142,7 @@ class TaskManager(private val simData: SimulationData) {
                 !canReachTask(ship, task)
             )
     }
+    // lol
 
     /**
      * Checks if the given ship has a valid path to the task's destination.
