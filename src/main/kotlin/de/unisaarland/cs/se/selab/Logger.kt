@@ -42,6 +42,7 @@ object Logger {
      */
     fun initInfo(filePath: String) {
         outputBuffer.println("Initialization Info: $filePath successfully parsed and validated.")
+        outputBuffer.flush()
     }
 
     /**
@@ -57,6 +58,7 @@ object Logger {
      */
     fun simulationStart() {
         outputBuffer.println("Simulation Info: Simulation started.")
+        outputBuffer.flush()
     }
 
     /**
@@ -64,6 +66,7 @@ object Logger {
      */
     fun simulationEnd() {
         outputBuffer.println("Simulation Info: Simulation ended.")
+        outputBuffer.flush()
     }
 
     /**
@@ -71,6 +74,7 @@ object Logger {
      */
     fun simTick(tick: Int) {
         outputBuffer.println("Simulation Info: Tick $tick started.")
+        outputBuffer.flush()
     }
 
     /**
@@ -78,6 +82,7 @@ object Logger {
      */
     fun corporationActionMove(id: Int) {
         outputBuffer.println("Corporation Action: Corporation $id is starting to move its ships.")
+        outputBuffer.flush()
     }
 
     /**
@@ -85,6 +90,7 @@ object Logger {
      */
     fun shipMovement(shipId: Int, speed: Int, tileId: Int) {
         outputBuffer.println("Ship Movement: Ship $shipId moved with speed $speed to tile $tileId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -92,6 +98,7 @@ object Logger {
      */
     fun corporationActionCollectGarbage(corpId: Int) {
         outputBuffer.println("Corporation Action: Corporation $corpId is starting to collect garbage.")
+        outputBuffer.flush()
     }
 
     /**
@@ -118,6 +125,7 @@ object Logger {
             GarbageType.NONE -> {}
         }
         outputBuffer.println("Garbage Collection: Ship $shipId collected $amt of garbage $garbageType with $garbageId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -127,6 +135,7 @@ object Logger {
         outputBuffer.println(
             "Corporation Action: Corporation $corpId is starting to cooperate with other corporations."
         )
+        outputBuffer.flush()
     }
 
     /**
@@ -137,6 +146,7 @@ object Logger {
             "Cooperation: Corporation $corpId " +
                 "cooperated with corporation $otherCorpId with ship $shipId to ship $otherShipId."
         )
+        outputBuffer.flush()
     }
 
     /**
@@ -144,6 +154,7 @@ object Logger {
      */
     fun corporationActionRefuel(corpId: Int) {
         outputBuffer.println("Corporation Action: Corporation $corpId is starting to refuel.")
+        outputBuffer.flush()
     }
 
     /**
@@ -151,6 +162,7 @@ object Logger {
      */
     fun refuel(shipId: Int, tileId: Int) {
         outputBuffer.println("Refueling: Ship $shipId refueled at harbor $tileId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -158,6 +170,7 @@ object Logger {
      */
     fun unload(shipId: Int, amt: Int, garbageType: String, tileId: Int) {
         outputBuffer.println("Unload: Ship $shipId unloaded $amt of garbage $garbageType at harbor $tileId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -165,6 +178,7 @@ object Logger {
      */
     fun corporationActionFinished(corpId: Int) {
         outputBuffer.println("Corporation Action: Corporation $corpId finished its actions.")
+        outputBuffer.flush()
     }
 
     /**
@@ -175,6 +189,7 @@ object Logger {
             "Current Drift: $garbageType $garbageId " +
                 "with amount $amt drifted from tile $startTileId to tile $endTileId."
         )
+        outputBuffer.flush()
     }
 
     /**
@@ -182,6 +197,7 @@ object Logger {
      */
     fun currentShipDrift(shipId: Int, startTileId: Int, endTileId: Int) {
         outputBuffer.println("Current Drift: Ship $shipId drifted from tile $startTileId to tile $endTileId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -189,6 +205,7 @@ object Logger {
      */
     fun event(eventId: Int, eventType: String) {
         outputBuffer.println("Event: Event $eventId of type $eventType happened.")
+        outputBuffer.flush()
     }
 
     /**
@@ -198,6 +215,7 @@ object Logger {
         outputBuffer.println(
             "Corporation Action: Corporation $corpId attached tracker to garbage $garbageId with ship $shipId."
         )
+        outputBuffer.flush()
     }
 
     /**
@@ -205,6 +223,7 @@ object Logger {
      */
     fun assignTask(taskId: Int, type: TaskType, shipId: Int, tileId: Int) {
         outputBuffer.println("Task: Task $taskId of type $type with ship $shipId is added with destination $tileId.")
+        outputBuffer.flush()
     }
 
     /**
@@ -212,6 +231,7 @@ object Logger {
      */
     fun grantReward(taskId: Int, shipId: Int, type: RewardType) {
         outputBuffer.println("Reward: Task $taskId: Ship $shipId received reward of type $type.")
+        outputBuffer.flush()
     }
 
     /**
@@ -219,6 +239,7 @@ object Logger {
      */
     fun simulationInfoStatistics() {
         outputBuffer.println("Simulation Info: Simulation statistics are calculated.")
+        outputBuffer.flush()
         simulationStatsCollectedGarbage()
         simulationStatsTotalPlastic()
         simulationStatsTotalOil()
@@ -234,6 +255,7 @@ object Logger {
         for ((corpId, garbageInfo) in sortedByLowestShipIdMap) {
             val sum = garbageInfo.first + garbageInfo.second + garbageInfo.third
             outputBuffer.println("Simulation Statistics: Corporation $corpId collected $sum of garbage.")
+            outputBuffer.flush()
         }
     }
 
@@ -246,6 +268,7 @@ object Logger {
             plasticAmount += garbageInfo.first
         }
         outputBuffer.println("Simulation Statistics: Total amount of plastic collected: $plasticAmount.")
+        outputBuffer.flush()
     }
 
     /**
@@ -257,6 +280,7 @@ object Logger {
             oilAmount += garbageInfo.second
         }
         outputBuffer.println("Simulation Statistics: Total amount of oil collected: $oilAmount.")
+        outputBuffer.flush()
     }
 
     /**
@@ -268,6 +292,7 @@ object Logger {
             chemicalAmount += garbageInfo.third
         }
         outputBuffer.println("Simulation Statistics: Total amount of chemicals collected: $chemicalAmount.")
+        outputBuffer.flush()
     }
 
     /**
@@ -278,5 +303,6 @@ object Logger {
             "Simulation Statistics: " +
                 "Total amount of garbage still in the ocean: $corporationTotalUncollectedGarbage."
         )
+        outputBuffer.flush()
     }
 }

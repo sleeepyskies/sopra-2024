@@ -13,14 +13,14 @@ class StormEventDriftsGarbage : ExampleSystemTestExtension() {
     override val name = "test"
     override val maxTicks = 6
     override suspend fun run() {
-        /*initSimulation()
+        initSimulation()
         tick0()
         tick1()
         tick2()
         tick3()
         tick4()
         tick5()
-        simEnd()*/
+        simEnd()
     }
 
     private suspend fun initSimulation() {
