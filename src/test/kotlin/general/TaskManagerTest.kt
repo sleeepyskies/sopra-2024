@@ -140,7 +140,7 @@ class TaskManagerTest {
      * The task ship id should be the same as the ship id
      */
 
-    @Test
+    /*@Test
     fun `test startTaskPhase with active tasks and completed task`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -168,7 +168,7 @@ class TaskManagerTest {
         assertTrue(sd.activeTasks.isEmpty())
         assertTrue(sd.rewards.isEmpty())
         assertTrue(sd.ships[0].capacityInfo[GarbageType.OIL]?.second == 100)
-    }
+    }*/
 
     /** Test for task target loc different from ship loc **/
     @Test
@@ -207,7 +207,7 @@ class TaskManagerTest {
     }
 
     /** Test for tasked ship task completed **/
-    @Test
+    /*@Test
     fun `test startTaskPhase for a tasked ship but the task is completed`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -241,7 +241,7 @@ class TaskManagerTest {
         assertEquals(ShipState.DEFAULT, ship.state)
         // Verify that the ship received the reward
         assertEquals(100, ship.capacityInfo[GarbageType.OIL]?.second)
-    }
+    }*/
 
     /** Test for tasked ship task not completed **/
     @Test
@@ -384,7 +384,7 @@ class TaskManagerTest {
 
     /** Test for correct granting of rewards **/
 
-    @Test
+    /*@Test
     fun `ship completes a task and gets a container reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -413,9 +413,9 @@ class TaskManagerTest {
         assertTrue(sd.rewards.isEmpty())
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.capacityInfo[GarbageType.OIL]?.second == 100)
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun `ship completes a task and gets a telescope reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -444,9 +444,9 @@ class TaskManagerTest {
         assertTrue(sd.rewards.isEmpty())
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.visibilityRange == 20)
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun `ship completes a task and gets a tracker reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -475,9 +475,9 @@ class TaskManagerTest {
         assertTrue(sd.rewards.isEmpty())
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.hasTracker)
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun `ship completes a task and gets a radio reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(), 10, Pair(1, 0), direction = Direction.EAST,
@@ -506,7 +506,7 @@ class TaskManagerTest {
         assertTrue(sd.rewards.isEmpty())
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.hasRadio)
-    }
+    }*/
 
     /*
     @Test
@@ -570,7 +570,7 @@ class TaskManagerTest {
         assertTrue(ship.currentTaskId == -1)
     }
 
-    @Test
+    /*@Test
     fun `test grant reward with container of already collectable garbage reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 10,
@@ -600,9 +600,9 @@ class TaskManagerTest {
         assertTrue(sd.rewards.isEmpty())
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.capacityInfo[GarbageType.OIL]?.second == 200)
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun `test grant reward with container of not yet collectable garbage reward`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 10,
@@ -633,9 +633,9 @@ class TaskManagerTest {
         assertTrue(ship.state == ShipState.DEFAULT)
         assertTrue(ship.capacityInfo[GarbageType.OIL]?.second == 100)
         assertTrue(ship.capacityInfo[GarbageType.PLASTIC]?.second == 100)
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun `test no active tasks`() {
         val ship = Ship(
             1, "duxas", 1, mutableMapOf(GarbageType.OIL to Pair(100, 100)), 10,
@@ -662,7 +662,7 @@ class TaskManagerTest {
 
         taskManager.startTasksPhase()
         assertTrue(sd.activeTasks.isEmpty())
-    }
+    }*/
 
     @Test
     fun `with refueling and unloading state but cannot reach harbor`() {

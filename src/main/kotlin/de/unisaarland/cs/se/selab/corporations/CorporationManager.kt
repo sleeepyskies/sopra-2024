@@ -520,7 +520,10 @@ class CorporationManager(private val simData: SimulationData) {
             }
             ShipType.COORDINATING_SHIP -> {
                 if (corporation.visibleShips.isNotEmpty()) {
-                    return corporation.visibleShips.map { it.value.second }.toList()
+                    return corporation.visibleShips.filter {
+                        it.value.first != corporation.id &&
+                            it.value.first != corporation.lastCooperatedWith
+                    }.map { it.value.second }.toList()
                 }
                 listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance))
             }
