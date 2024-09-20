@@ -61,16 +61,17 @@ class CorporationManager(private val simData: SimulationData) {
                 isRestrictedAndNotOwnLocation
             ) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
-                val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Int>
+                val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove.first()
                     val shipMaxTravelDistance =
                         (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
+                    // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     tileInfoToMove =
                         Pair(
                             Pair(outOfRestrictionTile, tileIdOfTile),
-                            shipMaxTravelDistance
+                            Pair(shipMaxTravelDistance, tileIdOfTile)
                         )
                 } else {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
@@ -79,13 +80,15 @@ class CorporationManager(private val simData: SimulationData) {
                         anticipatedVelocity / VELOCITY_DIVISOR
                     )
                 }
-                if (tileInfoToMove.second != 0) {
+                if (tileInfoToMove.second.first != 0) {
                     it.updateVelocity()
-                    it.currentFuel -= tileInfoToMove.second * it.fuelConsumptionRate
+                    it.currentFuel -= tileInfoToMove.second.first * it.fuelConsumptionRate
                     // getting the target location, not the actual location that the ship will move this tick
                     // so that we can assign capacities to that target
                     // and no other ship will be assigned to that location
-                    gbAssignedAmountList.addAll(assignCapacityToGarbageList(tileInfoToMove.second, it.capacityInfo))
+                    gbAssignedAmountList.addAll(
+                        assignCapacityToGarbageList(tileInfoToMove.second.second, it.capacityInfo)
+                    )
                     shipMoveToLocation(it, tileInfoToMove.first)
                     Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
                     updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))

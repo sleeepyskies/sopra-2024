@@ -431,7 +431,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest1() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 0), 2), 10)
+        val checkValue = Pair(Pair(Pair(1, 0), 2), Pair(10, 2))
 
         // get start location and list of one neighbor
         val start = Pair(0, 0)
@@ -447,7 +447,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest2() {
         // define check value
-        val checkValue = Pair(Pair(Pair(0, 0), 1), 0)
+        val checkValue = Pair(Pair(Pair(0, 0), 1), Pair(0, 2))
 
         // get start location and list of one neighbor
         val start = Pair(0, 0)
@@ -463,7 +463,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest3() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 0), 2), 10)
+        val checkValue = Pair(Pair(Pair(1, 0), 2), Pair(10, 2))
 
         // get start location and list of one neighbor
         val start = Pair(0, 0)
@@ -479,7 +479,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest4() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 0), 2), 10)
+        val checkValue = Pair(Pair(Pair(1, 0), 2), Pair(10, 2))
 
         // get start location and list of three neighbors
         val start = Pair(0, 0)
@@ -497,7 +497,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest5() {
         // define check value
-        val checkValue = Pair(Pair(Pair(0, 1), 6), 10)
+        val checkValue = Pair(Pair(Pair(0, 1), 6), Pair(10, 17))
 
         // get start location and list of three neighbors
         val start = Pair(0, 0)
@@ -515,7 +515,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest6() {
         // define check value
-        val checkValue = Pair(Pair(Pair(0, 0), 1), 0)
+        val checkValue = Pair(Pair(Pair(0, 0), 1), Pair(0, 1))
 
         // get start location and list of two neighbors
         val start = Pair(0, 0)
@@ -532,7 +532,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest7() {
         // define check value
-        val checkValue = Pair(Pair(Pair(2, 1), 8), 20)
+        val checkValue = Pair(Pair(Pair(2, 1), 8), Pair(20, 3))
 
         // get start location and list two tiles
         val start = Pair(0, 0)
@@ -552,7 +552,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest8() {
         // define check value
-        val checkValue = Pair(Pair(Pair(1, 2), 12), 10)
+        val checkValue = Pair(Pair(Pair(1, 2), 12), Pair(10, 17))
 
         // get start location and list two tiles
         val start = Pair(2, 1)
@@ -576,7 +576,7 @@ class NavigationManagerTest1 {
     @Test
     fun shortestPathToLocationsTest9() {
         // define check value
-        val checkValue = Pair(Pair(Pair(2, 2), 13), 0)
+        val checkValue = Pair(Pair(Pair(2, 2), 13), Pair(0, 13))
 
         // get start location and list two tiles
         val start = Pair(2, 2) // LAND tile
