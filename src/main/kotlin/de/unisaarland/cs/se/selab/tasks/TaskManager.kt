@@ -138,7 +138,7 @@ class TaskManager(private val simData: SimulationData) {
                 ship.state == ShipState.REFUELING ||
                 ship.state == ShipState.REFUELING_AND_UNLOADING ||
                 !hasPathToTask(ship, task) ||
-                !canReachTaskAndHarbor(ship, task)
+                !canReachTask(ship, task)
             )
     }
 
@@ -171,37 +171,38 @@ class TaskManager(private val simData: SimulationData) {
     }
 
     /**
-     * Checks if the given ship has enough fuel to reach the task,
-     * as well as reach the closest home harbor from the task.
+     * Checks if the given ship has enough fuel to reach the task.
      * @param ship The ship to check for
      * @param task The task to check for
-     * @return true if the ship has a valid path, false otherwise
+     * @return true if the ship has enough fuel, false otherwise
      */
-    private fun canReachTaskAndHarbor(ship: Ship, task: Task): Boolean {
+    private fun canReachTask(ship: Ship, task: Task): Boolean {
         // get the ship's home harbors, we may use elvis since this is validated when parsing
-        val homeHarbors = this.simData.corporations.find { it.id == ship.corporation }?.harbors ?: listOf(Pair(0, 0))
+        // val homeHarbors = this.simData.corporations.find { it.id == ship.corporation }?.harbors ?: listOf(Pair(0, 0))
 
         // find the closest home harbor to the task location
+        /*
         val closestHarborID = this.simData.navigationManager.shortestPathToLocations(
             ship.location,
             homeHarbors,
             Int.MAX_VALUE - 1
         ).first.second
+        */
 
         // get tile instances
         val shipTile = this.simData.navigationManager.findTile(ship.tileId)
         val taskTile = this.simData.navigationManager.findTile(task.targetTileId)
-        val harborTile = this.simData.navigationManager.findTile(closestHarborID)
+        // val harborTile = this.simData.navigationManager.findTile(closestHarborID)
 
-        if (shipTile != null && taskTile != null && harborTile != null) {
+        if (shipTile != null && taskTile != null) { // && harborTile != null
             // get travel distance from ship location to task destination
             val fromShipToTask = this.simData.navigationManager.travelDistance(shipTile, taskTile)
 
             // get travel distance from task location to the closest home harbor
-            val fromTaskToHarbor = this.simData.navigationManager.travelDistance(taskTile, harborTile)
+            // val fromTaskToHarbor = this.simData.navigationManager.travelDistance(taskTile, harborTile)
 
             // find how much fuel it takes for the ship to travel this distance
-            val requiredFuel = (fromShipToTask + fromTaskToHarbor) * ship.fuelConsumptionRate
+            val requiredFuel = fromShipToTask * ship.fuelConsumptionRate
 
             // check if the ship this much fuel or more remaining
             return ship.currentFuel >= requiredFuel / DEFAULT_DISTANCE
