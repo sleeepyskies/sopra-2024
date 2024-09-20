@@ -53,7 +53,7 @@ class CorporationManager(private val simData: SimulationData) {
             val isOnRestrictedTile = checkRestriction(it.location)
             // determine behavior will return cor a collecting ship the tiles that still need assignment
 
-            val possibleLocationsToMove = determineBehavior(it, corporation)
+            val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
             val isOwnLocation = possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location
             val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0] != it.location
@@ -63,16 +63,15 @@ class CorporationManager(private val simData: SimulationData) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
-                    val outOfRestrictionTile = possibleLocationsToMove.first()
+                    val outOfRestrictionTile = possibleLocationsToMove[0]
                     val shipMaxTravelDistance =
                         (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
+                    // The tileID of the tile we actually have the destination set to
+                    // This is needed to make sure, we dont set our velocity to 0 until we reach that tile
                     tileInfoToMove =
-                        Pair(
-                            Pair(outOfRestrictionTile, tileIdOfTile),
-                            Pair(shipMaxTravelDistance, tileIdOfTile)
-                        )
+                        Pair(Pair(outOfRestrictionTile, tileIdOfTile), Pair(shipMaxTravelDistance, tileIdOfTile))
                 } else {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                         it.location,
@@ -91,6 +90,13 @@ class CorporationManager(private val simData: SimulationData) {
                     )
                     shipMoveToLocation(it, tileInfoToMove.first)
                     Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
+                    checkReachedDestinationAndSetVelocity(
+                        it,
+                        tileInfoToMove.first.second,
+                        tileInfoToMove.second.second,
+                        exploring,
+                        isOnRestrictedTile
+                    )
                     updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
                 } else {
                     it.currentVelocity = 0
@@ -106,6 +112,18 @@ class CorporationManager(private val simData: SimulationData) {
         corporation.visibleShips.clear()
         corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
         corporation.visibleGarbage.clear()
+    }
+
+    private fun checkReachedDestinationAndSetVelocity(
+        ship: Ship,
+        tileIdToMoveTo: Int,
+        actualDestination: Int,
+        exploring: Boolean,
+        restricted: Boolean
+    ) {
+        if (tileIdToMoveTo == actualDestination && !exploring && !restricted) {
+            ship.currentVelocity = 0
+        }
     }
     private fun updateTasks() {
         simData.activeTasks.forEach {
@@ -441,9 +459,13 @@ class CorporationManager(private val simData: SimulationData) {
      *
      * @param ship The ship whose behavior is being determined.
      * @param corporation The corporation to which the ship belongs.
-     * @return A list of possible locations for the ship to move to.
+     * @return A list of possible locations for the ship to move to, as well as a boolean
+     * indicating whether the ship is exploring (needed for not setting velocity).
      */
-    private fun determineBehavior(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
+    private fun determineBehavior(
+        ship: Ship,
+        corporation: Corporation
+    ): Pair<List<Pair<Int, Int>>, Boolean> {
         val shipLocation = ship.location
         val shipMaxTravelDistance =
             (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
@@ -453,25 +475,34 @@ class CorporationManager(private val simData: SimulationData) {
             } else {
                 ship.state = ShipState.DEFAULT
             }
-            return listOf(
-                simData.navigationManager.getDestinationOutOfRestriction(
-                    ship.location,
-                    shipMaxTravelDistance
-                )
+            return Pair(
+                listOf(
+                    simData.navigationManager.getDestinationOutOfRestriction(
+                        ship.location,
+                        shipMaxTravelDistance
+                    )
+                ),
+                false
             )
         }
-        if (checkShipOnHarborAndNeedsToRefuelOrUnload(ship, corporation).isNotEmpty()) return listOf(shipLocation)
+        if (checkShipOnHarborAndNeedsToRefuelOrUnload(
+                ship,
+                corporation
+            ).isNotEmpty()
+        ) {
+            return Pair(listOf(shipLocation), false)
+        }
         checkNeedRefuelOrUnload(ship, corporation)
 
         return when (ship.state) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
-                corporation.harbors
+                Pair(corporation.harbors, false)
             }
             ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING, ShipState.IS_COOPERATING -> {
-                mutableListOf(shipLocation)
+                Pair(mutableListOf(shipLocation), false)
             }
             ShipState.TASKED -> {
-                handleTaskedState(ship)
+                Pair(handleTaskedState(ship), false)
             }
             ShipState.DEFAULT -> {
                 handleDefaultState(ship, shipMaxTravelDistance, corporation)
@@ -507,7 +538,7 @@ class CorporationManager(private val simData: SimulationData) {
         ship: Ship,
         shipMaxTravelDistance: Int,
         corporation: Corporation
-    ): List<Pair<Int, Int>> {
+    ): Pair<List<Pair<Int, Int>>, Boolean> {
         return when (ship.type) {
             ShipType.COLLECTING_SHIP -> {
                 if (corporation.visibleGarbage.isNotEmpty()) {
@@ -519,27 +550,32 @@ class CorporationManager(private val simData: SimulationData) {
                         .filter { (k, _) -> getOnlyAssignableGarbagePredicate(k) }
                         .map { it.value.first }.toList()
                     if (out.isEmpty()) out = listOf(ship.location)
-                    return out
+                    return Pair(out, false)
                 }
-                listOf(ship.location)
+                Pair(listOf(ship.location), false)
             }
             ShipType.COORDINATING_SHIP -> {
-                if (corporation.visibleShips.isNotEmpty()) {
-                    return corporation.visibleShips.filter {
-                        it.value.first != corporation.id &&
+                val shipsToBeConsideredInVisibility = corporation.visibleShips
+                    .filter {
+                        it.value.first != corporation.lastCooperatedWith &&
                             it.value.first != corporation.lastCooperatedWith
-                    }.map { it.value.second }.toList()
+                    }
+                if (shipsToBeConsideredInVisibility.isNotEmpty()) {
+                    return Pair(shipsToBeConsideredInVisibility.map { it.value.second }.toList(), false)
                 }
-                listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance))
+                Pair(listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)), true)
             }
             ShipType.SCOUTING_SHIP -> {
                 if (corporation.visibleGarbage.isNotEmpty()) {
-                    return corporation.visibleGarbage.map { it.value.first }.toList()
+                    return Pair(corporation.visibleGarbage.map { it.value.first }.toList(), false)
                 }
                 if (corporation.garbage.isNotEmpty()) {
-                    return corporation.garbage.map { it.value.first }.toList()
+                    return Pair(corporation.garbage.map { it.value.first }.toList(), false)
                 }
-                listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance))
+                Pair(
+                    listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)),
+                    true
+                )
             }
         }
     }

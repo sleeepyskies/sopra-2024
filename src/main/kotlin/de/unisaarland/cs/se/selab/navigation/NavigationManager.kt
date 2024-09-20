@@ -342,7 +342,8 @@ class NavigationManager(
      * @param from : the current location
      * @param travelAmount : the amount of travel available
      * @return the point that would get the ship out of the restriction the fastest
-     * given the travelAmount
+     * given the travelAmount as well as the location of where we actually want to
+     * leave the restriction (needed to make sure we dont set velocity of ship to 0)
      */
     fun getDestinationOutOfRestriction(
         from: Pair<Int, Int>,

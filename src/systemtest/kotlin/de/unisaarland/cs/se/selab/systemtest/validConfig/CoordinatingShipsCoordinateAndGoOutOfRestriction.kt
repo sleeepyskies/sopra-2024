@@ -47,19 +47,22 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
     private suspend fun tick1() {
         assertNextLine("Simulation Info: Tick 1 started.")
 
-        skipLines(10) // No Ships move
-
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 15 to tile 5.")
+        skipLines(5)
+        assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 5.")
+        skipLines(4)
         assertNextLine("Event: Event 1 of type RESTRICTION happened.")
     }
 
     private suspend fun tick2() {
         assertNextLine("Simulation Info: Tick 2 started.")
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 15 to tile 5.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 30 to tile 6.")
         skipLines(1)
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         skipLines(3)
-        assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 5.")
+        assertNextLine("Ship Movement: Ship 2 moved with speed 20 to tile 6.")
         skipLines(4)
         assertNextLine("Task: Task 1 of type COORDINATE with ship 1 is added with destination 9.")
     }
@@ -67,13 +70,9 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
     private suspend fun tick3() {
         assertNextLine("Simulation Info: Tick 3 started.")
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 30 to tile 9.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-        assertNextLine("Corporation Action: Corporation 2 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 2 moved with speed 20 to tile 3.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 45 to tile 9.")
+        skipLines(5)
+        assertNextLine("Ship Movement: Ship 2 moved with speed 30 to tile 3.")
         skipLines(4)
         assertNextLine("Reward: Task 1: Ship 1 received reward of type RADIO.")
     }
