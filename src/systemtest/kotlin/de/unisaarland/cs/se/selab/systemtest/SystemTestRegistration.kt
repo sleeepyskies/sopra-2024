@@ -25,6 +25,8 @@ object SystemTestRegistration {
         // manager.registerTest(InvalidCurrent())
         // manager.registerTest(RewardsGivenAndFunctionCorrectly())
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
+        manager.registerTest(ShipCannotBeAssignedTask())
+        manager.registerTest(ShipHasNoPathToVisibleGarbage())
         // manager.registerTest(ShipCannotBeAssignedTask())
     }
 
