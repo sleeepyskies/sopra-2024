@@ -39,9 +39,12 @@ object SystemTestRegistration {
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
-        manager.registerTest(InvalidCurrent())
+        manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
+        manager.registerTest(StormEventDriftsGarbage())
+        manager.registerTest(TaskRestrictionReward())
+        manager.registerTest(NoWayToLeaveRestriction())
     }
 
     /**

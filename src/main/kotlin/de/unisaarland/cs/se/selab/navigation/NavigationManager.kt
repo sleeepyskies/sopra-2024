@@ -106,24 +106,24 @@ class NavigationManager(
      * @param from : the current location
      * @param to : the set of locations to reach
      * @param travelAmount : the amount of travel available
-     * @return the coordinates to land on and the distance to travel plus the tileId
+     * @return Pair(Pair(Pair(x,y),tileIDOfTileToMoveTo), Pair(distanceToTravel, tileIDOfDestination))
      **/
     fun shortestPathToLocations(
         from: Pair<Int, Int>,
         to: List<Pair<Int, Int>>,
         travelAmount: Int
-    ): Pair<Pair<Pair<Int, Int>, Int>, Int> {
+    ): Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>> {
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
         // Filter the possible locations by the distances to the origin and return the lowest tileId
         // If there is no location to travel to, return current location
         val tileIDLocationToTravelTo = filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(to, distances)
-        if (tileIDLocationToTravelTo == -1) return Pair(Pair(from, tileIdOfLocation), 0)
+        if (tileIDLocationToTravelTo == -1) return Pair(Pair(from, tileIdOfLocation), Pair(0, tileIdOfLocation))
 
         // Get the location of the tile to travel to
         val tileLocationToTravelTo = locationByTileId(tileIDLocationToTravelTo)
-            ?: return Pair(Pair(from, tileIdOfLocation), 0)
+            ?: return Pair(Pair(from, tileIdOfLocation), Pair(0, tileIdOfLocation))
 
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
@@ -135,7 +135,7 @@ class NavigationManager(
         if (goBackInPathByAmountOfTile <= 0) {
             return Pair(
                 Pair(tileLocationToTravelTo, tileIDLocationToTravelTo),
-                distances[tileIDLocationToTravelTo] ?: -1
+                Pair(distances[tileIDLocationToTravelTo] ?: -1, tileIDLocationToTravelTo)
             )
         }
 
@@ -144,8 +144,11 @@ class NavigationManager(
         repeat(goBackInPathByAmountOfTile) {
             node = previousNodes[node] ?: node // WAS ?: return Pair(Pair(from, tileIdOfLocation), 0)
         }
-        val locationOfDestinationTile = locationByTileId(node) ?: return Pair(Pair(from, tileIdOfLocation), 0)
-        return Pair(Pair(locationOfDestinationTile, node), distances[node] ?: 0)
+        val locationOfDestinationTile = locationByTileId(node) ?: return Pair(
+            Pair(from, tileIdOfLocation),
+            Pair(0, tileIdOfLocation)
+        )
+        return Pair(Pair(locationOfDestinationTile, node), Pair(distances[node] ?: 0, tileIDLocationToTravelTo))
     }
 
     /**
@@ -339,7 +342,8 @@ class NavigationManager(
      * @param from : the current location
      * @param travelAmount : the amount of travel available
      * @return the point that would get the ship out of the restriction the fastest
-     * given the travelAmount
+     * given the travelAmount as well as the location of where we actually want to
+     * leave the restriction (needed to make sure we dont set velocity of ship to 0)
      */
     fun getDestinationOutOfRestriction(
         from: Pair<Int, Int>,

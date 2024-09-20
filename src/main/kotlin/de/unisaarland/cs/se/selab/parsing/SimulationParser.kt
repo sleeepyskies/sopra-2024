@@ -38,8 +38,6 @@ class SimulationParser(
      */
     companion object {
         const val THOUSAND = 1000
-        const val EVENT_LAND = "SIMULATION PARSER: An event occurs on a land tile."
-        const val TASK_INVALID = "SIMULATION PARSER: A task has an invalid location."
     }
 
     // debug logger

@@ -235,9 +235,9 @@ class CorporationManagerUnitTests3 {
         val locationsToGoTo3 = method.invoke(cm, ship3, simDat.corporations[1])
         val corporation1Harbors = simDat.corporations[0].harbors
         val corporation2Harbors = simDat.corporations[1].harbors
-        assertEquals(corporation1Harbors, locationsToGoTo1)
-        assertEquals(corporation1Harbors, locationsToGoTo2)
-        assertEquals(corporation2Harbors, locationsToGoTo3)
+        assertEquals(Pair(corporation1Harbors, false), locationsToGoTo1)
+        assertEquals(Pair(corporation1Harbors, false), locationsToGoTo2)
+        assertEquals(Pair(corporation2Harbors, false), locationsToGoTo3)
     }
 
     @Test
@@ -276,7 +276,7 @@ class CorporationManagerUnitTests3 {
         )
         method.isAccessible = true
         val tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(2, 1)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(2, 1)), false), tilesToMoveTo)
     }
 
     @Test
@@ -303,17 +303,17 @@ class CorporationManagerUnitTests3 {
         )
         method.isAccessible = true
         var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(0, 0)), false), tilesToMoveTo)
         simDat.garbage.add(garbage)
         simDat.corporations[0].visibleGarbage[garbage.id] = Pair(Pair(1, 0), GarbageType.OIL)
         tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(1, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(1, 0)), false), tilesToMoveTo)
 
         tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[1])
-        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(0, 0)), false), tilesToMoveTo)
         simDat.corporations[1].visibleGarbage[garbage.id] = Pair(Pair(1, 0), GarbageType.OIL)
         tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[1])
-        assertEquals(listOf(Pair(0, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(0, 0)), false), tilesToMoveTo)
     }
 
     @Test
@@ -341,13 +341,13 @@ class CorporationManagerUnitTests3 {
         )
         method.isAccessible = true
         var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(2, 0)), true), tilesToMoveTo)
         simDat.corporations[0].garbage[garbage.id] = Pair(garbage.location, garbage.type)
         tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(1, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(1, 0)), false), tilesToMoveTo)
         simDat.corporations[0].visibleGarbage[garbage2.id] = Pair(garbage2.location, garbage2.type)
         tilesToMoveTo = method.invoke(cm, ship2, simDat.corporations[0])
-        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(2, 0)), false), tilesToMoveTo)
     }
 
     @Test
@@ -373,10 +373,10 @@ class CorporationManagerUnitTests3 {
         )
         method.isAccessible = true
         var tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(2, 0)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(2, 0)), true), tilesToMoveTo)
         simDat.corporations[0].visibleShips[ship2.id] = Pair(ship2.id, ship2.location)
         tilesToMoveTo = method.invoke(cm, ship, simDat.corporations[0])
-        assertEquals(listOf(Pair(0, 1)), tilesToMoveTo)
+        assertEquals(Pair(listOf(Pair(0, 1)), false), tilesToMoveTo)
     }
 
     @Test
@@ -556,15 +556,17 @@ class CorporationManagerUnitTests3 {
             Corporation::class.java
         )
         method.isAccessible = true
-        var output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as List<*>
-        assertEquals(1, output.size)
-        assertEquals(listOf(Pair(0, 0)), output)
+        var output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as Pair<*, *>
+        var first = (output.first ?: error("null assertion message")) as List<*>
+        assertEquals(1, first.size)
+        assertEquals(Pair(listOf(Pair(0, 0)), false), output)
         val garbage3 = Garbage(2, 50, GarbageType.OIL, 3, Pair(2, 0))
         simDat.garbage.add(garbage3)
         corporation.visibleGarbage[garbage3.id] = Pair(garbage3.location, garbage3.type)
-        output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as List<*>
-        assertEquals(1, output.size)
-        assertEquals(listOf(Pair(2, 0)), output)
+        output = (method.invoke(cm, ship1, 1, corporation) ?: error("List is null")) as Pair<*, *>
+        first = (output.first ?: error("null assertion message")) as List<*>
+        assertEquals(1, first.size)
+        assertEquals(Pair(listOf(Pair(2, 0)), false), output)
     }
 
     @Test
