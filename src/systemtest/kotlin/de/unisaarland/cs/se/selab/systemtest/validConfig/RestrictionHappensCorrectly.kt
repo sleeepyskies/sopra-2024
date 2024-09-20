@@ -7,7 +7,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.Logs
  * restriction event system test
  */
 class RestrictionHappensCorrectly : ExampleSystemTestExtension() {
-    override val description = "applying oil spill"
+    override val description = "applying restriction event"
     override val corporations = "corporationJsons/empty_corps.json"
     override val scenario = "scenarioJsons/justRestriction.json"
     override val map = "mapFiles/obamna.json"

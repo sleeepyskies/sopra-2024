@@ -29,9 +29,14 @@ object SystemTestRegistration {
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
         manager.registerTest(ShipCannotBeAssignedTask())
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
-        manager.registerTest(ShipCannotBeAssignedTask())
-        manager.registerTest(ShipHasNoPathToVisibleGarbage())
-        manager.registerTest(ShipCannotBeAssignedTask())
+        manager.registerTest(CollectingShipDriftsCorrectlyAndCollects())
+        manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
+        manager.registerTest(CorporationFileInvalid())
+        manager.registerTest(GarbageDriftsCorrectly2())
+        manager.registerTest(ScenarioFileInvalid())
+        manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
+        manager.registerTest(TaskGotCompletedAssignRewardToShip())
+        manager.registerTest(TaskShouldBeAssignedFullCapacity())
     }
 
     /**
