@@ -143,7 +143,6 @@ class EventManager(private val simulationData: SimulationData) {
         val garbageOfAffectedTile = tile.getGarbageByLowestID()
         val tileToBeUpdate = mutableListOf<Tile>()
         val tilesToDriftGarbage = simulationData.navigationManager.calculateDrift(coordinates, direction, speed)
-        println("TILES" + tilesToDriftGarbage.map { it.id })
         for (garbage in garbageOfAffectedTile) {
             for (currentTile in tilesToDriftGarbage) {
                 val tileToBeUpdated = driftGarbageIfCanFit(tile, currentTile, garbage, tileToBeUpdate)
