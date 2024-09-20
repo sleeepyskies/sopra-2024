@@ -20,11 +20,6 @@ enum class ShipState {
     NEED_UNLOADING,
 
     /**
-     * The ship is waiting for plastic.
-     */
-    WAITING_FOR_PLASTIC,
-
-    /**
      * The ship is currently tasked with a mission.
      */
     TASKED,

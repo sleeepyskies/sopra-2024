@@ -455,18 +455,11 @@ class CorporationManager(private val simData: SimulationData) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
                 corporation.harbors
             }
-            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING -> {
+            ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING, ShipState.IS_COOPERATING -> {
                 mutableListOf(shipLocation)
-            }
-            ShipState.WAITING_FOR_PLASTIC -> {
-                listOf(shipLocation)
             }
             ShipState.TASKED -> {
                 handleTaskedState(ship)
-            }
-            ShipState.IS_COOPERATING -> {
-                ship.state = ShipState.DEFAULT
-                listOf(shipLocation)
             }
             ShipState.DEFAULT -> {
                 handleDefaultState(ship, shipMaxTravelDistance, corporation)
