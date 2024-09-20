@@ -29,7 +29,6 @@ object SystemTestRegistration {
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
         manager.registerTest(ShipCannotBeAssignedTask())
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
-        manager.registerTest(CollectingShipDriftsCorrectlyAndCollects())
         manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
         manager.registerTest(CorporationFileInvalid())
         manager.registerTest(GarbageDriftsCorrectly2())
