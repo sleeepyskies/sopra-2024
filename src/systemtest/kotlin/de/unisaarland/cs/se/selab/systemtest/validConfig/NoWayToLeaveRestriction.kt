@@ -87,11 +87,11 @@ class NoWayToLeaveRestriction : ExampleSystemTestExtension() {
         assertNextLine(corporationFinishedActions)
     }
     suspend fun tick4() {
-        assertNextLine("Simulation Info: Tick 1 started.")
+        assertNextLine("Simulation Info: Tick 4 started.")
 
         // Corporation Phase
         assertNextLine(corporationStartedToMove)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 14.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 15.")
         assertNextLine(corporationStartedCollecting)
         assertNextLine(corporationStartedCooperating)
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
@@ -99,9 +99,9 @@ class NoWayToLeaveRestriction : ExampleSystemTestExtension() {
     }
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
-        assertNextLine(corporationStartedToMove)
-        assertNextLine("Simulation Statistics: Corporation 1 collected 1000 of garbage.")
-        assertNextLine("Simulation Statistics: Total amount of plastic collected: 1000.")
+        assertNextLine("Simulation Info: Simulation statistics are calculated.")
+        assertNextLine("Simulation Statistics: Corporation 1 collected 0 of garbage.")
+        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
