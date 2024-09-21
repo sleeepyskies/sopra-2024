@@ -7,7 +7,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
  */
 class ShipHasNoPathToVisibleGarbage : ExampleSystemTestExtension() {
     override val description = "Scouting ship can see garbage, but collecting ship" +
-        " should not move towards it since it has no direct path to the garbage"
+        " should not move towards it since it has no direct path to the garbage."
     override val corporations = "corporationJsons/shipHasNoPathToVisibleGarbage_corporations.json"
     override val scenario = "scenarioJsons/shipHasNoPathToVisibleGarbage_scenario.json"
     override val map = "mapFiles/obamna.json"
