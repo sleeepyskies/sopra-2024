@@ -22,5 +22,7 @@ enum class TaskType {
     /**
      * Task type for coordinating activities.
      */
-    COORDINATE
+    COORDINATE {
+        override fun toString() = "COOPERATE"
+    }
 }
