@@ -69,7 +69,7 @@ class CorporationManager(private val simData: SimulationData) {
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
-                    // This is needed to make sure, we dont set our velocity to 0 until we reach that tile
+                    // This is needed to make sure, we don't set our velocity to 0 until we reach that tile
                     tileInfoToMove =
                         Pair(Pair(outOfRestrictionTile, tileIdOfTile), Pair(shipMaxTravelDistance, tileIdOfTile))
                 } else {

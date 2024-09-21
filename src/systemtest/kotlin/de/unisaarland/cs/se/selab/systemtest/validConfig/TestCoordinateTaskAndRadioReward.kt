@@ -2,6 +2,9 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
+/**
+ * Test aa
+ */
 class TestCoordinateTaskAndRadioReward : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/testCoordinateTaskAndRadioReward_corporations.json"
     override val scenario = "scenarioJsons/testCoordinateTaskAndRadioReward_scenario.json"
