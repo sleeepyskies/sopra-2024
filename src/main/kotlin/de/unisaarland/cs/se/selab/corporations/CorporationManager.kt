@@ -136,11 +136,8 @@ class CorporationManager(private val simData: SimulationData) {
                         it.isCompleted = true
                     }
                 }
-                TaskType.COORDINATE -> {
-                    if (it.targetTileId == taskShip?.tileId) {
-                        taskShip.state = ShipState.IS_COOPERATING
-                    }
-                }
+                // dont update state yet
+                TaskType.COORDINATE -> {}
                 else -> {
                     if (it.targetTileId == taskShip?.tileId) {
                         it.isCompleted = true
@@ -232,6 +229,14 @@ class CorporationManager(private val simData: SimulationData) {
             targetCorps.forEach { corp -> shareInformation(corp, getInfo(it.corporation)) }
             simData.activeTasks.find { task -> task.assignedShipId == it.id }?.isCompleted = true
             it.state = ShipState.DEFAULT
+        }
+        simData.activeTasks.filter { it.type == TaskType.COORDINATE }.forEach {
+            val taskedShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
+            if (taskedShip != null) {
+                if (taskedShip.tileId == it.targetTileId) {
+                    taskedShip.state = ShipState.IS_COOPERATING
+                }
+            }
         }
     }
 
