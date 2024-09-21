@@ -85,7 +85,6 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         // Corporation Phase
         c1Mmoving()
         assertNextLine("Ship Movement: Ship 55 moved with speed 39 to tile 3.")
-
         corp1()
     }
 
