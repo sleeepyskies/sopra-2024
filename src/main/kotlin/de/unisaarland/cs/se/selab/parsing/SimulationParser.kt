@@ -86,8 +86,8 @@ class SimulationParser(
         // parse and validate corporations
         if (corporationParser.parseAllCorporations()) {
             // file valid
-            this.corporations = corporationParser.corporations
-            this.ships = corporationParser.ships
+            this.corporations = corporationParser.corporations.sortedBy { it.id }
+            this.ships = corporationParser.ships.sortedBy { it.id }
         } else {
             // file invalid
             Logger.initInfoInvalid(this.corporationFile)
@@ -105,11 +105,11 @@ class SimulationParser(
         // parse and validate scenario
         if (scenarioParser.parseScenario()) {
             // file valid
-            this.garbage = scenarioParser.garbage
-            this.rewards = scenarioParser.rewards
+            this.garbage = scenarioParser.garbage.sortedBy { it.id }
+            this.rewards = scenarioParser.rewards.sortedBy { it.id }
             // convert value from MutableList to List
-            this.events = scenarioParser.events.mapValues { entry -> entry.value.toList() }.toMutableMap()
-            this.tasks = scenarioParser.tasks.mapValues { entry -> entry.value.toList() }.toMutableMap()
+            this.events = scenarioParser.events.mapValues { entry -> entry.value.sortedBy { it.id }.toList() }.toMutableMap()
+            this.tasks = scenarioParser.tasks.mapValues { entry -> entry.value.sortedBy { it.id }.toList() }.toMutableMap()
         } else {
             // file invalid
             Logger.initInfoInvalid(this.scenarioFile)
