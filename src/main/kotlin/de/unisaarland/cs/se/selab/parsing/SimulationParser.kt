@@ -108,8 +108,14 @@ class SimulationParser(
             this.garbage = scenarioParser.garbage.sortedBy { it.id }
             this.rewards = scenarioParser.rewards.sortedBy { it.id }
             // convert value from MutableList to List
-            this.events = scenarioParser.events.mapValues { entry -> entry.value.sortedBy { it.id }.toList() }.toMutableMap()
-            this.tasks = scenarioParser.tasks.mapValues { entry -> entry.value.sortedBy { it.id }.toList() }.toMutableMap()
+            this.events = scenarioParser.events.mapValues {
+                    entry ->
+                entry.value.sortedBy { it.id }.toList()
+            }.toMutableMap()
+            this.tasks = scenarioParser.tasks.mapValues {
+                    entry ->
+                entry.value.sortedBy { it.id }.toList()
+            }.toMutableMap()
         } else {
             // file invalid
             Logger.initInfoInvalid(this.scenarioFile)
