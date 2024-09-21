@@ -252,6 +252,10 @@ class MapParser(
      * @return True if valid, false otherwise
      */
     private fun validateTileProperties(tile: Tile): Boolean {
+        // checks that only a SHORE tile has a harbor
+        if (tile.isHarbor && tile.type != TileType.SHORE) {
+            return false
+        }
         // check ID is unique and location is unique
         return !this.tileIDs.contains(tile.id) && !this.tileLocs.contains(tile.location)
     }

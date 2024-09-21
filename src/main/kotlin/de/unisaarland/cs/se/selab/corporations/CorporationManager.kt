@@ -69,7 +69,7 @@ class CorporationManager(private val simData: SimulationData) {
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
-                    // This is needed to make sure, we dont set our velocity to 0 until we reach that tile
+                    // This is needed to make sure, we don't set our velocity to 0 until we reach that tile
                     tileInfoToMove =
                         Pair(Pair(outOfRestrictionTile, tileIdOfTile), Pair(shipMaxTravelDistance, tileIdOfTile))
                 } else {
@@ -136,11 +136,8 @@ class CorporationManager(private val simData: SimulationData) {
                         it.isCompleted = true
                     }
                 }
-                TaskType.COORDINATE -> {
-                    if (it.targetTileId == taskShip?.tileId) {
-                        taskShip.state = ShipState.IS_COOPERATING
-                    }
-                }
+                // dont update state yet
+                TaskType.COORDINATE -> {}
                 else -> {
                     if (it.targetTileId == taskShip?.tileId) {
                         it.isCompleted = true
@@ -232,6 +229,14 @@ class CorporationManager(private val simData: SimulationData) {
             targetCorps.forEach { corp -> shareInformation(corp, getInfo(it.corporation)) }
             simData.activeTasks.find { task -> task.assignedShipId == it.id }?.isCompleted = true
             it.state = ShipState.DEFAULT
+        }
+        simData.activeTasks.filter { it.type == TaskType.COORDINATE }.forEach {
+            val taskedShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
+            if (taskedShip != null) {
+                if (taskedShip.tileId == it.targetTileId) {
+                    taskedShip.state = ShipState.IS_COOPERATING
+                }
+            }
         }
     }
 

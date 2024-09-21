@@ -174,7 +174,7 @@ class CorporationParser(
             corporationJsonObject.optString(NAME, ""),
             corporationId,
             homeHarborsList,
-            shipsList.filter { it.corporation == corporationId }.toMutableList(),
+            shipsList.filter { it.corporation == corporationId }.sortedBy { it.id }.toMutableList(),
             garbageList
         )
         corporations.add(corporation)
