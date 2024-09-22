@@ -3,9 +3,9 @@
   "events": [{
     "id": 1,
     "type": "OIL_SPILL",
-    "tick": 1,
-    "location": 7,
-    "radius": 1,
+    "tick": 0,
+    "location": 21,
+    "radius": 0,
     "amount": 1000
   }],
   "tasks": [],
