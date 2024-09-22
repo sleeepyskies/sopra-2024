@@ -45,6 +45,7 @@ object SystemTestRegistration {
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(TaskRestrictionReward())
         manager.registerTest(NoWayToLeaveRestriction())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
     }
 
     /**
