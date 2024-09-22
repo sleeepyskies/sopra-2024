@@ -2,6 +2,7 @@ package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHarbarObamna
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
@@ -45,6 +46,8 @@ object SystemTestRegistration {
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(TaskRestrictionReward())
         manager.registerTest(NoWayToLeaveRestriction())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
+        manager.registerTest(FloatingHarbarObamna())
     }
 
     /**
