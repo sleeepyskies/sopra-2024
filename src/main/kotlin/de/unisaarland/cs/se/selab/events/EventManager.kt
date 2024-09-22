@@ -10,6 +10,7 @@ import de.unisaarland.cs.se.selab.assets.PirateAttackEvent
 import de.unisaarland.cs.se.selab.assets.RestrictionEvent
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.StormEvent
+import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 
@@ -31,6 +32,27 @@ class EventManager(private val simulationData: SimulationData) {
         val endingEvents = reduceDuration(activeEvents)
         checkEndingEvent(endingEvents + nonEndingRestrictionEvents)
         checkScheduledEvents()
+        updateTasks()
+    }
+    private fun updateTasks() {
+        simulationData.activeTasks.forEach {
+            val taskShip = simulationData.ships.find { ship -> ship.id == it.assignedShipId }
+            when (it.type) {
+                TaskType.FIND -> {
+                    if (it.targetTileId == taskShip?.tileId &&
+                        simulationData.navigationManager.findTile(it.targetTileId)?.currentGarbage?.isNotEmpty() == true
+                    ) {
+                        it.isCompleted = true
+                    }
+                }
+                TaskType.EXPLORE -> {
+                    if (it.targetTileId == taskShip?.tileId) {
+                        it.isCompleted = true
+                    }
+                }
+                else -> {}
+            }
+        }
     }
     private fun reduceDuration(activeEvents: List<Event>): List<Event> {
         val endingEvents = mutableListOf<Event>()

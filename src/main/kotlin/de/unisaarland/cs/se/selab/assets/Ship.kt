@@ -93,7 +93,10 @@ data class Ship(
         unloadedMap[GarbageType.PLASTIC] = 0
         unloadedMap[GarbageType.OIL] = 0
         unloadedMap[GarbageType.CHEMICALS] = 0
-        capacityInfo.forEach { (t, v) -> unloadedMap[t] = unloadedMap[t]?.plus(v.second) ?: 0 }
+        capacityInfo.forEach { (t, v) ->
+            val unloadedAmount = v.second - v.first
+            unloadedMap[t] = unloadedMap[t]?.plus(unloadedAmount) ?: 0
+        }
         capacityInfo = capacityInfo.mapValues { (_, v) -> Pair(v.second, v.second) }.toMutableMap()
         return unloadedMap
     }
