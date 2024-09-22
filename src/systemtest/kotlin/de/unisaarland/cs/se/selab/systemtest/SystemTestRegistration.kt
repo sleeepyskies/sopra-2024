@@ -48,6 +48,7 @@ object SystemTestRegistration {
         manager.registerTest(NoWayToLeaveRestriction())
         manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
     }
 
     /**

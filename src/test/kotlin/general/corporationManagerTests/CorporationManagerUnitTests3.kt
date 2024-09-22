@@ -398,7 +398,7 @@ class CorporationManagerUnitTests3 {
         val method = CorporationManager::class.java.getDeclaredMethod(
             "updateInfo",
             Corporation::class.java,
-            Pair::class.java
+            Triple::class.java
         )
         method.isAccessible = true
         val garbageMap = mutableMapOf(
@@ -413,7 +413,7 @@ class CorporationManagerUnitTests3 {
             ship1.id to Pair(ship1.corporation, ship1.location),
             ship2.id to Pair(ship2.corporation, ship2.location)
         )
-        method.invoke(cm, simDat.corporations[0], Pair(shipMap, garbageMap))
+        method.invoke(cm, simDat.corporations[0], Triple(shipMap, garbageMap, emptyList<Pair<Int, Int>>()))
         assertEquals(garbageMap, simDat.corporations[0].visibleGarbage)
         assertEquals(visibleShipMap, simDat.corporations[0].visibleShips)
     }

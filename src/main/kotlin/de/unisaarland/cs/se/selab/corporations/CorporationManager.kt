@@ -18,7 +18,6 @@ import kotlin.math.min
  * @property simData The simulation data used to manage corporations.
  */
 class CorporationManager(private val simData: SimulationData) {
-
     /**
      * The maximum number of ships a corporation can have.
      */
@@ -52,14 +51,11 @@ class CorporationManager(private val simData: SimulationData) {
         corporation.ships.sortedBy { it.id }.forEach {
             val isOnRestrictedTile = checkRestriction(it.location)
             // determine behavior will return cor a collecting ship the tiles that still need assignment
-
             val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
             val isOwnLocation = possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location
             val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0] != it.location
-            if (!(isOwnLocation) ||
-                isRestrictedAndNotOwnLocation
-            ) {
+            if (!(isOwnLocation) || isRestrictedAndNotOwnLocation) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
@@ -407,7 +403,6 @@ class CorporationManager(private val simData: SimulationData) {
      * @param corporation The corporation to which the ship belongs.
      */
     private fun checkNeedRefuelOrUnload(ship: Ship, corporation: Corporation) {
-        // checkNeedRefuelUnload
         val shipLocation = ship.location
         val currentFuel = ship.currentFuel
         val fuelConsumption = ship.fuelConsumptionRate
@@ -609,15 +604,19 @@ class CorporationManager(private val simData: SimulationData) {
      */
     private fun updateInfo(
         corporation: Corporation,
-        info: Pair<
+        info: Triple<
             Map<Int, Pair<Int, Pair<Int, Int>>>,
             Map<Int, Pair<Pair<Int, Int>, GarbageType>>,
+            List<Pair<Int, Int>>
             >
     ): Boolean {
         // location, shipId-corpId is the order for the first map
         corporation.visibleShips.putAll(info.first)
         corporation.visibleGarbage.putAll(info.second)
-        val removedGarbage = corporation.garbage.filter { !info.second.containsKey(it.key) }
+        val scannedTiles = info.third
+        val removedGarbage = corporation.garbage
+            .filter { scannedTiles.contains(it.value.first) }
+            .filter { !info.second.containsKey(it.key) }
         corporation.garbage.keys.removeAll(removedGarbage.keys)
         return true
     }
@@ -695,7 +694,7 @@ class CorporationManager(private val simData: SimulationData) {
      * @return A triple containing maps and a list with the scan results.
      */
     private fun scan(location: Pair<Int, Int>, range: Int, shipWhichIsScanning: Int):
-        Pair<Map<Int, Pair<Int, Pair<Int, Int>>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>> {
+        Triple<Map<Int, Pair<Int, Pair<Int, Int>>>, Map<Int, Pair<Pair<Int, Int>, GarbageType>>, List<Pair<Int, Int>>> {
         val tilesInScanRange = simData.navigationManager.getTilesInRadius(location, range)
         val shipInfo = mutableMapOf<Int, Pair<Int, Pair<Int, Int>>>()
         val garbageInfo = mutableMapOf<Int, Pair<Pair<Int, Int>, GarbageType>>()
@@ -710,7 +709,7 @@ class CorporationManager(private val simData: SimulationData) {
                 shipInfo[it.id] = Pair(it.corporation, it.location)
             }
         }
-        return Pair(shipInfo, garbageInfo)
+        return Triple(shipInfo, garbageInfo, tilesInScanRange)
     }
 
     /**
