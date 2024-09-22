@@ -28,7 +28,7 @@ class TaskManager(private val simData: SimulationData) {
      */
     fun startTasksPhase() {
         // get tasks scheduled for this tick
-        val scheduledTasks = simData.scheduledTasks[simData.tick]
+        val scheduledTasks = simData.scheduledTasks[simData.tick]?.sortedBy { it.id }
         if (scheduledTasks != null) {
             handleScheduledTasks(scheduledTasks)
         }
