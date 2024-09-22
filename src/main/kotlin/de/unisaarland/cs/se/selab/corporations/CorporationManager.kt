@@ -93,7 +93,7 @@ class CorporationManager(private val simData: SimulationData) {
                         exploring,
                         isOnRestrictedTile
                     )
-                    updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
+                    // updateInfo(corporation, scan(it.location, it.visibilityRange, it.id)) TEMPORARILY REMOVED
                 } else {
                     it.currentVelocity = 0
                 }
