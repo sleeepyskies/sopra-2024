@@ -68,7 +68,10 @@
                "id",
                "category",
                "coordinates",
-             ]
+             ],
+              "not": {
+                  "required": ["harbor"]
+              }
            },
            {
             "properties": {
@@ -80,7 +83,10 @@
               "id",
               "category",
               "coordinates",
-            ]
+            ],
+             "not": {
+                 "required": ["harbor"]
+             }
           },
             {
             "properties": {
@@ -99,7 +105,10 @@
                 "speed",
                 "direction",
                 "intensity"
-            ]
+            ],
+             "not": {
+                 "required": ["harbor"]
+             }
         },
         {
             "properties": {
@@ -115,7 +124,10 @@
                 "category",
                 "coordinates",
                 "current"
-            ]
+            ],
+             "not": {
+                 "required": ["harbor"]
+             }
         },
            {
              "properties": {
