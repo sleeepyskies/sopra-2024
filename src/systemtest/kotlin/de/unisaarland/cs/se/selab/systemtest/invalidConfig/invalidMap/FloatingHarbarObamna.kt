@@ -7,7 +7,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
  */
 class FloatingHarbarObamna : ExampleSystemTestExtension() {
     override val name: String = "FloatingHarbarObamna"
-    override val description: String = "Trying to simulate the Floating Harbor Test."
+    override val description: String = "Non shore tile with harbor attribute."
 
     override val corporations: String = "corporationJsons/corporations.json"
     override val map: String = "mapFiles/validationFiles/invalidFiles/obamna_floating_harbor.json"
