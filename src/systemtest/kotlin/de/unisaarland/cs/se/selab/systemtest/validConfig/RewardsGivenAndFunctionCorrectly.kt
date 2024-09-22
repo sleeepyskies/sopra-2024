@@ -12,7 +12,7 @@ class RewardsGivenAndFunctionCorrectly : ExampleSystemTestExtension() {
     override val name = "all rewards test"
     override val maxTicks = 15
     override suspend fun run() {
-        val expRadioReward = "Task: Task 1 of type COORDINATE with ship 2 is added with destination 9."
+        val expRadioReward = "Task: Task 1 of type COOPERATE with ship 2 is added with destination 9."
         if (skipUntilLogType(Logs.TASK) != expRadioReward) {
             throw SystemTestAssertionError("Task 1 didnt add.")
         }
@@ -36,11 +36,11 @@ class RewardsGivenAndFunctionCorrectly : ExampleSystemTestExtension() {
         if (skipUntilLogType(Logs.REWARD) != expRadioReward5) {
             throw SystemTestAssertionError("Reward 3 didnt add.")
         }
-        val expectedString = "Simulation Statistics: Corporation 1 collected 3000 of garbage."
+        val expectedString = "Simulation Statistics: Corporation 1 collected 4000 of garbage."
         if (skipUntilLogType(Logs.SIMULATION_STATISTICS) != expectedString) {
             throw SystemTestAssertionError("Collected plastic should be 0!")
         }
-        assertNextLine("Simulation Statistics: Corporation 2 collected 2000 of garbage.")
+        assertNextLine("Simulation Statistics: Corporation 2 collected 1000 of garbage.")
         assertNextLine("Simulation Statistics: Total amount of plastic collected: 3000.")
         skipLines(2)
         assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
