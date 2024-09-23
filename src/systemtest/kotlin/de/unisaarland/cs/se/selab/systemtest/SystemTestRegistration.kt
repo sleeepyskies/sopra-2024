@@ -49,7 +49,7 @@ object SystemTestRegistration {
         manager.registerTest(ShipCannotBeAssignedTask())
         manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
-        manager.registerTest(CollectOilSpillAndChemicalStorm())
+        manager.registerTest(TestOilSpillIds())
     }
 
     /**
