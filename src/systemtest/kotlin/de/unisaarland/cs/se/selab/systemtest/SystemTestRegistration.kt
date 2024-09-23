@@ -50,6 +50,7 @@ object SystemTestRegistration {
         manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         manager.registerTest(TestOilSpillIds())
+        manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
     }
 
     /**
