@@ -69,7 +69,7 @@ class ScenarioParser(
 
     // helper data for later parsing/validation
     val tileXYtoGarbage = mutableMapOf<Pair<Int, Int>, MutableList<Garbage>>()
-    var highestGarbageID = 0
+    var highestGarbageID = -1
 
     /**
      * Parses the scenario file.
