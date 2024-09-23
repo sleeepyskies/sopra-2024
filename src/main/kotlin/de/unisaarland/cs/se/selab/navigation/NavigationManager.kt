@@ -579,9 +579,6 @@ class NavigationManager(
             i += 1
             tilesInRadius.addAll(newTiles)
         }
-
-
-
         return tilesInRadius.toList().filter { findTile(it) != null }.sortedBy { findTile(it)?.id }
     }
 

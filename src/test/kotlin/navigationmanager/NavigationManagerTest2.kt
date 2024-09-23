@@ -231,9 +231,9 @@ class NavigationManagerTest2 {
     @Test
     fun getTilesInRadiusTest1() {
         // define tiles that should be in the radius
-        val t1 = this.nm.tiles[Pair(4, 4)] ?: this.mockTile
+        val t1 = this.nm.tiles[Pair(4, 3)] ?: this.mockTile
         val t2 = this.nm.tiles[Pair(3, 4)] ?: this.mockTile
-        val t3 = this.nm.tiles[Pair(4, 3)] ?: this.mockTile
+        val t3 = this.nm.tiles[Pair(4, 4)] ?: this.mockTile
 
         val checkValue = listOf(t1.location, t2.location, t3.location)
 
