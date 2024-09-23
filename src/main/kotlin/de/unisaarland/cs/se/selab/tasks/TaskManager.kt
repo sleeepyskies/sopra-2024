@@ -82,6 +82,9 @@ class TaskManager(private val simData: SimulationData) {
      * @param task The task to be assigned.
      */
     private fun assignTask(ship: Ship, task: Task) {
+        // log
+        Logger.assignTask(task.id, task.type, ship.id, task.targetTileId)
+
         // check if ship should be assigned the task
         if (shouldBeAssignedTask(ship, task)) {
             // add to active tasks list
@@ -92,9 +95,6 @@ class TaskManager(private val simData: SimulationData) {
 
             // update ship state
             ship.state = ShipState.TASKED
-
-            // log
-            Logger.assignTask(task.id, task.type, ship.id, task.targetTileId)
         }
     }
 
