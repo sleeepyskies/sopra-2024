@@ -9,7 +9,7 @@
       "homeHarbors": [
         49, 107, 143, 314, 354, 469, 535, 563
       ],
-      "garbageTypes": ["OIL"]
+      "garbageTypes": ["PLASTIC"]
     }
   ],
   "ships": [
@@ -35,8 +35,8 @@
       "acceleration": 5,
       "fuelCapacity": 3000,
       "fuelConsumption": 5,
-      "capacity": 50000,
-      "garbageType": "OIL"
+      "capacity": 3000,
+      "garbageType": "PLASTIC"
     }
   ]
 }
