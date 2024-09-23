@@ -7,7 +7,7 @@ class TaskCouldNotBeAssignedNotEnoughFuel : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/corpWithOneScoutingShip.json"
     override val scenario = "scenarioJsons/shipShouldGetRewardNextTick.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "task could not be assigned, not enough fuel"
+    override val name = "TaskCouldNotBeAssignedNotEnoughFuel"
     override val maxTicks = 3
 
     override suspend fun run() {

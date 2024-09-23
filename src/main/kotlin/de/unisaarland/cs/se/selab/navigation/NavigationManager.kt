@@ -101,6 +101,25 @@ class NavigationManager(
     }
 
     /**
+     * Used to check if a traversable path exists between 2 tiles.
+     * @param from The first tileID to check for
+     * @param to The other tileID to check for
+     * @return true if a path exists, false otherwise
+     */
+    fun traversablePathExists(from: Pair<Int, Int>, to: Pair<Int, Int>): Boolean {
+        // get the tile objects
+        val fromTile = findTile(from)
+        val toTile = findTile(to)
+
+        // call travelDistance, if the return is -1, there is no path
+        return if (fromTile != null && toTile != null) {
+            travelDistance(fromTile, toTile) != -1
+        } else {
+            false
+        }
+    }
+
+    /**
      * Find the shortest path between current location and a set of locations
      * and return the coordinates to land on given the travel amount
      * @param from : the current location

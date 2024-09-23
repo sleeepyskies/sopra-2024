@@ -11,7 +11,7 @@ class ShipHasNoPathToVisibleGarbage : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/shipHasNoPathToVisibleGarbage_corporations.json"
     override val scenario = "scenarioJsons/shipHasNoPathToVisibleGarbage_scenario.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "task could not be assigned, not enough fuel"
+    override val name = "ShipHasNoPathToVisibleGarbage"
     override val maxTicks = 4
 
     override suspend fun run() {

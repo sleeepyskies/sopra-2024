@@ -18,8 +18,12 @@ import kotlin.math.min
  * @property simData The simulation data used to manage corporations.
  */
 class CorporationManager(private val simData: SimulationData) {
+
+    // A helper class used to reduce this classes size
+    private val helper = CorporationManagerHelper(simData)
+
     /**
-     * The maximum number of ships a corporation can have.
+     * The distance between 2 tiles in ticks.
      */
     companion object {
         private const val VELOCITY_DIVISOR = 10
@@ -547,52 +551,11 @@ class CorporationManager(private val simData: SimulationData) {
         corporation: Corporation
     ): Pair<List<Pair<Int, Int>>, Boolean> {
         return when (ship.type) {
-            ShipType.COLLECTING_SHIP -> {
-                if (corporation.visibleGarbage.isNotEmpty()) {
-                    var out = corporation.visibleGarbage
-                        .filter {
-                            corporation.collectableGarbageTypes.contains(it.value.second) &&
-                                ship.capacityInfo.contains(it.value.second)
-                        }
-                        .filter { (k, _) -> getOnlyAssignableGarbagePredicate(k) }
-                        .map { it.value.first }.toList()
-                    if (out.isEmpty()) out = listOf(ship.location)
-                    return Pair(out, false)
-                }
-                Pair(listOf(ship.location), false)
-            }
-            ShipType.COORDINATING_SHIP -> {
-                val shipsToBeConsideredInVisibility = corporation.visibleShips
-                    .filter {
-                        it.value.first != corporation.lastCooperatedWith &&
-                            it.value.first != corporation.lastCooperatedWith
-                    }
-                if (shipsToBeConsideredInVisibility.isNotEmpty()) {
-                    return Pair(shipsToBeConsideredInVisibility.map { it.value.second }.toList(), false)
-                }
-                Pair(listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)), true)
-            }
-            ShipType.SCOUTING_SHIP -> {
-                if (corporation.visibleGarbage.isNotEmpty()) {
-                    return Pair(corporation.visibleGarbage.map { it.value.first }.toList(), false)
-                }
-                if (corporation.garbage.isNotEmpty()) {
-                    return Pair(corporation.garbage.map { it.value.first }.toList(), false)
-                }
-                Pair(
-                    listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)),
-                    true
-                )
-            }
+            ShipType.COLLECTING_SHIP -> helper.handleDefaultStateCollecting(ship, corporation)
+            ShipType.COORDINATING_SHIP ->
+                helper.handleDefaultStateCoordinating(ship, corporation, shipMaxTravelDistance)
+            ShipType.SCOUTING_SHIP -> helper.handleDefaultStateScouting(ship, corporation, shipMaxTravelDistance)
         }
-    }
-
-    private fun getOnlyAssignableGarbagePredicate(garbageID: Int): Boolean {
-        val garbageObject = simData.garbage.find { it.id == garbageID }
-        val garbageAssignedCapacity = garbageObject?.assignedCapacity
-        val garbageAmount = garbageObject?.amount
-        val assignableCapacity = garbageAmount?.minus(garbageAssignedCapacity ?: 0)
-        return assignableCapacity == null || assignableCapacity > 0
     }
 
     /**

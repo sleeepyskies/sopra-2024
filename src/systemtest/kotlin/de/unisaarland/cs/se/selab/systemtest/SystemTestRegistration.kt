@@ -30,7 +30,6 @@ object SystemTestRegistration {
         manager.registerTest(InvalidCurrent())
         manager.registerTest(RewardsGivenAndFunctionCorrectly())
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
-        manager.registerTest(ShipCannotBeAssignedTask())
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
         manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
         manager.registerTest(CorporationFileInvalid())
@@ -39,16 +38,17 @@ object SystemTestRegistration {
         manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
-        manager.registerTest(ShipCannotCollectGarbageWithContainer())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(TaskRestrictionReward())
         manager.registerTest(NoWayToLeaveRestriction())
-        manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
+        manager.registerTest(ShipCannotBeAssignedTask())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
+        manager.registerTest(ShipCannotCollectGarbageWithContainer())
     }
 
     /**
@@ -59,6 +59,13 @@ object SystemTestRegistration {
      */
     fun registerSystemTestsMutantValidation(manager: SystemTestManager) {
         manager.registerTest(ExampleSystemTest())
+        manager.registerTest(WrongNeighbors())
+        manager.registerTest(InvalidCurrent())
+        manager.registerTest(CorporationFileInvalid())
+        manager.registerTest(ScenarioFileInvalid())
+        manager.registerTest(NonUniqueTileIDs())
+        manager.registerTest(HarborCantBeHere())
+        manager.registerTest(FloatingHarbarObamna())
     }
 
     /**
@@ -67,5 +74,15 @@ object SystemTestRegistration {
      */
     fun registerSystemTestsMutantSimulation(manager: SystemTestManager) {
         manager.registerTest(ExampleSystemTest())
+        manager.registerTest(OilSpillHappensCorrectly())
+        manager.registerTest(RestrictionHappensCorrectly())
+        manager.registerTest(PirateAttackDeletesShip())
+        manager.registerTest(ScoutContainerFillMoveHarborTest())
+        manager.registerTest(GarbageDriftsCorrectly())
+        manager.registerTest(RewardsGivenAndFunctionCorrectly())
+        manager.registerTest(CollectingShipMovesToVisibleGarbage())
+        manager.registerTest(ShipHasNoPathToVisibleGarbage())
+        manager.registerTest(GarbageDriftsCorrectly2())
+        manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
     }
 }
