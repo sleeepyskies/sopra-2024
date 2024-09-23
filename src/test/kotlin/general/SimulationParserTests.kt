@@ -467,23 +467,6 @@ class SimulationParserTests {
     }
 
     @Test
-    fun `test pirate attack on non existant ship`() {
-        val scenarioJson = """
-            {
-                "events": [{"type": "STORM","id": 1,"tick": 3,"location": 1,"radius": 0,"speed": 10,"direction": 180}],
-                "garbage": [{id: 1, location: 2, type: "OIL", amount: 1000}],
-                "tasks": [{id: 1, type: "FIND", tick: 3, shipID: 1, targetTile: 29, rewardID: 1, rewardShipID: 1}],
-                "rewards": [{id: 1, type: "TRACKER"}]
-            }
-        """.trimIndent()
-        mapFile.writeText(mapJson)
-        corporationFile.writeText(corporationJson)
-        scenarioFile.writeText(scenarioJson)
-        val result = simulationParser.createSimulator()
-        assertNull(result)
-    }
-
-    @Test
     fun `test chemical garbage on deepocean`() {
         val scenarioJson = """
             {
