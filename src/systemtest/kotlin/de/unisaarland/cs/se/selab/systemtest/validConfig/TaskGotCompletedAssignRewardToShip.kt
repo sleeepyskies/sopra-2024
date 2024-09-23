@@ -4,7 +4,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
 /** task got completed, reward given to correct ship system test */
 class TaskGotCompletedAssignRewardToShip : ExampleSystemTestExtension() {
-    override val description = "no"
+    override val description = "TaskGotCompletedAssignRewardToShip"
     override val corporations = "corporationJsons/corpWithOneScoutingShip.json"
     override val scenario = "scenarioJsons/shipShouldGetRewardNextTick.json"
     override val map = "mapFiles/obamna.json"
