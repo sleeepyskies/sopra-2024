@@ -1,0 +1,42 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "eye removal company",
+      "ships": [
+        51, 50
+      ],
+      "homeHarbors": [
+        49, 107, 143, 314, 354, 469, 535, 563
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 50,
+      "name": "I LOVE EYES",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 213,
+      "maxVelocity": 30,
+      "acceleration": 15,
+      "fuelCapacity": 10000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 51,
+      "name": "EDWARD SCISSOR EYES!!",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 139,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    }
+  ]
+}

@@ -51,6 +51,7 @@ object SystemTestRegistration {
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         manager.registerTest(TestOilSpillIds())
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
+        manager.registerTest(TrackerTest())
     }
 
     /**
