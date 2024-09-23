@@ -1,0 +1,28 @@
+{
+  "garbage": [{
+    "id": 1,
+    "type": "CHEMICALS",
+    "location": 11,
+    "amount": 750
+  }],
+  "events": [{
+    "id": 0,
+    "type": "OIL_SPILL",
+    "tick": 0,
+    "location": 1,
+    "radius": 1,
+    "amount": 1000
+  },
+    {
+      "id": 1,
+      "type": "STORM",
+      "tick": 1,
+      "location": 11,
+      "radius": 2,
+      "speed": 20,
+      "direction": 240
+    }
+  ],
+  "tasks": [],
+  "rewards": []
+}
