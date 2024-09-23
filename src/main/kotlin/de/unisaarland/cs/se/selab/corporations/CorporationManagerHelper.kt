@@ -14,8 +14,12 @@ class CorporationManagerHelper(simulationData: SimulationData) {
     /**
      * Helper method for handleDefaultState() in CorporationManager. Handles the state of COLLECTING ships.
      */
-    fun handleDefaultStateCollecting(ship: Ship, corporation: Corporation): Pair<List<Pair<Int, Int>>, Boolean> {
-        if (corporation.visibleGarbage.any {
+    fun handleDefaultStateCollecting(
+        ship: Ship,
+        corporation: Corporation
+    ): Pair<List<Pair<Pair<Int, Int>, Int>>, Boolean> {
+        if (
+            corporation.visibleGarbage.any {
                 simData.navigationManager.traversablePathExists(ship.location, it.value.first)
             }
         ) {
@@ -26,11 +30,11 @@ class CorporationManagerHelper(simulationData: SimulationData) {
                         simData.navigationManager.traversablePathExists(ship.location, it.value.first)
                 }
                 .filter { (k, _) -> getOnlyAssignableGarbagePredicate(k) }
-                .map { it.value.first }.toList()
-            if (out.isEmpty()) out = listOf(ship.location)
+                .map { Pair(it.value.first, it.key) }.toList()
+            if (out.isEmpty()) out = listOf(ship.location to 0)
             return Pair(out, false)
         }
-        return Pair(listOf(ship.location), false)
+        return Pair(listOf(ship.location to 0), false)
     }
 
     /**
@@ -40,7 +44,7 @@ class CorporationManagerHelper(simulationData: SimulationData) {
         ship: Ship,
         corporation: Corporation,
         shipMaxTravelDistance: Int
-    ): Pair<List<Pair<Int, Int>>, Boolean> {
+    ): Pair<List<Pair<Pair<Int, Int>, Int>>, Boolean> {
         val shipsToBeConsideredInVisibility = corporation.visibleShips
             .filter {
                 ship.corporation != it.value.first &&
@@ -48,9 +52,9 @@ class CorporationManagerHelper(simulationData: SimulationData) {
                     simData.navigationManager.traversablePathExists(ship.location, it.value.second)
             }
         if (shipsToBeConsideredInVisibility.isNotEmpty()) {
-            return Pair(shipsToBeConsideredInVisibility.map { it.value.second }.toList(), false)
+            return Pair(shipsToBeConsideredInVisibility.map { it.value.second to it.key }.toList(), false)
         }
-        return Pair(listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)), true)
+        return Pair(listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance) to 0), true)
     }
 
     /**
@@ -60,7 +64,7 @@ class CorporationManagerHelper(simulationData: SimulationData) {
         ship: Ship,
         corporation: Corporation,
         shipMaxTravelDistance: Int
-    ): Pair<List<Pair<Int, Int>>, Boolean> {
+    ): Pair<List<Pair<Pair<Int, Int>, Int>>, Boolean> {
         if (corporation.visibleGarbage.any {
                 simData.navigationManager.traversablePathExists(ship.location, it.value.first)
             }
@@ -71,7 +75,7 @@ class CorporationManagerHelper(simulationData: SimulationData) {
                         ship.location,
                         it.value.first
                     )
-                }.map { it.value.first }.toList(),
+                }.map { it.value.first to it.key }.toList(),
                 false
             )
         }
@@ -88,12 +92,12 @@ class CorporationManagerHelper(simulationData: SimulationData) {
                         ship.location,
                         it.value.first
                     )
-                }.map { it.value.first }.toList(),
+                }.map { it.value.first to it.key }.toList(),
                 false
             )
         }
         return Pair(
-            listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance)),
+            listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance) to 0),
             true
         )
     }

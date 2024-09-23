@@ -129,7 +129,7 @@ class NavigationManager(
      **/
     fun shortestPathToLocations(
         from: Pair<Int, Int>,
-        to: List<Pair<Int, Int>>,
+        to: List<Pair<Pair<Int, Int>, Int>>,
         travelAmount: Int
     ): Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>> {
         // Run dijkstra from the current location
@@ -177,31 +177,30 @@ class NavigationManager(
      * @return the tileId of the location to travel to
      */
     private fun filterPossibleLocationsByDistancesToOriginAndReturnLowestTileId(
-        locations: List<Pair<Int, Int>>,
+        locations: List<Pair<Pair<Int, Int>, Int>>,
         distances: Map<Int, Int>
     ): Int {
-        val possibleLocations: MutableList<Int> = mutableListOf() // list of tileID's that are possible to travel to
+        var possibleLocation: Int = Int.MAX_VALUE // list of tileID's that are possible to travel to
         var minDistanceYet: Int = Int.MAX_VALUE
         // Go through all locations that we should travel to, update the minDistanceYet and possibleLocations according
         // to the distances from the origin
-        for (location in locations) {
+        for ((location, ID) in locations) {
             val tile = findTile(location) ?: continue
             val distanceFromStartPointToLocationTile = distances.getOrDefault(tile.id, Int.MAX_VALUE)
             if (distanceFromStartPointToLocationTile < minDistanceYet) {
                 minDistanceYet = distanceFromStartPointToLocationTile
-                possibleLocations.clear()
-                possibleLocations.add(tile.id)
+                possibleLocation = tile.id
             } else if (
                 distanceFromStartPointToLocationTile == minDistanceYet &&
-                distanceFromStartPointToLocationTile != Int.MAX_VALUE
+                distanceFromStartPointToLocationTile != Int.MAX_VALUE &&
+                ID < possibleLocation
             ) {
-                possibleLocations.add(tile.id)
+                possibleLocation = tile.id
             }
         }
         // Return the tileID of the location to travel to
-        if (possibleLocations.isEmpty()) return -1
-        val tileIDLocationToTravelTo = possibleLocations.minBy { it }
-        return tileIDLocationToTravelTo
+        if (possibleLocation == Int.MAX_VALUE) return -1
+        return possibleLocation
     }
 
     /**
@@ -237,21 +236,21 @@ class NavigationManager(
             }
         }
 
-        val distances = mutableMapOf<Int, Int>().withDefault { Int.MAX_VALUE }
+        val distances = mutableMapOf<Int, Pair<Int, Int>>().withDefault { Pair(Int.MAX_VALUE, 0) }
         val previousNodes = mutableMapOf<Int, Int?>()
         val priorityQueue = PriorityQueue<Node>()
 
         // get ID of specific location
         val toSpecificLocationID = this.tiles[toSpecificLocation]?.id
 
-        distances[source] = 0
+        distances[source] = Pair(0, source)
         priorityQueue.add(Node(source, 0))
 
         while (priorityQueue.isNotEmpty()) {
             val currentNode = priorityQueue.poll()
             val currentDistance = currentNode.distance
 
-            if (currentDistance > distances.getValue(currentNode.id)) continue
+            if (currentDistance > distances.getValue(currentNode.id).first) continue
             // If we are looking for a specific location, break if we found it
             if (toSpecificLocation != null && currentNode.id == toSpecificLocationID) {
                 break
@@ -267,11 +266,10 @@ class NavigationManager(
                     previousNodes,
                     priorityQueue,
                     outOfRestriction,
-                    previousNodes
                 )
             }
         }
-        return distances to previousNodes
+        return distances.mapValues { it.value.first } to previousNodes
     }
 
     /**
@@ -291,11 +289,10 @@ class NavigationManager(
         notTraversable: Pair<Boolean, Boolean>,
         currentNode: Node,
         currentDistance: Int,
-        distances: MutableMap<Int, Int>,
+        distances: MutableMap<Int, Pair<Int, Int>>,
         previousNodes: MutableMap<Int, Int?>,
         priorityQueue: PriorityQueue<Node>,
-        outOfRestriction: Boolean,
-        parents: Map<Int, Int?>
+        outOfRestriction: Boolean
     ) {
         val isLand = notTraversable.first
         val isRestricted = notTraversable.second
@@ -308,13 +305,14 @@ class NavigationManager(
             return
         }
         val newDistance = currentDistance + DEFAULT_DISTANCE
-        if (newDistance < distances.getValue(neighbor) ||
+        if (newDistance < distances.getValue(neighbor).first ||
             (
-                newDistance == distances.getValue(neighbor) &&
-                    currentNode.id < (parents.getValue(neighbor) ?: Int.MAX_VALUE)
+                newDistance == distances.getValue(neighbor).first &&
+                    (distances[currentNode.id]?.second?.plus(neighbor) ?: Int.MAX_VALUE)
+                    < distances.getValue(neighbor).second
                 )
         ) {
-            distances[neighbor] = newDistance
+            distances[neighbor] = Pair(newDistance, distances[currentNode.id]?.second?.plus(neighbor) ?: Int.MAX_VALUE)
             previousNodes[neighbor] = currentNode.id
             priorityQueue.add(Node(neighbor, newDistance))
         }
@@ -462,7 +460,7 @@ class NavigationManager(
     fun shouldMoveToHarbor(
         shipLocation: Pair<Int, Int>,
         maxDistance: Int,
-        homeHarbors: List<Pair<Int, Int>>
+        homeHarbors: List<Pair<Pair<Int, Int>, Int>>
     ): Boolean {
         // Run dijkstra from the current location
         val shipTile = findTile(shipLocation) ?: return false

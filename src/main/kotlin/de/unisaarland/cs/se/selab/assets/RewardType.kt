@@ -17,7 +17,9 @@ enum class RewardType {
     /**
      * Reward type for tracking equipment.
      */
-    TRACKING,
+    TRACKING {
+        override fun toString() = "TRACKER"
+    },
 
     /**
      * Reward type for a container.

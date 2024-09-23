@@ -395,11 +395,18 @@ class SimulationParser(
         if (homeHarbors.contains(location)) return true
 
         // check if a home harbor is reachable
-        val res = this.navigationManager.shortestPathToLocations(location, homeHarbors, Int.MAX_VALUE - 1)
+        val harborToTileID = homeHarbors
+            .map {
+                    harborLocation ->
+                harborLocation to (
+                    navigationManager.findTile(harborLocation)?.id
+                        ?: Int.MAX_VALUE
+                    )
+            }
+        val res = this.navigationManager.shortestPathToLocations(location, harborToTileID, Int.MAX_VALUE - 1)
 
         // unpack location from result
         val result = res.first.first
-
         return result != location
     }
 

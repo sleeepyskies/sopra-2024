@@ -57,13 +57,13 @@ class CorporationManager(private val simData: SimulationData) {
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
-            val isOwnLocation = possibleLocationsToMove.size == 1 && possibleLocationsToMove[0] == it.location
-            val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0] != it.location
+            val isOwnLocation = possibleLocationsToMove.size == 1 && possibleLocationsToMove[0].first == it.location
+            val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0].first != it.location
             if (!(isOwnLocation) || isRestrictedAndNotOwnLocation) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
-                    val outOfRestrictionTile = possibleLocationsToMove[0]
+                    val outOfRestrictionTile = possibleLocationsToMove[0].first
                     val shipMaxTravelDistance =
                         (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
                     // The tileID of the tile we move out to
@@ -412,10 +412,18 @@ class CorporationManager(private val simData: SimulationData) {
         val currentFuel = ship.currentFuel
         val fuelConsumption = ship.fuelConsumptionRate
         val maxTravelDistanceTiles = currentFuel / fuelConsumption / VELOCITY_DIVISOR
+        val harborToTileID = corporation.harbors
+            .map {
+                    location ->
+                location to (
+                    simData.navigationManager.findTile(location)?.id
+                        ?: Int.MAX_VALUE
+                    )
+            }
         val shouldMoveToHarbor = simData.navigationManager.shouldMoveToHarbor(
             shipLocation,
             maxTravelDistanceTiles,
-            corporation.harbors
+            harborToTileID
         )
         if (shouldMoveToHarbor) {
             ship.state = when (ship.state) {
@@ -477,7 +485,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun determineBehavior(
         ship: Ship,
         corporation: Corporation
-    ): Pair<List<Pair<Int, Int>>, Boolean> {
+    ): Pair<List<Pair<Pair<Int, Int>, Int>>, Boolean> {
         val shipLocation = ship.location
         val shipMaxTravelDistance =
             (ship.currentVelocity + ship.acceleration).coerceAtMost(ship.maxVelocity) / VELOCITY_DIVISOR
@@ -492,7 +500,7 @@ class CorporationManager(private val simData: SimulationData) {
                     simData.navigationManager.getDestinationOutOfRestriction(
                         ship.location,
                         shipMaxTravelDistance
-                    )
+                    ) to 0
                 ),
                 false
             )
@@ -502,16 +510,22 @@ class CorporationManager(private val simData: SimulationData) {
                 corporation
             ).isNotEmpty()
         ) {
-            return Pair(listOf(shipLocation), false)
+            return Pair(listOf(shipLocation to 0), false)
         }
         checkNeedRefuelOrUnload(ship, corporation)
 
         return when (ship.state) {
             ShipState.NEED_REFUELING, ShipState.NEED_UNLOADING, ShipState.NEED_REFUELING_AND_UNLOADING -> {
-                Pair(corporation.harbors, false)
+                val harborToTileId = corporation.harbors.map { location ->
+                    location to (
+                        simData.navigationManager.findTile(location)?.id
+                            ?: Int.MAX_VALUE
+                        )
+                }
+                Pair(harborToTileId, false)
             }
             ShipState.REFUELING, ShipState.UNLOADING, ShipState.REFUELING_AND_UNLOADING, ShipState.IS_COOPERATING -> {
-                Pair(mutableListOf(shipLocation), false)
+                Pair(mutableListOf(shipLocation to 0), false)
             }
             ShipState.TASKED -> {
                 Pair(handleTaskedState(ship), false)
@@ -528,13 +542,14 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship that is tasked.
      * @return A list containing the target location of the task.
      */
-    private fun handleTaskedState(ship: Ship): List<Pair<Int, Int>> {
+    private fun handleTaskedState(ship: Ship): List<Pair<Pair<Int, Int>, Int>> {
         val task = simData.activeTasks.find {
             it.assignedShipId == ship.id &&
                 ship.currentTaskId == it.id
-        } ?: return listOf(ship.location)
-        val location = simData.navigationManager.locationByTileId(task.targetTileId) ?: return listOf(ship.location)
-        return listOf(location)
+        } ?: return listOf(ship.location to 0)
+        val location =
+            simData.navigationManager.locationByTileId(task.targetTileId) ?: return listOf(ship.location to 0)
+        return listOf(location to task.targetTileId)
     }
 
     /**
@@ -550,7 +565,7 @@ class CorporationManager(private val simData: SimulationData) {
         ship: Ship,
         shipMaxTravelDistance: Int,
         corporation: Corporation
-    ): Pair<List<Pair<Int, Int>>, Boolean> {
+    ): Pair<List<Pair<Pair<Int, Int>, Int>>, Boolean> {
         return when (ship.type) {
             ShipType.COLLECTING_SHIP -> helper.handleDefaultStateCollecting(ship, corporation)
             ShipType.COORDINATING_SHIP ->

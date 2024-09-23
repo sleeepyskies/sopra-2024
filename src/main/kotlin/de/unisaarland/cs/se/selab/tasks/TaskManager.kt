@@ -65,6 +65,8 @@ class TaskManager(private val simData: SimulationData) {
     private fun handleScheduledTasks(scheduledTasks: List<Task>) {
         // there are scheduled tasks, assign them
         for (task in scheduledTasks) {
+            // log
+            Logger.assignTask(task.id, task.type, task.assignedShipId, task.targetTileId)
             val assignedShip = simData.ships.find { it.id == task.assignedShipId }
             if (assignedShip != null) {
                 if (assignedShip.currentTaskId != -1) {
@@ -92,9 +94,6 @@ class TaskManager(private val simData: SimulationData) {
 
             // update ship state
             ship.state = ShipState.TASKED
-
-            // log
-            Logger.assignTask(task.id, task.type, ship.id, task.targetTileId)
         }
     }
 
@@ -157,7 +156,9 @@ class TaskManager(private val simData: SimulationData) {
     private fun hasPathToTask(ship: Ship, task: Task): Boolean {
         // get location from tileID, can specify default value since we know
         // task tile exists from the parsing cross validation
-        val taskLocation = listOf(simData.navigationManager.locationByTileId(task.targetTileId) ?: Pair(0, 0))
+        val taskLocation = listOf(
+            (simData.navigationManager.locationByTileId(task.targetTileId) ?: Pair(0, 0)) to task.targetTileId
+        )
 
         // get ship location
         val shipLocation = ship.location
