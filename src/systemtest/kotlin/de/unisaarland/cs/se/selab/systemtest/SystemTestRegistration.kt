@@ -87,5 +87,14 @@ object SystemTestRegistration {
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
         manager.registerTest(GarbageDriftsCorrectly2())
         manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
+
+        // validation
+        manager.registerTest(WrongNeighbors())
+        manager.registerTest(InvalidCurrent())
+        manager.registerTest(CorporationFileInvalid())
+        manager.registerTest(ScenarioFileInvalid())
+        manager.registerTest(NonUniqueTileIDs())
+        manager.registerTest(HarborCantBeHere())
+        manager.registerTest(FloatingHarbarObamna())
     }
 }

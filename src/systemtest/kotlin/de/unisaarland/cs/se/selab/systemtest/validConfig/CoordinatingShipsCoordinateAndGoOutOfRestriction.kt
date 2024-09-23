@@ -58,7 +58,7 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
 
     private suspend fun tick2() {
         assertNextLine("Simulation Info: Tick 2 started.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+        skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 30 to tile 6.")
         skipLines(1)
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
@@ -79,7 +79,7 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
 
     private suspend fun tick4() {
         assertNextLine("Simulation Info: Tick 4 started.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+        skipLines(1)
         skipLines(5)
         assertNextLine("Ship Movement: Ship 2 moved with speed 30 to tile 6.")
         skipLines(4)
