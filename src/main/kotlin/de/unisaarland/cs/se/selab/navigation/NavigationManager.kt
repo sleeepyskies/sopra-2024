@@ -170,7 +170,7 @@ class NavigationManager(
         )
         var out = Pair(Pair(locationOfDestinationTile, node), Pair(distances[node] ?: 0, tileIDLocationToTravelTo))
         if (node == tileIdOfLocation && travelAmount > 0 && travelAmount < DEFAULT_DISTANCE) {
-            out = Pair(Pair(from, tileIdOfLocation), Pair(travelAmount, tileIdOfLocation))
+            out = Pair(Pair(from, tileIdOfLocation), Pair(travelAmount, tileIDLocationToTravelTo))
         }
         return out
     }
