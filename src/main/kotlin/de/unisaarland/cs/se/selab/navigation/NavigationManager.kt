@@ -134,6 +134,7 @@ class NavigationManager(
     ): Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>> {
         // Run dijkstra from the current location
         val tileIdOfLocation = tiles.getValue(from).id
+        val travelAmountTiles = travelAmount / DEFAULT_DISTANCE
         val (distances, previousNodes) = dijkstra(graph, tileIdOfLocation)
         // Filter the possible locations by the distances to the origin and return the lowest tileId
         // If there is no location to travel to, return current location
@@ -148,7 +149,7 @@ class NavigationManager(
         // We can use !!, as we know that the tileID is in the distances map
         val pathLength = distances[tileIDLocationToTravelTo]?.div(DEFAULT_DISTANCE) ?: 0.div(DEFAULT_DISTANCE)
         // Calculate the amount of tiles we need to go back in the path
-        val goBackInPathByAmountOfTile = pathLength.minus(travelAmount)
+        val goBackInPathByAmountOfTile = pathLength.minus(travelAmountTiles)
         // Check if we can reach the destination tile with the given travelAmount
         // If we can reach the destination tile, return the destination tile and the distance to travel
         if (goBackInPathByAmountOfTile <= 0) {
@@ -167,6 +168,9 @@ class NavigationManager(
             Pair(from, tileIdOfLocation),
             Pair(0, tileIdOfLocation)
         )
+        if (node == tileIdOfLocation && travelAmount > 0 && travelAmount < DEFAULT_DISTANCE) {
+            return Pair(Pair(from, tileIdOfLocation), Pair(travelAmount, tileIdOfLocation))
+        }
         return Pair(Pair(locationOfDestinationTile, node), Pair(distances[node] ?: 0, tileIDLocationToTravelTo))
     }
 
