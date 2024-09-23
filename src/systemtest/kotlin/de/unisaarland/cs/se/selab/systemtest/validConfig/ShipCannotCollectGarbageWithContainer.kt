@@ -53,7 +53,7 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
 
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
 
-        assertNextLine("Garbage Collection: Ship 51 collected 100 of garbage PLASTIC with 20")
+        assertNextLine("Garbage Collection: Ship 51 collected 100 of garbage PLASTIC with 20.")
 
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
@@ -66,7 +66,7 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         assertNextLine("Event: Event 30 of type OIL_SPILL happened.")
 
         // Task Phase
-        assertNextLine("Reward: Task 51: Ship 55 received reward of type CONTAINER.")
+        assertNextLine("Reward: Task 1: Ship 55 received reward of type CONTAINER.")
     }
 
     private suspend fun tick2() {
@@ -81,11 +81,11 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
-        assertNextLine("Simulation Statistics: Corporation 1 collected 0 of garbage.")
-        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
+        assertNextLine("Simulation Statistics: Corporation 1 collected 100 of garbage.")
+        assertNextLine("Simulation Statistics: Total amount of plastic collected: 100.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 100.")
+        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 10.")
         assertEnd()
     }
 }
