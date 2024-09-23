@@ -33,7 +33,7 @@
       "type": "FIND",
       "tick": 2,
       "shipID": 50,
-      "targetTile": 480,
+      "targetTile": 479,
       "rewardID": 21,
       "rewardShipID": 50
     }

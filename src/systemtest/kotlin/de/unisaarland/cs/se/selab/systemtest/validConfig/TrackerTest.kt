@@ -12,7 +12,7 @@ class TrackerTest : ExampleSystemTestExtension() {
     override val map = "mapFiles/bigMap1.json"
     override val corporations = "corporationJsons/corpKnowsAboutSpills_corporation.json"
     override val scenario = "scenarioJsons/corpKnowsAboutSpills_scenario.json"
-    override val maxTicks = 4
+    override val maxTicks = 6
     override suspend fun run() {
         initSimulation()
 
@@ -20,6 +20,8 @@ class TrackerTest : ExampleSystemTestExtension() {
         tick1()
         tick2()
         tick3()
+        tick4()
+        tick5()
 
         simEnd()
     }
@@ -61,27 +63,53 @@ class TrackerTest : ExampleSystemTestExtension() {
         assertNextLine("Event: Event 500 of type STORM happened.")
 
         // Task Phase
-        assertNextLine("Task: Task 1 of type FIND with ship 50 is added with destination 480.")
+        assertNextLine("Task: Task 1 of type FIND with ship 50 is added with destination 479.")
     }
 
     private suspend fun tick3() {
         assertNextLine("Simulation Info: Tick 3 started.")
 
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 50 moved with speed 10 to tile 136.")
-        assertNextLine("Ship Movement: Ship 51 moved with speed 15 to tile 113.")
+        assertNextLine("Ship Movement: Ship 50 moved with speed 15 to tile 136.")
+        assertNextLine("Ship Movement: Ship 51 moved with speed 10 to tile 113.")
         skipLines(4)
+
+        assertNextLine("Current Drift: PLASTIC 69 with amount 100 drifted from tile 60 to tile 62.")
+    }
+
+    private suspend fun tick4() {
+        assertNextLine("Simulation Info: Tick 4 started.")
+
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 50 moved with speed 30 to tile 209.")
+        assertNextLine("Ship Movement: Ship 51 moved with speed 10 to tile 88.")
+        skipLines(4)
+
+        assertNextLine("Current Drift: PLASTIC 69 with amount 100 drifted from tile 62 to tile 64.")
+        assertNextLine("Current Drift: Ship 51 drifted from tile 88 to tile 90.")
+    }
+
+    private suspend fun tick5() {
+        assertNextLine("Simulation Info: Tick 4 started.")
+
+        skipLines(1)
+        assertNextLine("Ship Movement: Ship 50 moved with speed 30 to tile 284.")
+        assertNextLine("Ship Movement: Ship 51 moved with speed 10 to tile 64.")
+        skipLines(1)
+        assertNextLine("Garbage Collection: Ship 51 collected 100 of garbage PLASTIC with 69.")
+        skipLines(3)
+
+        assertNextLine("Current Drift: Ship 51 drifted from tile 64 to tile 64.")
     }
 
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
         assertNextLine("Simulation Statistics: Corporation 1 collected 0 of garbage.")
-        assertNextLine("Simulation Statistics: Corporation 2 collected 0 of garbage.")
         assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
+        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 100.")
         assertEnd()
     }
 }
