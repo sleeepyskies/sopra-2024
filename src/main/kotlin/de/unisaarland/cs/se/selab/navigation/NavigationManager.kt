@@ -580,7 +580,9 @@ class NavigationManager(
             tilesInRadius.addAll(newTiles)
         }
 
-        return tilesInRadius.toList().filter { findTile(it) != null }
+
+
+        return tilesInRadius.toList().filter { findTile(it) != null }.sortedBy { findTile(it)?.id }
     }
 
     /**
