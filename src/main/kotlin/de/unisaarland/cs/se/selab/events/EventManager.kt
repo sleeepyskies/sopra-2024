@@ -158,7 +158,9 @@ class EventManager(private val simulationData: SimulationData) {
             val tileAffectedByStorm = simulationData.navigationManager.findTile(coordinates) ?: continue
             tilesToUpdate.addAll(handleGarbageDrift(tileAffectedByStorm, coordinates, event.direction, event.speed))
         }
-        tilesToUpdate.forEach { it.moveAllArrivingGarbageToTile() }
+        tilesToUpdate.forEach {
+            it.moveAllArrivingGarbageToTile()
+        }
     }
     private fun handleGarbageDrift(tile: Tile, coordinates: Pair<Int, Int>, direction: Direction, speed: Int):
         List<Tile> {
