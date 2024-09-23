@@ -144,7 +144,6 @@ class NavigationManager(
         // Get the location of the tile to travel to
         val tileLocationToTravelTo = locationByTileId(tileIDLocationToTravelTo)
             ?: return Pair(Pair(from, tileIdOfLocation), Pair(0, tileIdOfLocation))
-
         // Get the path length to the destination tile
         // We can use !!, as we know that the tileID is in the distances map
         val pathLength = distances[tileIDLocationToTravelTo]?.div(DEFAULT_DISTANCE) ?: 0.div(DEFAULT_DISTANCE)
@@ -152,13 +151,12 @@ class NavigationManager(
         val goBackInPathByAmountOfTile = pathLength.minus(travelAmountTiles)
         // Check if we can reach the destination tile with the given travelAmount
         // If we can reach the destination tile, return the destination tile and the distance to travel
-        if (goBackInPathByAmountOfTile <= 0) {
+        if (goBackInPathByAmountOfTile < 0) {
             return Pair(
                 Pair(tileLocationToTravelTo, tileIDLocationToTravelTo),
                 Pair(distances[tileIDLocationToTravelTo] ?: -1, tileIDLocationToTravelTo)
             )
         }
-
         // Get the node to travel to, in case we cant travel the whole amount
         var node = tileIDLocationToTravelTo
         repeat(goBackInPathByAmountOfTile) {
@@ -185,7 +183,7 @@ class NavigationManager(
         locations: List<Pair<Pair<Int, Int>, Int>>,
         distances: Map<Int, Int>
     ): Int {
-        var possibleLocation: Int = Int.MAX_VALUE // list of tileID's that are possible to travel to
+        var possibleLocation: Pair<Int, Int> = Pair(Int.MAX_VALUE, Int.MAX_VALUE)
         var minDistanceYet: Int = Int.MAX_VALUE
         // Go through all locations that we should travel to, update the minDistanceYet and possibleLocations according
         // to the distances from the origin
@@ -194,18 +192,18 @@ class NavigationManager(
             val distanceFromStartPointToLocationTile = distances.getOrDefault(tile.id, Int.MAX_VALUE)
             if (distanceFromStartPointToLocationTile < minDistanceYet) {
                 minDistanceYet = distanceFromStartPointToLocationTile
-                possibleLocation = tile.id
+                possibleLocation = Pair(tile.id, ID)
             } else if (
                 distanceFromStartPointToLocationTile == minDistanceYet &&
                 distanceFromStartPointToLocationTile != Int.MAX_VALUE &&
-                ID < possibleLocation
+                ID < possibleLocation.second
             ) {
-                possibleLocation = tile.id
+                possibleLocation = tile.id to ID
             }
         }
         // Return the tileID of the location to travel to
-        if (possibleLocation == Int.MAX_VALUE) return -1
-        return possibleLocation
+        if (possibleLocation.first == Int.MAX_VALUE) return -1
+        return possibleLocation.first
     }
 
     /**

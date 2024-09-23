@@ -65,7 +65,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove[0].first
                     val shipMaxTravelDistance =
-                        (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity) / VELOCITY_DIVISOR
+                        (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
@@ -76,28 +76,10 @@ class CorporationManager(private val simData: SimulationData) {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                         it.location,
                         possibleLocationsToMove,
-                        anticipatedVelocity / VELOCITY_DIVISOR
+                        anticipatedVelocity
                     )
                 }
-                it.updateVelocity()
-                it.currentFuel -= tileInfoToMove.second.first * it.fuelConsumptionRate
-                // getting the target location, not the actual location that the ship will move this tick
-                // so that we can assign capacities to that target
-                // and no other ship will be assigned to that location
-                if (it.type == ShipType.COLLECTING_SHIP) {
-                    gbAssignedAmountList.addAll(
-                        assignCapacityToGarbageList(tileInfoToMove.second.second, it.capacityInfo)
-                    )
-                }
-                shipMoveToLocation(it, tileInfoToMove.first)
-                Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
-                checkReachedDestinationAndSetVelocity(
-                    it,
-                    tileInfoToMove.first.second,
-                    tileInfoToMove.second.second,
-                    exploring,
-                    isOnRestrictedTile
-                )
+                processShipMovement(it, tileInfoToMove, gbAssignedAmountList, exploring, isOnRestrictedTile)
             } else {
                 it.currentVelocity = 0
             }
@@ -110,18 +92,52 @@ class CorporationManager(private val simData: SimulationData) {
         corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
         corporation.visibleGarbage.clear()
     }
+    private fun processShipMovement(
+        ship: Ship,
+        tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>,
+        gbAssignedAmountList: MutableList<Garbage>,
+        exploring: Boolean,
+        isOnRestrictedTile: Boolean
+    ) {
+        ship.updateVelocity()
+        if (tileInfoToMove.second.first / VELOCITY_DIVISOR >= 1) {
+            ship.currentFuel -= tileInfoToMove.second.first * ship.fuelConsumptionRate
+            shipMoveToLocation(ship, tileInfoToMove.first)
+            Logger.shipMovement(ship.id, ship.currentVelocity, ship.tileId)
+        }
+        // getting the target location, not the actual location that the ship will move this tick
+        // so that we can assign capacities to that target
+        // and no other ship will be assigned to that location
+        if (ship.type == ShipType.COLLECTING_SHIP) {
+            gbAssignedAmountList.addAll(
+                assignCapacityToGarbageList(tileInfoToMove.second.second, ship.capacityInfo)
+            )
+        }
+        checkReachedDestinationAndSetVelocity(
+            ship,
+            tileInfoToMove.second.first,
+            tileInfoToMove.first.second,
+            tileInfoToMove.second.second,
+            exploring,
+            isOnRestrictedTile
+        )
+    }
 
     private fun checkReachedDestinationAndSetVelocity(
         ship: Ship,
+        travelAmt: Int,
         tileIdToMoveTo: Int,
         actualDestination: Int,
         exploring: Boolean,
         restricted: Boolean
     ) {
-        if (tileIdToMoveTo == actualDestination && !exploring && !restricted) {
-            ship.currentVelocity = 0
+        if (tileIdToMoveTo == actualDestination && travelAmt > 0) {
+            if (!exploring && !restricted) {
+                ship.currentVelocity = 0
+            }
         }
     }
+
     private fun updateTasks() {
         simData.activeTasks.forEach {
             val taskShip = simData.ships.find { ship -> ship.id == it.assignedShipId }

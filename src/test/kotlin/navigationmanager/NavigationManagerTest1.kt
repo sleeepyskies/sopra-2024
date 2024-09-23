@@ -439,7 +439,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 2)
 
         // call shortestPathToLocations(), enough travelAmount to reach destination
-        val result = nm.shortestPathToLocations(start, destinations, 1)
+        val result = nm.shortestPathToLocations(start, destinations, 10)
 
         assertEquals(checkValue, result)
     }
@@ -471,7 +471,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 2)
 
         // call shortestPathToLocations() - more than enough travel amount to reach destination
-        val result = nm.shortestPathToLocations(start, destinations, 10)
+        val result = nm.shortestPathToLocations(start, destinations, 100)
 
         assertEquals(checkValue, result)
     }
@@ -489,7 +489,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 2, t2 to 6, t3 to 7)
 
         // call shortestPathToLocations() - just enough travel amount to reach destination
-        val result = nm.shortestPathToLocations(start, destinations, 1)
+        val result = nm.shortestPathToLocations(start, destinations, 10)
 
         assertEquals(checkValue, result)
     }
@@ -507,7 +507,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 5, t2 to 21, t3 to 17)
 
         // call shortestPathToLocations() - not enough travel amount to reach destination
-        val result = nm.shortestPathToLocations(start, destinations, 1)
+        val result = nm.shortestPathToLocations(start, destinations, 10)
 
         assertEquals(checkValue, result)
     }
@@ -524,7 +524,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 19, t2 to 14)
 
         // call shortestPathToLocations() - enough travel amount to reach destination, no path to destination
-        val result = nm.shortestPathToLocations(start, destinations, 7)
+        val result = nm.shortestPathToLocations(start, destinations, 70)
 
         assertEquals(checkValue, result)
     }
@@ -544,7 +544,7 @@ class NavigationManagerTest1 {
         restrictTile(Pair(1, 0))
 
         // call shortestPathToLocations() - enough travel amount to move
-        val result = nm.shortestPathToLocations(start, destinations, 2)
+        val result = nm.shortestPathToLocations(start, destinations, 20)
 
         assertEquals(checkValue, result)
     }
@@ -564,7 +564,7 @@ class NavigationManagerTest1 {
         restrictTile(Pair(2, 0))
 
         // call shortestPathToLocations() - enough travel amount to move, no path to destination
-        val result = nm.shortestPathToLocations(start, destinations, 1)
+        val result = nm.shortestPathToLocations(start, destinations, 10)
 
         assertEquals(checkValue, result)
     }
@@ -586,7 +586,7 @@ class NavigationManagerTest1 {
         val destinations = listOf(t1 to 0, t2 to 2, t3 to 3)
 
         // call shortestPathToLocations()
-        val result = nm.shortestPathToLocations(start, destinations, 8)
+        val result = nm.shortestPathToLocations(start, destinations, 80)
 
         assertEquals(checkValue, result)
     }
