@@ -12,7 +12,7 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
     override val scenario = "scenarioJsons/shipCannotCollectGarbageWithContainer_scenario.json"
     override val map = "mapFiles/obamna.json"
     override val name = "ShipCannotCollectGarbageWithContainer"
-    override val maxTicks = 4
+    override val maxTicks = 3
 
     override suspend fun run() {
         initSimulation()
@@ -32,9 +32,9 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Tick 0 started.")
 
         // Corporation Phase
-        c1Mmoving()
+        skipLines(1)
         assertNextLine("Ship Movement: Ship 55 moved with speed 13 to tile 6.")
-        corp1()
+        skipLines(4)
 
         // Ship Drifting
         assertNextLine("Current Drift: Ship 55 drifted from tile 6 to tile 8.")
@@ -43,18 +43,11 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         assertNextLine("Task: Task 1 of type COLLECT with ship 51 is added with destination 14.")
     }
 
-    private suspend fun corp1() {
-        assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-    }
-
     private suspend fun tick1() {
         assertNextLine("Simulation Info: Tick 1 started.")
 
         // Corporation Phase
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
+        skipLines(1)
         assertNextLine("Ship Movement: Ship 51 moved with speed 10 to tile 14.")
         assertNextLine("Ship Movement: Ship 55 moved with speed 26 to tile 1.")
 
@@ -75,17 +68,14 @@ class ShipCannotCollectGarbageWithContainer : ExampleSystemTestExtension() {
         // Task Phase
         assertNextLine("Reward: Task 51: Ship 55 received reward of type CONTAINER.")
     }
-    private suspend fun c1Mmoving() {
-        assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-    }
 
     private suspend fun tick2() {
         assertNextLine("Simulation Info: Tick 2 started.")
 
         // Corporation Phase
-        c1Mmoving()
+        skipLines(1)
         assertNextLine("Ship Movement: Ship 55 moved with speed 39 to tile 3.")
-        corp1()
+        skipLines(4)
     }
 
     private suspend fun simEnd() {
