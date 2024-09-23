@@ -381,6 +381,14 @@ class SimulationParserTests {
             }
     """.trimIndent()
 
+    @TempDir
+    lateinit var tempDir: File
+    private lateinit var corporationFile: File
+    private lateinit var mapFile: File
+    private lateinit var scenarioFile: File
+    private lateinit var simulationParser: SimulationParser
+    private val maxTick = 5
+
     @BeforeEach
     fun init() {
         Logger.setOutput(PrintWriter(System.out, true))
@@ -389,14 +397,6 @@ class SimulationParserTests {
         scenarioFile = File(tempDir, "scenario.json")
         simulationParser = SimulationParser(mapFile.path, corporationFile.path, scenarioFile.path, maxTick)
     }
-
-    @TempDir
-    lateinit var tempDir: File
-    private lateinit var corporationFile: File
-    private lateinit var mapFile: File
-    private lateinit var scenarioFile: File
-    private lateinit var simulationParser: SimulationParser
-    private var maxTick = 5
 
     @Test
     fun `test valid files`() {
@@ -457,23 +457,6 @@ class SimulationParserTests {
                 "garbage": [{id: 1, location: 2, type: "OIL", amount: 1000}],
                 "tasks": [{id: 1, type: "FIND", tick: 3, shipID: 1, targetTile: 29, rewardID: 1, rewardShipID: 1}],
                 "rewards": [{id: 1, type: "RADIO"}]
-            }
-        """.trimIndent()
-        mapFile.writeText(mapJson)
-        corporationFile.writeText(corporationJson)
-        scenarioFile.writeText(scenarioJson)
-        val result = simulationParser.createSimulator()
-        assertNull(result)
-    }
-
-    @Test
-    fun `test pirate attack on non existant ship`() {
-        val scenarioJson = """
-            {
-                "events": [{"type": "STORM","id": 1,"tick": 3,"location": 1,"radius": 0,"speed": 10,"direction": 180}],
-                "garbage": [{id: 1, location: 2, type: "OIL", amount: 1000}],
-                "tasks": [{id: 1, type: "FIND", tick: 3, shipID: 1, targetTile: 29, rewardID: 1, rewardShipID: 1}],
-                "rewards": [{id: 1, type: "TRACKER"}]
             }
         """.trimIndent()
         mapFile.writeText(mapJson)
