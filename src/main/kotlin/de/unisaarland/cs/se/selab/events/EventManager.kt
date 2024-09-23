@@ -175,6 +175,7 @@ class EventManager(private val simulationData: SimulationData) {
                     break
                 }
             }
+            updateCorporations(listOf(garbage))
         }
         return tileToBeUpdate
     }
@@ -198,7 +199,6 @@ class EventManager(private val simulationData: SimulationData) {
             garbage.location = currentTile.location
             garbage.tileId = currentTile.id
             tileToBeUpdate.add(currentTile)
-            updateCorporations(listOf(garbage))
             return currentTile
         }
         return null
