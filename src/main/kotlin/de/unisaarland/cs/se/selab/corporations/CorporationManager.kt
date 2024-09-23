@@ -59,7 +59,7 @@ class CorporationManager(private val simData: SimulationData) {
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
             val isOwnLocation = possibleLocationsToMove.size == 1 && possibleLocationsToMove[0].first == it.location
             val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0].first != it.location
-            if (!(isOwnLocation) || isRestrictedAndNotOwnLocation) {
+            if (!(isOwnLocation) || isRestrictedAndNotOwnLocation || exploring) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
@@ -79,27 +79,25 @@ class CorporationManager(private val simData: SimulationData) {
                         anticipatedVelocity / VELOCITY_DIVISOR
                     )
                 }
-                if (tileInfoToMove.second.first != 0) {
-                    it.updateVelocity()
-                    it.currentFuel -= tileInfoToMove.second.first * it.fuelConsumptionRate
-                    // getting the target location, not the actual location that the ship will move this tick
-                    // so that we can assign capacities to that target
-                    // and no other ship will be assigned to that location
+                it.updateVelocity()
+                it.currentFuel -= tileInfoToMove.second.first * it.fuelConsumptionRate
+                // getting the target location, not the actual location that the ship will move this tick
+                // so that we can assign capacities to that target
+                // and no other ship will be assigned to that location
+                if (it.type == ShipType.COLLECTING_SHIP) {
                     gbAssignedAmountList.addAll(
                         assignCapacityToGarbageList(tileInfoToMove.second.second, it.capacityInfo)
                     )
-                    shipMoveToLocation(it, tileInfoToMove.first)
-                    Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
-                    checkReachedDestinationAndSetVelocity(
-                        it,
-                        tileInfoToMove.first.second,
-                        tileInfoToMove.second.second,
-                        exploring,
-                        isOnRestrictedTile
-                    )
-                } else {
-                    it.currentVelocity = 0
                 }
+                shipMoveToLocation(it, tileInfoToMove.first)
+                Logger.shipMovement(it.id, it.currentVelocity, it.tileId)
+                checkReachedDestinationAndSetVelocity(
+                    it,
+                    tileInfoToMove.first.second,
+                    tileInfoToMove.second.second,
+                    exploring,
+                    isOnRestrictedTile
+                )
             } else {
                 it.currentVelocity = 0
             }
