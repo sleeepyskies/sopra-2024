@@ -11,7 +11,7 @@ class OnlyCorrectNumberOfShipsAssigned : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/corporationsWithThreeCollectingShip.json"
     override val scenario = "scenarioJsons/garbageWhichNeedsAtLeast3Ships.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "test"
+    override val name = "OnlyCorrectNumberOfShipsAssigned"
     override val maxTicks = 4
     override suspend fun run() {
         initSimulation()
