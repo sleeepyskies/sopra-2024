@@ -65,6 +65,8 @@ class TaskManager(private val simData: SimulationData) {
     private fun handleScheduledTasks(scheduledTasks: List<Task>) {
         // there are scheduled tasks, assign them
         for (task in scheduledTasks) {
+            // log
+            Logger.assignTask(task.id, task.type, task.assignedShipId, task.targetTileId)
             val assignedShip = simData.ships.find { it.id == task.assignedShipId }
             if (assignedShip != null) {
                 if (assignedShip.currentTaskId != -1) {
@@ -82,9 +84,6 @@ class TaskManager(private val simData: SimulationData) {
      * @param task The task to be assigned.
      */
     private fun assignTask(ship: Ship, task: Task) {
-        // log
-        Logger.assignTask(task.id, task.type, ship.id, task.targetTileId)
-
         // check if ship should be assigned the task
         if (shouldBeAssignedTask(ship, task)) {
             // add to active tasks list
