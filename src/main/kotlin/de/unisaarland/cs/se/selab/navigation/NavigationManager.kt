@@ -236,21 +236,21 @@ class NavigationManager(
             }
         }
 
-        val distances = mutableMapOf<Int, Int>().withDefault { Int.MAX_VALUE }
+        val distances = mutableMapOf<Int, Pair<Int, Int>>().withDefault { Pair(Int.MAX_VALUE, 0) }
         val previousNodes = mutableMapOf<Int, Int?>()
         val priorityQueue = PriorityQueue<Node>()
 
         // get ID of specific location
         val toSpecificLocationID = this.tiles[toSpecificLocation]?.id
 
-        distances[source] = 0
+        distances[source] = Pair(0, source)
         priorityQueue.add(Node(source, 0))
 
         while (priorityQueue.isNotEmpty()) {
             val currentNode = priorityQueue.poll()
             val currentDistance = currentNode.distance
 
-            if (currentDistance > distances.getValue(currentNode.id)) continue
+            if (currentDistance > distances.getValue(currentNode.id).first) continue
             // If we are looking for a specific location, break if we found it
             if (toSpecificLocation != null && currentNode.id == toSpecificLocationID) {
                 break
@@ -266,11 +266,10 @@ class NavigationManager(
                     previousNodes,
                     priorityQueue,
                     outOfRestriction,
-                    previousNodes
                 )
             }
         }
-        return distances to previousNodes
+        return distances.mapValues { it.value.first } to previousNodes
     }
 
     /**
@@ -290,11 +289,10 @@ class NavigationManager(
         notTraversable: Pair<Boolean, Boolean>,
         currentNode: Node,
         currentDistance: Int,
-        distances: MutableMap<Int, Int>,
+        distances: MutableMap<Int, Pair<Int, Int>>,
         previousNodes: MutableMap<Int, Int?>,
         priorityQueue: PriorityQueue<Node>,
-        outOfRestriction: Boolean,
-        parents: Map<Int, Int?>
+        outOfRestriction: Boolean
     ) {
         val isLand = notTraversable.first
         val isRestricted = notTraversable.second
@@ -307,13 +305,14 @@ class NavigationManager(
             return
         }
         val newDistance = currentDistance + DEFAULT_DISTANCE
-        if (newDistance < distances.getValue(neighbor) ||
+        if (newDistance < distances.getValue(neighbor).first ||
             (
-                newDistance == distances.getValue(neighbor) &&
-                    currentNode.id < (parents.getValue(neighbor) ?: Int.MAX_VALUE)
+                newDistance == distances.getValue(neighbor).first &&
+                    (distances[currentNode.id]?.second?.plus(neighbor) ?: Int.MAX_VALUE)
+                    < distances.getValue(neighbor).second
                 )
         ) {
-            distances[neighbor] = newDistance
+            distances[neighbor] = Pair(newDistance, distances[currentNode.id]?.second?.plus(neighbor) ?: Int.MAX_VALUE)
             previousNodes[neighbor] = currentNode.id
             priorityQueue.add(Node(neighbor, newDistance))
         }

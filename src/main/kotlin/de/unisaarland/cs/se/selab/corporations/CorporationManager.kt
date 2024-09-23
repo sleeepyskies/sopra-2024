@@ -594,7 +594,11 @@ class CorporationManager(private val simData: SimulationData) {
         val removedGarbage = corporation.garbage
             .filter { scannedTiles.contains(it.value.first) }
             .filter { !info.second.containsKey(it.key) }
+        val removedShips = corporation.ships
+            .filter { scannedTiles.contains(it.location) }
+            .filter { !info.second.containsKey(it.id) }
         corporation.garbage.keys.removeAll(removedGarbage.keys)
+        removedShips.forEach { corporation.visibleShips.remove(it.id) }
         return true
     }
 
