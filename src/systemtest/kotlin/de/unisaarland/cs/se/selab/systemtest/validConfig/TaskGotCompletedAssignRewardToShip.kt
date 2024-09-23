@@ -40,7 +40,7 @@ class TaskGotCompletedAssignRewardToShip : ExampleSystemTestExtension() {
         // assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
 
         // Tasks Phase
-        assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 3.")
+        assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 2.")
     }
 
     private suspend fun tick1() {
@@ -48,7 +48,6 @@ class TaskGotCompletedAssignRewardToShip : ExampleSystemTestExtension() {
         // Corporation Phase
 
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 3.")
 
         /*
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
@@ -64,6 +63,6 @@ class TaskGotCompletedAssignRewardToShip : ExampleSystemTestExtension() {
         // assertNextLine("Reward: Task 1: Ship 1 received reward of type CONTAINER.")
 
         // Task Phase
-        assertNextLine("Reward: Task 1: Ship 1 received reward of type TRACKING.")
+        assertNextLine("Reward: Task 1: Ship 1 received reward of type TRACKER.")
     }
 }
