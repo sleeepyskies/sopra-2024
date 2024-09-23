@@ -381,6 +381,14 @@ class SimulationParserTests {
             }
     """.trimIndent()
 
+    @TempDir
+    lateinit var tempDir: File
+    private lateinit var corporationFile: File
+    private lateinit var mapFile: File
+    private lateinit var scenarioFile: File
+    private lateinit var simulationParser: SimulationParser
+    private val maxTick = 5
+
     @BeforeEach
     fun init() {
         Logger.setOutput(PrintWriter(System.out, true))
@@ -389,14 +397,6 @@ class SimulationParserTests {
         scenarioFile = File(tempDir, "scenario.json")
         simulationParser = SimulationParser(mapFile.path, corporationFile.path, scenarioFile.path, maxTick)
     }
-
-    @TempDir
-    lateinit var tempDir: File
-    private lateinit var corporationFile: File
-    private lateinit var mapFile: File
-    private lateinit var scenarioFile: File
-    private lateinit var simulationParser: SimulationParser
-    private var maxTick = 5
 
     @Test
     fun `test valid files`() {

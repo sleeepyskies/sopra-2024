@@ -187,7 +187,7 @@ class CorporationManager(private val simData: SimulationData) {
     }
 
     private fun handleGarbageType(gb: Garbage, tile: Tile, ship: Ship) {
-        val shouldRemove = when (gb.type) {
+        val (shouldRemove, amt) = when (gb.type) {
             GarbageType.PLASTIC -> {
                 val plasticShips = getShipsOnTile(tile.location).filter {
                     it.capacityInfo[GarbageType.PLASTIC]?.second != 0
@@ -195,21 +195,23 @@ class CorporationManager(private val simData: SimulationData) {
                 if (checkEnoughShipsForPlasticRemoval(tile, plasticShips)) {
                     collectGarbageOnTile(gb, ship)
                 } else {
-                    false
+                    Pair(false, 0)
                 }
             }
             GarbageType.OIL, GarbageType.CHEMICALS -> {
                 collectGarbageOnTile(gb, ship)
             }
             GarbageType.NONE -> {
-                false
+                Pair(false, 0)
             }
         }
         if (shouldRemove) {
-            tile.currentGarbage.remove(gb)
+            tile.removeGarbageFromTile(gb)
             simData.garbage.remove(gb)
             simData.corporations.find { it.id == ship.corporation }?.garbage?.remove(gb.id)
             simData.corporations.find { it.id == ship.corporation }?.visibleGarbage?.remove(gb.id)
+        } else {
+            gb.amount -= amt
         }
     }
 
@@ -718,8 +720,9 @@ class CorporationManager(private val simData: SimulationData) {
      * @param ship The ship collecting the garbage.
      * @return True if the garbage should be removed from the tile, false otherwise.
      */
-    private fun collectGarbageOnTile(gb: Garbage, ship: Ship): Boolean {
+    private fun collectGarbageOnTile(gb: Garbage, ship: Ship): Pair<Boolean, Int> {
         var shouldRemove = false
+        var colamt = 0
         when (gb.type) {
             GarbageType.PLASTIC -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.PLASTIC]?.first ?: 0)
@@ -731,6 +734,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (collectionAmount != 0) {
                     Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
                 }
+                colamt = collectionAmount
             }
             GarbageType.OIL -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.OIL]?.first ?: 0)
@@ -742,6 +746,7 @@ class CorporationManager(private val simData: SimulationData) {
                 if (collectionAmount != 0) {
                     Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
                 }
+                colamt = collectionAmount
             }
             GarbageType.CHEMICALS -> {
                 val collectionAmount = min(gb.amount, ship.capacityInfo[GarbageType.CHEMICALS]?.first ?: 0)
@@ -753,10 +758,11 @@ class CorporationManager(private val simData: SimulationData) {
                 if (collectionAmount != 0) {
                     Logger.garbageCollection(ship.id, collectionAmount, gb.id, ship.corporation, gb.type)
                 }
+                colamt = collectionAmount
             }
             GarbageType.NONE -> {}
         }
-        return shouldRemove
+        return Pair(shouldRemove, colamt)
     }
 
     /**
