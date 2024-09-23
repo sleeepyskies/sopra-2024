@@ -43,7 +43,7 @@ class CorporationManagerHelper(simulationData: SimulationData) {
     ): Pair<List<Pair<Int, Int>>, Boolean> {
         val shipsToBeConsideredInVisibility = corporation.visibleShips
             .filter {
-                it.value.first != corporation.lastCooperatedWith &&
+                ship.corporation != it.value.first &&
                     it.value.first != corporation.lastCooperatedWith &&
                     simData.navigationManager.traversablePathExists(ship.location, it.value.second)
             }
