@@ -157,7 +157,9 @@ class TaskManager(private val simData: SimulationData) {
     private fun hasPathToTask(ship: Ship, task: Task): Boolean {
         // get location from tileID, can specify default value since we know
         // task tile exists from the parsing cross validation
-        val taskLocation = listOf(simData.navigationManager.locationByTileId(task.targetTileId) ?: Pair(0, 0))
+        val taskLocation = listOf(
+            (simData.navigationManager.locationByTileId(task.targetTileId) ?: Pair(0, 0)) to task.targetTileId
+        )
 
         // get ship location
         val shipLocation = ship.location

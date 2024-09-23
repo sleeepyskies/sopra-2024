@@ -436,7 +436,7 @@ class NavigationManagerTest1 {
         // get start location and list of one neighbor
         val start = Pair(0, 0)
         val t1 = Pair(1, 0)
-        val destinations = listOf(t1)
+        val destinations = listOf(t1 to 2)
 
         // call shortestPathToLocations(), enough travelAmount to reach destination
         val result = nm.shortestPathToLocations(start, destinations, 1)
@@ -452,7 +452,7 @@ class NavigationManagerTest1 {
         // get start location and list of one neighbor
         val start = Pair(0, 0)
         val t1 = Pair(1, 0)
-        val destinations = listOf(t1)
+        val destinations = listOf(t1 to 2)
 
         // call shortestPathToLocations() - not enough travel amount to reach destination
         val result = nm.shortestPathToLocations(start, destinations, 0)
@@ -468,7 +468,7 @@ class NavigationManagerTest1 {
         // get start location and list of one neighbor
         val start = Pair(0, 0)
         val t1 = Pair(1, 0)
-        val destinations = listOf(t1)
+        val destinations = listOf(t1 to 2)
 
         // call shortestPathToLocations() - more than enough travel amount to reach destination
         val result = nm.shortestPathToLocations(start, destinations, 10)
@@ -486,7 +486,7 @@ class NavigationManagerTest1 {
         val t1 = Pair(1, 0)
         val t2 = Pair(0, 1)
         val t3 = Pair(1, 1)
-        val destinations = listOf(t1, t2, t3)
+        val destinations = listOf(t1 to 2, t2 to 6, t3 to 7)
 
         // call shortestPathToLocations() - just enough travel amount to reach destination
         val result = nm.shortestPathToLocations(start, destinations, 1)
@@ -504,7 +504,7 @@ class NavigationManagerTest1 {
         val t1 = Pair(4, 0)
         val t2 = Pair(0, 4)
         val t3 = Pair(1, 3)
-        val destinations = listOf(t1, t2, t3)
+        val destinations = listOf(t1 to 5, t2 to 21, t3 to 17)
 
         // call shortestPathToLocations() - not enough travel amount to reach destination
         val result = nm.shortestPathToLocations(start, destinations, 1)
@@ -521,7 +521,7 @@ class NavigationManagerTest1 {
         val start = Pair(0, 0)
         val t1 = Pair(3, 3)
         val t2 = Pair(3, 2)
-        val destinations = listOf(t1, t2)
+        val destinations = listOf(t1 to 19, t2 to 14)
 
         // call shortestPathToLocations() - enough travel amount to reach destination, no path to destination
         val result = nm.shortestPathToLocations(start, destinations, 7)
@@ -538,7 +538,7 @@ class NavigationManagerTest1 {
         val start = Pair(0, 0)
         val t1 = Pair(2, 0)
         val t2 = Pair(4, 0)
-        val destinations = listOf(t1, t2)
+        val destinations = listOf(t1 to 3, t2 to 5)
 
         // set restriction on tile with id 2
         restrictTile(Pair(1, 0))
@@ -558,7 +558,7 @@ class NavigationManagerTest1 {
         val start = Pair(2, 1)
         val t1 = Pair(2, 0) // neighboring restricted tile
         val t2 = Pair(1, 3)
-        val destinations = listOf(t1, t2)
+        val destinations = listOf(t1 to 3, t2 to 17)
 
         // set restriction on tile with id 3
         restrictTile(Pair(2, 0))
@@ -583,7 +583,7 @@ class NavigationManagerTest1 {
         val t1 = Pair(0, 0)
         val t2 = Pair(1, 0)
         val t3 = Pair(2, 0)
-        val destinations = listOf(t1, t2, t3)
+        val destinations = listOf(t1 to 0, t2 to 2, t3 to 3)
 
         // call shortestPathToLocations()
         val result = nm.shortestPathToLocations(start, destinations, 8)
@@ -877,7 +877,7 @@ class NavigationManagerTest1 {
     @Test
     fun shouldMoveToHarborTest1() {
         // define the harbors
-        val harbors = listOf(Pair(0, 0), Pair(4, 4))
+        val harbors = listOf(Pair(0, 0) to 0, Pair(4, 4) to 25)
 
         // call shouldMoveToHarbor when the ship must not return to harbor
         val result = this.nm.shouldMoveToHarbor(Pair(0, 0), 1000, harbors)
@@ -888,7 +888,7 @@ class NavigationManagerTest1 {
     @Test
     fun shouldMoveToHarborTest2() {
         // define the harbors
-        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+        val harbors = listOf(Pair(4, 4) to 25, Pair(4, 0) to 5)
 
         // ship cannot move any further away and still make it back to a home harbor
         val result = this.nm.shouldMoveToHarbor(Pair(1, 2), 4, harbors)
@@ -899,7 +899,7 @@ class NavigationManagerTest1 {
     @Test
     fun shouldMoveToHarborTest3() {
         // define the harbors
-        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+        val harbors = listOf(Pair(4, 4) to 25, Pair(4, 0) to 5)
 
         // ship cannot make it to the harbor
         val result = this.nm.shouldMoveToHarbor(Pair(1, 3), 4, harbors)
@@ -910,7 +910,7 @@ class NavigationManagerTest1 {
     @Test
     fun shouldMoveToHarborTest4() {
         // define the harbors
-        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+        val harbors = listOf(Pair(4, 4) to 25, Pair(4, 0) to 5)
 
         // ship does not need to refuel
         val result = this.nm.shouldMoveToHarbor(Pair(1, 2), 6, harbors)
@@ -921,7 +921,7 @@ class NavigationManagerTest1 {
     @Test
     fun shouldMoveToHarborTest5() {
         // define the harbors
-        val harbors = listOf(Pair(4, 4), Pair(4, 0))
+        val harbors = listOf(Pair(4, 4) to 25, Pair(4, 0) to 5)
 
         // ship does not need to refuel
         val result1 = this.nm.shouldMoveToHarbor(Pair(1, 3), 7, harbors)

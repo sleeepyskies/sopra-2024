@@ -236,7 +236,7 @@ class CorporationManagerUnitTests1 {
         method.isAccessible = true
         val locationToGoTo = method.invoke(cm, ship, simDat.corporations[0])
         assertEquals(shipState, ship.state)
-        assertEquals(Pair(listOf(Pair(1, 0)), false), locationToGoTo)
+        assertEquals(Pair(listOf(Pair(1, 0) to 0), false), locationToGoTo)
     }
 
     @Test
@@ -310,8 +310,8 @@ class CorporationManagerUnitTests1 {
         val locationToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
         assertEquals(shipState1, ship.state)
         assertEquals(shipState2, ship2.state)
-        assertEquals(Pair(listOf(Pair(0, 0)), false), locationToGoTo1)
-        assertEquals(Pair(listOf(Pair(4, 0)), false), locationToGoTo2)
+        assertEquals(Pair(listOf(Pair(0, 0) to 0), false), locationToGoTo1)
+        assertEquals(Pair(listOf(Pair(4, 0) to 5), false), locationToGoTo2)
     }
 
     @Test
@@ -344,7 +344,7 @@ class CorporationManagerUnitTests1 {
         val locationToGoTo2 = method.invoke(cm, ship2, simDat.corporations[0])
         assertEquals(shipState1, ship.state)
         assertEquals(shipState2, ship2.state)
-        assertEquals(Pair(listOf(Pair(0, 0)), false), locationToGoTo1)
-        assertEquals(Pair(listOf(Pair(4, 0)), false), locationToGoTo2)
+        assertEquals(Pair(listOf(Pair(0, 0) to 0), false), locationToGoTo1)
+        assertEquals(Pair(listOf(Pair(4, 0) to 5), false), locationToGoTo2)
     }
 }
