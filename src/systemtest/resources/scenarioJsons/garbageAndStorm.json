@@ -3,31 +3,31 @@
     {
       "id": 70,
       "type": "OIL",
-      "location": 23,
+      "location": 89,
       "amount": 500
     },
     {
       "id": 71,
       "type": "OIL",
-      "location": 17,
+      "location": 79,
       "amount": 500
     },
     {
       "id": 72,
       "type": "OIL",
-      "location": 14,
+      "location": 88,
       "amount": 750
     },
     {
       "id": 73,
       "type": "CHEMICALS",
-      "location": 8,
+      "location": 69,
       "amount": 750
     },
     {
       "id": 74,
       "type": "CHEMICALS",
-      "location": 7,
+      "location": 87,
       "amount": 750
     }
   ],
@@ -36,7 +36,7 @@
       "id": 1,
       "type": "STORM",
       "tick": 1,
-      "location": 12,
+      "location": 89,
       "radius": 2,
       "speed": 20,
       "direction": 300
