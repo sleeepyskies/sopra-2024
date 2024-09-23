@@ -10,7 +10,7 @@ class CollectingShipMovesToVisibleGarbage : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/collectingShipMovesToVisibleGarbage_corporations.json"
     override val scenario = "scenarioJsons/collectingShipMovesToVisibleGarbage_scenario.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "task could not be assigned, not enough fuel"
+    override val name = "CollectingShipMovesToVisibleGarbage"
     override val maxTicks = 2
 
     override suspend fun run() {

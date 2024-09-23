@@ -97,7 +97,6 @@ class CorporationManager(private val simData: SimulationData) {
                         exploring,
                         isOnRestrictedTile
                     )
-                    updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
                 } else {
                     it.currentVelocity = 0
                 }
