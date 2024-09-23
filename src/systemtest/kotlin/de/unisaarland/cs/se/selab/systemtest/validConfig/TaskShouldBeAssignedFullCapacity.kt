@@ -59,7 +59,7 @@ class TaskShouldBeAssignedFullCapacity : ExampleSystemTestExtension() {
         // assertNextLine("Current Drift: Ship 1 drifted from tile 7 to tile 13.")
 
         // Tasks Phase
-        assertNextLine("Task: Task 1 of type COORDINATE with ship 1 is added with destination 5.")
+        assertNextLine("Task: Task 1 of type COOPERATE with ship 1 is added with destination 5.")
     }
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
