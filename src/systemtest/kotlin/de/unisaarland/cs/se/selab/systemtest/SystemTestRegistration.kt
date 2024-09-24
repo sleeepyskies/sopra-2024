@@ -55,6 +55,7 @@ object SystemTestRegistration {
         manager.registerTest(AssignManyShipsToGarbage())
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(VisibleGarbagePriority())
+        manager.registerTest(DawnOfThePlanetOfTheApes())
     }
 
     /**
