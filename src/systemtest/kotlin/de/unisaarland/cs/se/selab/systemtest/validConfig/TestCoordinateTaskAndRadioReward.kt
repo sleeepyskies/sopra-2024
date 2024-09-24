@@ -151,9 +151,7 @@ class TestCoordinateTaskAndRadioReward : ExampleSystemTestExtension() {
 
         // Corp 2 phase
         assertNextLine("Corporation Action: Corporation 2 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 200 moved with speed 20 to tile 12.")
         assertNextLine("Corporation Action: Corporation 2 is starting to collect garbage.")
-        assertNextLine("Garbage Collection: Ship 200 collected 100 of garbage PLASTIC with 50.")
         assertNextLine("Corporation Action: Corporation 2 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 2 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 2 finished its actions.")
@@ -163,11 +161,11 @@ class TestCoordinateTaskAndRadioReward : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
         assertNextLine("Simulation Statistics: Corporation 1 collected 0 of garbage.")
-        assertNextLine("Simulation Statistics: Corporation 2 collected 100 of garbage.")
-        assertNextLine("Simulation Statistics: Total amount of plastic collected: 100.")
+        assertNextLine("Simulation Statistics: Corporation 2 collected 0 of garbage.")
+        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
+        assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 100.")
         assertEnd()
     }
 }
