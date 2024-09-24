@@ -793,7 +793,7 @@ class CorporationManager(private val simData: SimulationData) {
      */
     private fun getShipsOnTile(location: Pair<Int, Int>): List<Ship> {
         val resultList = mutableListOf<Ship>()
-        val shipsOfCorp = simData.corporations.flatMap { it.ships }
+        val shipsOfCorp = simData.corporations.flatMap { it.ships }.sortedBy { it.id }
         for (ship in shipsOfCorp) {
             if (ship.location == location) {
                 resultList.add(ship)
