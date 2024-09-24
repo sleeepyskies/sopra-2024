@@ -53,6 +53,8 @@ object SystemTestRegistration {
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
         manager.registerTest(TrackerTest())
         manager.registerTest(AssignManyShipsToGarbage())
+        manager.registerTest(UnloadingOfCollectedChemicals())
+        manager.registerTest(VisibleGarbagePriority())
     }
 
     /**

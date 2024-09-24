@@ -12,6 +12,9 @@ class CorporationManagerHelper(simulationData: SimulationData) {
 
     private val simData = simulationData
 
+    /**
+     * Helper method for garbage collection in CorporationManager. Handles the state of UNLOADING ships.
+     */
     fun checkNeedUnloading(ship: Ship) {
         if (ship.capacityInfo.values.any { it.first <= 0 && it.second != 0 }) {
             ship.state = when (ship.state) {
