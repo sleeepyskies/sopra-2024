@@ -73,7 +73,6 @@ class TrackerTest : ExampleSystemTestExtension() {
         assertNextLine("Ship Movement: Ship 50 moved with speed 15 to tile 136.")
         assertNextLine("Ship Movement: Ship 51 moved with speed 10 to tile 112.")
         skipLines(4)
-
     }
 
     private suspend fun tick4() {
@@ -93,7 +92,6 @@ class TrackerTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 50 moved with speed 30 to tile 284.")
         skipLines(4)
-
     }
 
     private suspend fun simEnd() {
