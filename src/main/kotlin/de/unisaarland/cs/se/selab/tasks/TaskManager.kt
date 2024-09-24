@@ -28,11 +28,6 @@ class TaskManager(private val simData: SimulationData) {
      * Starts the tasks phase in the simulation.
      */
     fun startTasksPhase() {
-        // get tasks scheduled for this tick
-        val scheduledTasks = simData.scheduledTasks[simData.tick]?.sortedBy { it.id }
-        if (scheduledTasks != null) {
-            handleScheduledTasks(scheduledTasks)
-        }
         // get active tasks, check if they have been completed
         val fulfilled = mutableListOf<Task>()
         for (task in simData.activeTasks) {
@@ -58,6 +53,11 @@ class TaskManager(private val simData: SimulationData) {
                     assignedShip.state = ShipState.DEFAULT
                 }
             }
+        }
+        // get tasks scheduled for this tick
+        val scheduledTasks = simData.scheduledTasks[simData.tick]?.sortedBy { it.id }
+        if (scheduledTasks != null) {
+            handleScheduledTasks(scheduledTasks)
         }
         simData.activeTasks.removeAll(fulfilled)
 
