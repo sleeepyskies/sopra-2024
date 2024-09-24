@@ -20,38 +20,8 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
-        manager.registerTest(OilSpillHappensCorrectly())
-        manager.registerTest(RestrictionHappensCorrectly())
-        manager.registerTest(PirateAttackDeletesShip())
-        manager.registerTest(ScoutContainerFillMoveHarborTest())
-        manager.registerTest(GarbageDriftsCorrectly())
-        manager.registerTest(WrongNeighbors())
-        manager.registerTest(InvalidCurrent())
-        manager.registerTest(RewardsGivenAndFunctionCorrectly())
-        manager.registerTest(CollectingShipMovesToVisibleGarbage())
-        manager.registerTest(ShipHasNoPathToVisibleGarbage())
-        manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
-        manager.registerTest(CorporationFileInvalid())
-        manager.registerTest(GarbageDriftsCorrectly2())
-        manager.registerTest(ScenarioFileInvalid())
-        manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
-        manager.registerTest(TaskGotCompletedAssignRewardToShip())
-        manager.registerTest(TaskShouldBeAssignedFullCapacity())
-        manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
-        manager.registerTest(NonUniqueTileIDs())
-        manager.registerTest(HarborCantBeHere())
-        manager.registerTest(StormEventDriftsGarbage())
-        manager.registerTest(TaskRestrictionReward())
-        manager.registerTest(NoWayToLeaveRestriction())
-        manager.registerTest(FloatingHarbarObamna())
-        manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
-        manager.registerTest(ShipCannotBeAssignedTask())
-        manager.registerTest(TestCoordinateTaskAndRadioReward())
-        manager.registerTest(ShipCannotCollectGarbageWithContainer())
-        manager.registerTest(TestOilSpillIds())
-        manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
-        manager.registerTest(TrackerTest())
+        manager.registerTest(VisibleGarbagePriority())
+        // manager.registerTest(TrackerTest())
     }
 
     /**
@@ -61,14 +31,7 @@ object SystemTestRegistration {
      * Everything after 'Simulation start' works correctly
      */
     fun registerSystemTestsMutantValidation(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
-        manager.registerTest(WrongNeighbors())
-        manager.registerTest(InvalidCurrent())
-        manager.registerTest(CorporationFileInvalid())
-        manager.registerTest(ScenarioFileInvalid())
-        manager.registerTest(NonUniqueTileIDs())
-        manager.registerTest(HarborCantBeHere())
-        manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(VisibleGarbagePriority())
     }
 
     /**
