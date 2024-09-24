@@ -11,7 +11,7 @@ class TaskRestrictionReward : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/scoutingShip1Corp1.json"
     override val scenario = "scenarioJsons/TaskRestrictionReward.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "task should be assigned even if ship capacity is full"
+    override val name = "Checks if a task and restriction work correctly"
     override val maxTicks = 5
 
     override suspend fun run() {
