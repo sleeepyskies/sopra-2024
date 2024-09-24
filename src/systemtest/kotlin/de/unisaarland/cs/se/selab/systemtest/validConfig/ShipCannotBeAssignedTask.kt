@@ -103,6 +103,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.") // 0 fuel, tile 5
         skipLines(4)
+        assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 3.")
     }
 
     private suspend fun tick7() {

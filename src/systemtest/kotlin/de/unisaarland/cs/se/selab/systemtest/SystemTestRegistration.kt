@@ -63,10 +63,11 @@ object SystemTestRegistration {
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
         manager.registerTest(CurrentsFuckRefueling())
-        manager.registerTest(ShipCantReachHarborOnSpawn404())
-        manager.registerTest(ThisCorporationIsMessedUPbruh())
-        manager.registerTest(WhyDoYouDoThis())
-        manager.registerTest(DoubleAgent())
+        manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
+        manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
+        manager.registerTest(WhyDoYouDoThis()) // validation
+        manager.registerTest(DoubleAgent()) // validation
+        manager.registerTest(ThisScoutingShipIsFamous())
         manager.registerTest(MultiTaskInvalid())
     }
 

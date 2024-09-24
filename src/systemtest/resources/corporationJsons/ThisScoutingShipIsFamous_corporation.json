@@ -1,0 +1,68 @@
+{
+  "corporations": [
+    {
+      "id": 100,
+      "name": "a",
+      "ships": [
+        100, 101, 102, 103
+      ],
+      "homeHarbors": [
+        14, 52, 59
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 100,
+      "name": "iCanTSeeeee",
+      "type": "SCOUTING",
+      "corporation": 100,
+      "location": 89,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 101,
+      "name": "OIL MasdasasdasaE UP",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 77,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 102,
+      "name": "OIL MEasdasd UP",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 59,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 103,
+      "name": "I'm gonna pop some tags",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 26,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    }
+  ]
+}
