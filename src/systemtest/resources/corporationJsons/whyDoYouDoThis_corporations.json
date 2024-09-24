@@ -1,0 +1,43 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        354, 535, 107, 314, 143, 49, 469, 563
+      ],
+      "garbageTypes": ["PLASTIC"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "iCanSeeeee",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 17,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 9,
+      "garbageType": "PLASTIC",
+      "capacity": 1000
+    },
+    {
+      "id": 55,
+      "name": "I LOVE EYES",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 405,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 10000,
+      "fuelConsumption": 10,
+      "garbageType": "PLASTIC",
+      "visibilityRange": 5
+    }
+  ]
+}
