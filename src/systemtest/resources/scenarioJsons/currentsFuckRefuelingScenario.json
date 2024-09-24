@@ -1,0 +1,43 @@
+{
+  "garbage": [
+    {
+      "id": 3,
+        "type": "OIL",
+        "location": 462,
+        "amount": 500
+
+    }
+  ],
+  "events": [],
+  "tasks": [
+    {
+      "id": 1,
+      "type": "FIND",
+      "tick": 3,
+      "shipID": 3,
+      "targetTile": 462,
+      "rewardID": 1,
+      "rewardShipID": 3
+    },
+    {
+      "id": 2,
+      "type": "EXPLORE",
+      "tick": 0,
+      "shipID": 3,
+      "targetTile": 71,
+      "rewardID": 2,
+      "rewardShipID": 3
+    }
+  ],
+  "rewards": [
+    {
+     "type": "TRACKER",
+      "id": 1
+    },
+    {
+      "type": "TELESCOPE",
+      "id": 2,
+      "visibilityRange": 2
+    }
+  ]
+}
