@@ -64,8 +64,7 @@ class CorporationManager(private val simData: SimulationData) {
                 val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove[0].first
-                    val shipMaxTravelDistance =
-                        (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
+                    val shipMaxTravelDistance = min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
@@ -650,7 +649,7 @@ class CorporationManager(private val simData: SimulationData) {
     private fun applyTrackersForCorporation(corporation: Corporation) {
         corporation.ships.filter { it.hasTracker }.forEach { ship ->
             simData.garbage.filter {
-                it.location == ship.location
+                it.location == ship.location && !it.trackedBy.contains(corporation.id)
             }.forEach {
                 it.trackedBy.add(corporation.id)
                 Logger.attachTracker(corporation.id, it.id, ship.id)
