@@ -105,5 +105,6 @@ object SystemTestRegistration {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(DawnOfThePlanetOfTheApes())
     }
 }
