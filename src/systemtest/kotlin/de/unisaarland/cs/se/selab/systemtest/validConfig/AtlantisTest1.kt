@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-
+/**test**/
 class AtlantisTest1 : ExampleSystemTestExtension() {
     override val description = "no"
     override val corporations = "corporationJsons/atlantis1Corp.json"
