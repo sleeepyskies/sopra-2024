@@ -62,7 +62,9 @@ object SystemTestRegistration {
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
+        // FAILED
         manager.registerTest(CurrentsFuckRefueling())
+        // failed
         manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
         manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
         manager.registerTest(WhyDoYouDoThis()) // validation
@@ -126,5 +128,13 @@ object SystemTestRegistration {
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
+        manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
+        manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
+        manager.registerTest(WhyDoYouDoThis()) // validation
+        manager.registerTest(DoubleAgent()) // validation
+        manager.registerTest(ThisScoutingShipIsFamous())
+        manager.registerTest(MultiTaskInvalid())
+        manager.registerTest(AtlantisTest1())
+        manager.registerTest(AtlantisTest2())
     }
 }
