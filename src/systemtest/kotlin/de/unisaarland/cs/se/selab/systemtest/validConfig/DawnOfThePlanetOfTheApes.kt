@@ -3,14 +3,13 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 import de.unisaarland.cs.se.selab.systemtest.api.SystemTestAssertionError
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 import de.unisaarland.cs.se.selab.systemtest.utils.Logs
-
+/**testing indirect info sharing*/
 class DawnOfThePlanetOfTheApes : ExampleSystemTestExtension() {
-    override val description = "Tests if information gain by the corporation is handled " +
-            "correctly"
+    override val description = "testing indirect info sharing"
     override val corporations = "corporationJsons/ape_corp.json"
     override val scenario = "scenarioJsons/ape_scen.json"
     override val map = "mapFiles/obamna_ohne_drifts.json"
-    override val name = "Tests information gain "
+    override val name = "ape test"
     override val maxTicks = 4
 
     override suspend fun run() {
