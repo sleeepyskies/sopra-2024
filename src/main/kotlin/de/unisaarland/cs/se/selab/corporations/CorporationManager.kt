@@ -19,7 +19,7 @@ import kotlin.math.min
  */
 class CorporationManager(private val simData: SimulationData) {
 
-    // A helper class used to reduce this classes size
+    // A helper class used to reduce this classes size.
     private val helper = CorporationManagerHelper(simData)
 
     /**
