@@ -59,6 +59,7 @@ object SystemTestRegistration {
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
         manager.registerTest(CurrentsFuckRefueling())
+        manager.registerTest(ShipCantReachHarborOnSpawn404())
     }
 
     /**
