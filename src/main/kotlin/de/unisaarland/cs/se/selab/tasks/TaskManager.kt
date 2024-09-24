@@ -113,6 +113,13 @@ class TaskManager(private val simData: SimulationData) {
         val capacityInfo = ship.capacityInfo
         val currentPair = capacityInfo[reward.garbageType]
         if (currentPair != null) {
+            if (currentPair.first == 0 && currentPair.second != 0) {
+                when (ship.state) {
+                    ShipState.NEED_UNLOADING -> { ship.state = ShipState.DEFAULT }
+                    ShipState.NEED_REFUELING_AND_UNLOADING -> { ship.state = ShipState.NEED_REFUELING }
+                    else -> {}
+                }
+            }
             capacityInfo[reward.garbageType] = currentPair.copy(
                 first = currentPair.first + reward.capacity,
                 second = currentPair.second + reward.capacity
