@@ -12,7 +12,7 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
     override val scenario = "scenarioJsons/restrictionAndOilSpillPlusCooperatingTask.json"
     override val map = "mapFiles/smallMap1.json"
     override val name = "CoordinatingShipsCoordinateAndGoOutOfRestriction"
-    override val maxTicks = 5
+    override val maxTicks = 6
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -20,6 +20,7 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
         tick2()
         tick3()
         tick4()
+        tick5()
         simEnd()
     }
 
@@ -71,16 +72,24 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
     private suspend fun tick3() {
         assertNextLine("Simulation Info: Tick 3 started.")
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 45 to tile 9.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 15 to tile 7.")
         skipLines(5)
-        assertNextLine("Ship Movement: Ship 2 moved with speed 30 to tile 3.")
+        assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 5.")
         skipLines(4)
     }
 
     private suspend fun tick4() {
         assertNextLine("Simulation Info: Tick 4 started.")
         skipLines(1)
+        assertNextLine("Ship Movement: Ship 1 moved with speed 30 to tile 9.")
         skipLines(5)
+        assertNextLine("Ship Movement: Ship 2 moved with speed 20 to tile 3.")
+        skipLines(4)
+    }
+
+    private suspend fun tick5() {
+        assertNextLine("Simulation Info: Tick 5 started.")
+        skipLines(6)
         assertNextLine("Ship Movement: Ship 2 moved with speed 30 to tile 6.")
         skipLines(4)
         assertNextLine("Reward: Task 1: Ship 1 received reward of type RADIO.")

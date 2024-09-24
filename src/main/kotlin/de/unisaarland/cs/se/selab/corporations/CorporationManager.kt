@@ -53,7 +53,7 @@ class CorporationManager(private val simData: SimulationData) {
         val gbAssignedAmountList = mutableListOf<Garbage>()
         scanAll(corporation.ships, corporation)
         corporation.ships.sortedBy { it.id }.filter { it.currentFuel != 0 }.forEach {
-            val isOnRestrictedTile = checkRestriction(it.location)
+            var isOnRestrictedTile = checkRestriction(it.location)
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
             // if determine behavior returns the ships location then it shouldn't move and keep its velocity as 0
@@ -69,6 +69,7 @@ class CorporationManager(private val simData: SimulationData) {
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
                     // This is needed to make sure, we don't set our velocity to 0 until we reach that tile
+                    isOnRestrictedTile = exploring
                     tileInfoToMove =
                         Pair(Pair(outOfRestrictionTile, tileIdOfTile), Pair(shipMaxTravelDistance, tileIdOfTile))
                 } else {
@@ -493,14 +494,16 @@ class CorporationManager(private val simData: SimulationData) {
             } else {
                 ship.state = ShipState.DEFAULT
             }
+            val outOfRestrictionTile = simData.navigationManager.getDestinationOutOfRestriction(
+                ship.location,
+                shipMaxTravelDistance
+            )
+            val stillRestricted = simData.navigationManager.findTile(outOfRestrictionTile)?.isRestricted ?: true
             return Pair(
                 listOf(
-                    simData.navigationManager.getDestinationOutOfRestriction(
-                        ship.location,
-                        shipMaxTravelDistance
-                    ) to 0
+                    outOfRestrictionTile to 0
                 ),
-                false
+                stillRestricted
             )
         }
         if (checkShipOnHarborAndNeedsToRefuelOrUnload(
