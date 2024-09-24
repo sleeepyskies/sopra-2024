@@ -56,6 +56,7 @@ object SystemTestRegistration {
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(VisibleGarbagePriority())
         manager.registerTest(DawnOfThePlanetOfTheApes())
+        manager.registerTest(ICanSeeWhatYouCannot())
     }
 
     /**

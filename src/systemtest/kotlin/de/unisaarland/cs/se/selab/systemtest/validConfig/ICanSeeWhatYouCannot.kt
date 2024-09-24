@@ -54,18 +54,18 @@ class ICanSeeWhatYouCannot : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 101 moved with speed 10 to tile 263.")
-        assertNextLine("Ship Movement: Ship 102 moved with speed 10 to tile 316.")
-        skipLines(4)
+        assertNextLine("Ship Movement: Ship 101 moved with speed 10 to tile 212.")
+        skipLines(1)
+        skipLines(3)
     }
 
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
-        assertNextLine("Simulation Statistics: Corporation 1 collected 2000 of garbage.")
+        assertNextLine("Simulation Statistics: Corporation 100 collected 100 of garbage.")
         assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of chemicals collected: 2000.")
+        assertNextLine("Simulation Statistics: Total amount of oil collected: 100.")
+        assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 0.")
         assertEnd()
     }

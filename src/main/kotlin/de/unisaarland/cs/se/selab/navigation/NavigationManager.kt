@@ -573,7 +573,6 @@ class NavigationManager(
             for (tile in tilesInRadius) {
                 val neighbors = getHexNeighbors(tile.first, tile.second)
                 for (neighbor in neighbors) {
-                    findTile(neighbor) ?: continue
                     newTiles.add(neighbor)
                 }
             }
