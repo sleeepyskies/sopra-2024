@@ -69,6 +69,8 @@ object SystemTestRegistration {
         manager.registerTest(DoubleAgent()) // validation
         manager.registerTest(ThisScoutingShipIsFamous())
         manager.registerTest(MultiTaskInvalid())
+        manager.registerTest(AtlantisTest1())
+        manager.registerTest(AtlantisTest2())
     }
 
     /**
