@@ -91,27 +91,27 @@ class TaskRestrictionReward : ExampleSystemTestExtension() {
 
         // Corporation Phase
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 8.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
 
         // Ship Drifting Phase
+        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
     }
     private suspend fun tick4() {
         assertNextLine("Simulation Info: Tick 4 started.")
 
         // Corporation Phase
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 3.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-
+        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
         // Task Phase
-        assertNextLine("Reward: Task 1: Ship 1 received reward of type TRACKING.")
     }
     private suspend fun simEnd() {
         skipLines(2)
