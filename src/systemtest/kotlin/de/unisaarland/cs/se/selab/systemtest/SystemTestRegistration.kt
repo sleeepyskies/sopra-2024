@@ -1,6 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.DoubleAgent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.ThisCorporationIsMessedUPbruh
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhyDoYouDoThis
@@ -64,6 +65,7 @@ object SystemTestRegistration {
         manager.registerTest(ShipCantReachHarborOnSpawn404())
         manager.registerTest(ThisCorporationIsMessedUPbruh())
         manager.registerTest(WhyDoYouDoThis())
+        manager.registerTest(DoubleAgent())
     }
 
     /**

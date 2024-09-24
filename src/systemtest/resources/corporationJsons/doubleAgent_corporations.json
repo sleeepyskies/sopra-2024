@@ -1,0 +1,41 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        354, 535, 107, 314, 143, 49, 469, 563
+      ],
+      "garbageTypes": []
+    },
+    {
+      "id": 12,
+      "name": "OBAMNasasasaAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        354, 535, 107, 314, 143, 49, 469, 563
+      ],
+      "garbageTypes": []
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "iCanSeeeee",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 17,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 9,
+      "garbageType": "PLASTIC",
+      "capacity": 1000
+    }
+  ]
+}
