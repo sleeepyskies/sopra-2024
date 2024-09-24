@@ -15,6 +15,7 @@ import de.unisaarland.cs.se.selab.assets.TaskType
 import de.unisaarland.cs.se.selab.assets.Tile
 import de.unisaarland.cs.se.selab.assets.TileType
 import de.unisaarland.cs.se.selab.corporations.CorporationManager
+import de.unisaarland.cs.se.selab.corporations.CorporationManagerHelper
 import de.unisaarland.cs.se.selab.navigation.NavigationManager
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -117,6 +118,7 @@ class CorporationManagerUnitTests1 {
 
     private lateinit var nm: NavigationManager
     private lateinit var cm: CorporationManager
+    private lateinit var cmh: CorporationManagerHelper
     private lateinit var simDat: SimulationData
 
     @BeforeEach
@@ -139,6 +141,7 @@ class CorporationManagerUnitTests1 {
             mutableListOf(task1), mutableListOf(), 0, 1
         )
         this.cm = CorporationManager(simDat)
+        this.cmh = CorporationManagerHelper(simDat)
     }
 
     @AfterEach
@@ -240,16 +243,29 @@ class CorporationManagerUnitTests1 {
     }
 
     @Test
-    fun test_checkNeedRefuelOrUnload() {
-        val shipState1 = ShipState.NEED_REFUELING
-        val shipState2 = ShipState.NEED_UNLOADING
-        val shipState3 = ShipState.NEED_REFUELING_AND_UNLOADING
+    fun test_checkNeedRefueling() {
+        val shipState = ShipState.NEED_REFUELING
         val ship = Ship(
             1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
             10, 0, -1, ShipState.DEFAULT, ShipType.SCOUTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
+        simDat.corporations[0].ships.addAll(listOf(ship))
+        val method = CorporationManager::class.java.getDeclaredMethod(
+            "checkNeedRefuelOrUnload",
+            Ship::class.java,
+            Corporation::class.java
+        )
+        method.isAccessible = true
+        method.invoke(cm, ship, simDat.corporations[0])
+        assertEquals(shipState, ship.state)
+    }
+
+    @Test
+    fun test_checkNeedUnloading() {
+        val shipState2 = ShipState.NEED_UNLOADING
+        val shipState3 = ShipState.NEED_REFUELING_AND_UNLOADING
         val ship2 = Ship(
             2, "white_pearl", 1, mutableMapOf(), 2, Pair(0, 0),
             Direction.EAST, 6, 10, 10, 10, 1000,
@@ -259,24 +275,21 @@ class CorporationManagerUnitTests1 {
         val ship3 = Ship(
             3, "gray_pearl", 2, mutableMapOf(), 3, Pair(0, 0),
             Direction.EAST, 6, 10, 10, 10, 1000,
-            10, 0, -1, ShipState.DEFAULT, ShipType.COLLECTING_SHIP,
+            10, 0, -1, ShipState.NEED_REFUELING, ShipType.COLLECTING_SHIP,
             hasRadio = false, hasTracker = false, travelingToHarbor = false
         )
         ship2.capacityInfo[GarbageType.OIL] = Pair(0, 1000)
         ship3.capacityInfo[GarbageType.PLASTIC] = Pair(0, 1000)
-        simDat.ships.addAll(listOf(ship, ship2, ship3))
-        simDat.corporations[0].ships.addAll(listOf(ship, ship2))
+        simDat.ships.addAll(listOf(ship2, ship3))
+        simDat.corporations[0].ships.addAll(listOf(ship2))
         simDat.corporations[1].ships.addAll(listOf(ship3))
-        val method = CorporationManager::class.java.getDeclaredMethod(
-            "checkNeedRefuelOrUnload",
-            Ship::class.java,
-            Corporation::class.java
+        val method = CorporationManagerHelper::class.java.getDeclaredMethod(
+            "checkNeedUnloading",
+            Ship::class.java
         )
         method.isAccessible = true
-        method.invoke(cm, ship, simDat.corporations[0])
-        method.invoke(cm, ship2, simDat.corporations[1])
-        method.invoke(cm, ship3, simDat.corporations[1])
-        assertEquals(shipState1, ship.state)
+        method.invoke(cmh, ship2)
+        method.invoke(cmh, ship3)
         assertEquals(shipState2, ship2.state)
         assertEquals(shipState3, ship3.state)
     }
@@ -317,7 +330,7 @@ class CorporationManagerUnitTests1 {
     @Test
     fun test_determineBehaviourNeedsToGoBackToHarborToUnload() {
         val shipState1 = ShipState.DEFAULT
-        val shipState2 = ShipState.NEED_UNLOADING
+        val shipState2 = ShipState.DEFAULT
         val ship = Ship(
             1, "black_pearl", 1, mutableMapOf(), 1, Pair(0, 0),
             Direction.EAST, 1, 10, 10, 10, 1000,
@@ -345,6 +358,6 @@ class CorporationManagerUnitTests1 {
         assertEquals(shipState1, ship.state)
         assertEquals(shipState2, ship2.state)
         assertEquals(Pair(listOf(Pair(0, 0) to 0), false), locationToGoTo1)
-        assertEquals(Pair(listOf(Pair(4, 0) to 5), false), locationToGoTo2)
+        assertEquals(Pair(listOf(Pair(1, 0) to 0), true), locationToGoTo2)
     }
 }

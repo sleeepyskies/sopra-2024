@@ -2,6 +2,7 @@ package de.unisaarland.cs.se.selab.corporations
 
 import de.unisaarland.cs.se.selab.assets.Corporation
 import de.unisaarland.cs.se.selab.assets.Ship
+import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.SimulationData
 
 /**
@@ -10,6 +11,37 @@ import de.unisaarland.cs.se.selab.assets.SimulationData
 class CorporationManagerHelper(simulationData: SimulationData) {
 
     private val simData = simulationData
+
+    /**
+     * Helper method for garbage collection in CorporationManager. Handles the state of UNLOADING ships.
+     */
+    fun checkNeedUnloading(ship: Ship) {
+        if (ship.capacityInfo.values.any { it.first <= 0 && it.second != 0 }) {
+            ship.state = when (ship.state) {
+                ShipState.NEED_REFUELING -> {
+                    ShipState.NEED_REFUELING_AND_UNLOADING
+                }
+                ShipState.TASKED -> {
+                    ShipState.TASKED
+                }
+                ShipState.IS_COOPERATING -> {
+                    ShipState.IS_COOPERATING
+                }
+                ShipState.REFUELING_AND_UNLOADING -> {
+                    ShipState.REFUELING_AND_UNLOADING
+                }
+                ShipState.REFUELING -> {
+                    ShipState.REFUELING
+                }
+                ShipState.UNLOADING -> {
+                    ShipState.UNLOADING
+                }
+                else -> {
+                    ShipState.NEED_UNLOADING
+                }
+            }
+        }
+    }
 
     /**
      * Helper method for handleDefaultState() in CorporationManager. Handles the state of COLLECTING ships.

@@ -172,6 +172,7 @@ class CorporationManager(private val simData: SimulationData) {
         }.forEach { ship ->
             val tile = simData.navigationManager.findTile(ship.location) ?: return
             processGarbageOnTile(tile, ship, corporation)
+            helper.checkNeedUnloading(ship)
         }
     }
 
@@ -450,22 +451,6 @@ class CorporationManager(private val simData: SimulationData) {
                 }
                 else -> {
                     ShipState.NEED_REFUELING
-                }
-            }
-        }
-        if (ship.capacityInfo.values.any { it.first <= 0 && it.second != 0 }) {
-            ship.state = when (ship.state) {
-                ShipState.NEED_REFUELING -> {
-                    ShipState.NEED_REFUELING_AND_UNLOADING
-                }
-                ShipState.TASKED -> {
-                    ShipState.TASKED
-                }
-                ShipState.IS_COOPERATING -> {
-                    ShipState.IS_COOPERATING
-                }
-                else -> {
-                    ShipState.NEED_UNLOADING
                 }
             }
         }

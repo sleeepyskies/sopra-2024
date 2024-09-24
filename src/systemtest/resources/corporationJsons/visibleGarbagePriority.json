@@ -1,0 +1,98 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "Ocean Scouters Inc.",
+      "ships": [
+        1, 4
+      ],
+      "homeHarbors": [
+        7, 9
+      ],
+      "garbageTypes": []
+    },
+    {
+      "id": 2,
+      "name": "Ocean Cleaners Inc.",
+      "ships": [
+        2, 3
+      ],
+      "homeHarbors": [
+        9
+      ],
+      "garbageTypes": [
+        "OIL"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "oilyboyz",
+        "ships": [5],
+        "homeHarbors": [9],
+        "garbageTypes": []
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "Explorer",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 7,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 3
+    },
+    {
+      "id": 2,
+      "name": "Collecter",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 3,
+      "name": "Explorer2",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 7,
+      "maxVelocity": 20,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 4,
+      "name": "cooperator",
+      "type": "COORDINATING",
+      "corporation": 1,
+      "location": 1,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "visibilityRange": 1
+    },
+    {
+      "id": 5,
+        "name": "oilyboy",
+        "type": "SCOUTING",
+        "corporation": 3,
+        "location": 29,
+        "maxVelocity": 20,
+        "acceleration": 10,
+        "fuelCapacity": 3000,
+        "fuelConsumption": 10,
+        "visibilityRange": 3
+    }
+  ]
+}
