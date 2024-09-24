@@ -7,7 +7,7 @@ class CannotCollectPlasticHasToWaitForHelp : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/collectingShipWaitsForHelp.json"
     override val scenario = "scenarioJsons/cannotCollectPlasticHasToWaitForHelp.json"
     override val map = "mapFiles/smallMap1.json"
-    override val name = "task should be assigned even if ship capacity is full"
+    override val name = "CannotCollectPlasticHasToWaitForHelp"
     override val maxTicks = 6
     private val corporationStartedToMove = "Corporation Action: Corporation 2 is starting to move its ships."
     private val corporationStartedCollecting = "Corporation Action: Corporation 2 is starting to collect garbage."

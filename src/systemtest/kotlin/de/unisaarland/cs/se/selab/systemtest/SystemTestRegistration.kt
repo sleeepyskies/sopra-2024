@@ -57,6 +57,7 @@ object SystemTestRegistration {
         manager.registerTest(VisibleGarbagePriority())
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(ICanSeeWhatYouCannot())
+        manager.registerTest(GarbageLandsOnShip())
     }
 
     /**

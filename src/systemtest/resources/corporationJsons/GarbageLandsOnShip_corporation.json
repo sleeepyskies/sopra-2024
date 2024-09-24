@@ -1,0 +1,42 @@
+{
+  "corporations": [
+    {
+      "id": 100,
+      "name": "eye removal company1",
+      "ships": [
+        101, 102
+      ],
+      "homeHarbors": [
+        49, 107, 143, 314, 354, 469, 535, 563
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 101,
+      "name": "the simpsons hate me",
+      "type": "SCOUTING",
+      "corporation": 100,
+      "location": 482,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 102,
+      "name": "the simpsons love meee",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 482,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 5000,
+      "fuelConsumption": 5,
+      "garbageType": "OIL",
+      "capacity": 50000
+    }
+  ]
+}

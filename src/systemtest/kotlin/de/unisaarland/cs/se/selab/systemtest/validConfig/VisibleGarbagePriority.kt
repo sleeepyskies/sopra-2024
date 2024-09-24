@@ -7,7 +7,7 @@ class VisibleGarbagePriority : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/visibleGarbagePriority.json"
     override val scenario = "scenarioJsons/visibleGarbagePriorityScenario.json"
     override val map = "mapFiles/smallMap1.json"
-    override val name = "task should be assigned even if ship capacity is full"
+    override val name = "checks if corporations prioritize visible garbage over known garbage"
     override val maxTicks = 9
     private val corporation1StartedToMove = "Corporation Action: Corporation 1 is starting to move its ships."
     private val corporation2StartedToMove = "Corporation Action: Corporation 2 is starting to move its ships."
