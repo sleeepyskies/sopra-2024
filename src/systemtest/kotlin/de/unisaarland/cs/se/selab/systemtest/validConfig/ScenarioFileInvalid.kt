@@ -10,7 +10,7 @@ class ScenarioFileInvalid : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/corpWithTwoShips.json"
     override val scenario = "scenarioJsons/inv_scenario_taskType_doesnt_match_reward.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "CorporationFileInvalid"
+    override val name = "ScenarioFileInvalid"
     override val maxTicks = 0
 
     override suspend fun run() {

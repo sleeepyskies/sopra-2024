@@ -108,5 +108,10 @@ object SystemTestRegistration {
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
+        manager.registerTest(TaskShouldBeAssignedFullCapacity())
+        manager.registerTest(StormEventDriftsGarbage())
+        manager.registerTest(UnloadingOfCollectedChemicals())
+        manager.registerTest(ICanSeeWhatYouCannot())
+        manager.registerTest(GarbageLandsOnShip())
     }
 }
