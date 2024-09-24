@@ -31,7 +31,7 @@ class CannotCollectPlasticHasToWaitForHelp : ExampleSystemTestExtension() {
     private suspend fun tick0() {
         assertNextLine("Simulation Info: Tick 0 started.")
         assertNextLine(corporationStartedToMove)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 32.")
+        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 9.")
         assertNextLine("Ship Movement: Ship 2 moved with speed 10 to tile 15.")
         assertNextLine("Ship Movement: Ship 3 moved with speed 10 to tile 22.")
         assertNextLine(corporationStartedCollecting)

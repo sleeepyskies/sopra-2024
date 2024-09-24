@@ -368,7 +368,7 @@ class NavigationManager(
     fun getDestinationOutOfRestriction(
         from: Pair<Int, Int>,
         travelAmount: Int
-    ): Pair<Int, Int> {
+    ): Pair<Pair<Int, Int>, Int> {
         // Run dijkstra from the current location only considering restricted tiles
         val tileIDOfLocation = tiles.getValue(from).id
         var (distances, previousNodes) = dijkstra(graph, tileIDOfLocation, true)
@@ -377,13 +377,13 @@ class NavigationManager(
             it.value < Int.MAX_VALUE
         }
         val distancesFilteredByTileNextToNonRestrictedTile = distancesFilteredByNotMaxValue.filter {
-            val neighbors = graph[it.key] ?: return from
+            val neighbors = graph[it.key] ?: return from to 0
             neighbors.any { neighbor ->
                 !neighbor.second.first && !neighbor.second.second // not land and not restricted
             }
         }.toList().sortedBy { (_, value) -> value }.toMap()
         // Check if there are no locations from which we could leave the restriction
-        if (distancesFilteredByTileNextToNonRestrictedTile.isEmpty()) return from
+        if (distancesFilteredByTileNextToNonRestrictedTile.isEmpty()) return from to 0
         // Get the lowest tile id,
         // if there are multiple points with same distance that are next to a non-restricted tile
         for ((k, v) in distancesFilteredByTileNextToNonRestrictedTile) {
@@ -396,15 +396,20 @@ class NavigationManager(
                 ?.filter {
                     !it.second.first && !it.second.second // not land and not restricted
                 }
-                ?.minByOrNull { it.first } ?: return from
+                ?.minByOrNull { it.first } ?: return from to 0
 
             val newParentStructure = previousNodes.toMutableMap()
+            val newDistances = distances.toMutableMap()
             newParentStructure[neighborWithLowestTileID.first] = k
+            newDistances[neighborWithLowestTileID.first] = v + DEFAULT_DISTANCE
             previousNodes = newParentStructure.toMap()
+            distances = newDistances.toMap()
             val result: Pair<Int, Int>
+            val nodeID: Int
             if (goBackInPathByAmountOfTile <= 0) {
                 // If we can reach the destination tile, return the destination tile
                 result = locationByTileId(neighborWithLowestTileID.first) ?: from
+                nodeID = neighborWithLowestTileID.first
             } else {
                 // Get the node to travel to, in case we cant travel the whole amount
                 var node = neighborWithLowestTileID.first
@@ -412,10 +417,11 @@ class NavigationManager(
                     node = previousNodes[node] ?: node // WAS ?: return from
                 }
                 result = locationByTileId(node) ?: from
+                nodeID = node
             }
-            return result
+            return result to (distances[nodeID] ?: 0)
         }
-        return from
+        return from to 0
     }
 
     /**

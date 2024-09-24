@@ -239,7 +239,7 @@ class CorporationManagerUnitTests1 {
         method.isAccessible = true
         val locationToGoTo = method.invoke(cm, ship, simDat.corporations[0])
         assertEquals(shipState, ship.state)
-        assertEquals(Pair(listOf(Pair(1, 0) to 0), false), locationToGoTo)
+        assertEquals(Pair(listOf(Pair(1, 0) to 10), false), locationToGoTo)
     }
 
     @Test
