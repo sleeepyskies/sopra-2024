@@ -19,8 +19,10 @@
       "rewardShipID": 1
     }
   ],
-  "rewards": [{
+  "rewards": [
+    {
     "id": 1,
     "type": "TRACKER"
-  }]
+  }
+  ]
 }
