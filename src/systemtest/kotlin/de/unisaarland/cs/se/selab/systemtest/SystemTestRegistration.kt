@@ -20,10 +20,10 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        // manager.registerTest(ExampleSystemTest())
+        manager.registerTest(ExampleSystemTest())
         manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
-        /* manager.registerTest(PirateAttackDeletesShip())
+        manager.registerTest(PirateAttackDeletesShip())
         manager.registerTest(ScoutContainerFillMoveHarborTest())
         manager.registerTest(GarbageDriftsCorrectly())
         manager.registerTest(WrongNeighbors())
@@ -55,7 +55,7 @@ object SystemTestRegistration {
         manager.registerTest(AssignManyShipsToGarbage())
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(VisibleGarbagePriority())
-        manager.registerTest(DawnOfThePlanetOfTheApes())*/
+        manager.registerTest(DawnOfThePlanetOfTheApes())
     }
 
     /**
@@ -89,9 +89,12 @@ object SystemTestRegistration {
         manager.registerTest(RewardsGivenAndFunctionCorrectly())
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
-        manager.registerTest(GarbageDriftsCorrectly2())
+        /************************************************************/
+        // this test is NOT CORRECT DON'T PUSH THIS IN ANYWAY
+        // manager.registerTest(GarbageDriftsCorrectly2())
+        // this test is NOT CORRECT DON'T PUSH THIS IN ANYWAY
+        /************************************************************/
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
-
         // validation
         manager.registerTest(WrongNeighbors())
         manager.registerTest(InvalidCurrent())
