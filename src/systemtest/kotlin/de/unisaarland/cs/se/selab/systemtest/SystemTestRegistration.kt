@@ -9,6 +9,7 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHa
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.MultiTaskInvalid
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
@@ -66,6 +67,7 @@ object SystemTestRegistration {
         manager.registerTest(ThisCorporationIsMessedUPbruh())
         manager.registerTest(WhyDoYouDoThis())
         manager.registerTest(DoubleAgent())
+        manager.registerTest(MultiTaskInvalid())
     }
 
     /**
