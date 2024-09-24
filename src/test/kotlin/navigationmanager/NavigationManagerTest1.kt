@@ -736,7 +736,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest1() {
         // define the checkValue
-        val checkValue = Pair(1, 1)
+        val checkValue = Pair(1, 1) to 10
 
         // call from tile that is not restricted, we can move
         val result = this.nm.getDestinationOutOfRestriction(Pair(1, 2), 1)
@@ -747,7 +747,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest2() {
         // define the checkValue
-        val checkValue = Pair(3, 2)
+        val checkValue = Pair(3, 2) to 10
 
         // restrict tile (4, 2)
         restrictTile(Pair(4, 2))
@@ -761,7 +761,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest3() {
         // define the checkValue
-        val checkValue = Pair(3, 3)
+        val checkValue = Pair(3, 3) to 20
 
         // restrict tile (4, 2), (3, 2)
         restrictTile(Pair(4, 2))
@@ -776,7 +776,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest4() {
         // define the checkValue
-        val checkValue = Pair(3, 2)
+        val checkValue = Pair(3, 2) to 10
 
         // restrict tile (4, 2), (3, 2)
         restrictTile(Pair(4, 2))
@@ -791,7 +791,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest5() {
         // define the checkValue
-        val checkValue = Pair(4, 4)
+        val checkValue = Pair(4, 4) to 0
 
         // on one single tile, enough travel to leave but no path due to LAND
         val result = this.nm.getDestinationOutOfRestriction(Pair(4, 4), 3)
@@ -802,7 +802,7 @@ class NavigationManagerTest1 {
     @Test
     fun getDestinationOutOfRestrictionTest6() {
         // define the checkValue
-        val checkValue = Pair(1, 0)
+        val checkValue = Pair(1, 0) to 20
 
         // restrict tiles (0, 0), (1, 3), (0, 2), (1, 1), (2, 1)
         restrictTile(Pair(0, 0))

@@ -71,7 +71,10 @@ class CorporationManager(private val simData: SimulationData) {
                     // This is needed to make sure, we don't set our velocity to 0 until we reach that tile
                     isOnRestrictedTile = exploring
                     tileInfoToMove =
-                        Pair(Pair(outOfRestrictionTile, tileIdOfTile), Pair(shipMaxTravelDistance, tileIdOfTile))
+                        Pair(
+                            Pair(outOfRestrictionTile, tileIdOfTile),
+                            Pair(possibleLocationsToMove[0].second, tileIdOfTile)
+                        )
                 } else {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                         it.location,
@@ -495,14 +498,15 @@ class CorporationManager(private val simData: SimulationData) {
             } else {
                 ship.state = ShipState.DEFAULT
             }
-            val outOfRestrictionTile = simData.navigationManager.getDestinationOutOfRestriction(
+            val outOfRestrictionTilePlusTravelAmt = simData.navigationManager.getDestinationOutOfRestriction(
                 ship.location,
                 shipMaxTravelDistance
             )
+            val outOfRestrictionTile = outOfRestrictionTilePlusTravelAmt.first
             val stillRestricted = simData.navigationManager.findTile(outOfRestrictionTile)?.isRestricted ?: true
             return Pair(
                 listOf(
-                    outOfRestrictionTile to 0
+                    outOfRestrictionTile to outOfRestrictionTilePlusTravelAmt.second
                 ),
                 stillRestricted
             )
