@@ -76,7 +76,7 @@ class CorporationManager(private val simData: SimulationData) {
                     tileInfoToMove = simData.navigationManager.shortestPathToLocations(
                         it.location,
                         possibleLocationsToMove,
-                        anticipatedVelocity
+                        min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
                     )
                 }
                 processShipMovement(it, tileInfoToMove, gbAssignedAmountList, exploring, isOnRestrictedTile)
