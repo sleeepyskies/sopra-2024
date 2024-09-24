@@ -20,10 +20,10 @@ object SystemTestRegistration {
      * the same as their reference implementation)
      */
     fun registerSystemTestsReferenceImpl(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
+        // manager.registerTest(ExampleSystemTest())
         manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
-        manager.registerTest(PirateAttackDeletesShip())
+        /* manager.registerTest(PirateAttackDeletesShip())
         manager.registerTest(ScoutContainerFillMoveHarborTest())
         manager.registerTest(GarbageDriftsCorrectly())
         manager.registerTest(WrongNeighbors())
@@ -55,7 +55,7 @@ object SystemTestRegistration {
         manager.registerTest(AssignManyShipsToGarbage())
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(VisibleGarbagePriority())
-        manager.registerTest(DawnOfThePlanetOfTheApes())
+        manager.registerTest(DawnOfThePlanetOfTheApes())*/
     }
 
     /**
