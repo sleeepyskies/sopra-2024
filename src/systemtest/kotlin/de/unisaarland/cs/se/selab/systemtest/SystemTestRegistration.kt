@@ -58,6 +58,7 @@ object SystemTestRegistration {
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
+        manager.registerTest(CurrentsFuckRefueling())
     }
 
     /**
