@@ -9,7 +9,7 @@ class NoWayToLeaveRestriction : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/noWayToLeaveRestrictionSHIPS.json"
     override val scenario = "scenarioJsons/noWayOutOfRestriction.json"
     override val map = "mapFiles/obamna.json"
-    override val name = "task should be assigned even if ship capacity is full"
+    override val name = "NoWayToLeaveRestriction: task should be assigned even if ship capacity is full"
     override val maxTicks = 5
     private val corporationStartedToMove = "Corporation Action: Corporation 1 is starting to move its ships."
     private val corporationStartedCollecting = "Corporation Action: Corporation 1 is starting to collect garbage."

@@ -86,7 +86,7 @@ object SystemTestRegistration {
         manager.registerTest(CollectingShipMovesToVisibleGarbage())
         manager.registerTest(ShipHasNoPathToVisibleGarbage())
         manager.registerTest(GarbageDriftsCorrectly2())
-        manager.registerTest(TaskCouldNotBeAssignedNotEnoughFuel())
+        manager.registerTest(ShipCannotCollectGarbageWithContainer())
 
         // validation
         manager.registerTest(WrongNeighbors())

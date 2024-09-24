@@ -11,7 +11,7 @@ class CoordinatingShipsCoordinateAndGoOutOfRestriction : ExampleSystemTestExtens
     override val corporations = "corporationJsons/corpWithTwoCoordinatingShips.json"
     override val scenario = "scenarioJsons/restrictionAndOilSpillPlusCooperatingTask.json"
     override val map = "mapFiles/smallMap1.json"
-    override val name = "test"
+    override val name = "CoordinatingShipsCoordinateAndGoOutOfRestriction"
     override val maxTicks = 5
     override suspend fun run() {
         initSimulation()

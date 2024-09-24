@@ -7,6 +7,7 @@ import de.unisaarland.cs.se.selab.assets.Ship
 import de.unisaarland.cs.se.selab.assets.ShipState
 import de.unisaarland.cs.se.selab.assets.SimulationData
 import de.unisaarland.cs.se.selab.assets.Task
+import de.unisaarland.cs.se.selab.assets.TaskType
 import kotlin.math.floor
 
 /**
@@ -142,10 +143,26 @@ class TaskManager(private val simData: SimulationData) {
                 ship.state == ShipState.REFUELING ||
                 ship.state == ShipState.REFUELING_AND_UNLOADING ||
                 !hasPathToTask(ship, task) ||
-                !canReachTask(ship, task)
+                !canReachTask(ship, task) ||
+                !cooperateHasDifferentHarbor(task, ship.corporation)
             )
     }
     // lol
+
+    private fun cooperateHasDifferentHarbor(task: Task, corporationId: Int): Boolean {
+        val corporations = simData.corporations.filter { it.id != corporationId }
+        val corporationsHarbors = corporations.flatMap { it.harbors }
+        when (task.type) {
+            TaskType.COORDINATE -> {
+                val targetLocation = simData.navigationManager.findTile(task.targetTileId)?.location ?: return false
+                if (targetLocation in corporationsHarbors) {
+                    return true
+                }
+                return false
+            }
+            else -> { return true }
+        }
+    }
 
     /**
      * Checks if the given ship has a valid path to the task's destination.

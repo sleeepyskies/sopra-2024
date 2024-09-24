@@ -19,7 +19,7 @@ import kotlin.math.min
  */
 class CorporationManager(private val simData: SimulationData) {
 
-    // A helper class used to reduce this classes size
+    // A helper class used to reduce this classes size.
     private val helper = CorporationManagerHelper(simData)
 
     /**
@@ -52,7 +52,7 @@ class CorporationManager(private val simData: SimulationData) {
         Logger.corporationActionMove(corporation.id)
         val gbAssignedAmountList = mutableListOf<Garbage>()
         scanAll(corporation.ships, corporation)
-        corporation.ships.sortedBy { it.id }.forEach {
+        corporation.ships.sortedBy { it.id }.filter { it.currentFuel != 0 }.forEach {
             val isOnRestrictedTile = checkRestriction(it.location)
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
