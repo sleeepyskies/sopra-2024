@@ -14,6 +14,9 @@ class TaskRestrictionReward : ExampleSystemTestExtension() {
     override val name = "Checks if a task and restriction work correctly"
     override val maxTicks = 5
 
+    private val corp1ShipMovement = "Ship Movement: Ship 1 moved with speed 10 to tile 1."
+    private val shipDrift = "Current Drift: Ship 1 drifted from tile 1 to tile 7."
+
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -76,7 +79,7 @@ class TaskRestrictionReward : ExampleSystemTestExtension() {
         // Corporation Phase
         skipLines(1)
         // assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
+        assertNextLine(corp1ShipMovement)
         skipLines(4)
         // assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         // assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
@@ -91,26 +94,26 @@ class TaskRestrictionReward : ExampleSystemTestExtension() {
 
         // Corporation Phase
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
+        assertNextLine(corp1ShipMovement)
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
 
         // Ship Drifting Phase
-        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
+        assertNextLine(shipDrift)
     }
     private suspend fun tick4() {
         assertNextLine("Simulation Info: Tick 4 started.")
 
         // Corporation Phase
         assertNextLine("Corporation Action: Corporation 1 is starting to move its ships.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
+        assertNextLine(corp1ShipMovement)
         assertNextLine("Corporation Action: Corporation 1 is starting to collect garbage.")
         assertNextLine("Corporation Action: Corporation 1 is starting to cooperate with other corporations.")
         assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
         assertNextLine("Corporation Action: Corporation 1 finished its actions.")
-        assertNextLine("Current Drift: Ship 1 drifted from tile 1 to tile 7.")
+        assertNextLine(shipDrift)
         // Task Phase
     }
     private suspend fun simEnd() {
