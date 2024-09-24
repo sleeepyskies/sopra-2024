@@ -18,8 +18,6 @@ class BigEyes : ExampleSystemTestExtension() {
 
         tick0()
 
-        tick1()
-
         simEnd()
     }
     private suspend fun initSimulation() {
