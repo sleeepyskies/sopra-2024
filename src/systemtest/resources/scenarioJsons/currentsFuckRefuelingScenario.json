@@ -1,21 +1,13 @@
 {
-  "garbage": [
-    {
-      "id": 3,
-        "type": "OIL",
-        "location": 462,
-        "amount": 500
-
-    }
-  ],
+  "garbage": [],
   "events": [],
   "tasks": [
     {
       "id": 1,
-      "type": "FIND",
-      "tick": 3,
+      "type": "EXPLORE",
+      "tick": 10,
       "shipID": 3,
-      "targetTile": 462,
+      "targetTile": 443,
       "rewardID": 1,
       "rewardShipID": 3
     },
@@ -31,8 +23,9 @@
   ],
   "rewards": [
     {
-     "type": "TRACKER",
-      "id": 1
+     "type": "TELESCOPE",
+      "id": 1,
+        "visibilityRange": 2
     },
     {
       "type": "TELESCOPE",

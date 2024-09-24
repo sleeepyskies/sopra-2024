@@ -9,7 +9,7 @@ class CurrentsFuckRefueling : ExampleSystemTestExtension() {
 
     override val map = "mapFiles/bigMap1.json"
     override val name = "task should be assigned even if ship capacity is full"
-    override val maxTicks = 10
+    override val maxTicks = 30
 
     override suspend fun run() {
         initSimulation()
