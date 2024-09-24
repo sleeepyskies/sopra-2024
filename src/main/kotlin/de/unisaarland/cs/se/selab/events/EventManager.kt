@@ -195,7 +195,6 @@ class EventManager(private val simulationData: SimulationData) {
                 simulationData.corporations.forEach { it.garbage.remove(garbage.id) }
                 return null
             }
-            println("drifting garbage ${garbage.id} from tile ${currentTile.id}")
             currentTile.addArrivingGarbageToTile(garbage)
             garbage.location = currentTile.location
             garbage.tileId = currentTile.id
