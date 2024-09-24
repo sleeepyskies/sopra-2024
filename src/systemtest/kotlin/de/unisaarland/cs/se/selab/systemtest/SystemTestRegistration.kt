@@ -52,6 +52,7 @@ object SystemTestRegistration {
         manager.registerTest(TestOilSpillIds())
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
         manager.registerTest(TrackerTest())
+        manager.registerTest(AssignManyShipsToGarbage())
     }
 
     /**
