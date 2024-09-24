@@ -1,0 +1,55 @@
+{
+  "garbage": [
+    {
+      "id": 69,
+      "type": "PLASTIC",
+      "location": 159,
+      "amount": 1000
+    },
+    {
+      "id": 70,
+      "type": "PLASTIC",
+      "location": 159,
+      "amount": 3000
+    },
+    {
+      "id": 71,
+      "type": "PLASTIC",
+      "location": 159,
+      "amount": 500
+    },
+    {
+      "id": 72,
+      "type": "PLASTIC",
+      "location": 159,
+      "amount": 500
+    },
+    {
+      "id": 73,
+      "type": "OIL",
+      "location": 159,
+      "amount": 500
+    },
+    {
+      "id": 74,
+      "type": "OIL",
+      "location": 159,
+      "amount": 500
+    },
+    {
+      "id": 75,
+      "type": "CHEMICALS",
+      "location": 159,
+      "amount": 2000
+    },
+    {
+      "id": 76,
+      "type": "CHEMICALS",
+      "location": 159,
+      "amount": 1000
+    }
+  ],
+  "events": [],
+  "tasks": [],
+  "rewards": []
+}

@@ -1,0 +1,271 @@
+{
+  "corporations": [
+    {
+      "id": 100,
+      "name": "eye removal company1",
+      "ships": [
+        100, 101, 102, 103, 104, 105
+      ],
+      "homeHarbors": [
+        49, 107, 143, 314, 354, 469, 535, 563
+      ],
+      "garbageTypes": ["PLASTIC", "OIL", "CHEMICALS"]
+    },
+    {
+      "id": 200,
+      "name": "eye removal company2",
+      "ships": [
+        200, 201, 202, 203, 204, 205
+      ],
+      "homeHarbors": [
+        49, 107, 143, 314, 354, 469, 535, 563
+      ],
+      "garbageTypes": ["PLASTIC", "OIL", "CHEMICALS"]
+    },
+    {
+      "id": 300,
+      "name": "eye removal company3",
+      "ships": [
+        300, 301, 302, 303, 304, 305
+      ],
+      "homeHarbors": [
+        49, 107, 143, 314, 354, 469, 535, 563
+      ],
+      "garbageTypes": ["PLASTIC", "OIL", "CHEMICALS"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 100,
+      "name": "I LOVE EYES1",
+      "type": "SCOUTING",
+      "corporation": 100,
+      "location": 159,
+      "maxVelocity": 30,
+      "acceleration": 15,
+      "fuelCapacity": 10000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 101,
+      "name": "EDWARD SCISSOR aaa!!",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 102,
+      "name": "the simpsons hate me",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 2000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 103,
+      "name": "donald duck",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 104,
+      "name": "donald adsgd",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 105,
+      "name": "d dsadsa",
+      "type": "COLLECTING",
+      "corporation": 100,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "CHEMICALS"
+    },
+    {
+      "id": 200,
+      "name": "I LOVE EYES2",
+      "type": "SCOUTING",
+      "corporation": 200,
+      "location": 159,
+      "maxVelocity": 30,
+      "acceleration": 15,
+      "fuelCapacity": 10000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 201,
+      "name": "abcdefghijklmnopqrstuvwxyz",
+      "type": "COLLECTING",
+      "corporation": 200,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 5000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 202,
+      "name": "the lord",
+      "type": "COLLECTING",
+      "corporation": 200,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 5000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 203,
+      "name": "donald no duck",
+      "type": "COLLECTING",
+      "corporation": 200,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 5000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 204,
+      "name": "donald no aa",
+      "type": "COLLECTING",
+      "corporation": 200,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 205,
+      "name": "donald asdasno aa",
+      "type": "COLLECTING",
+      "corporation": 200,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 5000,
+      "garbageType": "CHEMICALS"
+    },
+    {
+      "id": 300,
+      "name": "I LOVE EYES3",
+      "type": "SCOUTING",
+      "corporation": 300,
+      "location": 159,
+      "maxVelocity": 30,
+      "acceleration": 15,
+      "fuelCapacity": 10000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 301,
+      "name": "beep",
+      "type": "COLLECTING",
+      "corporation": 300,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 4000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 302,
+      "name": "bad music",
+      "type": "COLLECTING",
+      "corporation": 300,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1500,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 303,
+      "name": "OBAMNA AAAAAAA",
+      "type": "COLLECTING",
+      "corporation": 300,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    },
+    {
+      "id": 304,
+      "name": "OBAMNA AAAA",
+      "type": "COLLECTING",
+      "corporation": 300,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    },
+    {
+      "id": 305,
+      "name": "OBAMNA asdasdAAAA",
+      "type": "COLLECTING",
+      "corporation": 300,
+      "location": 261,
+      "maxVelocity": 10,
+      "acceleration": 5,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 5000,
+      "garbageType": "CHEMICALS"
+    }
+
+  ]
+}
