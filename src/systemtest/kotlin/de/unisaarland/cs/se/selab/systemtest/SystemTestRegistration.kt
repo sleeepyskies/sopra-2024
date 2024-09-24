@@ -106,5 +106,6 @@ object SystemTestRegistration {
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(DawnOfThePlanetOfTheApes())
+        manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
     }
 }
