@@ -1,0 +1,55 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "pussy bois",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        354
+      ],
+      "garbageTypes": [
+
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Ocean Cleaners Inc.",
+      "ships": [
+        3
+      ],
+      "homeHarbors": [
+        354, 535, 107, 314, 143, 49, 469, 563
+      ],
+      "garbageTypes": [
+      ]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "pussyboi",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 222,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 3,
+      "name": "Explorer2",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 222,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    }
+  ]
+}
