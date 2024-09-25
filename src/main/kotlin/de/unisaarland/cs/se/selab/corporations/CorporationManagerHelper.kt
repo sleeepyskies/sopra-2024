@@ -137,6 +137,9 @@ class CorporationManagerHelper(simulationData: SimulationData) {
         )
     }
 
+    /**
+     * Helper method for processShipMovement in CorporationManager.
+     */
     fun checkReachedDestinationAndSetVelocity(
         ship: Ship,
         travelAmt: Int,
