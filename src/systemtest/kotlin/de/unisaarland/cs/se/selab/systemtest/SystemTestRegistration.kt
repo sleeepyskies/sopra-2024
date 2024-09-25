@@ -108,6 +108,13 @@ object SystemTestRegistration {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(HarborWithNoCorporation()) // validation
+        manager.registerTest(CorporationWithNoShips()) // validation
+        manager.registerTest(Atlantis3())
+        manager.registerTest(Error404V2())
+        manager.registerTest(Error404V3())
+        manager.registerTest(Error404V4())
+        manager.registerTest(FreeCandy())
     }
 
     /**
@@ -157,5 +164,7 @@ object SystemTestRegistration {
         manager.registerTest(TaskRestrictionReward())
         manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
+        manager.registerTest(EpicCollabGoneWrong())
+        manager.registerTest(TripleCorporationRadio())
     }
 }
