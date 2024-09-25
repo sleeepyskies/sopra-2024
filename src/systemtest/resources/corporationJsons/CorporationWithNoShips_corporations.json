@@ -4,12 +4,21 @@
       "id": 1,
       "name": "OBAMNAsODA",
       "ships": [
-        1, 2
+        1
       ],
       "homeHarbors": [
-        354, 535, 107, 314, 143, 49, 469, 563
+        5
       ],
       "garbageTypes": ["PLASTIC"]
+    },
+    {
+      "id": 2,
+      "name": "dadaadadadadada",
+      "ships": [2],
+      "homeHarbors": [
+        15
+      ],
+      "garbageTypes": []
     }
   ],
   "ships": [
@@ -28,10 +37,10 @@
     },
     {
       "id": 2,
-      "name": "no eyes lol",
+      "name": "FEED sadsadsadadasdadasd EYES",
       "type": "COLLECTING",
       "corporation": 1,
-      "location": 161,
+      "location": 244,
       "maxVelocity": 10,
       "acceleration": 10,
       "fuelCapacity": 3000,

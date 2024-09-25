@@ -4,40 +4,39 @@
       "id": 1,
       "name": "OBAMNAsODA",
       "ships": [
-        1, 2
+        2
       ],
       "homeHarbors": [
-        354, 535, 107, 314, 143, 49, 469, 563
+        7, 9
       ],
-      "garbageTypes": ["PLASTIC"]
+      "garbageTypes": ["OIL"]
     }
   ],
   "ships": [
     {
       "id": 1,
-      "name": "FEED ME EYES",
-      "type": "COLLECTING",
+      "name": "iCanSeeeee",
+      "type": "SCOUTING",
       "corporation": 1,
-      "location": 244,
+      "location": 7,
       "maxVelocity": 10,
       "acceleration": 10,
       "fuelCapacity": 3000,
-      "fuelConsumption": 5,
-      "garbageType": "PLASTIC",
-      "capacity": 1000
+      "fuelConsumption": 10,
+      "visibilityRange": 2
     },
     {
       "id": 2,
-      "name": "no eyes lol",
+      "name": "gimmeThat",
       "type": "COLLECTING",
       "corporation": 1,
-      "location": 161,
+      "location": 15,
       "maxVelocity": 10,
       "acceleration": 10,
       "fuelCapacity": 3000,
       "fuelConsumption": 5,
-      "garbageType": "PLASTIC",
-      "capacity": 1000
+      "capacity": 50000,
+      "garbageType": "OIL"
     }
   ]
 }
