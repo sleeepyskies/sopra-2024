@@ -47,6 +47,13 @@ object SystemTestRegistration {
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
         manager.registerTest(CyclopsCorp())
+        manager.registerTest(Atlantis4())
+        manager.registerTest(Atlantis5())
+        manager.registerTest(Atlantis6())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(MultiReward())
         registerSystemTestsReferenceImplHelper(manager)
     }
     private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
