@@ -80,6 +80,7 @@ object SystemTestRegistration {
         manager.registerTest(CorporationWithNoShips()) // validation
         manager.registerTest(FreeGiftTest()) // Task
         manager.registerTest(EternalVoyagerTest()) // Default behaviour
+        manager.registerTest(FreeGiftTest1())
     }
 
     /**
