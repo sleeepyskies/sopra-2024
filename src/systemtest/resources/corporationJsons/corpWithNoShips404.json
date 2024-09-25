@@ -1,0 +1,16 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        7, 9
+      ],
+      "garbageTypes": ["PLASTIC"]
+    }
+  ],
+  "ships": []
+}
