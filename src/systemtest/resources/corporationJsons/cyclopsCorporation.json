@@ -1,0 +1,47 @@
+{
+  "corporations": [
+    {
+      "id": 0,
+      "name": "DeepWave_Clean_Solutions",
+      "ships": [
+        0,
+        1
+      ],
+      "homeHarbors": [
+        28
+      ],
+      "garbageTypes": [
+        "PLASTIC",
+        "OIL"
+      ]
+    }
+  ],
+  "ships": [
+    {
+      "id": 0,
+      "name": "Saltwater",
+      "corporation": 0,
+      "type": "COLLECTING",
+      "location": 23,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "PLASTIC",
+      "capacity": 2500
+    },
+    {
+      "id": 1,
+      "name": "Windchaser",
+      "corporation": 0,
+      "type": "COLLECTING",
+      "location": 0,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "OIL",
+      "capacity": 50000
+    }
+  ]
+}
