@@ -38,6 +38,7 @@ class TaskManager(private val simData: SimulationData) {
             if (assignedShip != null && task.isCompleted) {
                 // update assignedShips taskID
                 assignedShip.currentTaskId = -1
+                assignedShip.state = ShipState.DEFAULT
 
                 // get reward, and reward ship
                 val reward = simData.rewards.find { it.id == task.rewardId }
@@ -45,12 +46,11 @@ class TaskManager(private val simData: SimulationData) {
                 val rewardShip = simData.ships.find { it.id == task.rewardShip }
 
                 // task is fulfilled, grant reward
-                if (reward != null && rewardShip != null) {
+                if (reward != null && rewardShip != null && task.grantReward) {
                     // grant the ship the reward
                     fulfilled.add(task)
                     grantReward(rewardShip, reward, task)
                     // set the tasked ships state to default
-                    assignedShip.state = ShipState.DEFAULT
                 }
             }
         }

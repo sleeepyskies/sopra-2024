@@ -102,6 +102,7 @@ object SystemTestRegistration {
         manager.registerTest(TripleCorporationRadio())
         manager.registerTest(ThisShipAintHere())
         manager.registerTest(WhySoMuchSpace())
+        manager.registerTest(UhOhVoyagerrr())
     }
 
     /**
