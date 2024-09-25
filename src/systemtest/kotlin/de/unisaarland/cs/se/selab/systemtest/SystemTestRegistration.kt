@@ -148,11 +148,40 @@ object SystemTestRegistration {
         manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
+    private fun runRegisterValidationTests(manager: SystemTestManager) {
+        manager.registerTest(WrongNeighbors())
+        manager.registerTest(InvalidCurrent())
+        manager.registerTest(CorporationFileInvalid())
+        manager.registerTest(ScenarioFileInvalid())
+        manager.registerTest(NonUniqueTileIDs())
+        manager.registerTest(HarborCantBeHere())
+        manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(HarborWithNoCorporation()) // validation
+        manager.registerTest(CorporationWithNoShips()) // validation
+        manager.registerTest(Atlantis3())
+        manager.registerTest(Error404V2())
+        manager.registerTest(Error404V3())
+        manager.registerTest(Error404V4())
+        manager.registerTest(FreeCandy())
+        manager.registerTest(ThisShipAintHere())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
+    }
+
     /**
      * The same as above, but the log message only (possibly) become incorrect
      * from the 'Simulation start' log onwards
      */
     fun registerSystemTestsMutantSimulation(manager: SystemTestManager) {
+        runRegisterValidationTests(manager)
         manager.registerTest(ExampleSystemTest())
         manager.registerTest(OilSpillHappensCorrectly())
         manager.registerTest(RestrictionHappensCorrectly())
