@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-
+/**testing atlantis mutant*/
 class Atlantis5 : ExampleSystemTestExtension() {
     override val description = "no"
     override val corporations = "corporationJsons/MultiReward_corp.json"

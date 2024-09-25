@@ -11,6 +11,8 @@ import de.unisaarland.cs.se.selab.assets.SimulationData
 class CorporationManagerHelper(simulationData: SimulationData) {
 
     private val simData = simulationData
+
+    /** helper for magic number */
     companion object {
         private const val VELOCITY_DIVISOR = 10
     }
