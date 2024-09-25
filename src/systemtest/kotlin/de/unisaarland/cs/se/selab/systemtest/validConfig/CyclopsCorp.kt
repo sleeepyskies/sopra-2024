@@ -5,7 +5,7 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 /** checks when refueling is not possible due to currents */
 class CyclopsCorp : ExampleSystemTestExtension() {
     override val description = "Tests if ships proritize their respective garbage to be collected and " +
-            "collecting ships see"
+        "collecting ships see"
     override val corporations = "corporationJsons/cyclopsCorporation.json"
     override val scenario = "scenarioJsons/cyclopsScenario.json"
     override val map = "mapFiles/cyclopsMap.json"
@@ -29,7 +29,6 @@ class CyclopsCorp : ExampleSystemTestExtension() {
         assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
         skipLines(4)
     }
-
 
     private suspend fun tick1() {
         skipLines(6)
