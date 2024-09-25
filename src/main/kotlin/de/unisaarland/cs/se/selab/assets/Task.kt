@@ -21,4 +21,5 @@ data class Task(
     val rewardShip: Int
 ) {
     var isCompleted = false
+    var grantReward = true
 }
