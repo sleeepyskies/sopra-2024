@@ -104,6 +104,14 @@ object SystemTestRegistration {
         manager.registerTest(WhySoMuchSpace())
         manager.registerTest(UhOhVoyagerrr())
         manager.registerTest(ChiefKeef())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseEventsOnLand())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
     /**
