@@ -1,8 +1,6 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
-import de.unisaarland.cs.se.selab.systemtest.api.SystemTestAssertionError
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-import de.unisaarland.cs.se.selab.systemtest.utils.Logs
 /**testing indirect info sharing*/
 class EternalVoyagerTest : ExampleSystemTestExtension() {
     override val description = "testing whether ship runs out of fuel"
@@ -70,7 +68,6 @@ class EternalVoyagerTest : ExampleSystemTestExtension() {
         skipLines(1)
         assertNextLine("Ship Movement: Ship 1 moved with speed 75 to tile 16.")
         skipLines(4)
-
     }
 
     private suspend fun tick5() {
@@ -92,7 +89,6 @@ class EternalVoyagerTest : ExampleSystemTestExtension() {
     private suspend fun tick7() {
         assertNextLine("Simulation Info: Tick 7 started.")
         skipLines(5)
-
     }
 
     private suspend fun simEnd() {
