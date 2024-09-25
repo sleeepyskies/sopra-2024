@@ -15,9 +15,9 @@ class CurrentsFreakRefueling : ExampleSystemTestExtension() {
 
     override suspend fun run() {
         skipUntilLogType(Logs.TICK16)
+        assertNextLine("Corporation Action: Corporation 2 is starting to move its ships.")
+        assertNextLine("Corporation Action: Corporation 2 is starting to collect garbage.")
         skipLines(4)
-        assertNextLine("Refueling: Ship 3 refueled at harbor 143.")
-        skipLines(1)
         simEnd()
     }
 

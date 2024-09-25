@@ -9,9 +9,9 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
     override val description = "A ship has a task scheduled, but cannot be assigned the task since it needs to refuel."
     override val corporations = "corporationJsons/shipCannotBeAssignedTask_corporation.json"
     override val scenario = "scenarioJsons/shipCannotBeAssignedTask_scenario.json"
-    override val map = "mapFiles/obamna.json"
+    override val map = "mapFiles/obamnaOpen.json"
     override val name = "ShipCannotBeAssignedTask"
-    override val maxTicks = 8 // was 9 before
+    override val maxTicks = 7 // was 9 before
     override suspend fun run() {
         initSimulation()
         tick0()
@@ -21,8 +21,6 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         tick4()
         tick5()
         tick6()
-        tick7()
-        // tick8()
         simEnd()
     }
 
@@ -47,7 +45,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 50 to tile 16.") // 3000 fuel, tile 16
+        assertNextLine("Ship Movement: Ship 1 moved with speed 50 to tile 23.") // 3000 fuel, tile 16
         skipLines(4)
     }
 
@@ -57,7 +55,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 75 to tile 5.") // 2400 fuel, tile 5
+        assertNextLine("Ship Movement: Ship 1 moved with speed 75 to tile 7.") // 2400 fuel, tile 5
         skipLines(4)
     }
 
@@ -67,7 +65,7 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.") // 1800 fuel, tile 16
+        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 23.") // 1800 fuel, tile 16
         skipLines(4)
     }
 
@@ -77,8 +75,9 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.") // 1200 fuel, tile 5
+        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 15.") // 1200 fuel, tile 5
         skipLines(4)
+        assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 21.")
     }
 
     private suspend fun tick5() {
@@ -86,11 +85,9 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Tick 5 started.")
 
         // Corporation Phase
-        skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 16.") // 600 fuel, tile 16
         skipLines(4)
-        // assertNextLine("Refueling: Ship 1 refueled at harbor 5.")
-
+        assertNextLine("Refueling: Ship 1 refueled at harbor 15.")
+        skipLines(1)
         // made it so that refuel logic is based on how much a ship can move, not how much it would move
     }
 
@@ -101,36 +98,10 @@ class ShipCannotBeAssignedTask : ExampleSystemTestExtension() {
 
         // Corporation Phase
         skipLines(1)
-        assertNextLine("Ship Movement: Ship 1 moved with speed 100 to tile 5.") // 0 fuel, tile 5
+        assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 2.") // 0 fuel, tile 5
         skipLines(4)
-        assertNextLine("Task: Task 1 of type FIND with ship 1 is added with destination 3.")
     }
 
-    private suspend fun tick7() {
-        // ship has 0
-        // Tick start
-        assertNextLine("Simulation Info: Tick 7 started.")
-
-        // Corporation Phase
-        skipLines(3)
-        assertNextLine("Corporation Action: Corporation 1 is starting to refuel.")
-        assertNextLine("Refueling: Ship 1 refueled at harbor 5.")
-        skipLines(1)
-    }
-
-    /*
-private suspend fun tick8() {
-    // ship has 0
-    // Tick start
-    assertNextLine("Simulation Info: Tick 8 started.")
-
-    // Corporation Phase
-    skipLines(1)
-    assertNextLine("Ship Movement: Ship 1 moved with speed 25 to tile 3.")
-    skipLines(4)
-}
-
-*/
     private suspend fun simEnd() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")

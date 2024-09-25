@@ -1,13 +1,14 @@
 {
-  "garbage": [],
+  "garbage": [
+  ],
   "events": [],
   "tasks": [
     {
       "id": 1,
       "type": "FIND",
-      "tick": 6,
+      "tick": 4,
       "shipID": 1,
-      "targetTile": 3,
+      "targetTile": 21,
       "rewardID": 1,
       "rewardShipID": 1
     }

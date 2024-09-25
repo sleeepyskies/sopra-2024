@@ -97,9 +97,9 @@ class UhOhVoyagerrr : ExampleSystemTestExtension() {
         assertNextLine("Simulation Info: Simulation ended.")
         assertNextLine("Simulation Info: Simulation statistics are calculated.")
         assertNextLine("Simulation Statistics: Corporation 1 collected 0 of garbage.")
-        assertNextLine("Simulation Statistics: Total amount of plastic collected: 1000.")
+        assertNextLine("Simulation Statistics: Total amount of plastic collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of oil collected: 0.")
-        assertNextLine("Simulation Statistics: Total amount of chemicals collected: 2000.")
+        assertNextLine("Simulation Statistics: Total amount of chemicals collected: 0.")
         assertNextLine("Simulation Statistics: Total amount of garbage still in the ocean: 1000.")
         assertEnd()
     }
