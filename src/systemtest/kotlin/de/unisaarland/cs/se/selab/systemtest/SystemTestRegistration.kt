@@ -79,6 +79,7 @@ object SystemTestRegistration {
         manager.registerTest(HarborWithNoCorporation()) // validation
         manager.registerTest(CorporationWithNoShips()) // validation
         manager.registerTest(FreeGiftTest()) // Task
+        manager.registerTest(EternalVoyagerTest()) // Default behaviour
     }
 
     /**
