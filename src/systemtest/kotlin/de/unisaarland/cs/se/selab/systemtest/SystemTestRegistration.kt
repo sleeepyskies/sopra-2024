@@ -12,6 +12,7 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCur
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.MultiTaskInvalid
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.ThisShipAintHere
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
@@ -91,6 +92,7 @@ object SystemTestRegistration {
         manager.registerTest(Error404V4())
         manager.registerTest(FreeCandy())
         manager.registerTest(TripleCorporationRadio())
+        manager.registerTest(ThisShipAintHere())
     }
 
     /**
