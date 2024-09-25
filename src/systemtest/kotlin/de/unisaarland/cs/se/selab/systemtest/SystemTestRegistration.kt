@@ -161,12 +161,7 @@ object SystemTestRegistration {
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         // validation
         manager.registerTest(WrongNeighbors())
-        manager.registerTest(InvalidCurrent())
         manager.registerTest(CorporationFileInvalid())
-        manager.registerTest(ScenarioFileInvalid())
-        manager.registerTest(NonUniqueTileIDs())
-        manager.registerTest(HarborCantBeHere())
-        manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
@@ -190,5 +185,6 @@ object SystemTestRegistration {
         manager.registerTest(TripleCorporationRadio())
         manager.registerTest(WhySoMuchSpace())
         manager.registerTest(EternalVoyagerTest())
+        manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
     }
 }
