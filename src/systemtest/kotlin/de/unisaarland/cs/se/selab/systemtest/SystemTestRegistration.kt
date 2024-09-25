@@ -136,6 +136,7 @@ object SystemTestRegistration {
         manager.registerTest(Error404V3())
         manager.registerTest(Error404V4())
         manager.registerTest(FreeCandy())
+        manager.registerTest(ThisShipAintHere())
     }
 
     /**
@@ -187,5 +188,7 @@ object SystemTestRegistration {
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
         manager.registerTest(EpicCollabGoneWrong())
         manager.registerTest(TripleCorporationRadio())
+        manager.registerTest(WhySoMuchSpace())
+        manager.registerTest(EternalVoyagerTest())
     }
 }
