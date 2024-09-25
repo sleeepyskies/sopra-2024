@@ -78,6 +78,7 @@ object SystemTestRegistration {
         manager.registerTest(BigEyes())
         manager.registerTest(HarborWithNoCorporation()) // validation
         manager.registerTest(CorporationWithNoShips()) // validation
+        manager.registerTest(FreeGiftTest()) // Task
     }
 
     /**
