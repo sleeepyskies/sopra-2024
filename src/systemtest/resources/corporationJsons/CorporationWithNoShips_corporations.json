@@ -1,0 +1,52 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        5
+      ],
+      "garbageTypes": ["PLASTIC"]
+    },
+    {
+      "id": 2,
+      "name": "dadaadadadadada",
+      "ships": [2],
+      "homeHarbors": [
+        15
+      ],
+      "garbageTypes": []
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "FEED ME EYES",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 244,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "PLASTIC",
+      "capacity": 1000
+    },
+    {
+      "id": 2,
+      "name": "FEED sadsadsadadasdadasd EYES",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 244,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "PLASTIC",
+      "capacity": 1000
+    }
+  ]
+}
