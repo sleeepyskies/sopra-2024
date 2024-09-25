@@ -11,6 +11,9 @@ import de.unisaarland.cs.se.selab.assets.SimulationData
 class CorporationManagerHelper(simulationData: SimulationData) {
 
     private val simData = simulationData
+    companion object {
+        private const val VELOCITY_DIVISOR = 10
+    }
 
     /**
      * Helper method for garbage collection in CorporationManager. Handles the state of UNLOADING ships.
@@ -132,6 +135,61 @@ class CorporationManagerHelper(simulationData: SimulationData) {
             listOf(simData.navigationManager.getExplorePoint(ship.location, shipMaxTravelDistance) to 0),
             true
         )
+    }
+
+    fun checkReachedDestinationAndSetVelocity(
+        ship: Ship,
+        travelAmt: Int,
+        tileIdToMoveTo: Int,
+        actualDestination: Int,
+        exploring: Boolean,
+        restricted: Boolean
+    ) {
+        if (tileIdToMoveTo == actualDestination && travelAmt > 0) {
+            if (!exploring && !restricted) {
+                ship.currentVelocity = 0
+            }
+        }
+    }
+
+    /**
+     * Encapsulates the logic for making a ship need refueling
+     */
+    fun makeShipRefueling(ship: Ship) {
+        ship.state = when (ship.state) {
+            ShipState.NEED_UNLOADING -> {
+                ShipState.NEED_REFUELING_AND_UNLOADING
+            }
+            ShipState.TASKED -> {
+                ship.currentTaskId = -1
+                ShipState.NEED_REFUELING
+            }
+            else -> {
+                ShipState.NEED_REFUELING
+            }
+        }
+    }
+
+    /**
+     * Checks if a ship can reach a harbor from a location to go to
+     */
+    fun checkIfShipCanReachHarborFromThere(
+        tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>,
+        ship: Ship,
+        corporation: Corporation
+    ): Boolean {
+        val tileToMoveToLocation = tileInfoToMove.first.first
+        val maxTravelDistanceAfterMovement =
+            (ship.currentFuel - tileInfoToMove.second.first * ship.fuelConsumptionRate) / ship.fuelConsumptionRate
+        val distanceInTiles = maxTravelDistanceAfterMovement / VELOCITY_DIVISOR
+        val homeHarborsToTileId = corporation.harbors.map { location ->
+            location to (
+                simData.navigationManager.findTile(location)?.id
+                    ?: Int.MAX_VALUE
+                )
+        }
+        return !simData.navigationManager
+            .shouldMoveToHarbor(tileToMoveToLocation, distanceInTiles, homeHarborsToTileId)
     }
 
     private fun getOnlyAssignableGarbagePredicate(garbageID: Int): Boolean {
