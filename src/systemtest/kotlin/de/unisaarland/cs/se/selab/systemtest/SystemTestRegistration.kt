@@ -90,6 +90,7 @@ object SystemTestRegistration {
         manager.registerTest(Error404V3())
         manager.registerTest(Error404V4())
         manager.registerTest(FreeCandy())
+        manager.registerTest(TripleCorporationRadio())
     }
 
     /**
