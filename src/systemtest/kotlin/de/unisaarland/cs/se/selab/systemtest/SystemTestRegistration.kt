@@ -45,6 +45,9 @@ object SystemTestRegistration {
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
+        registerSystemTestsReferenceImplHelper(manager)
+    }
+    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(StormEventDriftsGarbage())
@@ -81,6 +84,12 @@ object SystemTestRegistration {
         manager.registerTest(FreeGiftTest()) // Task
         manager.registerTest(EternalVoyagerTest()) // Default behaviour
         manager.registerTest(FreeGiftTest1())
+        manager.registerTest(Atlantis3())
+        manager.registerTest(EpicCollabGoneWrong())
+        manager.registerTest(Error404V2())
+        manager.registerTest(Error404V3())
+        manager.registerTest(Error404V4())
+        manager.registerTest(FreeCandy())
     }
 
     /**
