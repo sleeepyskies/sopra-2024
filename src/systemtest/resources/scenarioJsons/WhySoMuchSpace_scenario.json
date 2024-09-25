@@ -1,0 +1,61 @@
+{
+  "garbage": [
+    {
+      "id": 0,
+      "type": "PLASTIC",
+      "location": 187,
+      "amount": 1000
+    },
+    {
+      "id": 1,
+      "type": "PLASTIC",
+      "location": 188,
+      "amount": 1000
+    },
+    {
+      "id": 2,
+      "type": "PLASTIC",
+      "location": 189,
+      "amount": 1000
+    },
+    {
+      "id": 3,
+      "type": "PLASTIC",
+      "location": 190,
+      "amount": 1000
+    },
+    {
+      "id": 4,
+      "type": "PLASTIC",
+      "location": 162,
+      "amount": 1000
+    },
+    {
+      "id": 5,
+      "type": "PLASTIC",
+      "location": 163,
+      "amount": 1000
+    },
+    {
+      "id": 6,
+      "type": "PLASTIC",
+      "location": 164,
+      "amount": 1000
+    },
+    {
+      "id": 7,
+      "type": "PLASTIC",
+      "location": 138,
+      "amount": 1000
+    },
+    {
+      "id": 8,
+      "type": "PLASTIC",
+      "location": 139,
+      "amount": 1000
+    }
+  ],
+  "events": [],
+  "tasks": [],
+  "rewards": []
+}

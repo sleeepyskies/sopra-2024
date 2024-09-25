@@ -1,0 +1,53 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        49
+      ],
+      "garbageTypes": []
+    },
+    {
+      "id": 2,
+      "name": "OBAMNAsODAAAA",
+      "ships": [
+        2
+      ],
+      "homeHarbors": [
+        469, 563, 143, 535, 354, 107, 314
+      ],
+      "garbageTypes": ["PLASTIC"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "iCanSeeeee",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 174,
+      "maxVelocity": 20,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 2,
+      "name": "I HELP PLASTIC",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 0,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "PLASTIC"
+    }
+  ]
+}
