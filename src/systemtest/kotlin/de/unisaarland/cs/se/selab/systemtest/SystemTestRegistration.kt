@@ -47,6 +47,13 @@ object SystemTestRegistration {
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
         manager.registerTest(CyclopsCorp())
+        manager.registerTest(Atlantis4())
+        manager.registerTest(Atlantis5())
+        manager.registerTest(Atlantis6())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(MultiReward())
         registerSystemTestsReferenceImplHelper(manager)
     }
     private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
@@ -95,6 +102,16 @@ object SystemTestRegistration {
         manager.registerTest(TripleCorporationRadio())
         manager.registerTest(ThisShipAintHere())
         manager.registerTest(WhySoMuchSpace())
+        manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(ChiefKeef())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseEventsOnLand())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
     /**

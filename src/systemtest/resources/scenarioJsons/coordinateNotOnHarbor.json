@@ -1,0 +1,21 @@
+{
+  "garbage": [],
+  "events": [],
+  "tasks": [
+    {
+      "id": 1,
+      "type": "COOPERATE",
+      "tick": 3,
+      "shipID": 1,
+      "targetTile": 11,
+      "rewardID": 3,
+      "rewardShipID": 1
+    }
+  ],
+  "rewards": [
+    {
+      "id": 3,
+      "type": "RADIO"
+    }
+  ]
+}

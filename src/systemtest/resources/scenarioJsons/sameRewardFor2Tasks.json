@@ -1,0 +1,29 @@
+{
+  "garbage": [],
+  "events": [],
+  "tasks": [
+    {
+      "id": 1,
+      "type": "EXPLORE",
+      "tick": 0,
+      "shipID": 1,
+      "targetTile": 21,
+      "rewardID": 1,
+      "rewardShipID": 1
+    },
+    {
+      "id": 2,
+      "type": "EXPLORE",
+      "tick": 6,
+      "shipID": 1,
+      "targetTile": 22,
+      "rewardID": 1,
+      "rewardShipID": 1
+    }
+  ],
+  "rewards": [{
+    "id": 1,
+    "type": "TELESCOPE",
+    "visibilityRange": 2
+  }]
+}
