@@ -4,13 +4,13 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 import de.unisaarland.cs.se.selab.systemtest.utils.Logs
 
 /** checks when refueling is not possible due to currents */
-class CurrentsFuckRefueling : ExampleSystemTestExtension() {
+class CurrentsFreakRefueling : ExampleSystemTestExtension() {
     override val description = "no"
     override val corporations = "corporationJsons/currentsFuckRefuelingCorp.json"
     override val scenario = "scenarioJsons/currentsFuckRefuelingScenario.json"
 
     override val map = "mapFiles/bigMap1.json"
-    override val name = "CurrentsFuckRefueling"
+    override val name = "CurrentsFreakRefueling"
     override val maxTicks = 17
 
     override suspend fun run() {

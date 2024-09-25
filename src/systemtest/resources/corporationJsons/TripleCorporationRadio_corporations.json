@@ -1,0 +1,114 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        11, 12
+      ],
+      "homeHarbors": [
+        354, 535, 107, 143, 49, 469, 563
+      ],
+      "garbageTypes": ["OIL"]
+    },
+    {
+      "id": 2,
+      "name": "scouting dudes",
+      "ships": [
+        21, 22, 23
+      ],
+      "homeHarbors": [
+        354, 535, 107, 143, 49, 469, 563
+      ],
+      "garbageTypes": ["OIL"]
+    },
+    {
+      "id": 3,
+      "name": "useless collectors",
+      "ships": [
+        31
+      ],
+      "homeHarbors": [
+        314
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 11,
+      "name": "ship11",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 289,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "OIL",
+      "capacity": 50000
+    },
+    {
+      "id": 12,
+      "name": "ship12",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 241,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 21,
+      "name": "ship21",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 313,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 22,
+      "name": "ship22",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 266,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "OIL",
+      "capacity": 50000
+    },
+    {
+      "id": 23,
+      "name": "ship23",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 371,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 2
+    },
+    {
+      "id": 31,
+      "name": "ship31",
+      "type": "COLLECTING",
+      "corporation": 3,
+      "location": 288,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "garbageType": "OIL",
+      "capacity": 50000
+    }
+  ]
+}

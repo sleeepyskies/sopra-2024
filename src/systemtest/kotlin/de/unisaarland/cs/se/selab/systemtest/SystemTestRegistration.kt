@@ -12,6 +12,7 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCur
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.MultiTaskInvalid
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.ThisShipAintHere
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
@@ -68,7 +69,7 @@ object SystemTestRegistration {
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
         // FAILED
-        manager.registerTest(CurrentsFuckRefueling())
+        manager.registerTest(CurrentsFreakRefueling())
         // failed
         manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
         manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
@@ -90,6 +91,8 @@ object SystemTestRegistration {
         manager.registerTest(Error404V3())
         manager.registerTest(Error404V4())
         manager.registerTest(FreeCandy())
+        manager.registerTest(TripleCorporationRadio())
+        manager.registerTest(ThisShipAintHere())
     }
 
     /**
@@ -153,5 +156,8 @@ object SystemTestRegistration {
         manager.registerTest(MultiTaskInvalid())
         manager.registerTest(AtlantisTest1())
         manager.registerTest(AtlantisTest2())
+        manager.registerTest(TaskRestrictionReward())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
+        manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
     }
 }
