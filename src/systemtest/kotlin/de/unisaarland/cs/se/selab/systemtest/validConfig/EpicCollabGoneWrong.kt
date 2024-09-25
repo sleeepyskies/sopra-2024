@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-
+/** documented test **/
 class EpicCollabGoneWrong : ExampleSystemTestExtension() {
     override val description = "omg this will be so epic"
     override val corporations = "corporationJsons/epicCollabingCorporations.json"
