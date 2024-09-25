@@ -12,5 +12,6 @@ class AtlantisTest2 : ExampleSystemTestExtension() {
 
     override suspend fun run() {
         assertNextLine("Initialization Info: atlantis2map.json is invalid.")
+        assertEnd()
     }
 }

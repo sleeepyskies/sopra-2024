@@ -11,7 +11,7 @@ class Atlantis5 : ExampleSystemTestExtension() {
     override val maxTicks = 9
 
     override suspend fun run() {
-        assertNextLine("Initialization Info: atlantis5Map.json is Invalid.")
+        assertNextLine("Initialization Info: atlantis5Map.json is invalid.")
         assertEnd()
     }
 }
