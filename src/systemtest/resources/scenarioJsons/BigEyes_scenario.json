@@ -1,0 +1,71 @@
+{
+  "garbage": [
+    {
+      "id": 2,
+      "type": "PLASTIC",
+      "location": 137,
+      "amount": 1000
+    }
+  ],
+  "events": [],
+  "tasks": [
+    {
+      "id": 0,
+      "type": "EXPLORE",
+      "tick": 0,
+      "shipID": 1,
+      "targetTile": 245,
+      "rewardID": 0,
+      "rewardShipID": 1
+    },
+    {
+      "id": 1,
+      "type": "EXPLORE",
+      "tick": 1,
+      "shipID": 1,
+      "targetTile": 246,
+      "rewardID": 1,
+      "rewardShipID": 1
+    },
+    {
+      "id": 2,
+      "type": "EXPLORE",
+      "tick": 2,
+      "shipID": 1,
+      "targetTile": 245,
+      "rewardID": 2,
+      "rewardShipID": 1
+    },
+    {
+      "id": 3,
+      "type": "EXPLORE",
+      "tick": 3,
+      "shipID": 1,
+      "targetTile": 244,
+      "rewardID": 3,
+      "rewardShipID": 1
+    }
+  ],
+  "rewards": [
+    {
+      "id": 0,
+      "type": "TELESCOPE",
+      "visibilityRange": 3
+    },
+    {
+      "id": 1,
+      "type": "TELESCOPE",
+      "visibilityRange": 3
+    },
+    {
+      "id": 2,
+      "type": "TELESCOPE",
+      "visibilityRange": 3
+    },
+    {
+      "id": 3,
+      "type": "TELESCOPE",
+      "visibilityRange": 3
+    }
+  ]
+}
