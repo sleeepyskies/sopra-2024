@@ -1,7 +1,7 @@
 package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
-/**asda**/
+/** asda **/
 class Error404V3 : ExampleSystemTestExtension() {
     override val description = "no"
     override val corporations = "corporationJsons/shipWithNonExistingCorp.json"
