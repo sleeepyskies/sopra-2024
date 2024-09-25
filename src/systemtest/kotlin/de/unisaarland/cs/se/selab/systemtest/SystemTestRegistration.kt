@@ -121,7 +121,6 @@ object SystemTestRegistration {
      * Everything after 'Simulation start' works correctly
      */
     fun registerSystemTestsMutantValidation(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
         manager.registerTest(WrongNeighbors())
         manager.registerTest(InvalidCurrent())
         manager.registerTest(CorporationFileInvalid())
@@ -137,6 +136,16 @@ object SystemTestRegistration {
         manager.registerTest(Error404V4())
         manager.registerTest(FreeCandy())
         manager.registerTest(ThisShipAintHere())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
     /**
@@ -186,5 +195,8 @@ object SystemTestRegistration {
         manager.registerTest(WhySoMuchSpace())
         manager.registerTest(EternalVoyagerTest())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
+        manager.registerTest(MultiReward())
+        manager.registerTest(TestOilSpillIds())
+        manager.registerTest(NoWayToLeaveRestriction())
     }
 }
