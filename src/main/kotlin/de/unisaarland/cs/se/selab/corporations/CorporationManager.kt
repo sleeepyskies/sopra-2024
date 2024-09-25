@@ -94,7 +94,7 @@ class CorporationManager(private val simData: SimulationData) {
                         harborToTileId,
                         min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
                     )
-                    helper.makeShipRefueling(it, corporation)
+                    helper.makeShipRefueling(it)
                 }
                 processShipMovement(it, tileInfoToMove, gbAssignedAmountList, exploring, isOnRestrictedTile)
                 updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
@@ -151,7 +151,7 @@ class CorporationManager(private val simData: SimulationData) {
                         simData.navigationManager.findTile(it.targetTileId)?.currentGarbage?.isNotEmpty() == true
                     ) {
                         it.isCompleted = true
-                    } else {
+                    } else if (it.targetTileId == taskShip?.tileId) {
                         it.isCompleted = true
                         it.grantReward = false
                     }

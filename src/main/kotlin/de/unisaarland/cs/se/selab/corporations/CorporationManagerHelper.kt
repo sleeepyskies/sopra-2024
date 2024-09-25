@@ -160,30 +160,17 @@ class CorporationManagerHelper(simulationData: SimulationData) {
     /**
      * Encapsulates the logic for making a ship need refueling
      */
-    fun makeShipRefueling(ship: Ship, corporation: Corporation) {
+    fun makeShipRefueling(ship: Ship) {
         ship.state = when (ship.state) {
             ShipState.NEED_UNLOADING -> {
-                if (ship.location in corporation.harbors) {
-                    ShipState.REFUELING_AND_UNLOADING
-                } else {
-                    ShipState.NEED_REFUELING_AND_UNLOADING
-                }
+                ShipState.NEED_REFUELING_AND_UNLOADING
             }
             ShipState.TASKED -> {
-                if (ship.location in corporation.harbors) {
-                    ship.currentTaskId = -1
-                    ShipState.REFUELING
-                } else {
-                    ship.currentTaskId = -1
-                    ShipState.NEED_REFUELING
-                }
+                ship.currentTaskId = -1
+                ShipState.NEED_REFUELING
             }
             else -> {
-                if (ship.location in corporation.harbors) {
-                    ShipState.REFUELING
-                } else {
-                    ShipState.NEED_REFUELING
-                }
+                ShipState.NEED_REFUELING
             }
         }
     }
