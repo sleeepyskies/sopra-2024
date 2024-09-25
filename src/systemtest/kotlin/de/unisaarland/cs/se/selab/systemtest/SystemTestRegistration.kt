@@ -68,7 +68,7 @@ object SystemTestRegistration {
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
         // FAILED
-        manager.registerTest(CurrentsFuckRefueling())
+        manager.registerTest(CurrentsFreakRefueling())
         // failed
         manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
         manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
@@ -153,5 +153,8 @@ object SystemTestRegistration {
         manager.registerTest(MultiTaskInvalid())
         manager.registerTest(AtlantisTest1())
         manager.registerTest(AtlantisTest2())
+        manager.registerTest(TaskRestrictionReward())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
+        manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
     }
 }
