@@ -1,8 +1,10 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.CorporationWithNoShips
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.DoubleAgent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborWithNoCorporation
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.ThisCorporationIsMessedUPbruh
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhyDoYouDoThis
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHarbarObamna
@@ -74,6 +76,8 @@ object SystemTestRegistration {
         manager.registerTest(AtlantisTest1())
         manager.registerTest(AtlantisTest2())
         manager.registerTest(BigEyes())
+        manager.registerTest(HarborWithNoCorporation()) // validation
+        manager.registerTest(CorporationWithNoShips()) // validation
     }
 
     /**
