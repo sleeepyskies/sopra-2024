@@ -4,7 +4,7 @@
       "id": 1,
       "name": "eye removal company",
       "ships": [
-        51, 55, 50
+        55, 50
       ],
       "homeHarbors": [
         49, 107, 143, 314, 354, 469, 535, 563
@@ -13,19 +13,6 @@
     }
   ],
   "ships": [
-    {
-      "id": 51,
-      "name": "MY EYES THEY DON'T WORK!!!!!!!!",
-      "type": "COLLECTING",
-      "corporation": 1,
-      "location": 467,
-      "maxVelocity": 10,
-      "acceleration": 10,
-      "fuelCapacity": 3000,
-      "fuelConsumption": 5,
-      "capacity": 50000,
-      "garbageType": "OIL"
-    },
     {
       "id": 55,
       "name": "I LOVE EYES",

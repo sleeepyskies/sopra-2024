@@ -61,7 +61,7 @@ class CorporationManager(private val simData: SimulationData) {
             val isRestrictedAndNotOwnLocation = isOnRestrictedTile && possibleLocationsToMove[0].first != it.location
             if (!(isOwnLocation) || isRestrictedAndNotOwnLocation || exploring) {
                 val anticipatedVelocity = (it.currentVelocity + it.acceleration).coerceAtMost(it.maxVelocity)
-                val tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
+                var tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove[0].first
                     val shipMaxTravelDistance = min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
@@ -82,6 +82,20 @@ class CorporationManager(private val simData: SimulationData) {
                         min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
                     )
                 }
+                if (!helper.checkIfShipCanReachHarborFromThere(tileInfoToMove, it, corporation)) {
+                    val harborToTileId = corporation.harbors.map { location ->
+                        location to (
+                            simData.navigationManager.findTile(location)?.id
+                                ?: Int.MAX_VALUE
+                            )
+                    }
+                    tileInfoToMove = simData.navigationManager.shortestPathToLocations(
+                        it.location,
+                        harborToTileId,
+                        min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
+                    )
+                    helper.makeShipRefueling(it)
+                }
                 processShipMovement(it, tileInfoToMove, gbAssignedAmountList, exploring, isOnRestrictedTile)
                 updateInfo(corporation, scan(it.location, it.visibilityRange, it.id))
             } else {
@@ -96,6 +110,7 @@ class CorporationManager(private val simData: SimulationData) {
         corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
         corporation.visibleGarbage.clear()
     }
+
     private fun processShipMovement(
         ship: Ship,
         tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>,
@@ -117,7 +132,7 @@ class CorporationManager(private val simData: SimulationData) {
                 assignCapacityToGarbageList(tileInfoToMove.second.second, ship.capacityInfo)
             )
         }
-        checkReachedDestinationAndSetVelocity(
+        helper.checkReachedDestinationAndSetVelocity(
             ship,
             tileInfoToMove.second.first,
             tileInfoToMove.first.second,
@@ -125,21 +140,6 @@ class CorporationManager(private val simData: SimulationData) {
             exploring,
             isOnRestrictedTile
         )
-    }
-
-    private fun checkReachedDestinationAndSetVelocity(
-        ship: Ship,
-        travelAmt: Int,
-        tileIdToMoveTo: Int,
-        actualDestination: Int,
-        exploring: Boolean,
-        restricted: Boolean
-    ) {
-        if (tileIdToMoveTo == actualDestination && travelAmt > 0) {
-            if (!exploring && !restricted) {
-                ship.currentVelocity = 0
-            }
-        }
     }
 
     private fun updateTasks() {
@@ -151,6 +151,9 @@ class CorporationManager(private val simData: SimulationData) {
                         simData.navigationManager.findTile(it.targetTileId)?.currentGarbage?.isNotEmpty() == true
                     ) {
                         it.isCompleted = true
+                    } else if (it.targetTileId == taskShip?.tileId) {
+                        it.isCompleted = true
+                        it.grantReward = false
                     }
                 }
                 // dont update state yet

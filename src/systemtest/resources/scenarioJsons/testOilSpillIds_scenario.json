@@ -1,5 +1,12 @@
 {
-  "garbage": [],
+  "garbage": [
+    {
+      "id": 0,
+      "type": "OIL",
+      "location": 475,
+      "amount": 1000
+    }
+  ],
   "events": [
     {
       "id": 69,

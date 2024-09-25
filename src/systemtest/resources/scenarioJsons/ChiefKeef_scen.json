@@ -1,9 +1,9 @@
 {
   "garbage": [
     {
-      "id": 2,
-      "type": "PLASTIC",
-      "location": 137,
+      "id": 0,
+      "type": "OIL",
+      "location": 15,
       "amount": 1000
     }
   ],
@@ -13,37 +13,46 @@
       "id": 0,
       "type": "EXPLORE",
       "tick": 0,
-      "shipID": 1,
-      "targetTile": 245,
+      "shipID": 12,
+      "targetTile": 29,
       "rewardID": 0,
-      "rewardShipID": 1
+      "rewardShipID": 11
     },
     {
       "id": 1,
       "type": "EXPLORE",
       "tick": 1,
-      "shipID": 1,
-      "targetTile": 246,
+      "shipID": 12,
+      "targetTile": 29,
       "rewardID": 1,
-      "rewardShipID": 1
+      "rewardShipID": 11
     },
     {
       "id": 2,
       "type": "EXPLORE",
       "tick": 2,
-      "shipID": 1,
-      "targetTile": 245,
+      "shipID": 12,
+      "targetTile": 29,
       "rewardID": 2,
-      "rewardShipID": 1
+      "rewardShipID": 11
     },
     {
       "id": 3,
       "type": "EXPLORE",
       "tick": 3,
-      "shipID": 1,
-      "targetTile": 244,
+      "shipID": 12,
+      "targetTile": 29,
       "rewardID": 3,
-      "rewardShipID": 1
+      "rewardShipID": 11
+    },
+    {
+      "id": 4,
+      "type": "EXPLORE",
+      "tick": 4,
+      "shipID": 12,
+      "targetTile": 29,
+      "rewardID": 4,
+      "rewardShipID": 11
     }
   ],
   "rewards": [
@@ -64,6 +73,11 @@
     },
     {
       "id": 3,
+      "type": "TELESCOPE",
+      "visibilityRange": 3
+    },
+    {
+      "id": 4,
       "type": "TELESCOPE",
       "visibilityRange": 3
     }

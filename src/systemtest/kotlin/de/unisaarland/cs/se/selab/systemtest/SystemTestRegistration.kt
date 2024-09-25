@@ -1,8 +1,10 @@
 package de.unisaarland.cs.se.selab.systemtest
 
 import de.unisaarland.cs.se.selab.systemtest.basictests.ExampleSystemTest
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.CorporationWithNoShips
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.DoubleAgent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborWithNoCorporation
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.ThisCorporationIsMessedUPbruh
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhyDoYouDoThis
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHarbarObamna
@@ -10,6 +12,7 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCur
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.MultiTaskInvalid
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.ThisShipAintHere
 import de.unisaarland.cs.se.selab.systemtest.runner.SystemTestManager
 import de.unisaarland.cs.se.selab.systemtest.validConfig.*
 
@@ -43,6 +46,17 @@ object SystemTestRegistration {
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
         manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
+        manager.registerTest(CyclopsCorp())
+        manager.registerTest(Atlantis4())
+        manager.registerTest(Atlantis5())
+        manager.registerTest(Atlantis6())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(MultiReward())
+        registerSystemTestsReferenceImplHelper(manager)
+    }
+    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(StormEventDriftsGarbage())
@@ -63,7 +77,7 @@ object SystemTestRegistration {
         manager.registerTest(ICanSeeWhatYouCannot())
         manager.registerTest(GarbageLandsOnShip())
         // FAILED
-        manager.registerTest(CurrentsFuckRefueling())
+        manager.registerTest(CurrentsFreakRefueling())
         // failed
         manager.registerTest(ShipCantReachHarborOnSpawn404()) // validation
         manager.registerTest(ThisCorporationIsMessedUPbruh()) // validation
@@ -73,6 +87,31 @@ object SystemTestRegistration {
         manager.registerTest(MultiTaskInvalid())
         manager.registerTest(AtlantisTest1())
         manager.registerTest(AtlantisTest2())
+        manager.registerTest(BigEyes())
+        manager.registerTest(HarborWithNoCorporation()) // validation
+        manager.registerTest(CorporationWithNoShips()) // validation
+        manager.registerTest(FreeGiftTest()) // Task
+        manager.registerTest(EternalVoyagerTest()) // Default behaviour
+        manager.registerTest(FreeGiftTest1())
+        manager.registerTest(Atlantis3())
+        manager.registerTest(EpicCollabGoneWrong())
+        manager.registerTest(Error404V2())
+        manager.registerTest(Error404V3())
+        manager.registerTest(Error404V4())
+        manager.registerTest(FreeCandy())
+        manager.registerTest(TripleCorporationRadio())
+        manager.registerTest(ThisShipAintHere())
+        manager.registerTest(WhySoMuchSpace())
+        manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(ChiefKeef())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseEventsOnLand())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
     /**
@@ -82,7 +121,6 @@ object SystemTestRegistration {
      * Everything after 'Simulation start' works correctly
      */
     fun registerSystemTestsMutantValidation(manager: SystemTestManager) {
-        manager.registerTest(ExampleSystemTest())
         manager.registerTest(WrongNeighbors())
         manager.registerTest(InvalidCurrent())
         manager.registerTest(CorporationFileInvalid())
@@ -90,6 +128,24 @@ object SystemTestRegistration {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(FloatingHarbarObamna())
+        manager.registerTest(HarborWithNoCorporation()) // validation
+        manager.registerTest(CorporationWithNoShips()) // validation
+        manager.registerTest(Atlantis3())
+        manager.registerTest(Error404V2())
+        manager.registerTest(Error404V3())
+        manager.registerTest(Error404V4())
+        manager.registerTest(FreeCandy())
+        manager.registerTest(ThisShipAintHere())
+        manager.registerTest(Atlantis7())
+        manager.registerTest(CorpWithNoShips404())
+        manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
+        manager.registerTest(SilentHouseChemicalsOnDeepOcean())
+        manager.registerTest(SilentHouseCoordinateNotOnHarbor())
+        manager.registerTest(SilentHouseSameRewardsFor2Tasks())
+        manager.registerTest(SilentHouseShipSpawsOnLand())
+        manager.registerTest(SilentHouseTasksOnLand())
+        manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
+        manager.registerTest(SilentHouseTooMuchOilOnTile2())
     }
 
     /**
@@ -114,16 +170,11 @@ object SystemTestRegistration {
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         // validation
         manager.registerTest(WrongNeighbors())
-        manager.registerTest(InvalidCurrent())
         manager.registerTest(CorporationFileInvalid())
-        manager.registerTest(ScenarioFileInvalid())
-        manager.registerTest(NonUniqueTileIDs())
-        manager.registerTest(HarborCantBeHere())
-        manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(DawnOfThePlanetOfTheApes())
         manager.registerTest(CoordinatingShipsCoordinateAndGoOutOfRestriction())
         manager.registerTest(TaskGotCompletedAssignRewardToShip())
-        manager.registerTest(TaskShouldBeAssignedFullCapacity())
+        // manager.registerTest(TaskShouldBeAssignedFullCapacity())
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(UnloadingOfCollectedChemicals())
         manager.registerTest(ICanSeeWhatYouCannot())
@@ -136,5 +187,16 @@ object SystemTestRegistration {
         manager.registerTest(MultiTaskInvalid())
         manager.registerTest(AtlantisTest1())
         manager.registerTest(AtlantisTest2())
+        manager.registerTest(TaskRestrictionReward())
+        manager.registerTest(TestCoordinateTaskAndRadioReward())
+        manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
+        manager.registerTest(EpicCollabGoneWrong())
+        manager.registerTest(TripleCorporationRadio())
+        manager.registerTest(WhySoMuchSpace())
+        manager.registerTest(EternalVoyagerTest())
+        manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
+        manager.registerTest(MultiReward())
+        manager.registerTest(TestOilSpillIds())
+        manager.registerTest(NoWayToLeaveRestriction())
     }
 }

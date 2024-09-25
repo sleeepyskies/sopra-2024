@@ -7,7 +7,7 @@ class AtlantisTest1 : ExampleSystemTestExtension() {
     override val corporations = "corporationJsons/atlantis1Corp.json"
     override val scenario = "scenarioJsons/noWayOutOfRestriction.json"
     override val map = "mapFiles/atlantis1Map.json"
-    override val name = "NoWayToLeaveRestriction: task should be assigned even if ship capacity is full"
+    override val name = "AtlantisTest1"
     override val maxTicks = 5
 
     override suspend fun run() {
