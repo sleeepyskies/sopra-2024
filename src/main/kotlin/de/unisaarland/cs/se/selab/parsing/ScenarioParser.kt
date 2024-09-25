@@ -453,11 +453,16 @@ class ScenarioParser(
      * @return `true` if cross-validation is successful, `false` otherwise.
      */
     private fun crossValidateTasksForRewards(): Boolean {
-        // Cross validate tasks for rewards
+        val rewardToTaskMap = mutableMapOf<Int, Int>()
+
         for (task in this.tasks.values.flatten()) {
             if (!isValidTaskReward(task)) {
                 return false
             }
+            if (rewardToTaskMap.containsKey(task.rewardId)) {
+                return false // A reward is assigned to more than one task
+            }
+            rewardToTaskMap[task.rewardId] = task.id
         }
         return true
     }

@@ -103,6 +103,7 @@ object SystemTestRegistration {
         manager.registerTest(ThisShipAintHere())
         manager.registerTest(WhySoMuchSpace())
         manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(ChiefKeef())
     }
 
     /**
