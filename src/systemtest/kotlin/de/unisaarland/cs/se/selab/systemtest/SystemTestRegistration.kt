@@ -54,6 +54,7 @@ object SystemTestRegistration {
         manager.registerTest(CorpWithInvalidGarbageCollectingShips404())
         manager.registerTest(CorpWithNoShips404())
         manager.registerTest(MultiReward())
+        manager.registerTest(ShipsCollabOnChemCollection())
         registerSystemTestsReferenceImplHelper(manager)
     }
     private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
