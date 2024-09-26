@@ -2,6 +2,9 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
+/**
+ * Tests if garbage is collected correctly by a ship that moves by drifting
+ */
 class CurrentCollect : ExampleSystemTestExtension() {
     override val description = "CurrentCollect: tests if garbage that is drifted ontop of ship" +
         "is collected"
