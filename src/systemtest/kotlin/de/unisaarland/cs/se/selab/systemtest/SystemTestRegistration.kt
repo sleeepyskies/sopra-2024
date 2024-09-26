@@ -115,6 +115,8 @@ object SystemTestRegistration {
         manager.registerTest(SilentHouseTooMuchOilOnTile2())
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
+        manager.registerTest(Atlantis8()) // NEW
+        manager.registerTest(Atlantis9()) // NEW
     }
 
     /**
