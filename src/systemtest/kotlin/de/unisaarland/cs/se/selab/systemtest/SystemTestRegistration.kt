@@ -113,6 +113,8 @@ object SystemTestRegistration {
         manager.registerTest(SilentHouseTasksOnLand())
         manager.registerTest(SilentHouseTileHoldsMoreThanThOil())
         manager.registerTest(SilentHouseTooMuchOilOnTile2())
+        manager.registerTest(CurrentCollect())
+        manager.registerTest(CurrentCollect1())
     }
 
     /**

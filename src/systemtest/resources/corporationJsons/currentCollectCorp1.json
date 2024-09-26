@@ -1,0 +1,30 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "OBAMNAsODA",
+      "ships": [
+        2
+      ],
+      "homeHarbors": [
+        5, 15
+      ],
+      "garbageTypes": ["OIL"]
+    }
+  ],
+  "ships": [
+    {
+      "id": 2,
+      "name": "gimmeThat",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 7,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 50000,
+      "garbageType": "OIL"
+    }
+  ]
+}
