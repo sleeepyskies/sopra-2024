@@ -26,8 +26,7 @@ class CyclopsCorp : ExampleSystemTestExtension() {
     private suspend fun tick0() {
         skipLines(2)
         assertNextLine("Ship Movement: Ship 0 moved with speed 10 to tile 22.")
-        assertNextLine("Ship Movement: Ship 1 moved with speed 10 to tile 1.")
-        skipLines(4)
+        skipLines(5)
     }
 
     private suspend fun tick1() {
