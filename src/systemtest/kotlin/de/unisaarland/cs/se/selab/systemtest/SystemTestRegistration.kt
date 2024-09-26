@@ -131,6 +131,7 @@ object SystemTestRegistration {
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
         manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
+        manager.registerTest(SilentHouseEventOnNonExistingTile())
     }
 
     /**
@@ -181,6 +182,9 @@ object SystemTestRegistration {
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
         manager.registerTest(CurrentsFreakRefueling())
         manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(CurrentCollect())
+        manager.registerTest(CurrentCollect1())
+        manager.registerTest(ChiefKeef())
     }
 
     private fun runRegisterValidationTests(manager: SystemTestManager) {
@@ -212,6 +216,12 @@ object SystemTestRegistration {
         manager.registerTest(Atlantis4())
         manager.registerTest(Atlantis5())
         manager.registerTest(Atlantis6())
+        manager.registerTest(OnlyLandTileCorporation()) // Validation NEW
+        manager.registerTest(OnlyShallowTileCorporation()) // Validation NEW
+        manager.registerTest(OnlyDeepTileCorporation()) // Validation NEW
+        manager.registerTest(Atlantis8()) // NEW
+        manager.registerTest(Atlantis9()) // NEW
+        manager.registerTest(SilentHouseEventOnNonExistingTile())
     }
 
     /**
@@ -260,5 +270,8 @@ object SystemTestRegistration {
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
         manager.registerTest(CurrentsFreakRefueling())
         manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(CurrentCollect())
+        manager.registerTest(CurrentCollect1())
+        manager.registerTest(ChiefKeef())
     }
 }
