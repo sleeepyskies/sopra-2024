@@ -186,7 +186,7 @@ object SystemTestRegistration {
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
         manager.registerTest(ChiefKeef())
-        manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
+        manager.registerTest(CyclopsCorp())
     }
 
     private fun runRegisterValidationTests(manager: SystemTestManager) {
@@ -276,5 +276,6 @@ object SystemTestRegistration {
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
         manager.registerTest(ChiefKeef())
+        manager.registerTest(CyclopsCorp())
     }
 }
