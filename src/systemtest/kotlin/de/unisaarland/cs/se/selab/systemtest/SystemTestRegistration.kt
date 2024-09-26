@@ -181,6 +181,7 @@ object SystemTestRegistration {
         manager.registerTest(UhOhVoyagerrr())
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
+        manager.registerTest(ChiefKeef())
     }
 
     private fun runRegisterValidationTests(manager: SystemTestManager) {
@@ -267,5 +268,7 @@ object SystemTestRegistration {
         manager.registerTest(UhOhVoyagerrr())
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
+        manager.registerTest(ChiefKeef())
+
     }
 }
