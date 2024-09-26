@@ -1,0 +1,70 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "We Collaborate for Plastic",
+      "ships": [
+        1, 2
+      ],
+      "homeHarbors": [
+        7, 9
+      ],
+      "garbageTypes": [
+        "CHEMICALS"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Ocean Cleaners Inc.",
+      "ships": [
+        3
+      ],
+      "homeHarbors": [
+        7
+      ],
+      "garbageTypes": [
+        "CHEMICALS"
+      ]
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "I HELP CHEMICALS",
+      "type": "COLLECTING",
+      "corporation": 1,
+      "location": 6,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "CHEMICALS"
+    },
+    {
+      "id": 2,
+      "name": "SCOUT ME UP",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 6,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 7,
+      "visibilityRange": 3
+    },
+    {
+      "id": 3,
+      "name": "Collecter",
+      "type": "COLLECTING",
+      "corporation": 2,
+      "location": 14,
+      "maxVelocity": 10,
+      "acceleration": 10,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 5,
+      "capacity": 1000,
+      "garbageType": "CHEMICALS"
+    }
+  ]
+}
