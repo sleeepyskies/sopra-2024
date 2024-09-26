@@ -179,6 +179,8 @@ object SystemTestRegistration {
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
         manager.registerTest(CurrentsFreakRefueling())
         manager.registerTest(UhOhVoyagerrr())
+        manager.registerTest(CurrentCollect())
+        manager.registerTest(CurrentCollect1())
     }
 
     private fun runRegisterValidationTests(manager: SystemTestManager) {
