@@ -269,6 +269,5 @@ object SystemTestRegistration {
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
         manager.registerTest(ChiefKeef())
-
     }
 }
