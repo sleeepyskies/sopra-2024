@@ -65,9 +65,6 @@ object SystemTestRegistration {
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(TaskRestrictionReward())
-        registerSystemTestsReferenceImplHelper(manager)
-    }
-    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(NoWayToLeaveRestriction())
         manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
@@ -75,6 +72,9 @@ object SystemTestRegistration {
         manager.registerTest(TestCoordinateTaskAndRadioReward())
         manager.registerTest(ShipCannotCollectGarbageWithContainer())
         manager.registerTest(TestOilSpillIds())
+        registerSystemTestsReferenceImplHelper(manager)
+    }
+    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(CannotCollectPlasticHasToWaitForHelp())
         manager.registerTest(TrackerTest())
         manager.registerTest(AssignManyShipsToGarbage())
@@ -121,12 +121,12 @@ object SystemTestRegistration {
         manager.registerTest(SilentHouseTooMuchOilOnTile2())
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
-        manager.registerTest(OnlyLandTileMap()) // Validation
-        manager.registerTest(OnlyShallowTileMap()) // Validation
-        manager.registerTest(OnlyDeepTileMap()) // Validation
-        manager.registerTest(OnlyLandTileCorporation()) // Validation
-        manager.registerTest(OnlyShallowTileCorporation()) // Validation
-        manager.registerTest(OnlyDeepTileCorporation()) // Validation
+        manager.registerTest(OnlyLandTileMap()) // Validation NEW
+        manager.registerTest(OnlyShallowTileMap()) // Validation NEW
+        manager.registerTest(OnlyDeepTileMap()) // Validation NEW
+        manager.registerTest(OnlyLandTileCorporation()) // Validation NEW
+        manager.registerTest(OnlyShallowTileCorporation()) // Validation NEW
+        manager.registerTest(OnlyDeepTileCorporation()) // Validation NEW
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
     }
