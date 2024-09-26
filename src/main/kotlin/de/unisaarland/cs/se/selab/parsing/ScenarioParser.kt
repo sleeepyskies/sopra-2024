@@ -467,6 +467,9 @@ class ScenarioParser(
         return true
     }
 
+    /**
+     * Handles the cross validation of all tasks/rewards.
+     */
     private fun isValidTaskReward(task: Task): Boolean {
         return when (task.type) {
             TaskType.COLLECT -> isValidCollectTaskReward(task)
@@ -476,6 +479,9 @@ class ScenarioParser(
         } && this.rewardIDs.contains(task.rewardId)
     }
 
+    /**
+     * Validates a collection task.
+     */
     private fun isValidCollectTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.CONTAINER) {
             return false
@@ -483,6 +489,9 @@ class ScenarioParser(
         return true
     }
 
+    /**
+     * Validates a coordination task.
+     */
     private fun isValidCoordinateTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.RADIO) {
             return false
@@ -490,6 +499,9 @@ class ScenarioParser(
         return true
     }
 
+    /**
+     * Validates an explore task.
+     */
     private fun isValidExploreTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TELESCOPE) {
             return false
@@ -497,6 +509,9 @@ class ScenarioParser(
         return true
     }
 
+    /**
+     * Validates a find task.
+     */
     private fun isValidFindTaskReward(task: Task): Boolean {
         if ((this.rewards.find { it.id == task.rewardId }?.type ?: true) != RewardType.TRACKING) {
             return false
