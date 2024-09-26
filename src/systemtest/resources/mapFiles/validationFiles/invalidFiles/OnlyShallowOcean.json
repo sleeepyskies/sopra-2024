@@ -1,0 +1,12 @@
+{
+  "tiles": [
+    {
+      "id": 0,
+      "coordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "category": "SHALLOW_OCEAN"
+    }
+  ]
+}

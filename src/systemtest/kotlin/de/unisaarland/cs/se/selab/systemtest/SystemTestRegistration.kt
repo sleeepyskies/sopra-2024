@@ -5,11 +5,17 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.C
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.DoubleAgent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborCantBeHere
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.HarborWithNoCorporation
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.OnlyDeepTileCorporation
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.OnlyLandTileCorporation
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.OnlyShallowTileCorporation
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.ThisCorporationIsMessedUPbruh
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhyDoYouDoThis
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHarbarObamna
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.NonUniqueTileIDs
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.OnlyDeepTileMap
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.OnlyLandTileMap
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.OnlyShallowTileMap
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.WrongNeighbors
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.MultiTaskInvalid
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidScenario.ThisShipAintHere
@@ -55,13 +61,13 @@ object SystemTestRegistration {
         manager.registerTest(CorpWithNoShips404())
         manager.registerTest(MultiReward())
         manager.registerTest(ShipsCollabOnChemCollection())
-        registerSystemTestsReferenceImplHelper(manager)
-    }
-    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(NonUniqueTileIDs())
         manager.registerTest(HarborCantBeHere())
         manager.registerTest(StormEventDriftsGarbage())
         manager.registerTest(TaskRestrictionReward())
+        registerSystemTestsReferenceImplHelper(manager)
+    }
+    private fun registerSystemTestsReferenceImplHelper(manager: SystemTestManager) {
         manager.registerTest(NoWayToLeaveRestriction())
         manager.registerTest(FloatingHarbarObamna())
         manager.registerTest(CorporationGetsInformedThenCollectingShipGoes())
@@ -115,6 +121,12 @@ object SystemTestRegistration {
         manager.registerTest(SilentHouseTooMuchOilOnTile2())
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
+        manager.registerTest(OnlyLandTileMap()) // Validation
+        manager.registerTest(OnlyShallowTileMap()) // Validation
+        manager.registerTest(OnlyDeepTileMap()) // Validation
+        manager.registerTest(OnlyLandTileCorporation()) // Validation
+        manager.registerTest(OnlyShallowTileCorporation()) // Validation
+        manager.registerTest(OnlyDeepTileCorporation()) // Validation
     }
 
     /**
