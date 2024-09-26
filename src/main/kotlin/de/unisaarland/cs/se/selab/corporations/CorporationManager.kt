@@ -64,7 +64,8 @@ class CorporationManager(private val simData: SimulationData) {
                 var tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>
                 if (isOnRestrictedTile) {
                     val outOfRestrictionTile = possibleLocationsToMove[0].first
-                    val shipMaxTravelDistance = min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
+                    // NOT USED RN
+                    // val shipMaxTravelDistance = min(anticipatedVelocity, it.currentFuel / it.fuelConsumptionRate)
                     // The tileID of the tile we move out to
                     val tileIdOfTile = simData.navigationManager.findTile(outOfRestrictionTile)?.id ?: -1
                     // The tileID of the tile we actually have the destination set to
