@@ -51,8 +51,8 @@ class CorporationManager(private val simData: SimulationData) {
     private fun moveShipsPhase(corporation: Corporation) {
         Logger.corporationActionMove(corporation.id)
         val gbAssignedAmountList = mutableListOf<Garbage>()
-        scanAll(corporation.ships, corporation)
         corporation.ships.sortedBy { it.id }.filter { it.currentFuel != 0 }.forEach {
+            scanAll(corporation.ships, corporation)
             var isOnRestrictedTile = checkRestriction(it.location)
             // determine behavior will return cor a collecting ship the tiles that still need assignment
             val (possibleLocationsToMove, exploring) = determineBehavior(it, corporation)
@@ -101,14 +101,14 @@ class CorporationManager(private val simData: SimulationData) {
             } else {
                 it.currentVelocity = 0
             }
+            corporation.visibleShips.clear()
+            corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
+            corporation.visibleGarbage.clear()
         }
         // after every ship of this corporation has moved
         // we set the assignments on the garbage that ships are assigned to  0
         flushAllGarbageAssignments(gbAssignedAmountList)
         applyTrackersForCorporation(corporation)
-        corporation.visibleShips.clear()
-        corporation.visibleGarbage.forEach { (t, u) -> corporation.garbage[t] = u }
-        corporation.visibleGarbage.clear()
     }
 
     private fun processShipMovement(
