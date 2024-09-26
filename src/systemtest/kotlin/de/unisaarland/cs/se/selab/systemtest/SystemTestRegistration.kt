@@ -132,6 +132,7 @@ object SystemTestRegistration {
         manager.registerTest(Atlantis9()) // NEW
         manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
         manager.registerTest(SilentHouseEventOnNonExistingTile())
+        manager.registerTest(CollecingShipDoesntGoToNonVisibleGarbage())
     }
 
     /**
