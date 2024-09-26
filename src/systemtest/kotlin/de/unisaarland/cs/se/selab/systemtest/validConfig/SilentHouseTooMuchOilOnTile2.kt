@@ -4,11 +4,11 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 
 /**asf**/
 class SilentHouseTooMuchOilOnTile2 : ExampleSystemTestExtension() {
-    override val description = "no"
+    override val description = "two piles of oil on a tile with amount 1000 both"
     override val corporations = "corporationJsons/corpOnSmallMapSimple.json"
     override val scenario = "scenarioJsons/tooMuchOilOnTile2.json"
     override val map = "mapFiles/smallMap1.json"
-    override val name = "asdf"
+    override val name = "Silent House Too Much Oil On Tile 2"
     override val maxTicks = 5
 
     override suspend fun run() {
