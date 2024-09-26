@@ -1,0 +1,16 @@
+{
+  "tiles": [
+    {
+      "id": 0,
+      "coordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "category": "DEEP_OCEAN",
+      "current": true,
+      "direction": 0,
+      "speed": 30,
+      "intensity": 3
+    }
+  ]
+}
