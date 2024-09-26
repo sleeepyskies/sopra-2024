@@ -131,6 +131,11 @@ class CorporationParser(
         return success && shipsWithoutCorporations
     }
 
+    /**
+     * Checks if there are any ships without assigned corps.
+     * @param shipsList The list of ships to check.
+     */
+
     // Validates that all ships belong to valid corporations
     private fun checkForShipsWithoutCorporations(shipsList: List<Ship>): Boolean {
         for (ship in shipsList) {
@@ -180,6 +185,12 @@ class CorporationParser(
         corporations.add(corporation)
         return true
     }
+
+    /**
+     * Parses a single ship from a JSON object.
+     * @param shipJsonObject The JSON object representing the ship.
+     * @return The ship object, or null if the ship could not be parsed.
+     */
     private fun parseShip(shipJsonObject: JSONObject): Ship? {
         // validate ship
         if (helper.validateSchema(shipJsonObject, "ships.schema")) {
@@ -244,6 +255,12 @@ class CorporationParser(
         // parse and validate all garbage
         return ship
     }
+
+    /**
+     * Parses the garbage types that a corporation can handle.
+     * @param corporationGarbageTypes The JSON array containing the garbage types of the corp
+     * @param garbageList The list of garbage types to update.
+     */
     private fun parseGarbageTypes(corporationGarbageTypes: JSONArray, garbageList: MutableList<GarbageType>): Boolean {
         if (corporationGarbageTypes.length() == 0) {
             return true
@@ -255,6 +272,11 @@ class CorporationParser(
         return true
     }
 
+    /**
+     * Parses the home harbors of a corporation.
+     * @param corporationHomeHarbors The JSON array containing the home harbors of the corp
+     * @param homeHarborsList The list of home harbors to update
+     */
     private fun parseHomeHarbors(
         corporationHomeHarbors: JSONArray,
         homeHarborsList: MutableList<Pair<Int, Int>>
@@ -268,6 +290,12 @@ class CorporationParser(
         return homeHarborsList.isNotEmpty()
     }
 
+    /**
+     * Parses the ships of a corporation:
+     * @param corporationShips The JSON array containing the ships of the corp
+     * @param shipsList The list of ships to update
+     * @param collectingShips The list of collecting ships to update
+     */
     private fun parseShips(
         corporationShips: JSONArray,
         shipsList: MutableList<Ship>,
@@ -293,6 +321,9 @@ class CorporationParser(
         return shipsList.isNotEmpty()
     }
 
+    /**
+     * Validates that a ship has the correct attributes for a scouting ship
+     */
     private fun checkScoutingShip(ship: Ship): Boolean {
         return ship.maxVelocity in MIN_VELOCITY..MAX_VELOCITY &&
             ship.acceleration in MIN_ACCELERATION..MAX_ACCELERATION &&
@@ -302,6 +333,9 @@ class CorporationParser(
             ship.visibilityRange in MIN_VISIBILITY_RANGE..MAX_VISIBILITY_RANGE
     }
 
+    /**
+     * Validates that a ship has the correct attributes for a coordinating ship
+     */
     private fun checkCoordinatingShip(ship: Ship): Boolean {
         return ship.maxVelocity in MIN_COORDINATING_VELOCITY..MAX_COORDINATING_VELOCITY &&
             ship.acceleration in MIN_COORDINATING_ACCELERATION..MAX_COORDINATING_ACCELERATION &&
@@ -311,6 +345,9 @@ class CorporationParser(
             ship.visibilityRange == MAX_COORDINATING_VISIBILITY_RANGE
     }
 
+    /**
+     * Validates that a ship has the correct attributes for a collecting ship
+     */
     private fun checkCollectingShip(ship: Ship): Boolean {
         var success = true
         if (ship.capacityInfo.isEmpty()) {
@@ -419,6 +456,9 @@ class CorporationParser(
         return true
     }
 
+    /**
+     * Converts a string to a `ShipType` enum
+     */
     private fun convertShipTypeToEnum(type: String): ShipType? {
         return when (type) {
             "SCOUTING" -> ShipType.SCOUTING_SHIP
@@ -427,6 +467,10 @@ class CorporationParser(
             else -> null
         }
     }
+
+    /**
+     * Converts a string to a `GarbageType` enum
+     */
     private fun convertGarbageTypeToEnum(type: String): GarbageType? {
         return when (type) {
             "PLASTIC" -> GarbageType.PLASTIC
@@ -435,6 +479,10 @@ class CorporationParser(
             else -> null
         }
     }
+
+    /**
+     * Validates that a corporation is unique and has a non-empty name and ids are unique
+     */
     private fun validateCorporation(corporationJsonObject: JSONObject): Boolean {
         val corporationName = corporationJsonObject.optString(NAME, "")
         val corporationId = corporationJsonObject.getInt(ID)

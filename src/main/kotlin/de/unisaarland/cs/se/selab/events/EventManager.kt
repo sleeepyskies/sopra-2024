@@ -54,6 +54,13 @@ class EventManager(private val simulationData: SimulationData) {
             }
         }
     }
+
+    /**
+     * Reduces the duration of the active events by 1.
+     * If the duration of an event reaches 0 the event is added to the list of ending events
+     * @param activeEvents The list of active events.
+     * @return The list of ending eventsList.
+     */
     private fun reduceDuration(activeEvents: List<Event>): List<Event> {
         val endingEvents = mutableListOf<Event>()
         if (activeEvents.isNotEmpty()) {
@@ -67,6 +74,11 @@ class EventManager(private val simulationData: SimulationData) {
         }
         return endingEvents
     }
+
+    /**
+     * Checks for ending events and reverse the effects of the events.
+     * @param endingEvents The list of to ending events.
+     */
     private fun checkEndingEvent(endingEvents: List<Event>) {
         val restrictedEvents = endingEvents.filterIsInstance<RestrictionEvent>()
         for (event in restrictedEvents) {
@@ -94,6 +106,10 @@ class EventManager(private val simulationData: SimulationData) {
             simulationData.activeEvents.remove(event)
         }
     }
+
+    /**
+     * Checks for scheduled events and applies the effects of the events6 with helper
+     */
     private fun checkScheduledEvents() {
         val scheduledEvents = simulationData.scheduledEvents
         val currentTick = simulationData.tick
@@ -118,6 +134,10 @@ class EventManager(private val simulationData: SimulationData) {
             }
         }
     }
+
+    /**
+     * Applies the effects of an OilSpillEvent.
+     */
     private fun applyOilSpillEvent(event: OilSpillEvent) {
         val location = event.location
         val radius = event.radius
@@ -137,6 +157,9 @@ class EventManager(private val simulationData: SimulationData) {
         updateTiles(tilesToUpdate)
     }
 
+    /**
+     * Applies the effects of a StormEvent.
+     */
     private fun applyRestriction(event: RestrictionEvent) {
         val location = event.location
         val radius = event.radius
@@ -149,6 +172,10 @@ class EventManager(private val simulationData: SimulationData) {
         simulationData.navigationManager.initializeAndUpdateGraphStructure()
         simulationData.activeEvents.add(event)
     }
+
+    /**
+     * Applies the effects of a RestrictionEvent
+     */
     private fun applyStormEvent(event: StormEvent) {
         val location = event.location
         val radius = event.radius
@@ -162,6 +189,10 @@ class EventManager(private val simulationData: SimulationData) {
             it.moveAllArrivingGarbageToTile()
         }
     }
+
+    /**
+     * Applies the effects of a garbage drift after srom.
+     */
     private fun handleGarbageDrift(tile: Tile, coordinates: Pair<Int, Int>, direction: Direction, speed: Int):
         List<Tile> {
         val garbageOfAffectedTile = tile.getGarbageByLowestID()
@@ -180,6 +211,9 @@ class EventManager(private val simulationData: SimulationData) {
         return tileToBeUpdate
     }
 
+    /**
+     * drifts the grbage to the next tile if it can fit
+     */
     private fun driftGarbageIfCanFit(
         tile: Tile,
         currentTile: Tile,
@@ -204,6 +238,9 @@ class EventManager(private val simulationData: SimulationData) {
         return null
     }
 
+    /**
+     * Applies the effects of a PirateAttackEvent§
+     */
     private fun applyPirateAttack(event: PirateAttackEvent) {
         val shipID = event.shipID
         val ship = simulationData.ships.find { it.id == shipID } ?: return
@@ -213,6 +250,10 @@ class EventManager(private val simulationData: SimulationData) {
         simulationData.ships.remove(ship)
         // Handling pirate attack: remove ship from corporation, remove from simulation data.
     }
+
+    /**
+     * Processes the oil spill event on a tile.
+     */
     private fun processTile(
         currentTile: Tile,
         event: OilSpillEvent,
@@ -233,6 +274,10 @@ class EventManager(private val simulationData: SimulationData) {
         }
         tilesToUpdate.add(currentTile)
     }
+
+    /**
+     * Creates a new garbage object agter oilspill
+     */
     private fun createGarbage(amount: Int, tile: Tile): Garbage {
         val newGarbage = Garbage(
             simulationData.currentHighestGarbageID + 1,
@@ -245,6 +290,9 @@ class EventManager(private val simulationData: SimulationData) {
         return newGarbage
     }
 
+    /**
+     * informs the corps about happened events
+     */
     private fun updateCorporations(updateToCorporations: List<Garbage>) {
         val corporations = simulationData.corporations
         for (corporation in corporations) {
@@ -254,6 +302,9 @@ class EventManager(private val simulationData: SimulationData) {
         }
     }
 
+    /**
+     * Updates the tiles with the garbage
+     */
     private fun updateTiles(tilesToUpdate: List<Tile>) {
         for (tile in tilesToUpdate) {
             tile.moveAllArrivingGarbageToTile()
