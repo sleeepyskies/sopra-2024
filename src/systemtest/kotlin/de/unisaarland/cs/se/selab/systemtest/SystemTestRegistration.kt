@@ -185,6 +185,7 @@ object SystemTestRegistration {
         manager.registerTest(CurrentCollect())
         manager.registerTest(CurrentCollect1())
         manager.registerTest(ChiefKeef())
+        manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
     }
 
     private fun runRegisterValidationTests(manager: SystemTestManager) {
@@ -222,6 +223,7 @@ object SystemTestRegistration {
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
         manager.registerTest(SilentHouseEventOnNonExistingTile())
+        manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
     }
 
     /**
