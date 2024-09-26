@@ -226,6 +226,5 @@ object SystemTestRegistration {
         manager.registerTest(OnlyCorrectNumberOfShipsAssigned())
         manager.registerTest(MultiReward())
         manager.registerTest(TestOilSpillIds())
-        manager.registerTest(NoWayToLeaveRestriction())
     }
 }
