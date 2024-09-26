@@ -112,6 +112,14 @@ class CorporationManager(private val simData: SimulationData) {
         applyTrackersForCorporation(corporation)
     }
 
+    /**
+     * Helper method for moveShipsPhase(). Is responsible for handling the given ships movement.
+     * @param ship The ship to process
+     * @param tileInfoToMove Possible locations to move to
+     * @param gbAssignedAmountList A list holding all garbage this ship will be assigned to
+     * @param exploring A boolean flag showing if the ship is exploring or not
+     * @param isOnRestrictedTile A boolean flag showing if the ship is on a restricted tile or not
+     */
     private fun processShipMovement(
         ship: Ship,
         tileInfoToMove: Pair<Pair<Pair<Int, Int>, Int>, Pair<Int, Int>>,
@@ -143,6 +151,10 @@ class CorporationManager(private val simData: SimulationData) {
         )
     }
 
+    /**
+     * Handles upating all active tasks. Will set the tasks isCompleted
+     * and grantReward boolean flags accordingly based on the tasks conditions.
+     */
     private fun updateTasks() {
         simData.activeTasks.forEach {
             val taskShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
@@ -184,6 +196,12 @@ class CorporationManager(private val simData: SimulationData) {
         }
     }
 
+    /**
+     * Handles all ships that can collect and that have garbage on their tiles.
+     * @param tile The tile the ship is on, tile also holds garbage
+     * @param ship The ship that can collect
+     * @param corporation The corporation that the ship belongs to
+     */
     private fun processGarbageOnTile(tile: Tile, ship: Ship, corporation: Corporation) {
         val gbList = tile.getGarbageByLowestID()
         gbList.filter { it.type == GarbageType.PLASTIC }.forEach { gb ->
@@ -209,6 +227,10 @@ class CorporationManager(private val simData: SimulationData) {
         }
     }
 
+    /**
+     * Helper method for processGarbageOnTile(). Handles the case
+     * when there is too much plastic for one ship to carry.
+     */
     private fun handleGarbageType(gb: Garbage, tile: Tile, ship: Ship) {
         val (shouldRemove, amt) = when (gb.type) {
             GarbageType.PLASTIC -> {
@@ -464,6 +486,10 @@ class CorporationManager(private val simData: SimulationData) {
         }
     }
 
+    /**
+     * Returns a list of the ships location if the ship is on
+     * a home harbor, and it should be unloading [and | or] refueling.
+     */
     private fun checkShipOnHarborAndNeedsToRefuelOrUnload(ship: Ship, corporation: Corporation): List<Pair<Int, Int>> {
         val shipLocation = ship.location
         val shipIsOnHarbor = corporation.harbors.any { it == shipLocation }
@@ -731,6 +757,10 @@ class CorporationManager(private val simData: SimulationData) {
         }
         return gbAssignedAmountList
     }
+
+    /**
+     * Is used to assign a ships capacity to some garbage.
+     */
     private fun assignCapacity(garbage: Garbage, capacity: Int, gbAssignedAmountList: MutableList<Garbage>): Int {
         if (capacity > 0) {
             val capacityLeftToAssign = garbage.amount - garbage.assignedCapacity

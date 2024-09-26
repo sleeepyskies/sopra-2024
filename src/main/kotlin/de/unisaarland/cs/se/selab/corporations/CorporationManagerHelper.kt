@@ -197,6 +197,9 @@ class CorporationManagerHelper(simulationData: SimulationData) {
             .shouldMoveToHarbor(tileToMoveToLocation, distanceInTiles, homeHarborsToTileId)
     }
 
+    /**
+     * A filter predicate used to filter garbage by if it has unassigned capacity left.
+     */
     private fun getOnlyAssignableGarbagePredicate(garbageID: Int): Boolean {
         val garbageObject = simData.garbage.find { it.id == garbageID }
         val garbageAssignedCapacity = garbageObject?.assignedCapacity
