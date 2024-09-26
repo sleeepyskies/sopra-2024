@@ -3,11 +3,11 @@ package de.unisaarland.cs.se.selab.systemtest.validConfig
 import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
 /**gh**/
 class SilentHouseTasksOnLand : ExampleSystemTestExtension() {
-    override val description = "no"
+    override val description = "Tasks are on land tile"
     override val corporations = "corporationJsons/corpOnSmallMapSimple.json"
     override val scenario = "scenarioJsons/tasksOnLand.json"
     override val map = "mapFiles/smallMapWithLandTile.json"
-    override val name = "asdf"
+    override val name = "SilentHouseTasksOnLand"
     override val maxTicks = 5
 
     override suspend fun run() {
