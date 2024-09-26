@@ -9,6 +9,7 @@ import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.O
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.OnlyLandTileCorporation
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.OnlyShallowTileCorporation
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.ThisCorporationIsMessedUPbruh
+import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhosHarborEvenIsThisBro
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidCorporations.WhyDoYouDoThis
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.FloatingHarbarObamna
 import de.unisaarland.cs.se.selab.systemtest.invalidConfig.invalidMap.InvalidCurrent
@@ -129,6 +130,7 @@ object SystemTestRegistration {
         manager.registerTest(OnlyDeepTileCorporation()) // Validation NEW
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
+        manager.registerTest(WhosHarborEvenIsThisBro()) // Validation
     }
 
     /**

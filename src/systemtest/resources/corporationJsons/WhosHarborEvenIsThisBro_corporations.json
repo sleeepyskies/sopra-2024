@@ -1,0 +1,52 @@
+{
+  "corporations": [
+    {
+      "id": 1,
+      "name": "Corporation1",
+      "ships": [
+        1
+      ],
+      "homeHarbors": [
+        5
+      ],
+      "garbageTypes": []
+    },
+    {
+      "id": 2,
+      "name": "Corporation2",
+      "ships": [
+        2
+      ],
+      "homeHarbors": [
+        5
+      ],
+      "garbageTypes": []
+    }
+  ],
+  "ships": [
+    {
+      "id": 1,
+      "name": "Explorer",
+      "type": "SCOUTING",
+      "corporation": 1,
+      "location": 11,
+      "maxVelocity": 100,
+      "acceleration": 25,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 5
+    },
+    {
+      "id": 2,
+      "name": "Explorer",
+      "type": "SCOUTING",
+      "corporation": 2,
+      "location": 11,
+      "maxVelocity": 100,
+      "acceleration": 25,
+      "fuelCapacity": 3000,
+      "fuelConsumption": 10,
+      "visibilityRange": 5
+    }
+  ]
+}
