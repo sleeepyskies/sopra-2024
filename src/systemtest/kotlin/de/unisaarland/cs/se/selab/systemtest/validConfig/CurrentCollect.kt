@@ -6,8 +6,8 @@ import de.unisaarland.cs.se.selab.systemtest.utils.ExampleSystemTestExtension
  * Tests if garbage is collected correctly by a ship that moves by drifting
  */
 class CurrentCollect : ExampleSystemTestExtension() {
-    override val description = "CurrentCollect: tests if garbage that is drifted ontop of ship" +
-        "is collected"
+    override val description = "CurrentCollect: tests if ship that is drifted ontop of garbage" +
+        "collects"
     override val corporations = "corporationJsons/currentCollectCorp.json"
     override val scenario = "scenarioJsons/currentCollectScen.json"
     override val map = "mapFiles/obamna.json"
