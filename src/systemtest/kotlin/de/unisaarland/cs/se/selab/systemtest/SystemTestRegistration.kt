@@ -129,6 +129,7 @@ object SystemTestRegistration {
         manager.registerTest(OnlyDeepTileCorporation()) // Validation NEW
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
+        manager.registerTest(SilentHouseEventOnNonExistingTile())
     }
 
     /**
@@ -218,6 +219,7 @@ object SystemTestRegistration {
         manager.registerTest(OnlyDeepTileCorporation()) // Validation NEW
         manager.registerTest(Atlantis8()) // NEW
         manager.registerTest(Atlantis9()) // NEW
+        manager.registerTest(SilentHouseEventOnNonExistingTile())
     }
 
     /**
