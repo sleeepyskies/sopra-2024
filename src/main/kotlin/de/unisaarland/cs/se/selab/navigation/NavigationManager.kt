@@ -527,6 +527,10 @@ class NavigationManager(
         return outLocation
     }
 
+    /**
+     * Helper function for findTileInDirection(). Finds the next tile from
+     * the given location and direction.
+     */
     private fun findTileInDirectionFromHelper(location: Pair<Int, Int>, direction: Direction): Pair<Int, Int> {
         var outLocation: Pair<Int, Int>? = null
         when (direction) {

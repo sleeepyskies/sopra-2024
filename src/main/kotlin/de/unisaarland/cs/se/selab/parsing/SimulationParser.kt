@@ -375,6 +375,9 @@ class SimulationParser(
         return true
     }
 
+    /**
+     * Checks that all harbors on the map belong to at least one corporation.
+     */
     private fun crossValidateAllHarborsOnMapBelongToACorporation(): Boolean {
         val allHarborsOfCorporations = this.corporations.flatMap { it.harbors }.toSet()
         val allTilesWithHarbor = this.navigationManager.tiles.values.filter { it.isHarbor }

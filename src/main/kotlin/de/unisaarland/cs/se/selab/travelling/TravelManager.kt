@@ -47,6 +47,11 @@ class TravelManager(private val simData: SimulationData) {
         updateTiles(tilesToUpdate)
         updateTasks()
     }
+
+    /**
+     * This function is responsible for updating all active tasks in
+     * the simulation and handling their isCompleted boolean flag.
+     */
     private fun updateTasks() {
         simData.activeTasks.forEach {
             val taskShip = simData.ships.find { ship -> ship.id == it.assignedShipId }
@@ -99,6 +104,10 @@ class TravelManager(private val simData: SimulationData) {
         }
     }
 
+    /**
+     * A helper method for handleGarbageDrift(). Calculates the path that the garbage should drift
+     * along, splits the garbage if needed and returns the amount of remaining drift capacity that is left.
+     */
     private fun helpHandleGarbageDrift(
         tile: Tile,
         mutableListGarbage: MutableList<Garbage>,

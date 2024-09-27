@@ -63,6 +63,10 @@ class TaskManager(private val simData: SimulationData) {
 
         simData.tick++
     }
+
+    /**
+     * This function in responsible for assigning all tasks that are scheduled for the current tick.
+     */
     private fun handleScheduledTasks(scheduledTasks: List<Task>) {
         // there are scheduled tasks, assign them
         for (task in scheduledTasks) {
@@ -156,6 +160,10 @@ class TaskManager(private val simData: SimulationData) {
     }
     // lol
 
+    /**
+     * Checks if the provided task that is a COORDINATE task has a harbor location as
+     * its target tileID that belongs to at least one other corporation that our corporation.
+     */
     private fun cooperateHasDifferentHarbor(task: Task, corporationId: Int): Boolean {
         val corporations = simData.corporations.filter { it.id != corporationId }
         val corporationsHarbors = corporations.flatMap { it.harbors }
